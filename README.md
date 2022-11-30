@@ -5,7 +5,7 @@ Repository del progetto di PMO della sessione invernale 2022/23
 | MATRICOLA | NOME     | COGNOME   | NickName GitHub  |
 |-----------|----------|-----------| -----------------|
 | 312793    | Stefano  | Zizzi     | itsPinguiz       |
-| 000000    | Luis     | Frasheri  | luisfrasheri99   |
+| 312972    | Luis     | Frasheri  | luisfrasheri99   |
 | 000000    | Fedi     | Belhaj    | idef011          |
 
 
