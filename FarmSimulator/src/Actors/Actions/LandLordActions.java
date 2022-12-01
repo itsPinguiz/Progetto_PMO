@@ -8,4 +8,17 @@ public class LandLordActions extends PersonActions{
     }
 
     // METHODS FOR THE LANDLORD
+    public void buy(){
+        /*
+         * Method to buy item
+         * from the market
+         */
+    }
+
+    public void sell(){
+        /*
+         * Method to sell item
+         * to the market
+         */
+    }
 }
