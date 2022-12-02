@@ -14,11 +14,12 @@ public abstract class PlaceActions extends Actions{
                                 }};
     }
 
-    public PlaceActions(Integer AnimalLand){
+    public PlaceActions(Integer animalLand){
         super();
-        this.place = AnimalLand;
+        this.place = animalLand;
         super.availableActions = new HashMap<>(){{
-                                    put("plant","plant");
+                                    put("resources","getResources");
+                                    put("addAnimal","addAnimal");
                                 }};
     }
 
@@ -26,7 +27,7 @@ public abstract class PlaceActions extends Actions{
         super();
         this.place = Barn;
         super.availableActions = new HashMap<>(){{
-                                    put("plant","plant");
+                                    put("getItem","getItem");
                                 }};
     }
 
@@ -39,13 +40,14 @@ public abstract class PlaceActions extends Actions{
                                 }};
     }
 
-    public void enter(Object place,Object person) {
+    public void enter(Object person) {
         /*
          * Method to change actions when
          * an actors enters somewhere
          */
         // TODO Leave the last place if you were in one 
         // Enter the new place
+        // The LandLord cannot enter lands
     }
 
     public void leave(Object person) {
