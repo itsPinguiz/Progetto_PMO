@@ -1,9 +1,19 @@
-public class Landlord implements Person {
+package Actors.Person;
+
+/**
+ * Farmer person implementation
+ */
+public class Farmer implements Person{
     
+    /**
+     * Fields
+     */
     private Object actualPlace;
 
+    /**
+     * Methods
+     */
     public void doAction(String command){
-        System.out.println(command);
     }
 
     public Object getPlace(){
@@ -12,5 +22,6 @@ public class Landlord implements Person {
 
     public void setPlace(Object newPlace){
         this.actualPlace = newPlace;
-    }   
+    } 
+
 }
