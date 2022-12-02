@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 public class PersonActions extends Actions{
     private final Object person;
+    //private final Person place;
 
     protected PersonActions(Object person){
         super();
@@ -15,6 +16,7 @@ public class PersonActions extends Actions{
          * Method to find a method to execute
          */
         Method method = null;
+        //this.place = person.getplace
 
         if (availableActions.contains(s)){
             try {
