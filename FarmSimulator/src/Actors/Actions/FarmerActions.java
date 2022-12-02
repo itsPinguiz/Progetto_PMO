@@ -1,9 +1,11 @@
 package Actors.Actions;
 
+import Actors.Person.Farmer;
+
 public class FarmerActions extends PersonActions{
     //TODO Replace Object with the right class
     
-    public FarmerActions(Object farmer){
+    public FarmerActions(Farmer farmer){
         super(farmer);
     }
 
