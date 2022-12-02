@@ -3,6 +3,8 @@ package Actors.Actions;
 import java.util.HashMap;
 import java.util.Map;
 
+// DESIGN PATTERN MEDIATOR
+
 public abstract class Actions implements ActionsInt{
     // all actual available actions
     protected Map<String,String> availableActions;

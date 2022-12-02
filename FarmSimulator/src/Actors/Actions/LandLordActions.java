@@ -13,6 +13,9 @@ public class LandLordActions extends PersonActions{
          * Method to buy item
          * from the market
          */
+        //remove from maket and 
+        // add it to the barn and 
+        // remove the money from the balance
     }
 
     public void sell(){
@@ -20,5 +23,7 @@ public class LandLordActions extends PersonActions{
          * Method to sell item
          * to the market
          */
+        //remove from barn and 
+        // add the money in the balance
     }
 }
