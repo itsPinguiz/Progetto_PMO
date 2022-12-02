@@ -32,9 +32,9 @@ public abstract class PlaceActions extends Actions{
     }
 
 
-    public PlaceActions(Object plantLand){
+    public PlaceActions(Object techLand){
         super();
-        this.place = plantLand;
+        this.place = techLand;
         super.availableActions = new HashMap<>(){{
                                     put("plant","plant");
                                 }};
