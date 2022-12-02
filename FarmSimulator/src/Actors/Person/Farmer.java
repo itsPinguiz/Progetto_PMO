@@ -13,7 +13,9 @@ public class Farmer implements Person{
     /**
      * Methods
      */
-    public void doAction(String command){
+
+    public Farmer( ){
+        this.actualPlace = null;
     }
 
     public Object getPlace(){

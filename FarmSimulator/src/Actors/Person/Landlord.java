@@ -13,9 +13,10 @@ public class Landlord implements Person {
     /**
      * Methods
      */
-    public void doAction(String command){
+    public Landlord(){
+        this.actualPlace = null;
     }
-
+    
     public Object getPlace(){
         return actualPlace;
     }
