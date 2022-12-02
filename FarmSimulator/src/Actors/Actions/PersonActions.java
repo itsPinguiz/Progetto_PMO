@@ -18,7 +18,7 @@ public class PersonActions extends Actions{
         Method method = null;
         //this.place = person.getplace
 
-        if (availableActions.contains(s)){
+        if (super.availableActions.containsKey(s)){
             try {
                 method = this.getClass().getMethod(s);
               } catch (SecurityException e) { 
@@ -34,5 +34,19 @@ public class PersonActions extends Actions{
             System.out.println("Action '" + s + "' is not available in the current place.");
         }
         return method;
+    }
+
+    public void grabItem(){
+        /*
+         * Method to grab item from
+         * the barn
+         */
+    }
+
+    public void dropItem(){
+        /*
+         * Method to drop item in
+         * the barn
+         */
     }
 }
