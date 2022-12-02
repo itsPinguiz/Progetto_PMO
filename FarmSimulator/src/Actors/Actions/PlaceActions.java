@@ -1,12 +1,42 @@
 package Actors.Actions;
 
+import java.util.HashMap;
+
 public abstract class PlaceActions extends Actions{
     //TODO Replace Object with the right class
     protected Object place;
 
-    protected PlaceActions(Object place){
+    public PlaceActions(String plantLand){
         super();
-        this.place = place;
+        this.place = plantLand;
+        super.availableActions = new HashMap<>(){{
+                                    put("plant","plant");
+                                }};
+    }
+
+    public PlaceActions(Integer AnimalLand){
+        super();
+        this.place = AnimalLand;
+        super.availableActions = new HashMap<>(){{
+                                    put("plant","plant");
+                                }};
+    }
+
+    public PlaceActions(Double Barn){
+        super();
+        this.place = Barn;
+        super.availableActions = new HashMap<>(){{
+                                    put("plant","plant");
+                                }};
+    }
+
+
+    public PlaceActions(Object plantLand){
+        super();
+        this.place = plantLand;
+        super.availableActions = new HashMap<>(){{
+                                    put("plant","plant");
+                                }};
     }
 
     public void enter(Object place,Object person) {
