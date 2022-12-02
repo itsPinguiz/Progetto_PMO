@@ -1,36 +1,36 @@
 package Actors.Actions;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 // DESIGN PATTERN MEDIATOR
 
 public abstract class Actions implements ActionsInt{
     // all actual available actions
-    protected Map<String,String> availableActions;
+    protected Set<String> availableActions;
 
     protected Actions(){
-        this.availableActions = new HashMap<String,String>();
+        this.availableActions = new HashSet<String>();
     }
 
-    public void addAction(String k,String v) {
+    public void addAction(String action) {
         /*
          * Method to add action to the 
          * action list
          */
-        this.availableActions.put(k,v);
+        this.availableActions.add(action);
         
     }
 
-    public void removeAction(String k) {
+    public void removeAction(String action) {
         /*
          * Method to remove action to the 
          * action list
          */
-        this.availableActions.remove(k);
+        this.availableActions.remove(action);
     }
 
-    public Map<String,String> getActions(){
+    public Set<String> getActions(){
         /*
          * Method that returns all
          * the possible actions

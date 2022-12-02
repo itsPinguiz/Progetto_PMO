@@ -1,11 +1,12 @@
 package Actors.Actions;
 
 import java.lang.reflect.Method;
+import Actors.Person.Person;
 
 public class PersonActions extends Actions{
-    private final Object person;
+    private final Person person;
 
-    protected PersonActions(Object person){
+    protected PersonActions(Person person){
         super();
         this.person = person;
     }
@@ -16,21 +17,18 @@ public class PersonActions extends Actions{
          */
         Method method = null;
 
-        if (super.availableActions.containsKey(s)){
-            try {
-                method = this.getClass().getMethod(s);
-              } catch (SecurityException e) { 
-                System.out.println("Wasn't able to execute action.");
-                }
-                catch (NoSuchMethodException e) { 
-                    System.out.println("Action '" + s + "' is not present in the current class." + this.getClass().toString());
-                }
-                 catch (NullPointerException  e) { 
-                    System.out.println("Action is null.");
-                }
-        } else{
-            System.out.println("Action '" + s + "' is not available in the current place.");
-        }
+        try {
+            method = this.getClass().getMethod(s);
+            } catch (SecurityException e) { 
+            System.out.println("Wasn't able to execute action.");
+            }
+            catch (NoSuchMethodException e) { 
+                System.out.println("Action '" + s + "' is not present in the current class." + this.getClass().toString());
+            }
+                catch (NullPointerException  e) { 
+                System.out.println("Action is null.");
+            }
+
         return method;
     }
 

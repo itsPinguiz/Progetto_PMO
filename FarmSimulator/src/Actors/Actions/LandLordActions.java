@@ -1,9 +1,10 @@
 package Actors.Actions;
 
-public class LandLordActions extends PersonActions{
-    //TODO Replace Object with the right class
+import Actors.Person.Landlord;
 
-    public LandLordActions(Object landlord){
+public class LandLordActions extends PersonActions{
+
+    public LandLordActions(Landlord landlord){
         super(landlord);
     }
 

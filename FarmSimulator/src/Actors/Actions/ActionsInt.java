@@ -1,9 +1,9 @@
 package Actors.Actions;
 
-import java.util.Map;
+import java.util.Set;
 
 interface ActionsInt { 
-    void addAction(String k,String v);
-    void removeAction(String k);
-    Map<String,String> getActions();
+    void addAction(String action);
+    void removeAction(String action);
+    Set<String> getActions();
 }
