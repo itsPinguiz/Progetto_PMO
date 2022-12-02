@@ -4,12 +4,8 @@ import java.lang.reflect.Method;
 import Actors.Person.Person;
 
 public class PersonActions extends Actions{
-<<<<<<< HEAD
     private final Object person;
     //private final Person place;
-=======
-    private final Person person;
->>>>>>> fee66ca (Replaced Objects and Hashmap to Hashset)
 
     protected PersonActions(Person person){
         super();
