@@ -16,10 +16,7 @@ public class Landlord implements Person {
      */
     public Landlord(){
         this.actualPlace = null;
-<<<<<<< HEAD
-=======
         this.balance = 100;
->>>>>>> LuisTest
     }
     
     public Object getPlace(){

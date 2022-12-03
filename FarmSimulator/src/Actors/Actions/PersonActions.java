@@ -1,18 +1,10 @@
 package Actors.Actions;
 
-<<<<<<< HEAD
-import Actors.Person.Person;
-
-public class PersonActions extends Actions{
-    private final Person person;
-=======
-import java.lang.reflect.Method;
 import Actors.Person.Person;
 
 public class PersonActions extends Actions{
     private final Object person;
     //private final Person place;
->>>>>>> LuisTest
 
     protected PersonActions(Person person){
         super();
@@ -23,7 +15,8 @@ public class PersonActions extends Actions{
         /*
          * Method to find a method to execute
          */
-<<<<<<< HEAD
+        //this.place = person.getplace()
+
         // find the method and execute it
         try {
            this.getClass().getMethod(s).invoke(null);
@@ -31,24 +24,6 @@ public class PersonActions extends Actions{
         } catch (Exception e) {
             System.out.println("Wasn't able to execute action due to " + e);
         } 
-=======
-        Method method = null;
-        //this.place = person.getplace
-
-        try {
-            method = this.getClass().getMethod(s);
-            } catch (SecurityException e) { 
-            System.out.println("Wasn't able to execute action.");
-            }
-            catch (NoSuchMethodException e) { 
-                System.out.println("Action '" + s + "' is not present in the current class." + this.getClass().toString());
-            }
-                catch (NullPointerException  e) { 
-                System.out.println("Action is null.");
-            }
-
-        return method;
->>>>>>> LuisTest
     }
 
     public void grabItem(){

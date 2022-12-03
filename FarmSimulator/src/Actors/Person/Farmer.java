@@ -16,12 +16,7 @@ public class Farmer implements Person{
     /**
      * Methods
      */
-
-<<<<<<< HEAD
-    public Farmer( ){
-=======
     public Farmer(){
->>>>>>> LuisTest
         this.actualPlace = null;
     }
 
