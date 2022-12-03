@@ -9,12 +9,19 @@ public class Farmer implements Person{
      * Fields
      */
     private Object actualPlace;
+    /**
+     * TODO: I have to do add the inventory field
+     */
 
     /**
      * Methods
      */
 
+<<<<<<< HEAD
     public Farmer( ){
+=======
+    public Farmer(){
+>>>>>>> LuisTest
         this.actualPlace = null;
     }
 
@@ -24,6 +31,6 @@ public class Farmer implements Person{
 
     public void setPlace(Object newPlace){
         this.actualPlace = newPlace;
-    } 
+    }
 
 }
