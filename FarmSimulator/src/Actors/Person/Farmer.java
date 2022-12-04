@@ -36,29 +36,29 @@ public class Farmer implements Person{
 
     public void getInventory(){
         for(int i = 0; i < inventory.length; i++){
-            if(this.inventory[i].getType() != "Empty"){
+            if(this.inventory[i] != null){
                 System.out.println("\n[" + (i + 1) + "][ITEM]: " + inventory[i].getType() +
                              " [STATUS]: " + inventory[i].getStatus() + " [PRICE]: " + inventory[i].getPrice());
             }
             else{
-                System.out.println("\n["+ (i + 1) +"][ITEM]: "+this.inventory[i].getType());
+                System.out.println("\n["+ (i + 1) +"][ITEM]: Empty");
             }
         }
     }
 
     public void removeItem(int i){
-        if(this.inventory[i].getType()=="Empty"){
+        if(this.inventory[i] == null){
             System.out.println("\nThere's nothing to remove from slot ["+ (i + 1) +"].");
         }
         else{
             System.out.println("\n" + this.inventory[i].getType() + " has been removed from your inventory.");
-            this.inventory[i].deleteItem();
+            this.inventory[i] = null;
             
         }
     }
 
     public void addItem(Tool newTool, int i){
-        if(this.inventory[i].getType() == "Empty"){
+        if(this.inventory[i] == null){
             this.inventory[i] = newTool;
             System.out.println("\n" + this.inventory[i].getType() + " has been added in slot [" + (i+1) + "] of your inventory.");
         }

@@ -22,9 +22,4 @@ public class WoodWateringCan implements Tool {
     public int getPrice(){
         return this.price;
     }
-    public void deleteItem(){
-        this.toolType = "Empty";
-        this.status = 0;
-        this.price = 0;
-    }
 }
