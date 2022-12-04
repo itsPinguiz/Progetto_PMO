@@ -1,8 +1,8 @@
 package Tools.ConcreteTool.IronTool;
 
-import Tools.ConcreteTool.Interface.HoeInt;
+import Tools.ConcreteTool.Interface.Tool;
 
-public class IronHoe implements HoeInt {
+public class IronHoe implements Tool {
     
     private String toolType;
     private int status;
@@ -22,5 +22,10 @@ public class IronHoe implements HoeInt {
     }
     public int getPrice(){
         return this.price;
+    }
+    public void deleteItem(){
+        this.toolType = "Empty";
+        this.status = 0;
+        this.price = 0;
     }
 }

@@ -1,7 +1,8 @@
 package Tools.ConcreteTool.Interface;
 
-public interface SickleInt {
+public interface Tool {
     String getType();
     int getStatus();
     int getPrice();
+    void deleteItem();
 }

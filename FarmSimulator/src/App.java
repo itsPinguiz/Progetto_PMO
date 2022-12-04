@@ -1,16 +1,19 @@
-import java.lang.reflect.Method;
-
-import Actors.Actions.FarmerActions;
-import Actors.Actions.PersonActions;
 import Actors.Person.Farmer;
+import Tools.ConcreteTool.Interface.Tool;
+import Tools.ConcreteTool.WoodTool.WoodHoe;
 
 public class App {
     public static void main(String[] args) throws Exception {
         Farmer  f = new Farmer();
-        PersonActions a = new FarmerActions(f);
-        Method method;
+        Tool newTool = new WoodHoe();
 
-        method = a.findAction("grabitem");
-        method.invoke(null);
+        f.getInventory();
+        f.removeItem(2);
+        f.getInventory();
+        f.removeItem(2);
+        f.addItem(newTool, 2);
+        f.getInventory();
+        f.addItem(newTool, 2);
+
     }
 }

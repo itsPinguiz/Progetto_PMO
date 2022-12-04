@@ -1,8 +1,8 @@
 package Tools.ConcreteTool.IronTool;
 
-import Tools.ConcreteTool.Interface.WateringCanInt;
+import Tools.ConcreteTool.Interface.Tool;
 
-public class IronWateringCan implements WateringCanInt {
+public class IronWateringCan implements Tool {
     
     private String toolType;
     private int status;
@@ -22,5 +22,10 @@ public class IronWateringCan implements WateringCanInt {
     }
     public int getPrice(){
         return this.price;
+    }
+    public void deleteItem(){
+        this.toolType = "Empty";
+        this.status = 0;
+        this.price = 0;
     }
 }

@@ -1,8 +1,8 @@
 package Tools.ConcreteTool.WoodTool;
 
-import Tools.ConcreteTool.Interface.SickleInt;
+import Tools.ConcreteTool.Interface.Tool;
 
-public class WoodSickle implements SickleInt {
+public class WoodSickle implements Tool {
     
     private String toolType;
     private int status;
@@ -22,5 +22,10 @@ public class WoodSickle implements SickleInt {
     }
     public int getPrice(){
         return this.price;
+    }
+    public void deleteItem(){
+        this.toolType = "Empty";
+        this.status = 0;
+        this.price = 0;
     }
 }

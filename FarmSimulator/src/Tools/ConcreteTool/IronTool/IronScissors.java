@@ -1,8 +1,8 @@
 package Tools.ConcreteTool.IronTool;
 
-import Tools.ConcreteTool.Interface.ScissorsInt;
+import Tools.ConcreteTool.Interface.Tool;
 
-public class IronScissors implements ScissorsInt {
+public class IronScissors implements Tool {
     
     private String toolType;
     private int status;
@@ -22,5 +22,10 @@ public class IronScissors implements ScissorsInt {
     }
     public int getPrice(){
         return this.price;
+    }
+    public void deleteItem(){
+        this.toolType = "Empty";
+        this.status = 0;
+        this.price = 0;
     }
 }

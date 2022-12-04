@@ -1,8 +1,8 @@
 package Tools.ConcreteTool.WoodTool;
 
-import Tools.ConcreteTool.Interface.WateringCanInt;
+import Tools.ConcreteTool.Interface.Tool;
 
-public class WoodWateringCan implements WateringCanInt {
+public class WoodWateringCan implements Tool {
     private String toolType;
     private int status;
     private int price;
@@ -21,5 +21,10 @@ public class WoodWateringCan implements WateringCanInt {
     }
     public int getPrice(){
         return this.price;
+    }
+    public void deleteItem(){
+        this.toolType = "Empty";
+        this.status = 0;
+        this.price = 0;
     }
 }

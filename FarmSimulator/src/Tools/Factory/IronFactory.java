@@ -5,16 +5,16 @@ import Tools.ConcreteTool.IronTool.*;
 
 public class IronFactory implements ToolFactory {
       
-    public HoeInt createHoe(){
+    public Tool createHoe(){
         return new IronHoe();
     }
-    public ScissorsInt createScissors(){
+    public Tool createScissors(){
         return new IronScissors();
     }
-    public SickleInt createSickle(){
+    public Tool createSickle(){
         return new IronSickle();
     }
-    public WateringCanInt createWateringCan(){
+    public Tool createWateringCan(){
         return new IronWateringCan();
     }
 }
