@@ -1,34 +1,36 @@
 package Tools;
 
 import Tools.ConcreteTool.Interface.Tool;
-import Tools.Factory.IronFactory;
 import Tools.Factory.WoodFactory;
+import Tools.Factory.IronFactory;
+import Tools.Factory.ToolFactory;
 
 public class ToolCreator {
-    private Tool[] inventory = new Tool[4];
-    private final WoodFactory woodFactory = new WoodFactory();
-    private Tool Hoe;
-    private Tool Sickle;
-    private Tool Scissors;
-    private Tool WateringCan;
+    private final int MAX_INVENTORY_SIZE = 4;
+    private Tool[] inventory;
+    private final WoodFactory woodFactory;
+    private final IronFactory ironFactory;
 
-    public void createStandardInventory(){
-        this.Hoe          = woodFactory.createHoe();
-        this.Sickle       = woodFactory.createSickle();
-        this.Scissors     = woodFactory.createScissors();
-        this.WateringCan  = woodFactory.createWateringCan();
+    public ToolCreator(){
+        this.inventory   = new Tool[MAX_INVENTORY_SIZE];
+        this.woodFactory = new WoodFactory();
+        this.ironFactory = new IronFactory();
     }
 
-    public void storeStandardItem(){
-        this.inventory[0] = this.Hoe;
-        this.inventory[1] = this.Scissors;
-        this.inventory[2] = this.Sickle;
-        this.inventory[3] = this.WateringCan;
+    private void createStandardInventory(ToolFactory factory){
+        this.inventory[0] = factory.createHoe();
+        this.inventory[1] = factory.createSickle();
+        this.inventory[2] = factory.createScissors();
+        this.inventory[3] = factory.createWateringCan();
+    }
+
+    public Tool[] getWoodSet(){
+        createStandardInventory(woodFactory);
+        return this.inventory;
     }
     
-    public Tool[] getStandardInventory(){
-        createStandardInventory();
-        storeStandardItem();
+    public Tool[] getIronSet(){
+        createStandardInventory(ironFactory);
         return this.inventory;
     }
 }

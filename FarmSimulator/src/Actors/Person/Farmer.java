@@ -23,7 +23,7 @@ public class Farmer implements Person{
         this.actualPlace = null;
         this.inventory = new Tool[MAX_INVENTORY_SIZE];
         this.creator = new ToolCreator();
-        this.inventory = creator.getStandardInventory();
+        this.inventory = creator.getIronSet();
     }
 
     public Object getPlace(){
