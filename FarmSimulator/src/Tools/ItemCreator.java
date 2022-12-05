@@ -7,14 +7,15 @@ import Tools.Factory.WoodFactory;
 import Tools.Factory.IronFactory;
 import Tools.Factory.ToolFactory;
 
-public class ToolCreator {
+public class ItemCreator{
+
     private final int MAX_INVENTORY_SIZE = 4;
     private final WoodFactory woodFactory;
     private final IronFactory ironFactory;
 
     private ArrayList<Item> inventory;
 
-    public ToolCreator(){
+    public ItemCreator(){
         this.inventory   = new ArrayList<Item>(MAX_INVENTORY_SIZE);
         this.woodFactory = new WoodFactory();
         this.ironFactory = new IronFactory();

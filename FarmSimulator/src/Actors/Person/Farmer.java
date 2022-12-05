@@ -2,7 +2,7 @@ package Actors.Person;
 
 import java.util.ArrayList;
 
-import Tools.ToolCreator;
+import Tools.ItemCreator;
 import Tools.ConcreteTool.Interface.Item;
 
 /**
@@ -17,7 +17,7 @@ public class Farmer implements Person{
 
     private Object actualPlace;
     private ArrayList<Item> inventory;
-    private ToolCreator creator;
+    private ItemCreator creator;
 
     /**
      * Methods
@@ -25,7 +25,7 @@ public class Farmer implements Person{
     public Farmer(){
         this.actualPlace = null;
         this.inventory = new ArrayList<Item>(MAX_INVENTORY_SIZE);
-        this.creator = new ToolCreator();
+        this.creator = new ItemCreator();
         this.inventory = creator.getWoodSet();
     }
 
