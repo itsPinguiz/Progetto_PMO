@@ -1,11 +1,7 @@
 package Actors.Person;
 
 import java.util.ArrayList;
-
-import javax.swing.Action;
-
 import Actors.Actions.FarmerActions;
-import Actors.Actions.*;
 import Tools.ItemCreator;
 import Tools.ConcreteTool.Interface.Item;
 

@@ -1,4 +1,4 @@
-package Calendar;
+package Calendar.Season;
 
 public class Season implements SeasonInt{
 

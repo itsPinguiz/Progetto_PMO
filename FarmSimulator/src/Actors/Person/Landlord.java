@@ -9,7 +9,7 @@ public class Landlord implements Person {
      * Fields
      */
     private Object actualPlace;
-    private int balance;
+    private int    balance;
 
     /**
      * Methods

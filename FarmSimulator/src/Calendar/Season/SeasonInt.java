@@ -1,4 +1,4 @@
-package Calendar;
+package Calendar.Season;
 
 public interface SeasonInt {
     String getWeather();
