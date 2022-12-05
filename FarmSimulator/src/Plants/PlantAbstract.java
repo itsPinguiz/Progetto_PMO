@@ -1,5 +1,5 @@
 package Plants;
 
-public abstract class PlantAbstract  {
+public abstract class PlantAbstract implements PlantInteface{
     
 }
