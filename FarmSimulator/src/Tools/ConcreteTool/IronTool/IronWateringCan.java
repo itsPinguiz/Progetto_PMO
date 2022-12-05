@@ -1,26 +1,11 @@
 package Tools.ConcreteTool.IronTool;
 
-import Tools.ConcreteTool.Interface.Tool;
+import Tools.ConcreteTool.Interface.Item;
 
-public class IronWateringCan implements Tool {
-    
-    private String toolType;
-    private int status;
-    private int price;
-    
+public class IronWateringCan extends Item {
     public IronWateringCan(){
-        this.toolType = "IronWateringCan";
-        this.status = 100;
-        this.price = 10;
-    }
-    
-    public String getType(){
-        return this.toolType;
-    }
-    public int getStatus(){
-        return this.status;
-    }
-    public int getPrice(){
-        return this.price;
+        super.type = "IronWateringCan";
+        super.status = 100;
+        super.price = 10;
     }
 }

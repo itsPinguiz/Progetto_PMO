@@ -1,26 +1,12 @@
 package Tools.ConcreteTool.WoodTool;
 
-import Tools.ConcreteTool.Interface.Tool;
+import Tools.ConcreteTool.Interface.Item;
 
-public class WoodSickle implements Tool {
-    
-    private String toolType;
-    private int status;
-    private int price;
+public class WoodSickle extends Item {
     
     public WoodSickle(){
-        this.toolType = "WoodSickle";
-        this.status = 100;
-        this.price = 15;
-    }
-
-    public String getType(){
-        return this.toolType;
-    }
-    public int getStatus(){
-        return this.status;
-    }
-    public int getPrice(){
-        return this.price;
+        super.type = "WoodSickle";
+        super.status = 100;
+        super.price = 15;
     }
 }

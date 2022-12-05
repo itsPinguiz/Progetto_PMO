@@ -1,26 +1,12 @@
 package Tools.ConcreteTool.IronTool;
 
-import Tools.ConcreteTool.Interface.Tool;
+import Tools.ConcreteTool.Interface.Item;
 
-public class IronSickle implements Tool{
+public class IronSickle extends Item{
    
-    private String toolType;
-    private int status;
-    private int price;
-    
     public IronSickle(){
-        this.toolType = "IronSickle";
-        this.status = 100;
-        this.price = 30;
-    }
-
-    public String getType(){
-        return this.toolType;
-    }
-    public int getStatus(){
-        return this.status;
-    }
-    public int getPrice(){
-        return this.price;
+        super.type = "IronSickle";
+        super.status = 100;
+        super.price = 30;
     }
 }

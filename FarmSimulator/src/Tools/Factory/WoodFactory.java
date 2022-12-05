@@ -5,16 +5,16 @@ import Tools.ConcreteTool.WoodTool.*;
 
 public class WoodFactory implements ToolFactory {
     
-    public Tool createHoe(){
+    public Item createHoe(){
         return new WoodHoe();
     }
-    public Tool createScissors(){
+    public Item createScissors(){
         return new WoodScissors();
     }
-    public Tool createSickle(){
+    public Item createSickle(){
         return new WoodSickle();
     }
-    public Tool createWateringCan(){
+    public Item createWateringCan(){
         return new WoodWateringCan();
     }
 }
