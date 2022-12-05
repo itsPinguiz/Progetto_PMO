@@ -1,12 +1,12 @@
 package Tools.ConcreteTool.Interface;
 
 public abstract class Item {
-    protected String toolType;
+    protected String type;
     protected int status;
     protected int price;
 
     public String getType(){
-        return this.toolType;
+        return this.type;
     }
     public int getStatus(){
         return this.status;
