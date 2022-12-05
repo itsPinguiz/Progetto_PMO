@@ -2,6 +2,10 @@ package Actors.Person;
 
 import java.util.ArrayList;
 
+import javax.swing.Action;
+
+import Actors.Actions.FarmerActions;
+import Actors.Actions.*;
 import Tools.ItemCreator;
 import Tools.ConcreteTool.Interface.Item;
 
@@ -18,6 +22,7 @@ public class Farmer implements Person{
     private Object actualPlace;
     private ArrayList<Item> inventory;
     private ItemCreator creator;
+    private FarmerActions action;
 
     /**
      * Methods
@@ -27,6 +32,15 @@ public class Farmer implements Person{
         this.inventory = new ArrayList<Item>(MAX_INVENTORY_SIZE);
         this.creator = new ItemCreator();
         this.inventory = creator.getWoodSet();
+        this.action = new FarmerActions(this);
+    }
+
+    public FarmerActions getActions(){
+        return this.action;
+    }
+
+    public void setActions(FarmerActions newAction){
+        this.action = newAction;
     }
 
     public Object getPlace(){
