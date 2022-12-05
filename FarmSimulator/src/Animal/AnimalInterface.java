@@ -1,0 +1,5 @@
+package Animal;
+interface AnimaliInterface {
+
+    
+}
