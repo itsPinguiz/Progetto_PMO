@@ -1,35 +1,38 @@
 package Tools;
 
-import Tools.ConcreteTool.Interface.Tool;
+import java.util.ArrayList;
+
+import Tools.ConcreteTool.Interface.Item;
 import Tools.Factory.WoodFactory;
 import Tools.Factory.IronFactory;
 import Tools.Factory.ToolFactory;
 
 public class ToolCreator {
     private final int MAX_INVENTORY_SIZE = 4;
-    private Tool[] inventory;
     private final WoodFactory woodFactory;
     private final IronFactory ironFactory;
 
+    private ArrayList<Item> inventory;
+
     public ToolCreator(){
-        this.inventory   = new Tool[MAX_INVENTORY_SIZE];
+        this.inventory   = new ArrayList<Item>(MAX_INVENTORY_SIZE);
         this.woodFactory = new WoodFactory();
         this.ironFactory = new IronFactory();
     }
 
     private void createStandardInventory(ToolFactory factory){
-        this.inventory[0] = factory.createHoe();
-        this.inventory[1] = factory.createSickle();
-        this.inventory[2] = factory.createScissors();
-        this.inventory[3] = factory.createWateringCan();
+        this.inventory.add(factory.createHoe());
+        this.inventory.add(factory.createSickle());
+        this.inventory.add(factory.createScissors());
+        this.inventory.add(factory.createWateringCan());
     }
 
-    public Tool[] getWoodSet(){
+    public ArrayList<Item> getWoodSet(){
         createStandardInventory(woodFactory);
         return this.inventory;
     }
     
-    public Tool[] getIronSet(){
+    public ArrayList<Item> getIronSet(){
         createStandardInventory(ironFactory);
         return this.inventory;
     }

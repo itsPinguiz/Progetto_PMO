@@ -1,19 +1,19 @@
 import Actors.Person.Farmer;
-import Tools.ConcreteTool.Interface.Tool;
+import Tools.ConcreteTool.Interface.Item;
 import Tools.ConcreteTool.WoodTool.WoodHoe;
 
 public class App {
     public static void main(String[] args) throws Exception {
         Farmer  f = new Farmer();
-        Tool newTool = new WoodHoe();
+        Item newTool = new WoodHoe();
 
         f.getInventory();
-        f.removeItem(2);
+        f.removeItem(0);
         f.getInventory();
-        f.removeItem(2);
-        f.addItem(newTool, 2);
+        f.addItem(newTool);
         f.getInventory();
-        f.addItem(newTool, 2);
-
+        f.addItem(newTool);
+        f.addItem(newTool);
+        f.getInventory();
     }
 }
