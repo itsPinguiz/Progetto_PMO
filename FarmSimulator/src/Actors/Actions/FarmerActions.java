@@ -3,13 +3,27 @@ package Actors.Actions;
 import Actors.Person.Farmer;
 
 public class FarmerActions extends PersonActions{
-    //TODO Replace Object with the right class
     
     public FarmerActions(Farmer farmer){
         super(farmer);
     }
 
     // METHODS FOR THE FARMER
+
+    public void grabItem(){
+        /*
+         * Method to grab item from
+         * the barn
+         */
+    }
+
+    public void dropItem(){
+        /*
+         * Method to drop item on
+         * the floor and lose it
+         */
+    }
+    
     public void plant(){
         /*
          * Method to plant a plant

@@ -3,12 +3,13 @@ package Actors.Actions;
 import java.util.HashSet;
 
 import Actors.Person.*;
+import Land.*;
 
 public abstract class PlaceActions extends Actions{
     //TODO Replace Object with the right class
     protected Object place;
 
-    public PlaceActions(String plantLand){
+    public PlaceActions(LandPlant plantLand){
         super();
         this.place = plantLand;
         super.availableActions = new HashSet<>(){{
@@ -16,7 +17,7 @@ public abstract class PlaceActions extends Actions{
                                 }};
     }
 
-    public PlaceActions(Integer animalLand){
+    public PlaceActions(LandAnimal animalLand){
         super();
         this.place = animalLand;
         super.availableActions = new HashSet<>(){{
