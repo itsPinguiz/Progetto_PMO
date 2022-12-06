@@ -1,19 +1,19 @@
-import Actors.Person.Farmer;
-import Tools.ConcreteTool.Interface.Item;
-import Tools.ConcreteTool.WoodTool.WoodHoe;
+
+import Calendar.Calendar;
+
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Farmer  f = new Farmer();
-        Item newTool = new WoodHoe();
+        
+        Calendar calendar = new Calendar();
 
-        f.getInventory();
-        f.removeItem(0);
-        f.getInventory();
-        f.addItem(newTool);
-        f.getInventory();
-        f.addItem(newTool);
-        f.addItem(newTool);
-        f.getInventory();
+        for(int i = 0; i < 280; i++){
+            
+            System.out.println(calendar.getDay());
+            System.out.println(calendar.getSeason());
+            System.out.println(calendar.getWeather());
+            calendar.inc();
+        }
+
     }
 }
