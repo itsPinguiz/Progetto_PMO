@@ -1,6 +1,7 @@
 package Calendar;
 
 import java.lang.Math;
+import java.util.ArrayList;
 
 public class Calendar implements CalendarInt {
 
@@ -13,33 +14,39 @@ public class Calendar implements CalendarInt {
     
     private Seasons seasons;
     private Weather weather;
-    private int     day;
-    private int  random;
+    private int     actualDay,
+                    random,
+                    cont;
+
+    private ArrayList<Seasons> seasonList;
+    private ArrayList<Weather> weatherList;
 
     public Calendar(){
-        this.day = 1;
-        this.seasons = Seasons.SPRING;
+        this.actualDay = 0;
+        this.seasonList = new ArrayList<Seasons>();
+        for(int i = 0; i < Seasons.values().length; i++){
+            this.seasonList.add(Seasons.values()[i]);
+        }
+        this.weatherList = new ArrayList<Weather>();
+        for(int i = 0; i < Weather.values().length; i++){
+            this.weatherList.add(Weather.values()[i]);
+        }
+        this.cont = 0;
+        this.seasons = this.seasonList.get(cont);
     }
 
     public int getDay(){
-        return this.day;
+        return this.actualDay;
     }
 
     public void inc(){
-        /**
-         * Control days skip
-         */
-        if(this.day % 120 == 0)
-            this.day = 1 ;
+        if(this.actualDay % 120 == 0)
+            this.actualDay = 1 ;
         else
-            this.day++;
+            this.actualDay++;
             
-        /**
-         * Season verify that is going to change weather
-         */
         verifySeason();
         randomWeather();
-
     }
 
     public Weather getWeather(){
@@ -56,25 +63,66 @@ public class Calendar implements CalendarInt {
     }
 
     private void verifySeason(){
-        if(this.day % 30 == 0){
-            setSeason(Seasons.SUMMER);
+        if(this.actualDay % 30 == 0){
+            if(this.cont == 3)
+                this.cont = 0;
+            else
+                this.cont++;
+            setSeason(this.seasonList.get(cont)); 
         }
     }
+
+
+
     private void randomWeather(){
 
-        this.random = (int)(Math.random() * 10 + 1);
+        this.random = (int)((Math.random() * 10) + 1);
 
-        if(this.random > 0 || this.random < 6){
-            setWeather(Weather.RAINY);
+        switch(this.seasons){
+            case WINTER:
+                if(this.random < 6){
+                    this.weather = Weather.RAINY;
+                }
+                else if(this.random < 8){
+                    this.weather = Weather.SNOWY;
+                }
+                else if(this.random < 10){
+                    this.weather = Weather.CLOUDY;
+                }
+                else
+                this.weather = Weather.SUNNY;
+            break;
+
+            case AUTUMN:
+                if(this.random < 5)
+                    this.weather = Weather.CLOUDY;
+                else if(this.random < 9)
+                    this.weather = Weather.SUNNY;
+                else
+                    this.weather = Weather.RAINY;
+            break;
+
+            case SUMMER:
+                if(this.random < 7)
+                    this.weather = Weather.SUNNY;
+                else if(this.random < 10)
+                    this.weather = Weather.CLOUDY;
+                else
+                    this.weather = Weather.RAINY;
+            break;
+            case SPRING:
+                if(this.random < 4)
+                    this.weather = Weather.SUNNY;
+                
+                else if(this.random < 7)
+                    this.weather = Weather.CLOUDY;
+                
+                else
+                    this.weather = Weather.RAINY;
+            break;
+
         }
-        else if(this.random > 5 || this.random < 8){
-            setWeather(Weather.SNOWY);
-        }
-        else if(this.random > 7 || this.random < 10){
-            setWeather(Weather.CLOUDY);
-        }
-        else
-            setWeather(Weather.SUNNY);
+        
     }
 
     
