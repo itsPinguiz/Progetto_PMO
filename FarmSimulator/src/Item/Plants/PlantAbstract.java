@@ -1,6 +1,6 @@
-package Plants;
+package Item.Plants;
 
-import Tools.ConcreteTool.Interface.Item;
+import Item.Interface.Item;
 
 public abstract class PlantAbstract extends Item implements PlantInteface{
     private int life;

@@ -22,17 +22,21 @@ public class Calendar implements CalendarInt {
     private ArrayList<Weather> weatherList;
 
     public Calendar(){
-        this.actualDay = 0;
+        this.actualDay = 1;
+
         this.seasonList = new ArrayList<Seasons>();
         for(int i = 0; i < Seasons.values().length; i++){
             this.seasonList.add(Seasons.values()[i]);
         }
+
         this.weatherList = new ArrayList<Weather>();
         for(int i = 0; i < Weather.values().length; i++){
             this.weatherList.add(Weather.values()[i]);
         }
+
         this.cont = 0;
         this.seasons = this.seasonList.get(cont);
+        randomWeather();
     }
 
     public int getDay(){

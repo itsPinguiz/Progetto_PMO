@@ -1,4 +1,4 @@
-package Plants;
+package Item.Plants;
 
 public class Weat extends PlantAbstract {
 

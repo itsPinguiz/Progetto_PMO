@@ -1,4 +1,4 @@
-package Tools.ConcreteTool.Interface;
+package Item.Interface;
 
 public abstract class Item {
     protected String type;

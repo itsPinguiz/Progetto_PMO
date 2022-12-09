@@ -1,6 +1,6 @@
-package Tools.ConcreteTool.WoodTool;
+package Item.Tools.ConcreteTool.WoodTool;
 
-import Tools.ConcreteTool.Interface.Item;
+import Item.Interface.Item;
 
 public class WoodHoe extends Item{
     
