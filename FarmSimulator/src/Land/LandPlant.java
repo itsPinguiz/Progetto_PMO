@@ -3,7 +3,7 @@ package Land;
 import java.util.ArrayList;
 
 import Actors.Actions.PlaceActions;
-import Plants.PlantAbstract;
+import Item.Plants.PlantAbstract;
 
 public class LandPlant extends LandAbstract {
     //attibutes of landplant

@@ -1,11 +1,12 @@
-package Tools;
+package Item;
 
 import java.util.ArrayList;
 
-import Tools.ConcreteTool.Interface.Item;
-import Tools.Factory.WoodFactory;
-import Tools.Factory.IronFactory;
-import Tools.Factory.ToolFactory;
+import Item.Interface.Item;
+import Item.Tools.ConcreteTool.WoodTool.WoodHoe;
+import Item.Tools.Factory.IronFactory;
+import Item.Tools.Factory.ToolFactory;
+import Item.Tools.Factory.WoodFactory;
 
 public class ItemCreator{
 
@@ -36,5 +37,9 @@ public class ItemCreator{
     public ArrayList<Item> getIronSet(){
         createStandardInventory(ironFactory);
         return this.inventory;
+    }
+
+    public Item getWoodHoe(){
+        return new WoodHoe();
     }
 }

@@ -2,8 +2,8 @@ package Actors.Person;
 
 import java.util.ArrayList;
 import Actors.Actions.FarmerActions;
-import Tools.ItemCreator;
-import Tools.ConcreteTool.Interface.Item;
+import Item.ItemCreator;
+import Item.Interface.Item;
 
 /**
  * Farmer person implementation
@@ -14,7 +14,6 @@ public class Farmer implements Person{
      * Fields
      */
     private final int MAX_INVENTORY_SIZE = 4;
-
     private Object actualPlace;
     private ArrayList<Item> inventory;
     private ItemCreator creator;
@@ -40,20 +39,15 @@ public class Farmer implements Person{
     }
 
     public Object getPlace(){
-        return actualPlace;
+        return this.actualPlace;
     }
 
     public void setPlace(Object newPlace){
         this.actualPlace = newPlace;
     }
 
-    public void getInventory(){
-        for(int i = 0; i < inventory.size(); i++){
-            System.out.println("\n[" + (i + 1) + "]"+
-                               "[ITEM]: " + inventory.get(i).getType() +
-                               " [STATUS]: " + inventory.get(i).getStatus() +
-                               " [PRICE]: " + inventory.get(i).getPrice());   
-        }
+    public ArrayList<Item> getInventory(){
+       return this.inventory;
     }
 
     public void removeItem(int i){

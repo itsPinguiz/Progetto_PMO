@@ -1,6 +1,6 @@
-package Plants;
+package Item.Plants;
 
-public class Carrot extends PlantAbstract {
+public class Potato extends PlantAbstract {
 
     @Override
     public String getPlantType() {

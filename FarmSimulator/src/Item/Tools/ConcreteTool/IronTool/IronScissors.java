@@ -1,6 +1,6 @@
-package Tools.ConcreteTool.IronTool;
+package Item.Tools.ConcreteTool.IronTool;
 
-import Tools.ConcreteTool.Interface.Item;
+import Item.Interface.Item;
 
 public class IronScissors extends Item {
     

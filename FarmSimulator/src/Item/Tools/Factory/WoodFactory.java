@@ -1,7 +1,7 @@
-package Tools.Factory;
+package Item.Tools.Factory;
 
-import Tools.ConcreteTool.Interface.*;
-import Tools.ConcreteTool.WoodTool.*;
+import Item.Interface.*;
+import Item.Tools.ConcreteTool.WoodTool.*;
 
 public class WoodFactory implements ToolFactory {
     
