@@ -1,11 +1,15 @@
 package Actors.Person;
 
-import Land.LandAbstract;
+import Actors.Actions.PersonActions;
 
 /**
  * Common interface for all people
  */
 public interface Person{
-    Object getPlace();
-    void   setPlace(Object actualPlace);
+
+    PersonActions getActions();
+    void          setActions(PersonActions newAction);
+    Object        getPlace();
+    void          setPlace(Object actualPlace);
+    
 }

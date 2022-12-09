@@ -1,30 +1,23 @@
 package Actors.Person;
+import Actors.Actions.LandLordActions;
 
 /**
  * Landlord person implementation
  */
-public class Landlord implements Person {
+public class Landlord extends PersonAbstract {
     
     /**
      * Fields
      */
-    private Object actualPlace;
     private int    balance;
 
     /**
      * Methods
      */
     public Landlord(){
-        this.actualPlace = null;
+        super.personAction = new LandLordActions(this);
+        super.place = null;
         this.balance = 100;
-    }
-    
-    public Object getPlace(){
-        return actualPlace;
-    }
-
-    public void setPlace(Object newPlace){
-        this.actualPlace = newPlace;
     }
 
     public int getBalance(){
