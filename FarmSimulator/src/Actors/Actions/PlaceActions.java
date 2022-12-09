@@ -5,7 +5,7 @@ import java.util.HashSet;
 import Actors.Person.*;
 import Land.*;
 
-public abstract class PlaceActions extends Actions{
+public abstract class PlaceActions extends GameActions{
     //TODO Replace Object with the right class
     protected Object place;
 
@@ -48,7 +48,7 @@ public abstract class PlaceActions extends Actions{
          * Method to change actions when
          * an actors enters somewhere
          */
-        if (person instanceof Landlord && this.place instanceof Object){ //TODO Replace Object with Land
+        if (person instanceof Landlord && this.place instanceof LandAbstract){ 
             // The LandLord cannot enter lands
             System.out.println("The Landlord cannot enter the lands");
         }else{
@@ -60,8 +60,7 @@ public abstract class PlaceActions extends Actions{
         }   
         // add list of new methods to the avaiableActions
         /* TODO
-        Set<String> tempActions = Set.copyOf(person.actions.avaiableActions);
-        person.setPlace(person.getPlace().union(tempActions))
+        person.setActions(person.getActions().union(person.getPlace().getActions()))
         */
     }
 

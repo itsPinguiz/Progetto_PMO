@@ -2,7 +2,7 @@ package Actors.Actions;
 
 import Actors.Person.Person;
 
-public class PersonActions extends Actions{
+public class PersonActions extends GameActions{
     private final Person person;
     private Object place; //TODO replace object with place
     //private final Person place;

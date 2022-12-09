@@ -2,7 +2,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import Progress.Backup;
+import Progress.GameBackup;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -11,7 +11,7 @@ public class App {
         List<Serializable> actualObjects = new ArrayList<>();
         actualObjects.add(s);
 
-        Backup backup = new Backup(actualObjects);
+        GameBackup backup = new GameBackup(actualObjects);
 
         //backup.saveCurrent();
 
