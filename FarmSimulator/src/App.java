@@ -1,28 +1,27 @@
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import Progress.GameBackup;
+import Calendar.Calendar;
+import Market.Market;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        String s = "Ora sono questo";
+        Market market = new Market();
+        Calendar calendar = new Calendar();
 
-        List<Serializable> actualObjects = new ArrayList<>();
-        actualObjects.add(s);
+        for(int i = 0; i < market.getItem().size(); i++){
+            System.out.println(market.getItem().get(i).getType());
+        }
 
-        GameBackup backup = new GameBackup(actualObjects);
+        for(int i = 0; i < 15; i ++){
+            calendar.inc();
+            market.upgradeItemShop(calendar.getDay());
+        }
 
-        //backup.saveCurrent();
+        System.out.println("\n\n");
+        
+        for(int i = 0; i < market.getItem().size(); i++){
+            System.out.println(market.getItem().get(i).getType());
+        }
 
-        backup.printSavesList();
-
-        actualObjects = List.copyOf(backup.loadSave(1));
-
-        s = (String)actualObjects.get(0);
-
-        System.out.println(s);
     }
 }
 
