@@ -58,9 +58,8 @@ public abstract class PlaceActions extends GameActions{
             // Enter the new place
             person.setPlace(this.place);
         }   
-        // add list of new methods to the avaiableActions
-        /* TODO
-        person.setActions(person.getActions().union(person.getPlace().getActions()))
+        /* TODO 
+        person.getActions().addAction(person.getPlace().getActions().getActions())
         */
     }
 
@@ -71,11 +70,8 @@ public abstract class PlaceActions extends GameActions{
          */
         // subtract current place actions to 
         // person availableActions
-        /* TODO
-        Set<String> tempActions = Set.copyOf(person.actions.avaiableActions);
-        person.setPlace(person.getPlace().difference(tempActions))
-        */
-        //leave the place
+        //TODO leave the place
+        //person.getActions().removeAction(person.getPlace().getActions().getActions())
         person.setPlace(null);
     }
 }

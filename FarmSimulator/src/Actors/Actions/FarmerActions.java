@@ -22,13 +22,20 @@ public class FarmerActions extends PersonActions{
          * Method to drop item on
          * the floor and lose it
          */
+       ((Farmer)super.person).removeItem(PersonActions.itemIndex.get());
+    }
+
+    public void moveItem(){
+        /*
+         * Method to move the item
+         * to the barn
+         */
     }
     
     public void plant(){
         /*
          * Method to plant a plant
          */
-
     }
 
     public void water(){
