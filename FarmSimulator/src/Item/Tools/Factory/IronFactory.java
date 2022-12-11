@@ -1,7 +1,7 @@
-package Tools.Factory;
+package Item.Tools.Factory;
 
-import Tools.ConcreteTool.Interface.*;
-import Tools.ConcreteTool.IronTool.*;
+import Item.Interface.*;
+import Item.Tools.ConcreteTool.IronTool.*;
 
 public class IronFactory implements ToolFactory {
       

@@ -1,6 +1,6 @@
-package Tools.Factory;
+package Item.Tools.Factory;
 
-import Tools.ConcreteTool.Interface.Item;
+import Item.Interface.Item;
 
 /**
  * Abstract factory method

@@ -1,9 +1,15 @@
 package Actors.Person;
 
+import Actors.Actions.PersonActions;
+
 /**
  * Common interface for all people
  */
 public interface Person{
-    Object getPlace();
-    void   setPlace(Object d);
+
+    PersonActions getActions();
+    void          setActions(PersonActions newAction);
+    Object        getPlace();
+    void          setPlace(Object actualPlace);
+    
 }

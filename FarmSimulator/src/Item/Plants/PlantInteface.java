@@ -1,4 +1,4 @@
-package Plants;
+package Item.Plants;
 
 public interface PlantInteface {
     public String getPlantType();
