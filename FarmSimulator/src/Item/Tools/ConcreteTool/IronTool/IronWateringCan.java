@@ -1,11 +1,12 @@
 package Item.Tools.ConcreteTool.IronTool;
 
-import Item.Interface.Item;
+import Item.Tools.Interface.AbstractTool;
 
-public class IronWateringCan extends Item {
+public class IronWateringCan extends AbstractTool {
     public IronWateringCan(){
         super.type = "IronWateringCan";
         super.status = 100;
         super.price = 10;
+        super.number = 1;
     }
 }

@@ -1,20 +1,20 @@
 package Item.Tools.Factory;
 
-import Item.Interface.*;
 import Item.Tools.ConcreteTool.WoodTool.*;
+import Item.Tools.Interface.AbstractTool;
 
 public class WoodFactory implements ToolFactory {
     
-    public Item createHoe(){
+    public AbstractTool createHoe(){
         return new WoodHoe();
     }
-    public Item createScissors(){
+    public AbstractTool createScissors(){
         return new WoodScissors();
     }
-    public Item createSickle(){
+    public AbstractTool createSickle(){
         return new WoodSickle();
     }
-    public Item createWateringCan(){
+    public AbstractTool createWateringCan(){
         return new WoodWateringCan();
     }
 }

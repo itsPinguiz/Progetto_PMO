@@ -30,7 +30,7 @@ public class Market implements MarketInt{
     }
 
     private void replaceItem(){
-        this.itemShop.set(2, this.itemCreator.getWoodHoe());
+        this.itemShop.set((int)Math.random() * 10, this.itemCreator.getRandomItem((int)((Math.random() * 7))));
     }
     
     
