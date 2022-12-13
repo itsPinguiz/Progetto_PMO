@@ -3,23 +3,31 @@ package Item;
 import java.util.ArrayList;
 
 import Item.Interface.Item;
-import Item.Tools.ConcreteTool.WoodTool.WoodHoe;
 import Item.Tools.Factory.IronFactory;
 import Item.Tools.Factory.ToolFactory;
 import Item.Tools.Factory.WoodFactory;
+import Item.Tools.Interface.AbstractTool;
 
 public class ItemCreator{
 
     private final int MAX_INVENTORY_SIZE = 4;
-    private final WoodFactory woodFactory;
-    private final IronFactory ironFactory;
+    private final WoodFactory woodFactory = new WoodFactory();
+    private final IronFactory ironFactory = new IronFactory();
 
     private ArrayList<Item> inventory;
+    private AbstractTool[] randomMethods = {this.ironFactory.createHoe(),
+                                            this.ironFactory.createWateringCan(),
+                                            this.ironFactory.createScissors(),
+                                            this.ironFactory.createSickle(),
+                                            this.woodFactory.createHoe(),
+                                            this.woodFactory.createScissors(),
+                                            this.woodFactory.createSickle(),
+                                            this.woodFactory.createWateringCan()};
 
     public ItemCreator(){
         this.inventory   = new ArrayList<Item>(MAX_INVENTORY_SIZE);
-        this.woodFactory = new WoodFactory();
-        this.ironFactory = new IronFactory();
+        //  this.woodFactory = new WoodFactory();
+        // this.ironFactory = new IronFactory();
     }
 
     private void createStandardInventory(ToolFactory factory){
@@ -38,8 +46,7 @@ public class ItemCreator{
         createStandardInventory(ironFactory);
         return this.inventory;
     }
-
-    public Item getWoodHoe(){
-        return new WoodHoe();
+    public Item getRandomItem(int i){
+        return this.randomMethods[i];
     }
 }

@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-import java.io.IOException;
-=======
 
->>>>>>> d9c25ed63a64883a1aa808598e816b6802173833
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import Actors.Actions.PersonActions;
 import Progress.GameBackup;
 
 public class App {

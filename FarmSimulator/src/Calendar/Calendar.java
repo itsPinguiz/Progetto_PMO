@@ -38,11 +38,6 @@ public class Calendar implements CalendarInt {
         this.seasons = this.seasonList.get(cont);
         randomWeather();
     }
-
-    public int getDay(){
-        return this.actualDay;
-    }
-
     public void inc(){
         if(this.actualDay % 120 == 0)
             this.actualDay = 1 ;
@@ -53,6 +48,10 @@ public class Calendar implements CalendarInt {
         randomWeather();
     }
 
+    public int getDay(){
+        return this.actualDay;
+    }
+    
     public Weather getWeather(){
         return this.weather;
     }
@@ -75,8 +74,6 @@ public class Calendar implements CalendarInt {
             setSeason(this.seasonList.get(cont)); 
         }
     }
-
-
 
     private void randomWeather(){
 

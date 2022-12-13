@@ -1,6 +1,10 @@
 package Market;
 
+import java.util.ArrayList;
+
+import Item.Interface.Item;
 
 public interface MarketInt {
-    void removeItem();
+    ArrayList<Item> getItem();
+    void removeItem(int itemIndex);
 }
