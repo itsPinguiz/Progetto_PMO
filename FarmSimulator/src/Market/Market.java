@@ -24,13 +24,14 @@ public class Market implements MarketInt{
     }
 
     public void upgradeItemShop(int actualDay){
+
         if(actualDay % 7 == 0){
-            replaceItem((int)Math.random() * 3);
+            replaceItem();
         }
     }
 
-    private void replaceItem(int itemIndex){
-        this.itemShop.set(itemIndex, this.itemCreator.getWoodHoe());
+    private void replaceItem(){
+        this.itemShop.set((int)Math.random() * 10, this.itemCreator.getRandomItem((int)((Math.random() * 7))));
     }
     
     

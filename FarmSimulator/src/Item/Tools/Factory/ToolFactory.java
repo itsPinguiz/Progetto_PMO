@@ -1,13 +1,14 @@
 package Item.Tools.Factory;
 
-import Item.Interface.Item;
+import Item.Tools.Interface.AbstractTool;
 
 /**
  * Abstract factory method
  */
+
 public interface ToolFactory {
-    Item createHoe();
-    Item createScissors();
-    Item createSickle();
-    Item createWateringCan();
+    AbstractTool createHoe();
+    AbstractTool createScissors();
+    AbstractTool createSickle();
+    AbstractTool createWateringCan();
 }

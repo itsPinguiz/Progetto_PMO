@@ -1,20 +1,20 @@
 package Item.Tools.Factory;
 
-import Item.Interface.*;
 import Item.Tools.ConcreteTool.IronTool.*;
+import Item.Tools.Interface.AbstractTool;
 
 public class IronFactory implements ToolFactory {
       
-    public Item createHoe(){
+    public AbstractTool createHoe(){
         return new IronHoe();
     }
-    public Item createScissors(){
+    public AbstractTool createScissors(){
         return new IronScissors();
     }
-    public Item createSickle(){
+    public AbstractTool createSickle(){
         return new IronSickle();
     }
-    public Item createWateringCan(){
+    public AbstractTool createWateringCan(){
         return new IronWateringCan();
     }
 }
