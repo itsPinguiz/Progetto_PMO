@@ -9,8 +9,11 @@ public class LandAnimal extends LandAbstract {
     //attributes of land animal
     ArrayList<AnimalAbstract> elements;
     PlaceActions actionAnimal;
+
     
     //constructor to do
+
+    
 
     @Override
     public String getLandType() {
@@ -24,11 +27,7 @@ public class LandAnimal extends LandAbstract {
         return 0;
     }
 
-    @Override
-    public String getLandColor() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+
 
     @Override
     public float getPrice() {

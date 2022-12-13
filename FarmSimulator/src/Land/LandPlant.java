@@ -25,12 +25,6 @@ public class LandPlant extends LandAbstract {
     }
 
     @Override
-    public String getLandColor() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public float getPrice() {
         // TODO Auto-generated method stub
         return 0;
