@@ -5,7 +5,7 @@ import java.util.HashSet;
 import Actors.Person.*;
 import Land.*;
 
-public abstract class PlaceActions extends GameActions{
+public class PlaceActions extends GameActions{
     //TODO Replace Object with the right class
     protected Object place;
 
