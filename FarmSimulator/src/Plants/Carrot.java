@@ -1,4 +1,4 @@
-package Item.Plants;
+package Plants;
 
 public class Carrot extends PlantAbstract {
 
