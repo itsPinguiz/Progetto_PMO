@@ -7,9 +7,12 @@ import Land.*;
 
 public class PlaceActions extends GameActions{
     //TODO Replace Object with the right class
-    protected Object place;
+    protected Object place; // place where the action take place
 
     public PlaceActions(LandPlant plantLand){
+        /*
+         * Constructor for the plant land
+         */
         super();
         this.place = plantLand;
         super.availableActions = new HashSet<>(){{
@@ -18,6 +21,9 @@ public class PlaceActions extends GameActions{
     }
 
     public PlaceActions(LandAnimal animalLand){
+        /*
+         * Constructor for the animal land
+         */
         super();
         this.place = animalLand;
         super.availableActions = new HashSet<>(){{
@@ -27,6 +33,9 @@ public class PlaceActions extends GameActions{
     }
 
     public PlaceActions(Double Barn){
+        /*
+         * Constructor for the barn
+         */
         super();
         this.place = Barn;
         super.availableActions = new HashSet<>(){{
@@ -36,6 +45,9 @@ public class PlaceActions extends GameActions{
 
 
     public PlaceActions(Object techLand){
+        /*
+         * Constructor for the tech land
+         */
         super();
         this.place = techLand;
         super.availableActions = new HashSet<>(){{

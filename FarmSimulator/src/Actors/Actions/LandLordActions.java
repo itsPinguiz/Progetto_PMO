@@ -9,7 +9,8 @@ public class LandLordActions extends PersonActions{
     }
 
     // METHODS FOR THE LANDLORD
-    public void buy(int index){
+    
+    public void buy(){
         /*
          * Method to buy item
          * from the market
@@ -19,7 +20,7 @@ public class LandLordActions extends PersonActions{
         // remove the money from the balance
     }
 
-    public void sell(int index){
+    public void sell(){
         /*
          * Method to sell item
          * to the market

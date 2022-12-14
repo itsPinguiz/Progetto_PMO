@@ -1,7 +1,5 @@
 package Actors.Actions;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import Actors.Person.Person;
 
 public class PersonActions extends GameActions{
@@ -9,7 +7,7 @@ public class PersonActions extends GameActions{
     protected Object place; //TODO replace object with place
     //private final Person place;
     // index for the item to do the action on
-    public static AtomicInteger itemIndex;
+    
 
     protected PersonActions(Person person){
         super();

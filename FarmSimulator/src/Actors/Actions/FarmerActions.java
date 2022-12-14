@@ -1,6 +1,7 @@
 package Actors.Actions;
 
 import Actors.Person.Farmer;
+import Main.App;
 
 public class FarmerActions extends PersonActions{
     
@@ -22,7 +23,7 @@ public class FarmerActions extends PersonActions{
          * Method to drop item on
          * the floor and lose it
          */
-       ((Farmer)super.person).removeItem(PersonActions.itemIndex.get());
+       ((Farmer)super.person).removeItem(App.itemIndex.get());
     }
 
     public void moveItem(){

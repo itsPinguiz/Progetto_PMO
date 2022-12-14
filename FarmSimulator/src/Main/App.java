@@ -1,20 +1,21 @@
-<<<<<<< HEAD
-import java.io.IOException;
-=======
+package Main;
 
->>>>>>> d9c25ed63a64883a1aa808598e816b6802173833
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import Actors.Actions.PersonActions;
 import Progress.GameBackup;
 
 public class App {
+    public static AtomicInteger itemIndex; // clicked item
+
     public static void clrscr(){
-        //Clears Screen in java
+        /*
+         * Clears Terminal
+        */
         try {
             if (System.getProperty("os.name").contains("Windows"))
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -23,11 +24,11 @@ public class App {
         } catch (IOException | InterruptedException ex) {}
     }
 
-    public static void main(String[] args) throws Exception {
-        String s = "Ora sono questo";
-        List<Serializable> actualObjects = new ArrayList<>();
-        GameBackup backup = new GameBackup(actualObjects);
-
+    public static void menu(List<Serializable> actualObjects,GameBackup backup,String s ) throws Exception{
+        /*
+         * Menu to let user decide if to load an old save
+         * or make a new one
+        */
         try (Scanner scanner = new Scanner(System.in)){
             int tries = 0;
             while(true){
@@ -42,14 +43,13 @@ public class App {
                         backup.printSavesList();
                         System.out.printf("> ");
                         
-                            actualObjects = List.copyOf(backup.loadSave(scanner.nextInt()));
-                        
-                        
-                        s = (String)actualObjects.get(0);
-                        System.out.println(s);
+                        actualObjects = List.copyOf(backup.loadSave(scanner.nextInt()));
+                    
+                        s = (String)actualObjects.get(0); //test
+                        System.out.println(s); //test
                         break;
                     } else if(n == 1) {
-                        actualObjects.add(s);
+                        actualObjects.add(s); //test
                         backup.saveCurrent();
                         break;
                     }
@@ -60,6 +60,14 @@ public class App {
                 }
             }
         } 
+    }
+
+    public static void main(String[] args) throws Exception {
+        String s = "Ora sono questo"; //test
+        List<Serializable> actualObjects = new ArrayList<>(); // All game objects to save
+        GameBackup backup = new GameBackup(actualObjects); // Backup manager
+        
+        App.menu(actualObjects,backup,s); // save menu
     }
 }
 
