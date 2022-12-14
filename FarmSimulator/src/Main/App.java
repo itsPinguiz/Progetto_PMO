@@ -1,12 +1,18 @@
+<<<<<<< HEAD:FarmSimulator/src/Main/App.java
 package Main;
+=======
+>>>>>>> 8cc7fa4e687f02e99d3d3d62da85cec8cb8bd381:FarmSimulator/src/App.java
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+<<<<<<< HEAD:FarmSimulator/src/Main/App.java
 import java.util.concurrent.atomic.AtomicInteger;
 
+=======
+>>>>>>> 8cc7fa4e687f02e99d3d3d62da85cec8cb8bd381:FarmSimulator/src/App.java
 import Progress.GameBackup;
 
 public class App {

@@ -6,25 +6,33 @@ import Item.Interface.Item;
 
 public class Market implements MarketInt{
     
-    private final int MAX_SHOP_LENGTH = 20;
+    private final int MAX_SHOP_LENGTH = 10;
     private ArrayList<Item> itemShop;
     private ItemCreator itemCreator;
 
     public Market(){
-        itemShop = new ArrayList<Item>(MAX_SHOP_LENGTH);
+        this.itemShop = new ArrayList<Item>(MAX_SHOP_LENGTH);
         this.itemCreator = new ItemCreator();
-        itemShop.addAll(itemCreator.getWoodSet());
+        this.itemShop.addAll(itemCreator.getWoodSet());
     }
 
     public ArrayList<Item> getItem(){
-        return itemShop;
+        return this.itemShop;
+    }
+    public void removeItem(int itemIndex){
+        this.itemShop.remove(itemIndex);
     }
 
-    public void setItem(){
-        this.itemShop.set(2, itemCreator.getWoodHoe());
+    public void upgradeItemShop(int actualDay){
+
+        if(actualDay % 7 == 0){
+            replaceItem();
+        }
     }
 
-    public void removeItem(){
-
+    private void replaceItem(){
+        this.itemShop.set((int)Math.random() * 10, this.itemCreator.getRandomItem((int)((Math.random() * 7))));
     }
+    
+    
 }

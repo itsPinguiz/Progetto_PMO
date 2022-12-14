@@ -1,12 +1,15 @@
 package Animal;
 
+import Calendar.Calendar;
+
 public abstract class AnimalAbstract implements AnimaliInterface {
     
-    private int life;
-    private int hunger;
-    private  String name;
-    private String typeProduct;
-    private int nProduct;
+    protected int life;
+    protected int hunger;
+    protected  String name;
+    protected String typeProduct;
+    protected int nProduct;
+    protected Calendar c;
 
 
 }

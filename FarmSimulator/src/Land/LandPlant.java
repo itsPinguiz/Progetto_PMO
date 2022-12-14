@@ -3,7 +3,7 @@ package Land;
 import java.util.ArrayList;
 
 import Actors.Actions.PlaceActions;
-import Item.Plants.PlantAbstract;
+import Plants.PlantAbstract;
 
 public class LandPlant extends LandAbstract {
     //attibutes of landplant
@@ -22,12 +22,6 @@ public class LandPlant extends LandAbstract {
     public int getNumElements() {
         // TODO Auto-generated method stub
         return 0;
-    }
-
-    @Override
-    public String getLandColor() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override

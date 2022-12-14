@@ -1,6 +1,9 @@
-package Item.Plants;
+package Plants;
 
-public class Carrot extends PlantAbstract {
+public class Potato extends PlantAbstract {
+
+    //constructor todo
+  
 
     @Override
     public String getPlantType() {
