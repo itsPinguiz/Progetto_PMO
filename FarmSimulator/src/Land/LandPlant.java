@@ -10,24 +10,38 @@ public class LandPlant extends LandAbstract {
     ArrayList<PlantAbstract> elements;
     PlaceActions actionLandPlant;
 
-    //constructor to do 
+    LandPlant(){
+        this.price = BASE_PRICE_LAND;
+        this.type = "Land of animal";
+        this.actionLandPlant = new PlaceActions(this);
+        this.elements = new ArrayList<>();
+    }
+
+    private void setPrice(){
+        //to do 
+    }
+
+    public PlaceActions getPlaceActions(){
+        return this.actionLandPlant;
+    } 
+    public void setPlaceAction(){
+        //to do
+    }
 
     @Override
     public String getLandType() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.type;
     }
 
     @Override
     public int getNumElements() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.elements.size();
     }
 
     @Override
     public float getPrice() {
-        // TODO Auto-generated method stub
-        return 0;
+        this.setPrice();
+        return this.price;
     }
     
 }

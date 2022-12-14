@@ -6,33 +6,49 @@ import Actors.Actions.PlaceActions;
 import Animal.AnimalAbstract;
 
 public class LandAnimal extends LandAbstract {
+     
+    
     //attributes of land animal
-    ArrayList<AnimalAbstract> elements;
-    PlaceActions actionAnimal;
+    private ArrayList<AnimalAbstract> elements;
+    private PlaceActions actionLandAnimal;
 
-    
-    //constructor to do
+    //constuctor
+    LandAnimal(){
+        this.price = BASE_PRICE_LAND;
+        this.type = "Land of animal";
+        this.actionLandAnimal = new PlaceActions(this);
+        this.elements = new ArrayList<>();
+    }
 
-    
+    private void setPrice(){
+        /*
+         * change price proportonally for how many animal are in a land
+        */
+        //to do
+    }
+
+    public PlaceActions getPlaceActions(){
+        return this.actionLandAnimal;
+    }
+
+    public void setPlaceAction(){
+        //to do    
+    }
 
     @Override
     public String getLandType() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.type;
     }
 
     @Override
     public int getNumElements() {
-        // TODO Auto-generated method stub
-        return 0;
+        return elements.size();
     }
-
-
 
     @Override
     public float getPrice() {
-        // TODO Auto-generated method stub
-        return 0;
+        this.setPrice();
+        return this.price;
     }
     
 }
