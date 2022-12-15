@@ -1,22 +1,14 @@
-<<<<<<< HEAD:FarmSimulator/src/Main/App.java
 package Main;
-=======
->>>>>>> 8cc7fa4e687f02e99d3d3d62da85cec8cb8bd381:FarmSimulator/src/App.java
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-<<<<<<< HEAD:FarmSimulator/src/Main/App.java
-import java.util.concurrent.atomic.AtomicInteger;
 
-=======
->>>>>>> 8cc7fa4e687f02e99d3d3d62da85cec8cb8bd381:FarmSimulator/src/App.java
 import Progress.GameBackup;
 
 public class App {
-    public static AtomicInteger itemIndex; // clicked item
+    public static int itemIndex; // clicked item
 
     public static void clrscr(){
         /*
@@ -66,14 +58,6 @@ public class App {
                 }
             }
         } 
-    }
-
-    public static void main(String[] args) throws Exception {
-        String s = "Ora sono questo"; //test
-        List<Serializable> actualObjects = new ArrayList<>(); // All game objects to save
-        GameBackup backup = new GameBackup(actualObjects); // Backup manager
-        
-        App.menu(actualObjects,backup,s); // save menu
     }
 }
 

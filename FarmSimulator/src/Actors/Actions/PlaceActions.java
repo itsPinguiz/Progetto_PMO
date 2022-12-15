@@ -3,7 +3,9 @@ package Actors.Actions;
 import java.util.HashSet;
 
 import Actors.Person.*;
+import Barn.Barn;
 import Land.*;
+import Market.Market;
 
 public class PlaceActions extends GameActions{
     //TODO Replace Object with the right class
@@ -16,8 +18,11 @@ public class PlaceActions extends GameActions{
         super();
         this.place = plantLand;
         super.availableActions = new HashSet<>(){{
-                                    add("plant");
-                                }};
+                                     add("waterAll");
+                                     add("fertilizeAll");
+                                     add("harvestAll");
+                                     add("plowAll");
+                                     }};
     }
 
     public PlaceActions(LandAnimal animalLand){
@@ -27,20 +32,33 @@ public class PlaceActions extends GameActions{
         super();
         this.place = animalLand;
         super.availableActions = new HashSet<>(){{
-                                    add("getResources");
-                                    add("addAnimal");
-                                }};
+                                     add("addAnimal");
+                                     add("removeAnimal");
+                                     add("getAllResources");
+                                     }};
     }
 
-    public PlaceActions(Double Barn){
+    public PlaceActions(Barn Barn){
         /*
          * Constructor for the barn
          */
         super();
         this.place = Barn;
         super.availableActions = new HashSet<>(){{
-                                    add("getItem");
-                                }};
+                                     add("getItem");
+                                     }};
+    }
+
+    public PlaceActions(Market market){
+        /*
+         * Constructor for the barn
+         */
+        super();
+        this.place = market;
+        super.availableActions = new HashSet<>(){{
+                                     add("buy");
+                                     add("sell");
+                                     }};
     }
 
 
@@ -51,8 +69,30 @@ public class PlaceActions extends GameActions{
         super();
         this.place = techLand;
         super.availableActions = new HashSet<>(){{
-                                    add("plant");
-                                }};
+                                     add("plowAll");
+                                     }};
+    }
+
+    public PlaceActions(Integer ChunkPlantLand){
+        /*
+         * Constructor for a specific chunk of land
+         */
+        super();
+        this.place = ChunkPlantLand;
+        super.availableActions = new HashSet<>(){{
+                                     add("plant");
+        }};
+    }
+
+    public PlaceActions(String ChunkAnimalLand){
+        /*
+         * Constructor for a specific chunk of land
+         */
+        super();
+        this.place = ChunkAnimalLand;
+        super.availableActions = new HashSet<>(){{
+            add("plant");
+        }};
     }
 
     public void enter(Person person) {
@@ -63,10 +103,15 @@ public class PlaceActions extends GameActions{
         if (person instanceof Landlord && this.place instanceof LandAbstract){ 
             // The LandLord cannot enter lands
             System.out.println("The Landlord cannot enter the lands");
-        }else{
+        }
+        else if (person instanceof Landlord && this.place instanceof Barn){ 
+                // The LandLord cannot enter lands
+                // TODO add market methods to available actions
+        } else{
             // Leave the land you where in
             if (person.getPlace() != null)
             leave(person);
+            // TODO update the place (grow plants and animals)
             // Enter the new place
             person.setPlace(this.place);
         }   
