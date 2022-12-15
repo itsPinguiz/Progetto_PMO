@@ -10,4 +10,5 @@ public class Barn {
     private PlaceActions actionBarn;
     private ArrayList<AnimalAbstract> stall;
     private ArrayList<Item> items;
+    //istanza di market per vendere e comprare
 }

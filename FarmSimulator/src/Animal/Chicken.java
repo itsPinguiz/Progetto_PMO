@@ -3,7 +3,7 @@ package Animal;
 import Calendar.Calendar;
 
 public class Chicken extends AnimalAbstract{
-
+    //add age and modifie hunger and life chaining during time get.Day-age of animal
     //contructor
     Chicken(Calendar c){
        this.life = 100;
