@@ -31,10 +31,6 @@ public class LandAnimal extends LandAbstract {
         return this.actionLandAnimal;
     }
 
-    public void setPlaceAction(){
-        //to do    
-    }
-
     @Override
     public String getLandType() {
         return this.type;
