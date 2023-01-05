@@ -1,17 +1,28 @@
 package Plants;
 
 public class Onion extends PlantAbstract {
+    
+    Onion(){
+        if(isPlantable()){
+            this.life = 0;
+            this.levelWater = 0;
+            this.product = "Onions";
+            this.nProduct = 0;
+            this.type = "Onion";
+        }else{
+            //throw exception
+        }
+    }
+
 
     @Override
     public String getPlantType() {
-        // TODO Auto-generated method stub
-        return null;
+        return getType();
     }
 
     @Override
     public int getLife() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.life;
     }
 
     @Override
@@ -22,8 +33,11 @@ public class Onion extends PlantAbstract {
 
     @Override
     public boolean isPlantable() {
-        // TODO Auto-generated method stub
+        // check if there are seeds in barn
         return false;
     }
     
+    private void setLife(){
+        //to do 
+    }
 }

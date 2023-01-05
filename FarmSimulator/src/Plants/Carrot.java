@@ -2,6 +2,20 @@ package Plants;
 
 public class Carrot extends PlantAbstract {
 
+
+    Carrot(){
+        if(isPlantable()){
+            this.life = 0;
+            this.levelWater = 0;
+            this.product = "Carrots";
+            this.nProduct = 0;
+            this.type = "Carrot";
+            
+        }else{
+            //throw exception
+        }
+    }
+
     @Override
     public String getPlantType() {
         // TODO Auto-generated method stub
@@ -10,8 +24,7 @@ public class Carrot extends PlantAbstract {
 
     @Override
     public int getLife() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.life;
     }
 
     @Override
@@ -22,7 +35,7 @@ public class Carrot extends PlantAbstract {
 
     @Override
     public boolean isPlantable() {
-        // TODO Auto-generated method stub
+    //check if there are seeds in barn
         return false;
     }
     

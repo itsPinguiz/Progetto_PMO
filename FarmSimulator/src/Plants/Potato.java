@@ -3,12 +3,21 @@ package Plants;
 public class Potato extends PlantAbstract {
 
     //constructor todo
-  
+    Potato(){
+        if(isPlantable()){
+            this.life = 0;
+            this.levelWater = 0;
+            this.product = "Potatos";
+            this.nProduct = 0;
+            this.type = "Potato";
+        }else{
+            //throw exception
+        }
+    }
 
     @Override
     public String getPlantType() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.type;
     }
 
     @Override
@@ -27,6 +36,10 @@ public class Potato extends PlantAbstract {
     public boolean isPlantable() {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    private void setLife(){
+        //todo
     }
     
 }
