@@ -6,8 +6,6 @@ Repository del progetto di PMO della sessione invernale 2022/23
 |-----------|----------|-----------| -----------------|
 | 312793    | Stefano  | Zizzi     | itsPinguiz       |
 | 312972    | Luis     | Frasheri  | luisfrasheri99   |
-| 314015    | Fedi     | Belhaj    | idef011          |
-
 
 # Specifica del progetto
 Il progetto consiste nell'implementazione di un simulatore di fattoria.
