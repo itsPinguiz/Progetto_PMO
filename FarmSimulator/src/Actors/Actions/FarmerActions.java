@@ -42,11 +42,11 @@ public class FarmerActions extends PersonActions{
 
         /* 
         // add plant to the land 
-        ((Farmer)super.person).getPlace().getElements().add(super.person.getInventory()[App.itemIndex]);
+        super.person.getPlace().getElements().add(super.person.getInventory()[App.itemIndex]);
         // remove from inventory
         ((Farmer)super.person).removeItem(App.ItemIndex);
         // add new possible actions
-        ((Farmer)super.person).getPlace().getActions.addAction(new HashSet<>(){{
+        super.person.getPlace().getAction.addAction(new HashSet<>(){{
                                                                  add("water");
                                                                  add("fertilize");
                                                                  }});

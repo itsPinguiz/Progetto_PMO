@@ -11,7 +11,7 @@ public class PlaceActions extends GameActions{
     //TODO Replace Object with the right class
     protected Object place; // place where the action take place
 
-    public PlaceActions(LandPlant plantLand){
+    public PlaceActions(PlantLand plantLand){
         /*
          * Constructor for the plant land
          */
@@ -61,19 +61,7 @@ public class PlaceActions extends GameActions{
                                      }};
     }
 
-
-    public PlaceActions(Object techLand){
-        /*
-         * Constructor for the tech land
-         */
-        super();
-        this.place = techLand;
-        super.availableActions = new HashSet<>(){{
-                                     add("plowAll");
-                                     }};
-    }
-
-    public PlaceActions(Integer ChunkPlantLand){
+    public PlaceActions(PlantChunk ChunkPlantLand){
         /*
          * Constructor for a specific chunk of land
          */
@@ -81,17 +69,6 @@ public class PlaceActions extends GameActions{
         this.place = ChunkPlantLand;
         super.availableActions = new HashSet<>(){{
                                      add("plant");
-        }};
-    }
-
-    public PlaceActions(String ChunkAnimalLand){
-        /*
-         * Constructor for a specific chunk of land
-         */
-        super();
-        this.place = ChunkAnimalLand;
-        super.availableActions = new HashSet<>(){{
-            add("plant");
         }};
     }
 

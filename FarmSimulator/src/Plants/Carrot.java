@@ -1,19 +1,16 @@
 package Plants;
 
+import Plants.enums.PlantType;
+
 public class Carrot extends PlantAbstract {
 
 
     Carrot(){
-        if(isPlantable()){
-            this.life = 0;
-            this.waterNeed = 0;
-            this.product = "Carrots";
-            this.nProduct = 0;
-            this.type = PlantType.CARROT;
-            
-        }else{
-            //throw exception
-        }
+        this.life = 0;
+        this.waterNeed = 0;
+        this.product = "Carrots";
+        this.nProduct = 0;
+        //this.type = PlantType.CARROT;
     }
 
     @Override
@@ -34,9 +31,8 @@ public class Carrot extends PlantAbstract {
     }
 
     @Override
-    public boolean isPlantable() {
-    //check if there are seeds in barn
-        return false;
-    }
-    
+    public void setLife(int value) {
+        // TODO Auto-generated method stub
+        
+    }    
 }

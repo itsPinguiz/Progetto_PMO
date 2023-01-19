@@ -1,5 +1,6 @@
 package Animal;
 
+import Animal.enums.AnimalType;
 import Calendar.Calendar;
 
 public class Chicken extends AnimalAbstract{
@@ -9,7 +10,7 @@ public class Chicken extends AnimalAbstract{
        this.life = 100;
        this.hunger = 0;
        this.nProduct = 0;
-       this.name = "chicken";
+       this.name = AnimalType.CHICKEN;
        this.typeProduct = "meat";
        this.c = c;
     }
