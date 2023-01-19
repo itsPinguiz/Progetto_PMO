@@ -1,13 +1,7 @@
 package Land;
 
-import Plants.PlantAbstract;
-
-public class Chunk {
-    
-    private PlantAbstract aplant;
-
-    Chunk(PlantAbstract plant){
-        this.aplant = plant;
-    }
-
+public interface Chunk {
+    public void setWaterLevel(int value);
+    public void setFertilizationLevel(int value);
+    public boolean getDirtStatus();
 }

@@ -1,17 +1,15 @@
 package Plants;
 
+import Plants.enums.PlantType;
+
 public class Weat extends PlantAbstract {
 
     Weat(){
-        if(isPlantable()){
-            this.life = 0;
-            this.levelWater = 0;
-            this.product = "Weats";
-            this.nProduct = 0;
-            this.type = "Weat";
-        }else{
-            //throw exception
-        }
+        this.life = 0;
+        this.waterNeed = 0;
+        this.product = "Weats";
+        this.nProduct = 0;
+        //this.type = PlantType.WEAT;
     }
 
 
@@ -22,8 +20,7 @@ public class Weat extends PlantAbstract {
 
     @Override
     public int getLife() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.life;
     }
 
     @Override
@@ -32,13 +29,7 @@ public class Weat extends PlantAbstract {
         return 0;
     }
 
-    @Override
-    public boolean isPlantable() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    private void setLife(){
+    public void setLife(int value){
         //to do
     }
     

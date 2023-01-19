@@ -3,15 +3,11 @@ package Plants;
 public class Onion extends PlantAbstract {
     
     Onion(){
-        if(isPlantable()){
-            this.life = 0;
-            this.levelWater = 0;
-            this.product = "Onions";
-            this.nProduct = 0;
-            this.type = "Onion";
-        }else{
-            //throw exception
-        }
+        this.life = 0;
+        this.waterNeed = 0;
+        this.product = "Onions";
+        this.nProduct = 0;
+        //this.type = PlantType.ONION;
     }
 
 
@@ -31,13 +27,7 @@ public class Onion extends PlantAbstract {
         return 0;
     }
 
-    @Override
-    public boolean isPlantable() {
-        // check if there are seeds in barn
-        return false;
-    }
-    
-    private void setLife(){
+    public void setLife(int value){
         //to do 
     }
 }

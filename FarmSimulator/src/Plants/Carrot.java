@@ -6,10 +6,10 @@ public class Carrot extends PlantAbstract {
     Carrot(){
         if(isPlantable()){
             this.life = 0;
-            this.levelWater = 0;
+            this.waterNeed = 0;
             this.product = "Carrots";
             this.nProduct = 0;
-            this.type = "Carrot";
+            this.type = PlantType.CARROT;
             
         }else{
             //throw exception

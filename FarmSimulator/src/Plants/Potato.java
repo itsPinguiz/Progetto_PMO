@@ -1,18 +1,12 @@
 package Plants;
 
 public class Potato extends PlantAbstract {
-
-    //constructor todo
     Potato(){
-        if(isPlantable()){
-            this.life = 0;
-            this.levelWater = 0;
-            this.product = "Potatos";
-            this.nProduct = 0;
-            this.type = "Potato";
-        }else{
-            //throw exception
-        }
+        this.life = 0;
+        this.waterNeed = 0;
+        this.product = "Potatos";
+        this.nProduct = 0;
+        //this.type = PlantType.POTATO;
     }
 
     @Override
@@ -32,13 +26,7 @@ public class Potato extends PlantAbstract {
         return 0;
     }
 
-    @Override
-    public boolean isPlantable() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    private void setLife(){
+    public void setLife(int value){
         //todo
     }
     

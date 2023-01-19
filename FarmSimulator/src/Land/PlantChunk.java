@@ -1,0 +1,55 @@
+package Land;
+
+import Plants.PlantAbstract;
+
+public class PlantChunk implements Chunk{
+    /* Small part of a land that contains one plant */
+    
+    // attributes
+    private PlantAbstract plant;
+    private float waterLevel;
+    private float fertilizationLevel;
+    private boolean isPlowed;
+
+    // constructor
+    PlantChunk(PlantAbstract plant){
+        this.plant = plant;
+    }
+
+    //methods
+    public PlantAbstract getPlant(){
+        /*
+         * Returns the planted plant
+         */
+        return this.plant;
+    }
+
+    public void setWaterLevel(int value){
+        /*
+         * Increases water value
+         */
+        if ((this.waterLevel + value) < 100){
+            this.waterLevel =+ value;
+        }else{
+            this.waterLevel = 100;
+        }
+    }
+
+    public void setFertilizationLevel(int value){
+        /*
+         * Increases fertilization value
+         */
+        if ((this.fertilizationLevel + value) < 100){
+            this.fertilizationLevel =+ value;
+        }else{
+            this.fertilizationLevel = 100;
+        }
+    }
+
+    public boolean getDirtStatus(){
+        /*
+         * Returns if chunk is plowed or not
+         */
+        return this.isPlowed;
+    }
+}

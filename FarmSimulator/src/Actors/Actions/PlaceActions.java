@@ -25,7 +25,7 @@ public class PlaceActions extends GameActions{
                                      }};
     }
 
-    public PlaceActions(LandAnimal animalLand){
+    public PlaceActions(AnimalLand animalLand){
         /*
          * Constructor for the animal land
          */

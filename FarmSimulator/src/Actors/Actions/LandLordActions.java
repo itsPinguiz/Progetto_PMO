@@ -17,6 +17,7 @@ public class LandLordActions extends PersonActions{
          */
         // remove from maket 
         // add it to the barn 
+        // if the bought item is a land add it to the lands
         // remove the money from the balance
     }
 
