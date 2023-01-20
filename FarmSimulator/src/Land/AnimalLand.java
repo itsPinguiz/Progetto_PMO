@@ -11,33 +11,17 @@ public class AnimalLand extends LandAbstract {
 
     //attributes 
     private ArrayList<AnimalAbstract> elements;
-    private PlaceActions actionLandAnimal;
 
     //constuctor
     AnimalLand(){
         this.type = LandType.ANIMAL;
-        this.actionLandAnimal = new PlaceActions(this);
+        this.actions = new PlaceActions(this);
         this.elements = new ArrayList<>();
     }
 
     //methods
-    public PlaceActions getPlaceActions(){
-        return this.actionLandAnimal;
-    }
-
-    @Override
-    public LandType getLandType() {
-        return this.type;
-    }
-
     @Override
     public int getNumElements() {
         return elements.size();
-    }
-
-    @Override
-    public float getPrice() {
-        return LandAbstract.SELL_PRICE;
-    }
-    
+    }    
 }

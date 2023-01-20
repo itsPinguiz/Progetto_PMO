@@ -1,8 +1,9 @@
 package Land;
 
+import Actors.Actions.PlaceActions;
 import Plants.PlantAbstract;
 
-public class PlantChunk implements Chunk{
+public class PlantChunk extends LandAbstract implements Chunk{
     /* Small part of a land that contains one plant */
     
     // attributes
@@ -51,5 +52,12 @@ public class PlantChunk implements Chunk{
          * Returns if chunk is plowed or not
          */
         return this.isPlowed;
+    }
+
+    public int getNumElements(){
+        /*
+         * Returns whether there is a plant or not
+         */
+        return (this.plant == null)?0:1;
     }
 }

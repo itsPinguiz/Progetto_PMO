@@ -1,8 +1,13 @@
 package Plants;
 
+import java.util.ArrayList;
+
+import Item.Interface.Item;
+
 public interface PlantInteface {
     public String getPlantType();
-    public int getLife();
-    public int getProduct();
-    public void setLife(int value);
+    public Double getLife();
+    public Double getWaterNeed();
+    public ArrayList<Item> getProduct();
+    public void plantAge();
 }
