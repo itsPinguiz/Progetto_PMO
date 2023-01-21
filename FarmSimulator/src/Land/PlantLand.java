@@ -10,13 +10,12 @@ public class PlantLand extends LandAbstract{
 
     // attributes
     ArrayList<PlantChunk> chunks;
-    PlaceActions actionChunkPlantLand;
     
     // constructor
     public PlantLand(){
         this.type = LandType.PLANT;
         this.chunks = new ArrayList<>();
-        this.actionChunkPlantLand = new PlaceActions(this);
+        this.actions = new PlaceActions(this);
     }
 
     // methods
@@ -43,13 +42,5 @@ public class PlantLand extends LandAbstract{
             }
         }
         return elements;
-    }
-
-    @Override
-    public float getPrice() {
-        /*
-         *  Returns the price of the land to sell
-         */
-        return LandAbstract.SELL_PRICE;
     }
 }
