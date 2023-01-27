@@ -5,7 +5,7 @@ import Place.Place;
 
 public abstract class PersonAbstract implements Person {
     
-    protected Place place = new Object();
+    protected Place place = new Place();
     protected PersonActions personAction;
 
     public Place getPlace(){
