@@ -10,6 +10,7 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
     protected Double waterNeed;
     protected int age;
     protected ArrayList<Item> products;
+    protected Calendar calendar = Calendar.getInstance();
 
     protected PlantAbstract(){
         this.life = Double.valueOf(100);

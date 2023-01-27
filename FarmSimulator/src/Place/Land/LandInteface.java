@@ -1,6 +1,6 @@
-package Land;
+package Place.Land;
 
-import Land.enu.LandType;
+import Place.Land.enu.LandType;
 
 public interface LandInteface {
     public LandType getLandType();

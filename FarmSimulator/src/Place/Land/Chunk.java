@@ -1,4 +1,4 @@
-package Land;
+package Place.Land;
 
 public interface Chunk {
     public void setWaterLevel(int value);
