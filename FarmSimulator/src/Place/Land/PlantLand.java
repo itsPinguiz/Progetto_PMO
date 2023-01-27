@@ -1,9 +1,9 @@
-package Land;
+package Place.Land;
 
 import java.util.ArrayList;
 
 import Actors.Actions.PlaceActions;
-import Land.enu.LandType;
+import Place.Land.enu.LandType;
 
 public class PlantLand extends LandAbstract{
     /*Land that contains chunks of land with plants*/

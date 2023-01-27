@@ -66,10 +66,10 @@ public class FarmerActions extends PersonActions{
         /*
          * Method to water a plant
          */
-        /*
+        Farmer f = (Farmer)super.person;
+        PlantChunk c = (PlantChunk)((PlantLand)super.person.getPlace()).getChunks().get(App.landIndex);
         // increase water level
-        getChunk().setWater(getChunk().getWater() + WATERING_INDEX);
-        */
+        c.setWaterLevel(WATERING_INDEX);
         // TODO IF THE FARMER HAS WATERING HOSE IN HIS INVENTORY
     }
 

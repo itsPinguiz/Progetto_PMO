@@ -1,4 +1,4 @@
-package Market;
+package Place.Barn.Market;
 
 import java.util.ArrayList;
 

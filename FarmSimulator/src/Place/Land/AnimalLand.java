@@ -1,10 +1,10 @@
-package Land;
+package Place.Land;
 
 import java.util.ArrayList;
 
 import Actors.Actions.PlaceActions;
 import Animal.AnimalAbstract;
-import Land.enu.LandType;
+import Place.Land.enu.LandType;
 
 public class AnimalLand extends LandAbstract {
     /*Land that contains different animals*/
