@@ -12,6 +12,7 @@ public class Calendar implements CalendarInt {
         SUNNY, CLOUDY, RAINY, SNOWY;
     }
     
+    public static Calendar instance;
     private Seasons seasons;
     private Weather weather;
     private int     actualDay,
@@ -21,7 +22,7 @@ public class Calendar implements CalendarInt {
     private ArrayList<Seasons> seasonList;
     private ArrayList<Weather> weatherList;
 
-    public Calendar(){
+    private Calendar(){
         this.actualDay = 1;
 
         this.seasonList = new ArrayList<Seasons>();
@@ -38,6 +39,14 @@ public class Calendar implements CalendarInt {
         this.seasons = this.seasonList.get(cont);
         randomWeather();
     }
+
+    public static Calendar getInstance() {
+        if (instance == null) {
+            instance = new Calendar();
+        }
+        return instance;
+    }
+
     public void inc(){
         if(this.actualDay % 120 == 0)
             this.actualDay = 1 ;

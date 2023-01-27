@@ -21,4 +21,11 @@ public interface CalendarInt {
      */
     void    setSeason(Seasons season);
     Seasons getSeason();
+
+    /*
+     * Method for an instance of calendar
+     */
+
+    /*Calendar getInstance();*/
+
 }
