@@ -1,16 +1,17 @@
 package Actors.Person;
 
 import Actors.Actions.PersonActions;
+import Place.Place;
 
 public abstract class PersonAbstract implements Person {
     
-    protected Object place = new Object();
+    protected Place place = new Object();
     protected PersonActions personAction;
 
-    public Object getPlace(){
+    public Place getPlace(){
         return this.place;
     }
-    public void setPlace(Object actualPlace){
+    public void setPlace(Place actualPlace){
         this.place = actualPlace;
     }
     public void setActions(PersonActions newAction){
