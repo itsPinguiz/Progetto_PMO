@@ -62,6 +62,13 @@ public class PlantChunk extends LandAbstract implements Chunk{
         return this.isPlowed;
     }
 
+    public void setDirtStatus(boolean b){
+        /*
+         * Returns if chunk is plowed or not
+         */
+        this.isPlowed = b;
+    }
+
     public int getNumElements(){
         /*
          * Returns whether there is a plant or not

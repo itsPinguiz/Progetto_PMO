@@ -66,8 +66,9 @@ public class FarmerActions extends PersonActions{
         /*
          * Method to water a plant
          */
+        //check if you can water TODO
         Farmer f = (Farmer)super.person;
-        PlantChunk c = (PlantChunk)((PlantLand)super.person.getPlace()).getChunks().get(App.landIndex);
+        PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(App.landIndex);
         // increase water level
         c.setWaterLevel(WATERING_INDEX);
         // TODO IF THE FARMER HAS WATERING HOSE IN HIS INVENTORY
@@ -77,12 +78,14 @@ public class FarmerActions extends PersonActions{
         /*
          * Method to plow dirt
          */
-        /*
+        Farmer f = (Farmer)super.person;
+        PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(App.landIndex);
+
         // change land status
-        getChunk().setPlantable(True);
+        c.setDirtStatus(true);
         // add new possible actions
-        super.person.getPlace().addAction("plant");
-        */
+        c.getActions().addAction("plant");
+
         // TODO IF THE FARMER HAS HOE IN HIS INVENTORY
     }
 
