@@ -11,6 +11,6 @@ public interface Person{
     PersonActions getActions();
     void          setActions(PersonActions newAction);
     Place         getPlace();
-    void          setPlace(Object actualPlace);
+    void          setPlace(Place actualPlace);
     
 }
