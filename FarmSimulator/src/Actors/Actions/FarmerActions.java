@@ -1,7 +1,13 @@
 package Actors.Actions;
 
+import java.util.HashSet;
+
 import Actors.Person.Farmer;
 import Main.App;
+import Place.Land.LandAbstract;
+import Place.Land.PlantChunk;
+import Place.Land.PlantLand;
+import Plants.PlantAbstract;
 
 public class FarmerActions extends PersonActions{
     private final int WATERING_INDEX = 10;
@@ -39,18 +45,20 @@ public class FarmerActions extends PersonActions{
         /*
          * Method to plant a plant
          */
-
+        Farmer f = (Farmer)super.person;
+        PlantLand p = (PlantLand)super.person.getPlace();
 
         // add plant to the land 
-        ((Farmer)super.person).getPlace().getChunks().add(super.person.getInventory()[App.itemIndex]);
-        // remove from inventory
-        ((Farmer)super.person).removeItem(App.ItemIndex);
-        // add new possible actions
-        super.person.getPlace().getAction.addAction(new HashSet<>(){{
-                                                                 add("water");
-                                                                 add("fertilize");
-                                                                 }});
-
+        if ( f.getInventory().get(App.itemIndex) instanceof PlantAbstract){
+            p.getChunks().get(App.landIndex).setPlant((PlantAbstract)f.getInventory().get(App.itemIndex));
+            // remove from inventory
+            f.removeItem(App.itemIndex);
+            // add new possible actions
+            p.getActions().addAction(new HashSet<>(){{
+                                        add("water");
+                                        add("fertilize");
+                                        }});
+        }                                                         
         //TODO ONCE THE PLANT HAS GROWN, HARVEST WILL BE ADDED TO ACTIONS
     }
 

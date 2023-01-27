@@ -11,7 +11,7 @@ public abstract class LandAbstract extends Place implements LandInteface {
     protected LandType type; // the type of the land
     protected PlaceActions actions; // actions for the specific land
 
-    protected PlaceActions getActions(){
+    public PlaceActions getActions(){
         /*
          *  Returns the actions of the land
          */

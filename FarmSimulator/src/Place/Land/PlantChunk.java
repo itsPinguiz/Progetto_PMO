@@ -1,4 +1,4 @@
-package Land;
+package Place.Land;
 
 import Actors.Actions.PlaceActions;
 import Plants.PlantAbstract;
@@ -24,6 +24,13 @@ public class PlantChunk extends LandAbstract implements Chunk{
          * Returns the planted plant
          */
         return this.plant;
+    }
+
+    public void setPlant(PlantAbstract plant){
+        /*
+         * sets the plant
+         */
+        this.plant = plant;
     }
 
     public void setWaterLevel(int value){

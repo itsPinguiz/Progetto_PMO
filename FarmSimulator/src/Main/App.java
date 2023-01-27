@@ -9,6 +9,7 @@ import Progress.GameBackup;
 
 public class App {
     public static int itemIndex; // clicked item
+    public static int landIndex;
 
     public static void clrscr(){
         /*

@@ -3,13 +3,14 @@ package Actors.Actions;
 import java.util.HashSet;
 
 import Actors.Person.*;
-import Barn.Barn;
-import Land.*;
-import Market.Market;
+import Place.Place;
+import Place.Barn.Barn;
+import Place.Barn.Market.Market;
+import Place.Land.*;
 
 public class PlaceActions extends GameActions{
     //TODO Replace Object with the right class
-    protected Object place; // place where the action take place
+    protected Place place; // place where the action take place
 
     public PlaceActions(PlantLand plantLand){
         /*
@@ -46,18 +47,6 @@ public class PlaceActions extends GameActions{
         this.place = Barn;
         super.availableActions = new HashSet<>(){{
                                      add("getItem");
-                                     }};
-    }
-
-    public PlaceActions(Market market){
-        /*
-         * Constructor for the barn
-         */
-        super();
-        this.place = market;
-        super.availableActions = new HashSet<>(){{
-                                     add("buy");
-                                     add("sell");
                                      }};
     }
 
