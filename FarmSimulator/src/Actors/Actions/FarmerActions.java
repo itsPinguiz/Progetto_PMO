@@ -40,9 +40,9 @@ public class FarmerActions extends PersonActions{
          * Method to plant a plant
          */
 
-        /* 
+
         // add plant to the land 
-        super.person.getPlace().getElements().add(super.person.getInventory()[App.itemIndex]);
+        ((Farmer)super.person).getPlace().getChunks().add(super.person.getInventory()[App.itemIndex]);
         // remove from inventory
         ((Farmer)super.person).removeItem(App.ItemIndex);
         // add new possible actions
@@ -50,7 +50,7 @@ public class FarmerActions extends PersonActions{
                                                                  add("water");
                                                                  add("fertilize");
                                                                  }});
-        */
+
         //TODO ONCE THE PLANT HAS GROWN, HARVEST WILL BE ADDED TO ACTIONS
     }
 

@@ -1,4 +1,4 @@
-package Plants.enums;
+package Plants.enu;
 
 public enum PlantLife {
     // plant life cycle state

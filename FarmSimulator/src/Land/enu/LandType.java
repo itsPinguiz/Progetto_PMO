@@ -1,4 +1,4 @@
-package Land.enums;
+package Land.enu;
 
 public enum LandType {
     // possible types of land

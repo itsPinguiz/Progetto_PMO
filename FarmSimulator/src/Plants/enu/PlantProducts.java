@@ -1,4 +1,4 @@
-package Plants.enums;
+package Plants.enu;
 
 public enum PlantProducts {
     // possible plant products

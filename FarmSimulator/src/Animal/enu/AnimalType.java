@@ -1,4 +1,4 @@
-package Animal.enums;
+package Animal.enu;
 
 public enum AnimalType {
     //possible types of animals

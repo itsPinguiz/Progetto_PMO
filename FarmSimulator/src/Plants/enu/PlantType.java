@@ -1,4 +1,4 @@
-package Plants.enums;
+package Plants.enu;
 
 public enum PlantType {
     // possible plant types

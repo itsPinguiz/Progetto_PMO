@@ -1,6 +1,6 @@
 package Animal;
 
-import Animal.enums.AnimalType;
+import Animal.enu.AnimalType;
 import Calendar.Calendar;
 
 public abstract class AnimalAbstract implements AnimaliInterface {

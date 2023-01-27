@@ -1,7 +1,7 @@
 package Plants.species;
 
 import Plants.PlantAbstract;
-import Plants.enums.PlantType;
+import Plants.enu.PlantType;
 
 public class Carrot extends PlantAbstract {
 

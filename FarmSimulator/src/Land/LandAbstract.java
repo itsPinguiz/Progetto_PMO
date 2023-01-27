@@ -1,7 +1,7 @@
 package Land;
 
 import Actors.Actions.PlaceActions;
-import Land.enums.LandType;
+import Land.enu.LandType;
 
 public abstract class LandAbstract implements LandInteface {
     static final float BASE_PRICE_LAND = 50; //initial price of a land 

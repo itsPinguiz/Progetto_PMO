@@ -15,6 +15,7 @@ public class PlantChunk extends LandAbstract implements Chunk{
     // constructor
     PlantChunk(PlantAbstract plant){
         this.plant = plant;
+        this.actions = new PlaceActions(this);
     }
 
     //methods
