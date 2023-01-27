@@ -1,5 +1,7 @@
 package Animal;
-interface AnimaliInterface {
+
+public interface AnimalInterface {
+
 public int getHunger();
 public int getLife();
 public String getAnimalType();

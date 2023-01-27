@@ -48,4 +48,10 @@ public class Farmer extends PersonAbstract{
         }
     }
 
+   // public int searchItem(Item itemtofind){
+
+
+        
+    //}
+
 }
