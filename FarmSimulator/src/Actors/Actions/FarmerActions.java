@@ -1,8 +1,11 @@
 package Actors.Actions;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import Actors.Person.Farmer;
+import Item.Interface.Item;
 import Main.App;
 import Place.Land.LandAbstract;
 import Place.Land.PlantChunk;
@@ -54,7 +57,7 @@ public class FarmerActions extends PersonActions{
             // remove from inventory
             f.removeItem(App.itemIndex);
             // add new possible actions
-            p.getActions().addAction(new HashSet<>(){{
+            p.getActions().addActions(new HashSet<>(){{
                                         add("water");
                                         add("fertilize");
                                         }});
@@ -66,7 +69,6 @@ public class FarmerActions extends PersonActions{
         /*
          * Method to water a plant
          */
-        //check if you can water TODO
         Farmer f = (Farmer)super.person;
         PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(App.landIndex);
         // increase water level
@@ -93,10 +95,11 @@ public class FarmerActions extends PersonActions{
         /*
          * Method to fertilize a plant
          */
-        /*
+
+        Farmer f = (Farmer)super.person;
+        PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(App.landIndex);
         // increase water level
-        getChunk().setFertilization(getChunk().getFertilization() + FERTILIZATION_INDEX);
-        */
+        c.setFertilizationLevel(FERTILIZATION_INDEX);
         // TODO IF THE FARMER HAS FERTILIZER IN HIS INVENTORY
     }
 
@@ -104,17 +107,21 @@ public class FarmerActions extends PersonActions{
         /*
          * Method to harvest a plant
          */
-        /*
-        List<Item> resources = new ArrayList<>{};
+
+        Farmer f = (Farmer)super.person;
+        PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(App.landIndex);
+
+        List<Item> resources = List.copyOf(c.getPlant().getProduct());
+        c.getPlant().turnToProduct();
+
         // add resources to the inventory
         for(Item item : resources){
-            super.person.addItem(item)
+            f.addItem(item);
         }
-        // TODO HARVEST FASTER IF TOOL IS IN HIS INVENTORY
+        // TODO MODIFIER IF TOOL IS EQUIPPED
+        
         // remove plant
-        getChunk() = null;
-        */
-
+        ((PlantChunk)((PlantLand)f.getPlace()).getChunks().get(App.landIndex)).setPlant(null);
     }
 
     public void waterAll(){

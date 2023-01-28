@@ -3,7 +3,7 @@ package Place.Land;
 import java.util.ArrayList;
 
 import Actors.Actions.PlaceActions;
-import Place.Land.enu.LandType;
+import Place.Land.enu.Places;
 
 public class PlantLand extends LandAbstract{
     /*Land that contains chunks of land with plants*/
@@ -13,14 +13,14 @@ public class PlantLand extends LandAbstract{
     
     // constructor
     public PlantLand(){
-        this.type = LandType.PLANT;
+        this.type = Places.PLANT_LAND;
         this.chunks = new ArrayList<>();
         this.actions = new PlaceActions(this);
     }
 
     // methods
     @Override
-    public LandType getLandType() {
+    public Places getLandType() {
         /*
          * Returns the type of the
          * land  

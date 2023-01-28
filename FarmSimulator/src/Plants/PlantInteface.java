@@ -9,5 +9,4 @@ public interface PlantInteface {
     public Double getLife();
     public Double getWaterNeed();
     public ArrayList<Item> getProduct();
-    public void plantAge();
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import Actors.Actions.PlaceActions;
 import Animal.AnimalAbstract;
-import Place.Land.enu.LandType;
+import Place.Land.enu.Places;
 
 public class AnimalLand extends LandAbstract {
     /*Land that contains different animals*/
@@ -14,7 +14,7 @@ public class AnimalLand extends LandAbstract {
 
     //constuctor
     AnimalLand(){
-        this.type = LandType.ANIMAL;
+        this.type = Places.ANIMAL_LAND;
         this.actions = new PlaceActions(this);
         this.elements = new ArrayList<>();
     }

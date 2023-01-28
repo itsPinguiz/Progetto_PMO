@@ -1,6 +1,7 @@
 package Place.Land;
 
 import Actors.Actions.PlaceActions;
+import Calendar.Calendar.Weather;
 import Plants.PlantAbstract;
 
 public class PlantChunk extends LandAbstract implements Chunk{
@@ -75,4 +76,14 @@ public class PlantChunk extends LandAbstract implements Chunk{
          */
         return (this.plant == null)?0:1;
     }
+
+    public void growPlant(){
+        /*
+         * Uses a formula to grow the plant
+         */
+        this.plant.getLife().valueOf(this.plant.getLife().doubleValue() - // previous life value
+                                     2*this.plant.getWaterNeed()/this.waterLevel + // waterneed devided by water level
+                                     this.fertilizationLevel/this.calendar.getWeather().ordinal()); // fertilization level devided by weather
+    }
+
 }

@@ -5,5 +5,7 @@ public enum PlantLife {
     SEED,
     SPROUT,
     SMALL_PLANT,
-    ADULT_PLANT
+    ADULT_PLANT,
+    HARVESTABLE,
+    PRODUCT
 }

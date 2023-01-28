@@ -21,7 +21,7 @@ public abstract class GameActions implements Actions{
         this.availableActions.add(action);   
     }
 
-    public void addAction(HashSet<String> actions) {
+    public void addActions(HashSet<String> actions) {
         /*
          * Method to add action to the 
          * action list
@@ -38,7 +38,7 @@ public abstract class GameActions implements Actions{
     }
 
     
-    public void removeAction(Set<String> action) {
+    public void removeActions(Set<String> action) {
         /*
          * Method to remove action to the 
          * action list

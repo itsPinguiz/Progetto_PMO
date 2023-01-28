@@ -1,6 +1,7 @@
 package Actors.Actions;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import Actors.Person.*;
 import Place.Place;
@@ -81,9 +82,8 @@ public class PlaceActions extends GameActions{
             // Enter the new place
             person.setPlace(this.place);
         }   
-        /* TODO 
-        person.getActions().addAction(person.getPlace().getActions().getActions())
-        */
+        // add the actions of the new place
+        person.getActions().addActions(new HashSet<>(person.getPlace().getActions().getActions()));
     }
 
     public void leave(Person person) {
