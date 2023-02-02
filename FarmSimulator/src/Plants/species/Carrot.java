@@ -1,13 +1,12 @@
 package Plants.species;
 
+import Item.ItemType;
 import Plants.PlantAbstract;
-import Plants.enu.PlantType;
 
 public class Carrot extends PlantAbstract {
 
-
     Carrot(){
-        //this.type = PlantType.CARROT;
+        super(null);
         //TODO products
     }
 

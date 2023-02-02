@@ -1,8 +1,11 @@
 package Place.Land;
 
+import java.util.Random;
+
 import Actors.Actions.PlaceActions;
 import Calendar.Calendar.Weather;
 import Plants.PlantAbstract;
+
 
 public class PlantChunk extends LandAbstract implements Chunk{
     /* Small part of a land that contains one plant */
@@ -12,21 +15,18 @@ public class PlantChunk extends LandAbstract implements Chunk{
     private float waterLevel;
     private float fertilizationLevel;
     private boolean isPlowed;
+    private Random random = new Random();
 
     // constructor
     PlantChunk(PlantAbstract plant){
+        super();
         this.plant = plant;
         this.actions = new PlaceActions(this);
+        this.waterLevel = random.nextInt(10) + 1;
+        this.fertilizationLevel = random.nextInt(10) + 1;
     }
 
     //methods
-    public PlantAbstract getPlant(){
-        /*
-         * Returns the planted plant
-         */
-        return this.plant;
-    }
-
     public void setPlant(PlantAbstract plant){
         /*
          * sets the plant
@@ -56,18 +56,26 @@ public class PlantChunk extends LandAbstract implements Chunk{
         }
     }
 
-    public boolean getDirtStatus(){
-        /*
-         * Returns if chunk is plowed or not
-         */
-        return this.isPlowed;
-    }
-
     public void setDirtStatus(boolean b){
         /*
          * Returns if chunk is plowed or not
          */
         this.isPlowed = b;
+    }
+
+    public float getWaterLevel(){
+        return this.waterLevel;
+    }
+
+    public float getFertilizationLevel(){
+        return this.waterLevel;
+    }
+
+    public boolean getDirtStatus(){
+        /*
+         * Returns if chunk is plowed or not
+         */
+        return this.isPlowed;
     }
 
     public int getNumElements(){
@@ -77,13 +85,10 @@ public class PlantChunk extends LandAbstract implements Chunk{
         return (this.plant == null)?0:1;
     }
 
-    public void growPlant(){
+    public PlantAbstract getPlant(){
         /*
-         * Uses a formula to grow the plant
+         * Returns the planted plant
          */
-        this.plant.getLife().valueOf(this.plant.getLife().doubleValue() - // previous life value
-                                     2*this.plant.getWaterNeed()/this.waterLevel + // waterneed devided by water level
-                                     this.fertilizationLevel/this.calendar.getWeather().ordinal()); // fertilization level devided by weather
+        return this.plant;
     }
-
 }

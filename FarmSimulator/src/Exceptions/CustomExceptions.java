@@ -1,9 +1,9 @@
 package Exceptions;
 
 public class CustomExceptions {
-    public static class TooManyTries extends Exception {
-        public TooManyTries(){
-            super("Too many tries for the action.");
+    public static class ActionNotAvailable extends Exception {
+        public ActionNotAvailable(){
+            super("The action you tried to execute was not possible.");
         }   
     }
 

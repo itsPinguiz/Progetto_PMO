@@ -5,7 +5,7 @@ import java.util.Set;
 
 interface Actions { 
     void addAction(String action);
-    void addActions(HashSet<String> actions);
+    void addActions(Set<String> actions);
     void removeAction(String action);
     void removeActions(Set<String> action);
     Set<String> getActions();

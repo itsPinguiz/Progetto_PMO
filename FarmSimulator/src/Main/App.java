@@ -8,8 +8,7 @@ import java.util.Scanner;
 import Progress.GameBackup;
 
 public class App {
-    public static int itemIndex; // clicked item
-    public static int landIndex;
+    // TODO Will be replaced once the swing interface is made
 
     public static void clrscr(){
         /*

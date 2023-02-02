@@ -1,12 +1,12 @@
 package Actors.Person;
 
-import Actors.Actions.PersonActions;
+import Actors.Actions.PlayerActions;
 import Place.Place;
 
 public abstract class PersonAbstract implements Person {
     
     protected Place place;
-    protected PersonActions personAction;
+    protected PlayerActions personAction;
 
     public Place getPlace(){
         return this.place;
@@ -14,10 +14,10 @@ public abstract class PersonAbstract implements Person {
     public void setPlace(Place actualPlace){
         this.place = actualPlace;
     }
-    public void setActions(PersonActions newAction){
+    public void setActions(PlayerActions newAction){
         this.personAction = newAction;
     }
-    public PersonActions getActions(){
+    public PlayerActions getActions(){
         return this.personAction;
     }
 

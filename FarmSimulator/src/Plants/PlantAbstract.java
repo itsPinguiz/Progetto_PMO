@@ -1,44 +1,30 @@
 package Plants;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import Calendar.Calendar;
 import Item.Interface.Item;
+import Place.Land.PlantChunk;
 import Plants.enu.PlantLife;
 
 public abstract class PlantAbstract extends Item implements PlantInteface{
-    protected Double life;
-    protected PlantLife lifePhase;
-    protected Double waterNeed;
+    private double growthLevel;
+    private int daysToHarvest;
+    private PlantLife lifeStage;
+    private Random random = new Random();
+    private PlantChunk chunk;
     protected ArrayList<Item> products;
     protected Calendar calendar = Calendar.getInstance();
-    protected int plantationDay;
 
-    protected PlantAbstract(){
-        this.life = Double.valueOf(100);
-        this.waterNeed = Double.valueOf(0);
-        this.lifePhase = PlantLife.SEED;
+    protected PlantAbstract(PlantChunk c){
+        this.growthLevel = 0;
+        this.daysToHarvest = random.nextInt(10) + 1;
+        this.chunk = c;
     }
 
-    public String getPlantType() {
-        /*
-         * Returns the species of the plant 
-         */
-        return null;
-    }
-
-    public Double getLife() {
-        /*
-         * Returns plant life
-         */
-        return this.life;
-    }
-
-    public Double getWaterNeed() {
-        /*
-         * Returns the plant's water need
-         */
-        return this.waterNeed;
+    public void planted(PlantChunk c){
+        this.chunk = c;
     }
 
     public ArrayList<Item> getProduct() {
@@ -50,34 +36,76 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
         return temp;
     }
 
-    protected int getPlantAge(){
-        /*
-         * Returns plant age
-         */
-        return this.calendar.getDay() - this.plantationDay; 
-    }
-
     public void turnToProduct(){
         /*
          * Turns the plant to product when harvested
          */
-        this.lifePhase = PlantLife.PRODUCT;
+        this.lifeStage = PlantLife.PRODUCT;
         this.products.add(this);
     }
 
-    public void checkLifeStage(){
+    private void checklifeStage(){
         /*
          * Changes life stage if needed
          */
-        if (this.life > 20){
-            this.lifePhase = PlantLife.SPROUT;
-        } else if (this.life > 50){
-            this.lifePhase = PlantLife.SMALL_PLANT;
-        } else if (this.life > 80){
-            this.lifePhase = PlantLife.ADULT_PLANT;
-        } else if (this.life == 100){
-            this.lifePhase = PlantLife.HARVESTABLE;
-            // TODO ADD HARVEST TO ACTIONS
+        if (this.growthLevel > 20){
+            this.lifeStage = PlantLife.SPROUT;
+        } else if (this.growthLevel > 50){
+            this.lifeStage = PlantLife.SMALL_PLANT;
+        } else if (this.growthLevel > 80){
+            this.lifeStage = PlantLife.ADULT_PLANT;
+        } else if (this.growthLevel == 100){
+            this.lifeStage = PlantLife.HARVESTABLE;
+            
+            this.chunk.getActions().addAction("harvest");
         }
+        this.daysToHarvest--;
+    }
+
+    public void grow() {
+        switch (this.calendar.getWeather()) {
+            case CLOUDY:
+                this.growthLevel += this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()* 2;
+                break;
+            case RAINY:
+                this.growthLevel += (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel());
+                break;
+            case SNOWY:
+                this.growthLevel += (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()) / 2;
+                break;       
+            default:
+                this.growthLevel += this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel();
+                break;
+        }
+
+        if (this.growthLevel >= this.daysToHarvest * 10) {
+          this.growthLevel = this.daysToHarvest * 10;
+        }
+
+        this.checklifeStage();
+    
+        this.daysToHarvest--;
+      }
+    
+      public int getDaysToHarvest() {
+        return this.daysToHarvest;
+      }
+
+      public PlantLife getLifeStage(){
+        return this.lifeStage;
+      }
+
+      public String getPlantType() {
+        /*
+         * Returns the species of the plant 
+         */
+        return null;
+    }
+
+    public double getGrowthLevel() {
+        /*
+         * Returns plant life
+         */
+        return this.growthLevel;
     }
 }

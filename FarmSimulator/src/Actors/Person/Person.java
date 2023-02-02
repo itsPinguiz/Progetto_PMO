@@ -1,6 +1,6 @@
 package Actors.Person;
 
-import Actors.Actions.PersonActions;
+import Actors.Actions.PlayerActions;
 import Place.Place;
 
 /**
@@ -8,8 +8,8 @@ import Place.Place;
  */
 public interface Person{
 
-    PersonActions getActions();
-    void          setActions(PersonActions newAction);
+    PlayerActions getActions();
+    void          setActions(PlayerActions newAction);
     Place         getPlace();
     void          setPlace(Place actualPlace);
     
