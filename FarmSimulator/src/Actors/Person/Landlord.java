@@ -1,5 +1,6 @@
 package Actors.Person;
-import Actors.Actions.LandLordActions;
+
+import Actors.Actions.PlayerActions;
 
 /**
  * Landlord person implementation
@@ -15,7 +16,7 @@ public class Landlord extends PersonAbstract {
      * Methods
      */
     public Landlord(){
-        super.personAction = new LandLordActions(this);
+        super.personAction = new PlayerActions(this);
         super.place = null;
         this.balance = 100;
     }

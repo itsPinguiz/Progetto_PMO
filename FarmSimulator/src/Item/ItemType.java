@@ -1,3 +1,5 @@
+package Item;
+
 public enum ItemType{
     
     // possible types of item

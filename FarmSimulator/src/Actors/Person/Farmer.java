@@ -1,7 +1,7 @@
 package Actors.Person;
 
 import java.util.ArrayList;
-import Actors.Actions.FarmerActions;
+import Actors.Actions.PlayerActions;
 import Item.ItemCreator;
 import Item.Interface.Item;
 
@@ -21,7 +21,7 @@ public class Farmer extends PersonAbstract{
      * Methods
      */
     public Farmer(){
-        super.personAction = new FarmerActions(this);
+        super.personAction = new PlayerActions(this);
         super.place = null;
         this.inventory = new ArrayList<Item>(MAX_INVENTORY_SIZE);
         this.creator = new ItemCreator();

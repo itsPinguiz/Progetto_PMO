@@ -4,7 +4,7 @@ import Plants.PlantAbstract;
 
 public class Potato extends PlantAbstract {
     Potato(){
-        //this.type = PlantType.POTATO;
+        super(null);
         //TODO products
     }
 }

@@ -20,15 +20,6 @@ public class PlantLand extends LandAbstract{
 
     // methods
     @Override
-    public Places getLandType() {
-        /*
-         * Returns the type of the
-         * land  
-         */
-        return this.type;
-    }
-
-    @Override
     public int getNumElements() {
         /*
          * Returns the number of land present
