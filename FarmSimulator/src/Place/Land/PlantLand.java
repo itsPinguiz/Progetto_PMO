@@ -3,7 +3,7 @@ package Place.Land;
 import java.util.ArrayList;
 
 import Actors.Actions.PlaceActions;
-import Place.Land.enu.Places;
+import Place.Places;
 
 public class PlantLand extends LandAbstract{
     /*Land that contains chunks of land with plants*/
@@ -37,5 +37,9 @@ public class PlantLand extends LandAbstract{
 
     public ArrayList<PlantChunk> getChunks(){
         return this.chunks;
+    }
+
+    public void update(){
+        this.chunks.forEach(chunk -> {chunk.update();});
     }
 }

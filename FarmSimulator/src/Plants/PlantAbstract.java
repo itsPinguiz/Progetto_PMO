@@ -1,14 +1,16 @@
 package Plants;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
+import Actors.Actions.ActionsManager.Action;
 import Calendar.Calendar;
 import Item.Interface.Item;
 import Place.Land.PlantChunk;
-import Plants.enu.PlantLife;
 
 public abstract class PlantAbstract extends Item implements PlantInteface{
+    // ITEM STATUS COULD BE USED AS GROWTHLEVEL
     private double growthLevel;
     private int daysToHarvest;
     private PlantLife lifeStage;
@@ -16,6 +18,16 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
     private PlantChunk chunk;
     protected ArrayList<Item> products;
     protected Calendar calendar = Calendar.getInstance();
+
+    public enum PlantLife {
+        // plant life cycle state
+        SEED,
+        SPROUT,
+        SMALL_PLANT,
+        ADULT_PLANT,
+        HARVESTABLE,
+        PRODUCT
+    }
 
     protected PlantAbstract(PlantChunk c){
         this.growthLevel = 0;
@@ -57,7 +69,9 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
         } else if (this.growthLevel == 100){
             this.lifeStage = PlantLife.HARVESTABLE;
             
-            this.chunk.getActions().addAction("harvest");
+            this.chunk.getActions().updateActions(new HashSet<>(){{
+                add(Action.HARVEST);
+                }}, true);
         }
         this.daysToHarvest--;
     }

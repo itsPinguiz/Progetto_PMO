@@ -6,7 +6,7 @@ public class Onion extends PlantAbstract {
     
     Onion(){
         super(null);
-        //this.type = PlantType.ONION;
+        //TODO type
         //TODO products
     }
 }

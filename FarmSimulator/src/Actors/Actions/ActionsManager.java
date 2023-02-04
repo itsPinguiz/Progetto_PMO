@@ -9,47 +9,39 @@ import Actors.Person.Person;
 
 public abstract class ActionsManager implements Actions{
     // all actual available actions
-    protected Set<String> availableActions;
+    protected Set<Action> availableActions;
 
     protected ActionsManager(){
-        this.availableActions = new HashSet<String>();
+        this.availableActions = new HashSet<>();
 
     }
 
-    public void addAction(String action) {
-        /*
-         * Method to add action to the 
-         * action list
-         */
-        this.availableActions.add(action);   
+    public enum Action {
+        PLANT,
+        WATER,
+        FERTILIZE,
+        HARVEST,
+        PLOW,
+        WATER_ALL,
+        FERTILIZE_ALL,
+        HARVEST_ALL,
+        PLOW_ALL,
+        ADD_ANIMAL,
+        REMOVE_ANIMAL,
+        GET_ALL_RESOURCES,
+        GET_ITEM,
+        MOVE_ITEM
     }
 
-    public void addActions(Set<String> actions) {
-        /*
-         * Method to add action to the 
-         * action list
-         */
-        this.availableActions.addAll(actions);   
+    public void updateActions(Set<Action> actions, boolean add) {
+        if (add) {
+            this.availableActions.addAll(actions);
+        } else {
+            this.availableActions.removeAll(actions);
+        }
     }
 
-    public void removeAction(String action) {
-        /*
-         * Method to remove action to the 
-         * action list
-         */
-        this.availableActions.remove(action);
-    }
-
-    
-    public void removeActions(Set<String> action) {
-        /*
-         * Method to remove action to the 
-         * action list
-         */
-        this.availableActions.removeAll(action);
-    }
-
-    public Set<String> getActions(){
+    public Set<Action> getActions(){
         /*
          * Method that returns all
          * the possible actions

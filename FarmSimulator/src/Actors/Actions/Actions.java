@@ -1,12 +1,9 @@
 package Actors.Actions;
 
-import java.util.HashSet;
 import java.util.Set;
+import Actors.Actions.ActionsManager.Action;
 
 interface Actions { 
-    void addAction(String action);
-    void addActions(Set<String> actions);
-    void removeAction(String action);
-    void removeActions(Set<String> action);
-    Set<String> getActions();
+    void updateActions(Set<Action> actions, boolean add);
+    Set<Action> getActions();
 }

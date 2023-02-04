@@ -7,6 +7,7 @@ public class Carrot extends PlantAbstract {
 
     Carrot(){
         super(null);
+        //TODO type
         //TODO products
     }
 

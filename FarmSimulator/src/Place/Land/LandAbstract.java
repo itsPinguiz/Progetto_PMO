@@ -1,9 +1,7 @@
 package Place.Land;
 
-import Actors.Actions.PlaceActions;
 import Calendar.Calendar;
 import Place.Place;
-import Place.Land.enu.Places;
 
 public abstract class LandAbstract extends Place implements LandInteface {
     static final float BASE_PRICE_LAND = 50; //initial price of a land 
@@ -16,5 +14,9 @@ public abstract class LandAbstract extends Place implements LandInteface {
          *  Returns the price of the land to sell
          */
         return LandAbstract.SELL_PRICE;
+    }
+
+    public void update(){
+
     }
 }

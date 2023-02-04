@@ -27,6 +27,18 @@ public class PlantChunk extends LandAbstract implements Chunk{
     }
 
     //methods
+    @Override
+    public void update(){
+        if (this.plant != null){
+            this.plant.grow();
+            this.waterLevel -= 5;
+            this.fertilizationLevel -= 5;
+        }
+        
+        this.waterLevel -= 1;
+        this.fertilizationLevel -= 1;
+    }
+
     public void setPlant(PlantAbstract plant){
         /*
          * sets the plant

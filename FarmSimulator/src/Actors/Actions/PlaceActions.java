@@ -2,61 +2,54 @@ package Actors.Actions;
 
 import java.util.HashSet;
 
-import Actors.Person.*;
 import Place.Place;
-import Place.Barn.Barn;
 import Place.Land.*;
 
 public class PlaceActions extends ActionsManager{
     //TODO Replace Object with the right class
     protected Place place; // place where the action take place
-    public PlaceActions(PlantLand plantLand){
+
+    public PlaceActions(Place plantLand){
         /*
          * Constructor for the plant land
          */
         super();
         this.place = plantLand;
-        super.availableActions = new HashSet<>(){{
-                                     add("waterAll");
-                                     add("fertilizeAll");
-                                     add("harvestAll");
-                                     add("plowAll");
-                                     }};
-    }
 
-    public PlaceActions(AnimalLand animalLand){
-        /*
-         * Constructor for the animal land
-         */
-        super();
-        this.place = animalLand;
-        super.availableActions = new HashSet<>(){{
-                                     add("addAnimal");
-                                     add("removeAnimal");
-                                     add("getAllResources");
-                                     }};
-    }
+        switch (this.place.getType()) {
+            case PLANT_LAND:
+                super.availableActions = new HashSet<Action>(){{
+                    add(Action.WATER_ALL);
+                    add(Action.FERTILIZE_ALL);
+                    add(Action.HARVEST_ALL);
+                    add(Action.PLOW_ALL);
+                    }};
+                break;
 
-    public PlaceActions(Barn Barn){
-        /*
-         * Constructor for the barn
-         */
-        super();
-        this.place = Barn;
-        super.availableActions = new HashSet<>(){{
-                                     add("getItem");
-                                     add("moveItem");
-                                     }};
-    }
+            case ANIMAL_LAND:
+                super.availableActions = new HashSet<Action>(){{
+                    add(Action.ADD_ANIMAL);
+                    add(Action.REMOVE_ANIMAL);
+                    add(Action.GET_ALL_RESOURCES);
+                    }};
+                break;
+            
+            case BARN:
+                super.availableActions = new HashSet<Action>(){{
+                    add(Action.GET_ITEM);
+                    add(Action.MOVE_ITEM);
+                    }};
+                break;
 
-    public PlaceActions(PlantChunk ChunkPlantLand){
-        /*
-         * Constructor for a specific chunk of land
-         */
-        super();
-        this.place = ChunkPlantLand;
-        super.availableActions = new HashSet<>(){{
-                                     add("plow");
-        }};
+            case PLANT_CHUNK:
+                super.availableActions = new HashSet<>(){{
+                    add(Action.PLOW);
+                    }};
+                break;
+                
+            default:
+                throw new IllegalArgumentException("This type of land does not exist.");
+        }
+        
     }
 }

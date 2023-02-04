@@ -6,6 +6,7 @@ public class Weat extends PlantAbstract {
 
     Weat(){
         super(null);
+        //TODO type
         //TODO products
     }
 

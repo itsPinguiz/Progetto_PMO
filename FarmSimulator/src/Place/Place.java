@@ -1,12 +1,10 @@
 package Place;
 
 import Actors.Actions.PlaceActions;
-import Place.Land.enu.Places;
 
 public abstract class Place {
     // General class of places
     protected PlaceActions actions;
-    protected Places place;
     protected Places type; // the type of the place
 
     public PlaceActions getActions(){

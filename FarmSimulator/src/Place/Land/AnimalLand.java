@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import Actors.Actions.PlaceActions;
 import Animal.AnimalAbstract;
-import Place.Land.enu.Places;
+import Place.Places;
 
 public class AnimalLand extends LandAbstract {
     /*Land that contains different animals*/
