@@ -11,12 +11,16 @@ public abstract class ActionsManager implements Actions{
     // all actual available actions
     protected Set<Action> availableActions;
 
+    // constructor
     protected ActionsManager(){
         this.availableActions = new HashSet<>();
 
     }
 
     public enum Action {
+        /*
+         * All possible actions
+         */
         PLANT,
         WATER,
         FERTILIZE,
@@ -34,6 +38,9 @@ public abstract class ActionsManager implements Actions{
     }
 
     public void updateActions(Set<Action> actions, boolean add) {
+        /*
+         * Adds or removes actions from available actions
+         */
         if (add) {
             this.availableActions.addAll(actions);
         } else {

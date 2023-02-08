@@ -36,6 +36,9 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
     }
 
     public void planted(PlantChunk c){
+        /*
+         * Sets the chunk where the plant was planted
+         */
         this.chunk = c;
     }
 
@@ -77,6 +80,9 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
     }
 
     public void grow() {
+        /*
+         * Grows the plant depending on all the conditions 
+         */
         switch (this.calendar.getWeather()) {
             case CLOUDY:
                 this.growthLevel += this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()* 2;
@@ -102,10 +108,16 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
       }
     
       public int getDaysToHarvest() {
+        /*
+         * Returns the plant's remaining days until harvest
+         */
         return this.daysToHarvest;
       }
 
       public PlantLife getLifeStage(){
+        /*
+         * Returns the plant's life stage
+         */
         return this.lifeStage;
       }
 

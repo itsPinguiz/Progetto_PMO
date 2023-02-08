@@ -29,6 +29,9 @@ public class PlantChunk extends LandAbstract implements Chunk{
     //methods
     @Override
     public void update(){
+        /*
+         *  Grows the plant and updates the chunk's status
+         */
         if (this.plant != null){
             this.plant.grow();
             this.waterLevel -= 5;
@@ -76,10 +79,16 @@ public class PlantChunk extends LandAbstract implements Chunk{
     }
 
     public float getWaterLevel(){
+        /*
+         * Returns the chunk's water level
+         */
         return this.waterLevel;
     }
 
     public float getFertilizationLevel(){
+        /*
+         * Returns the chunk's fertilization level
+         */
         return this.waterLevel;
     }
 
