@@ -1,29 +1,15 @@
 package Animal;
 
+import Item.ItemType;
+
 public class Pig extends AnimalAbstract {
 
-    @Override
-    public int getHunger() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getLife() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public String getAnimalType() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public int getProducts() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+	Pig(){
+	       super();
+	       super.type = ItemType.Animals.PIG;
+	       super.hunger = 0;
+	       super.nProduct = 0;
+	       super.typeProduct.add(ItemType.Products.MEAT);
+	    }
     
 }

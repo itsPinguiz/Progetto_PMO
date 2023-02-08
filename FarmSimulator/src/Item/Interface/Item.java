@@ -1,12 +1,14 @@
 package Item.Interface;
 
+import Item.ItemType;
+
 public abstract class Item {
-    protected String type;
+    protected ItemType type;
     protected int status;
     protected int price;
     protected int number;
 
-    public String getType(){
+    public ItemType getType(){
         return this.type;
     }
     public int getStatus(){
