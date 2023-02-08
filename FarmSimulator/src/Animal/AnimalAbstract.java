@@ -7,7 +7,7 @@ import Calendar.Calendar;
 import Item.ItemType;
 import Item.Interface.Item;
 
-public abstract class AnimalAbstract implements AnimaliInterface {
+public abstract class AnimalAbstract implements AnimalInterface {
     
     protected int life;
     protected int hunger;
