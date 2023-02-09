@@ -3,7 +3,6 @@ package Actors.Actions;
 import java.util.HashSet;
 
 import Place.Place;
-import Place.Land.*;
 
 public class PlaceActions extends ActionsManager{
     //TODO Replace Object with the right class

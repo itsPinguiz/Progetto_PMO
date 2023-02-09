@@ -1,9 +1,10 @@
 package Place.Land;
 
+import java.util.HashSet;
 import java.util.Random;
 
 import Actors.Actions.PlaceActions;
-import Calendar.Calendar.Weather;
+import Actors.Actions.ActionsManager.Action;
 import Plants.PlantAbstract;
 
 
@@ -111,5 +112,15 @@ public class PlantChunk extends LandAbstract implements Chunk{
          * Returns the planted plant
          */
         return this.plant;
+    }
+
+    public void resetActions(){
+        /*
+         * Resets plantChunk's actions
+         */
+        this.getActions().resetActions();
+        this.getActions().updateActions( new HashSet<>(){{
+                                        add(Action.PLOW);
+                                        }}, true);
     }
 }

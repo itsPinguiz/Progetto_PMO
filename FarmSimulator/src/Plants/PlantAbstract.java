@@ -29,6 +29,7 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
 
     protected PlantAbstract(PlantChunk c){
         super.status = 0;
+        super.price = 2;
         this.daysToHarvest = random.nextInt(10) + 1;
         this.chunk = c;
     }

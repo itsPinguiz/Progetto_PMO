@@ -2,9 +2,6 @@ package Actors.Actions;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import Actors.Person.Person;
-
 // DESIGN PATTERN MEDIATOR
 
 public abstract class ActionsManager implements Actions{
@@ -55,6 +52,10 @@ public abstract class ActionsManager implements Actions{
          */
         return this.availableActions;
     }  
+
+    public void resetActions(){
+        this.availableActions = null;
+    }
 
     
 }

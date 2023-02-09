@@ -119,9 +119,10 @@ public class PlayerActions extends ActionsManager{
         PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
 
         // add plant to the land 
-        if ( f.getInventory().get(Game.GameData.firstIndex) instanceof PlantAbstract and ){
+        // check if the farmer has a seed and the chunk is plowed
+        if ( f.getInventory().get(Game.GameData.firstIndex) instanceof PlantAbstract && c.getDirtStatus()){ 
             c.setPlant((PlantAbstract)f.getInventory().get(Game.GameData.firstIndex));
-            // remove from inventory
+            // remove seed from inventory
             f.removeItem(Game.GameData.firstIndex);
             // add new possible actions
             c.getActions().updateActions(new HashSet<>(){{
@@ -191,58 +192,59 @@ public class PlayerActions extends ActionsManager{
         
         // remove plant
         ((PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex)).setPlant(null);
+        c.resetActions();
     }
 
     public void water_all(){
         /*
          * Method to water all plants
          */
-        /*
+        Farmer f = (Farmer)this.person;
+
         Game.GameData.firstIndex = 0;
-        for (ChunkPlantLand chunk : this.person.getPlace().getElements()){
-            this.person.getActions().executeAction(water);
+        for (PlantChunk chunk : ((PlantLand)(f.getPlace())).getChunks()){
+            f.getActions().executeAction(Action.WATER);
             Game.GameData.firstIndex++;
         }
-         */
     }
 
     public void fertilize_all(){
         /*
          * Method to fertilize all plants
          */
-        /*
+        Farmer f = (Farmer)this.person;
+
         Game.GameData.firstIndex = 0;
-        for (ChunkPlantLand chunk : this.person.getPlace().getElements()){
-            this.person.getActions().executeAction(fertilize);
+        for (PlantChunk chunk : ((PlantLand)(f.getPlace())).getChunks()){
+            f.getActions().executeAction(Action.FERTILIZE);
             Game.GameData.firstIndex++;
         }
-        */
     }
 
     public void harvest_all(){
         /*
          * Method to harvest all plants
          */
-        /*
+        Farmer f = (Farmer)this.person;
+
         Game.GameData.firstIndex = 0;
-        for (ChunkPlantLand chunk : this.person.getPlace().getElements()){
-            this.person.getActions().executeAction(harvest);
+        for (PlantChunk chunk : ((PlantLand)(f.getPlace())).getChunks()){
+            f.getActions().executeAction(Action.HARVEST);
             Game.GameData.firstIndex++;
         }
-        */
     }
 
     public void plow_all(){
         /*
          * Method to plow dirt
          */
-        /*
+        Farmer f = (Farmer)this.person;
+
         Game.GameData.firstIndex = 0;
-        for (ChunkPlantLand chunk : this.person.getPlace().getElements()){
-            this.person.getActions().executeAction(plow);
+        for (PlantChunk chunk : ((PlantLand)(f.getPlace())).getChunks()){
+            f.getActions().executeAction(Action.PLOW);
             Game.GameData.firstIndex++;
         }
-        */
     }
 
     public void buy(){
