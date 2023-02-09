@@ -7,7 +7,8 @@ public class Carrot extends PlantAbstract {
 
     Carrot(){
         super(null);
-        //TODO type
+        super.type = ItemType.Plants.CARROT;
+        super.price = 5;
         //TODO products
     }
 

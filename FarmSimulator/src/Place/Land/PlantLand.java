@@ -1,6 +1,8 @@
 package Place.Land;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import Actors.Actions.PlaceActions;
 import Place.Places;
@@ -14,7 +16,11 @@ public class PlantLand extends LandAbstract{
     // constructor
     public PlantLand(){
         this.type = Places.PLANT_LAND;
-        this.chunks = new ArrayList<>();
+        this.chunks = new ArrayList<>(
+            IntStream.range(0, 10)
+                    .mapToObj(i -> new PlantChunk(null))
+                    .collect(Collectors.toList())
+        );
         this.actions = new PlaceActions(this);
     }
 

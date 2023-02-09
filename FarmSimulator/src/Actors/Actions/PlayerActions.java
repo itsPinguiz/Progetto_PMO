@@ -43,7 +43,7 @@ public class PlayerActions extends ActionsManager{
         // find the method and execute it
         if (this.availableActions.contains(s)){
             try {
-            this.getClass().getMethod(s.name()).invoke(null);
+            this.getClass().getMethod(s.name().toLowerCase()).invoke(null);
             System.out.println(s + " executed.");
             } catch (Exception e) {
                 System.out.println("Wasn't able to execute action due to " + e);
@@ -116,20 +116,19 @@ public class PlayerActions extends ActionsManager{
          * Method to plant a plant
          */
         Farmer f = (Farmer)this.person;
-        PlantLand p = (PlantLand)this.person.getPlace();
+        PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
 
         // add plant to the land 
-        if ( f.getInventory().get(Game.GameData.firstIndex) instanceof PlantAbstract){
-            p.getChunks().get(Game.GameData.secondIndex).setPlant((PlantAbstract)f.getInventory().get(Game.GameData.firstIndex));
+        if ( f.getInventory().get(Game.GameData.firstIndex) instanceof PlantAbstract and ){
+            c.setPlant((PlantAbstract)f.getInventory().get(Game.GameData.firstIndex));
             // remove from inventory
             f.removeItem(Game.GameData.firstIndex);
             // add new possible actions
-            p.getActions().updateActions(new HashSet<>(){{
+            c.getActions().updateActions(new HashSet<>(){{
                 add(Action.WATER);
                 add(Action.FERTILIZE);
                 }}, true);
         }                                                         
-        //TODO ONCE THE PLANT HAS GROWN, HARVEST WILL BE ADDED TO ACTIONS
     }
 
     public void water(){

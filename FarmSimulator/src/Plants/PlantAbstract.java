@@ -10,8 +10,6 @@ import Item.Interface.Item;
 import Place.Land.PlantChunk;
 
 public abstract class PlantAbstract extends Item implements PlantInteface{
-    // ITEM STATUS COULD BE USED AS GROWTHLEVEL
-    private double growthLevel;
     private int daysToHarvest;
     private PlantLife lifeStage;
     private Random random = new Random();
@@ -30,7 +28,7 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
     }
 
     protected PlantAbstract(PlantChunk c){
-        this.growthLevel = 0;
+        super.status = 0;
         this.daysToHarvest = random.nextInt(10) + 1;
         this.chunk = c;
     }
@@ -63,13 +61,13 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
         /*
          * Changes life stage if needed
          */
-        if (this.growthLevel > 20){
+        if (super.status > 20){
             this.lifeStage = PlantLife.SPROUT;
-        } else if (this.growthLevel > 50){
+        } else if (super.status > 50){
             this.lifeStage = PlantLife.SMALL_PLANT;
-        } else if (this.growthLevel > 80){
+        } else if (super.status > 80){
             this.lifeStage = PlantLife.ADULT_PLANT;
-        } else if (this.growthLevel == 100){
+        } else if (super.status == 100){
             this.lifeStage = PlantLife.HARVESTABLE;
             
             this.chunk.getActions().updateActions(new HashSet<>(){{
@@ -85,21 +83,21 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
          */
         switch (this.calendar.getWeather()) {
             case CLOUDY:
-                this.growthLevel += this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()* 2;
+                super.status += this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()* 2;
                 break;
             case RAINY:
-                this.growthLevel += (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel());
+                super.status += (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel());
                 break;
             case SNOWY:
-                this.growthLevel += (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()) / 2;
+                super.status += (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()) / 2;
                 break;       
             default:
-                this.growthLevel += this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel();
+                super.status += this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel();
                 break;
         }
 
-        if (this.growthLevel >= this.daysToHarvest * 10) {
-          this.growthLevel = this.daysToHarvest * 10;
+        if (super.status >= this.daysToHarvest * 10) {
+          super.status = this.daysToHarvest * 10;
         }
 
         this.checklifeStage();
@@ -132,6 +130,6 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
         /*
          * Returns plant life
          */
-        return this.growthLevel;
+        return super.status;
     }
 }
