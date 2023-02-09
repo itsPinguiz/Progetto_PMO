@@ -1,10 +1,15 @@
 package Actors.Person;
 
 import java.util.ArrayList;
+
+import javax.swing.text.DefaultEditorKit.CopyAction;
+
 import Actors.Actions.PlayerActions;
 import Item.ItemCreator;
 import Item.ItemType;
 import Item.Interface.Item;
+import Main.Game;
+import Main.Game.GameData;
 
 /**
  * Farmer person implementation
@@ -59,7 +64,29 @@ public class Farmer extends PersonAbstract{
 		}
     	
     	return found;
-
     }
+    
+    public Item getItem(int itemRequest) {
+    	
+    	Item copyItem = null;
+    	
+    	if((this.inventory.get(GameData.secondIndex).getNumber()) - itemRequest <= 0 ) {
+    		copyItem =  inventory.get(GameData.secondIndex);
+    	}
+    	else {
+    		try {
+    			copyItem = (Item)(inventory.get(GameData.secondIndex).clone());
+    			copyItem.setNumber(itemRequest);
+    			inventory.get(GameData.secondIndex).setNumber(inventory.get(GameData.secondIndex).getNumber() - itemRequest);
+    			
+			} catch (CloneNotSupportedException e) {
+				System.err.println(e);
+			}
+		}
+    	
+    	return copyItem;
+    	
+    }
+    
 
 }
