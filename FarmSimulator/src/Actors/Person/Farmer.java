@@ -3,6 +3,7 @@ package Actors.Person;
 import java.util.ArrayList;
 import Actors.Actions.PlayerActions;
 import Item.ItemCreator;
+import Item.ItemType;
 import Item.Interface.Item;
 
 /**
@@ -48,12 +49,12 @@ public class Farmer extends PersonAbstract{
         }
     }
 
-    public int searchItem(Item itemtofind){
+    public int searchItem(ItemType itemtofind){
     	
     	int found = -1;
     	
     	for (Item item : inventory) {
-    		if(item == itemtofind)
+    		if(item.getType() == itemtofind)
     			found = inventory.indexOf(item);
 		}
     	

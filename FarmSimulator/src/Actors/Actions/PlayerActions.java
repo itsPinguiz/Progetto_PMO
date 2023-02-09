@@ -6,6 +6,7 @@ import java.util.List;
 import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
+import Item.ItemType;
 import Item.Interface.Item;
 import Main.Game;
 import Place.Places;
@@ -138,8 +139,12 @@ public class PlayerActions extends ActionsManager{
          */
         Farmer f = (Farmer)this.person;
         PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
-        // increase water level
-        c.setWaterLevel(WATERING_INDEX);
+
+        if (f.searchItem(ItemType.Tools.WATERINGCAN) != -1){
+            // increase water level
+            c.setWaterLevel(WATERING_INDEX);
+        }
+        
         // TODO IF THE FARMER HAS WATERING HOSE IN HIS INVENTORY
     }
 
