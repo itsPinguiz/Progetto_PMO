@@ -2,7 +2,7 @@ package Item.Interface;
 
 import Item.ItemType;
 
-public abstract class Item {
+public abstract class Item implements Cloneable{
 	
     protected ItemType type;
     protected double status;
@@ -21,4 +21,17 @@ public abstract class Item {
     public int getNumber(){
         return this.number;
     }
+    
+    public void useItem() {
+    	this.status--;
+    }
+    
+    public void setNumber(int newNumber) {
+    	this.number = newNumber;
+    }
+    
+    public Object clone() throws CloneNotSupportedException{
+    	return super.clone();
+    }
+    
 }
