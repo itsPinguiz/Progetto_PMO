@@ -48,10 +48,17 @@ public class Farmer extends PersonAbstract{
         }
     }
 
-   // public int searchItem(Item itemtofind){
+    public int searchItem(Item itemtofind){
+    	
+    	int found = -1;
+    	
+    	for (Item item : inventory) {
+    		if(item == itemtofind)
+    			found = inventory.indexOf(item);
+		}
+    	
+    	return found;
 
-
-        
-    //}
+    }
 
 }
