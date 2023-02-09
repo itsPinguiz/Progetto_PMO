@@ -20,7 +20,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
      //method for changing hunger
      public void setHunger(){
         //check if life == 0
-        this.hunger = (1/super.status)*c.getDay();
+        this.hunger = (int)((1/super.status)*c.getDay());
     }
 
     //method for changing life 

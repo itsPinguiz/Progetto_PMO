@@ -3,15 +3,16 @@ package Item.Interface;
 import Item.ItemType;
 
 public abstract class Item {
+	
     protected ItemType type;
-    protected int status;
+    protected double status;
     protected int price;
     protected int number;
 
     public ItemType getType(){
         return this.type;
     }
-    public int getStatus(){
+    public double getStatus(){
         return this.status;
     }
     public int getPrice(){
