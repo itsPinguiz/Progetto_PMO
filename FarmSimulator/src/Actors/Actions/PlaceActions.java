@@ -5,7 +5,6 @@ import java.util.HashSet;
 import Place.Place;
 
 public class PlaceActions extends ActionsManager{
-    //TODO Replace Object with the right class
     protected Place place; // place where the action take place
 
     public PlaceActions(Place plantLand){
