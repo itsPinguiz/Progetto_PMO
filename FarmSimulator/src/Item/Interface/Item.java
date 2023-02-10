@@ -8,6 +8,7 @@ public abstract class Item implements Cloneable{
     protected double status;
     protected int price;
     protected int number;
+    protected int maxNumber;
 
     public ItemType getType(){
         return this.type;
@@ -24,6 +25,10 @@ public abstract class Item implements Cloneable{
     
     public void useItem() {
     	this.status--;
+    }
+    
+    public int getMaxNumber() {
+    	return this.maxNumber;
     }
     
     public void setNumber(int newNumber) {

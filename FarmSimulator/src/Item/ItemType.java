@@ -21,14 +21,17 @@ public interface ItemType {
 		MEAT,
 		MILK,
 		WOOL,
-		FERTILIZER,
-		EGGS;
+		EGGS;	
 	}
 	    
 	public enum Tools implements ItemType{
 		HOE,
 		SCISSORS,
 		SICKLE,
+		FERTILIZER,
+		/*
+		 * TODO realizzare la classe fertilizer poiché adesso è uno strumento e non è più solo un prodotto.
+		 */
 		WATERINGCAN;
 		
 		public enum Material{

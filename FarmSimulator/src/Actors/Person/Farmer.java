@@ -1,5 +1,6 @@
 package Actors.Person;
 
+import java.awt.font.TextHitInfo;
 import java.util.ArrayList;
 
 import javax.swing.text.DefaultEditorKit.CopyAction;
@@ -44,14 +45,34 @@ public class Farmer extends PersonAbstract{
     }
 
     public void addItem(Item newTool){
-        if(this.inventory.size() < MAX_INVENTORY_SIZE){
-            this.inventory.add(newTool);
-            System.out.println("\n" + newTool.getType() +
-                               " has been added in your inventory.");
-        }
-        else{
-            System.out.println("\nThere's not enough space in your inventory, drop something to make space.");
-        }
+    	
+    	int check = this.searchItem(newTool.getType()); 
+    	
+    	if(check != -1) {
+    		
+    		if((this.inventory.get(check).getNumber() + newTool.getNumber()) > this.inventory.get(check).getMaxNumber()) {
+    			newTool.setNumber(this.inventory.get(check).getMaxNumber() - this.inventory.get(check).getNumber());
+    			this.inventory.get(check).setNumber(this.inventory.get(check).getMaxNumber());
+					
+    		}
+    		
+			else {
+				this.inventory.get(check).setNumber(this.inventory.get(check).getNumber() + newTool.getNumber());
+				
+			}	
+    		
+    		
+    	}
+    	
+    	else if(this.inventory.size() < MAX_INVENTORY_SIZE){
+                this.inventory.add(newTool);
+                System.out.println("\n" + newTool.getType() +
+                                   " has been added in your inventory.");
+            }
+            else{
+                System.out.println("\nThere's not enough space in your inventory, drop something to make space.");
+            }
+    
     }
 
     public int searchItem(ItemType itemtofind){
@@ -70,14 +91,14 @@ public class Farmer extends PersonAbstract{
     	
     	Item copyItem = null;
     	
-    	if((this.inventory.get(GameData.secondIndex).getNumber()) - itemRequest <= 0 ) {
-    		copyItem =  inventory.get(GameData.secondIndex);
+    	if((this.inventory.get(GameData.firstIndex).getNumber()) - itemRequest <= 0 ) {
+    		copyItem =  this.inventory.get(GameData.firstIndex);
     	}
     	else {
     		try {
-    			copyItem = (Item)(inventory.get(GameData.secondIndex).clone());
+    			copyItem = (Item)(inventory.get(GameData.firstIndex).clone());
     			copyItem.setNumber(itemRequest);
-    			inventory.get(GameData.secondIndex).setNumber(inventory.get(GameData.secondIndex).getNumber() - itemRequest);
+    			inventory.get(GameData.firstIndex).setNumber(inventory.get(GameData.firstIndex).getNumber() - itemRequest);
     			
 			} catch (CloneNotSupportedException e) {
 				System.err.println(e);

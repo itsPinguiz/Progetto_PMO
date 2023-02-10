@@ -36,4 +36,10 @@ public class CustomExceptions {
             super("Cannot perform action since you have no seed selected in your inventory.");
         }   
     }
+    
+    public static class NoProductFoundException extends Exception {
+        public NoProductFoundException(){
+            super("Cannot perform action since this product doesn't exist.");
+        }   
+    }
 }
