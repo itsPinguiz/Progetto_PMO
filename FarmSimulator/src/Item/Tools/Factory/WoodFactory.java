@@ -1,8 +1,15 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Item.Tools.Factory;
 
 import Item.Tools.ConcreteTool.WoodTool.*;
 import Item.Tools.Interface.AbstractTool;
 
+/*******************
+ * WOODFACTORY CLASS
+ ******************/
 public class WoodFactory implements ToolFactory {
     
     public AbstractTool createHoe(){

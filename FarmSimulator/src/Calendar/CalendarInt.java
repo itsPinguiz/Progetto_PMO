@@ -1,8 +1,15 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Calendar;
 
 import Calendar.Calendar.Seasons;
 import Calendar.Calendar.Weather;
 
+/********************
+ * CALENDAR INTERFACE
+ *******************/
 public interface CalendarInt {
     /**
      * Methods for days

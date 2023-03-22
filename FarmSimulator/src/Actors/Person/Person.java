@@ -1,11 +1,15 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Actors.Person;
 
 import Actors.Actions.PlayerActions;
 import Place.Place;
 
-/**
- * Common interface for all people
- */
+/*********************************
+ * COMMON INTERFACE FOR ALL PEOPLE
+ ********************************/
 public interface Person{
 
     PlayerActions getActions();

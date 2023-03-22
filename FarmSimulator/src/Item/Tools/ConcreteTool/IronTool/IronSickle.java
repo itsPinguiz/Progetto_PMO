@@ -1,9 +1,16 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Item.Tools.ConcreteTool.IronTool;
 
 import Item.ItemType;
 import Item.ItemType.Tools.Material;
 import Item.Tools.Interface.AbstractTool;
 
+/******************
+ * IRONSICKLE CLASS
+ *****************/
 public class IronSickle extends AbstractTool{
    
     public IronSickle(){

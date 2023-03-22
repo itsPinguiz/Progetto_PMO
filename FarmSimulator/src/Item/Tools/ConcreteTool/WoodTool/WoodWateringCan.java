@@ -1,9 +1,16 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Item.Tools.ConcreteTool.WoodTool;
 
 import Item.ItemType;
 import Item.ItemType.Tools.Material;
 import Item.Tools.Interface.AbstractTool;
 
+/***********************
+ * WOODWATERINGCAN CLASS
+ **********************/
 public class WoodWateringCan extends AbstractTool {
     
     public WoodWateringCan(){

@@ -1,8 +1,15 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Actors.Person;
 
 import Actors.Actions.PlayerActions;
 import Place.Place;
 
+/*****************
+ * PERSON ABSTRACT
+ ****************/
 public abstract class PersonAbstract implements Person {
     
     protected Place place;

@@ -1,9 +1,16 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Item.Tools.ConcreteTool.IronTool;
 
 import Item.ItemType;
 import Item.ItemType.Tools.Material;
 import Item.Tools.Interface.AbstractTool;
 
+/***************
+ * IRONHOE CLASS
+ **************/
 public class IronHoe extends AbstractTool {
     
     public IronHoe(){

@@ -1,10 +1,14 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Actors.Person;
 
 import Actors.Actions.PlayerActions;
 
-/**
- * Landlord person implementation
- */
+/********************************
+ * LANDLORD PERSON IMPLEMENTATION
+ *******************************/
 public class Landlord extends PersonAbstract {
     
     /**
