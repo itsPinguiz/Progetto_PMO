@@ -1,5 +1,12 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Item;
 
+/***********************
+ * INTERFACE OF ITEMTYPE
+ **********************/
 public interface ItemType {
 
 	public enum Animals implements ItemType{

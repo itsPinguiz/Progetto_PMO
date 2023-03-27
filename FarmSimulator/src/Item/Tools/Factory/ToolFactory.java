@@ -1,10 +1,14 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Item.Tools.Factory;
 
 import Item.Tools.Interface.AbstractTool;
 
-/**
- * Abstract factory method
- */
+/*************************
+ * ABSTRACT FACTORY METHOD
+ ************************/
 
 public interface ToolFactory {
     AbstractTool createHoe();

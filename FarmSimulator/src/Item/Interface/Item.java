@@ -1,7 +1,14 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Item.Interface;
 
 import Item.ItemType;
 
+/****************
+ * ITEM INTERFACE
+ ***************/
 public abstract class Item implements Cloneable{
 	
     protected ItemType type;

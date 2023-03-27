@@ -1,3 +1,7 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Item.Tools.Interface;
 
 import Item.Interface.Item;

@@ -1,20 +1,19 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Actors.Person;
 
-import java.awt.font.TextHitInfo;
 import java.util.ArrayList;
-
-import javax.swing.text.DefaultEditorKit.CopyAction;
-
 import Actors.Actions.PlayerActions;
 import Item.ItemCreator;
 import Item.ItemType;
 import Item.Interface.Item;
-import Main.Game;
 import Main.Game.GameData;
 
-/**
- * Farmer person implementation
- */
+/******************************
+ * FARMER PERSON IMPLEMENTATION
+ *****************************/
 public class Farmer extends PersonAbstract{
     
     /**

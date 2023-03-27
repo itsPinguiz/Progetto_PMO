@@ -1,3 +1,7 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Animal;
 
 import java.util.ArrayList;
@@ -5,6 +9,9 @@ import Calendar.Calendar;
 import Item.ItemType;
 import Item.Interface.Item;
 
+/*****************
+ * ANIMAL ABSTRACT
+ ****************/
 public abstract class AnimalAbstract extends Item implements AnimalInterface {
     
     protected int hunger;

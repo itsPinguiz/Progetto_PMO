@@ -1,8 +1,15 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Calendar;
 
 import java.lang.Math;
 import java.util.ArrayList;
 
+/****************
+ * CALENDAR CLASS
+ ***************/
 public class Calendar implements CalendarInt {
 
     public enum Seasons{

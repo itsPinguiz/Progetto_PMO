@@ -1,7 +1,14 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Animal;
 
 import Item.ItemType;
 
+/***************
+ * CHICKEN CLASS
+ **************/
 public class Chicken extends AnimalAbstract{
     //add age and modify hunger and life chaining during time get.Day-age of animal
     //constructor

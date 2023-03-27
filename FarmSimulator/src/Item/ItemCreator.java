@@ -1,3 +1,7 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Item;
 
 import java.util.ArrayList;
@@ -8,6 +12,9 @@ import Item.Tools.Factory.ToolFactory;
 import Item.Tools.Factory.WoodFactory;
 import Item.Tools.Interface.AbstractTool;
 
+/*******************
+ * ITEMCREATOR CLASS
+ ******************/
 public class ItemCreator{
 
     private final int MAX_INVENTORY_SIZE = 4;

@@ -1,7 +1,14 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Animal;
 
 import Item.ItemType;
 
+/***********
+ * COW CLASS
+ **********/
 public class Cow extends AnimalAbstract {
 
 	Cow(){

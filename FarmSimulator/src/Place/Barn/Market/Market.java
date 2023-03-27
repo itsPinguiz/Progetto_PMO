@@ -1,9 +1,16 @@
+/********************
+ * IMPORT AND PACKAGE
+ *******************/
+
 package Place.Barn.Market;
 
 import java.util.ArrayList;
 import Item.ItemCreator;
 import Item.Interface.Item;
 
+/**************
+ * MARKET CLASS
+ *************/
 public class Market implements MarketInt{
     
     private final int MAX_SHOP_LENGTH = 10;
