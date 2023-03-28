@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Actors.Person.Farmer;
 import Actors.Person.Landlord;
+import Actors.Person.Person;
 import Calendar.Calendar;
 import Place.Place;
 import Place.Barn.Barn;
@@ -26,6 +27,7 @@ Variation of the seasons that influence the weather.
 public class Game {
     private Farmer farmer;
     private Landlord landlord;
+    private Person selectedActor;
     private Calendar calendar;
 
     public Game(){
@@ -39,6 +41,7 @@ public class Game {
                 add(new ArrayList<>()); // lands
             }
         };
+        this.selectedActor = this.farmer;
     }
 
     public static class GameData
@@ -54,5 +57,21 @@ public class Game {
 
         GameData.map.get(2).forEach(place -> { LandAbstract land = (LandAbstract) place;
                                                       land.update();});
+    }
+
+    public void changePerson(){
+        if (this.selectedActor == this.farmer){
+            this.selectedActor = this.landlord;
+        }else{
+            this.selectedActor = this.farmer;
+        }
+    }
+
+    public Place getPersonPlace(){
+        return this.selectedActor.getPlace();
+    }
+
+    public Person getSelectedPerson(){
+        return this.selectedActor;
     }
 }

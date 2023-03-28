@@ -6,16 +6,18 @@ import java.util.Random;
 
 import Actors.Actions.ActionsManager.Action;
 import Calendar.Calendar;
+import Item.ItemType;
 import Item.Interface.Item;
 import Place.Land.PlantChunk;
 
 public abstract class PlantAbstract extends Item implements PlantInteface{
     private int daysToHarvest;
     private PlantLife lifeStage;
-    private Random random = new Random();
+    protected ArrayList<Item> products; 
+
     private PlantChunk chunk;
-    protected ArrayList<Item> products;
     protected Calendar calendar = Calendar.getInstance();
+    private Random random = new Random();
 
     public enum PlantLife {
         // plant life cycle state
@@ -120,11 +122,11 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
         return this.lifeStage;
       }
 
-      public String getPlantType() {
+      public ItemType getPlantType() {
         /*
          * Returns the species of the plant 
          */
-        return null;
+        return this.type;
     }
 
     public double getGrowthLevel() {

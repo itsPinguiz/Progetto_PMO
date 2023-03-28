@@ -83,10 +83,11 @@ public class MainFrame extends JFrame {
     return storageScreen;
   }
   
-  public static void main(String[] args) {
+  
+  /*public static void main(String[] args) {
     MainFrame frame = new MainFrame();
     frame.setVisible(true);
-    }
+    }*/
 }
    
 

@@ -1,5 +1,7 @@
 package Place.Land;
 
+import java.util.ArrayList;
+
 import Calendar.Calendar;
 import Place.Place;
 
@@ -18,5 +20,12 @@ public abstract class LandAbstract extends Place implements LandInteface {
 
     public void update(){
 
+    }
+
+    public <T> ArrayList<T> getElements(){
+        /*
+         * Returns the elements present in the land
+         */
+        return null;
     }
 }

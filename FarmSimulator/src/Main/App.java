@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Scanner;
+import Main.CLI;
 
 import Progress.GameBackup;
 
@@ -22,15 +23,18 @@ public class App {
         } catch (IOException | InterruptedException ex) {}
     }
 
+    
     public static void menu(List<Serializable> actualObjects,GameBackup backup,String s ) throws Exception{
         /*
          * Menu to let user decide if to load an old save
          * or make a new one
-        */
+         */
         try (Scanner scanner = new Scanner(System.in)){
             int tries = 0;
-            while(true){
+            Boolean done = false;
+            while(!done){
                 try{
+                    
                     clrscr();
                     tries++;
                     System.out.printf("Select the options: \n[1] Create New Save\n[2] Load Old Save\n> ");  
@@ -45,10 +49,12 @@ public class App {
                     
                         s = (String)actualObjects.get(0); //test
                         System.out.println(s); //test
+                        done = true;
                         break;
                     } else if(n == 1) {
                         actualObjects.add(s); //test
                         backup.saveCurrent();
+                        done = true;
                         break;
                     }
                     
@@ -57,7 +63,16 @@ public class App {
                     if (tries == 10) throw e;
                 }
             }
+            scanner.close();
         } 
+        
+        /*
+         * Menu to play the game
+         */
     }
+    public static void main(String[] args) {
+        CLI inter = new CLI();
+        inter.userInput();
+     }
 }
 
