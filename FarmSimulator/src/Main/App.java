@@ -70,9 +70,9 @@ public class App {
          * Menu to play the game
          */
     }
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         CLI inter = new CLI();
         inter.userInput();
-     }
+     }*/
 }
 

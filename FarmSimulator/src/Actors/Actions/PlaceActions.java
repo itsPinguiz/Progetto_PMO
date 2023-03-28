@@ -3,6 +3,7 @@ package Actors.Actions;
 import java.util.HashSet;
 
 import Place.Place;
+import Place.Land.LandAbstract;
 
 public class PlaceActions extends ActionsManager{
     protected Place place; // place where the action take place
@@ -14,7 +15,7 @@ public class PlaceActions extends ActionsManager{
         super();
         this.place = plantLand;
 
-        switch (this.place.getType()) {
+        switch (((LandAbstract)(this.place)).getType()) {
             case PLANT_LAND: // Plant Land
                 super.availableActions = new HashSet<Action>(){{
                     add(Action.WATER_ALL);

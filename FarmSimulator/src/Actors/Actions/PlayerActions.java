@@ -10,6 +10,7 @@ import Exceptions.CustomExceptions.*;
 import Item.ItemType;
 import Item.Interface.Item;
 import Main.Game;
+import Place.Place;
 import Place.Places;
 import Place.Land.PlantChunk;
 import Place.Land.PlantLand;
@@ -58,9 +59,12 @@ public class PlayerActions extends ActionsManager{
          * Method to change actions when
          * an actors enters somewhere
          */
-        if (this.accessiblePlaces.contains(Game.GameData.map.get(Game.GameData.firstIndex).get(1).getType())){
+        Place place = Game.GameData.map.get(Game.GameData.firstIndex).get(0);
+        // TODO indexing to get the place is not working properly
+        if (this.accessiblePlaces.contains(place.getType())){
             if (person.getPlace() != null)
                 leave();
+            this.person.setPlace(place);
             this.person.getActions().updateActions(person.getPlace().getActions().getActions(), true);
         } else throw new PlaceNotAvailableException();
     }

@@ -82,9 +82,6 @@ public class CLI {
 
     // execute the command
     public void executeCommand(String command){
-        if (command.equals("CR")){
-            this.game.changePerson();
-        }
         if (command.equals("exit")){
             this.isRunning = false;
         }

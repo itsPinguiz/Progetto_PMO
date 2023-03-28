@@ -5,6 +5,7 @@ import java.util.Random;
 
 import Actors.Actions.PlaceActions;
 import Actors.Actions.ActionsManager.Action;
+import Place.Places;
 import Plants.PlantAbstract;
 
 
@@ -21,6 +22,7 @@ public class PlantChunk extends LandAbstract implements Chunk{
     // constructor
     PlantChunk(PlantAbstract plant){
         super();
+        super.type = Places.PLANT_CHUNK;
         this.plant = plant;
         this.actions = new PlaceActions(this);
         this.waterLevel = random.nextInt(10) + 1;

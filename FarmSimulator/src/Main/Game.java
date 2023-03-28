@@ -6,9 +6,12 @@ import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Calendar.Calendar;
+import Exceptions.CustomExceptions.PlaceNotAvailableException;
 import Place.Place;
 import Place.Barn.Barn;
+import Place.Land.AnimalLand;
 import Place.Land.LandAbstract;
+import Place.Land.PlantLand;
 
 /*
 The project consists in the implementation of a farm simulator.
@@ -38,10 +41,25 @@ public class Game {
         GameData.map = new ArrayList<>(){
             {
                 add(new ArrayList<>() {{add(new Barn());}}); // barn
-                add(new ArrayList<>()); // lands
+                add(new ArrayList<>(){
+                    {
+                        add(new PlantLand());
+                        add(new PlantLand());
+                        add(new AnimalLand());
+                        add(new AnimalLand());
+                    }
+                }); // lands
             }
         };
+
         this.selectedActor = this.farmer;
+        try {
+            GameData.firstIndex = 1;
+            this.selectedActor.getActions().enter();
+        } catch (PlaceNotAvailableException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public static class GameData
@@ -59,12 +77,8 @@ public class Game {
                                                       land.update();});
     }
 
-    public void changePerson(){
-        if (this.selectedActor == this.farmer){
-            this.selectedActor = this.landlord;
-        }else{
-            this.selectedActor = this.farmer;
-        }
+    public void setSelectedPerson(Person p){
+        this.selectedActor = p;
     }
 
     public Place getPersonPlace(){
@@ -73,5 +87,9 @@ public class Game {
 
     public Person getSelectedPerson(){
         return this.selectedActor;
+    }
+
+    public Person[] getPersons(){
+        return new Person[]{this.farmer, this.landlord};
     }
 }

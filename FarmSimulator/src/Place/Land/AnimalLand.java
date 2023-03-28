@@ -13,7 +13,7 @@ public class AnimalLand extends LandAbstract {
     private ArrayList<AnimalAbstract> elements;
 
     //constuctor
-    AnimalLand(){
+    public AnimalLand(){
         this.type = Places.ANIMAL_LAND;
         this.actions = new PlaceActions(this);
         this.elements = new ArrayList<>();
@@ -24,4 +24,8 @@ public class AnimalLand extends LandAbstract {
     public int getNumElements() {
         return elements.size();
     }    
+
+    public ArrayList<AnimalAbstract> getElements(){
+        return this.elements;
+    }
 }
