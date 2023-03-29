@@ -78,8 +78,6 @@ public class MainFrame extends JFrame {
     placeLabel = new JLabel("World");// Inizialmente impostato come World
     roleLabel = new JLabel("Agricoltore"); // Inizialmente impostato come Agricoltore
     placeLabel.setBorder(padding);
-
-    buttonPanel.setBackground(Color.RED);
     
     // Aggiungere gli ActionListener per i JMenuItem
     ActionListener roleListener = new ActionListener() {
@@ -145,7 +143,7 @@ public class MainFrame extends JFrame {
     worldPanel.setPreferredSize(new Dimension(800, 500));
     worldPanel.setBackground(Color.GREEN);
         
-    JPanel barn = new JPanel(new GridLayout(1, 1));
+    JPanel barn = new JPanel(new GridLayout(2, 1));
     JPanel land = new JPanel(new GridLayout(3, 3));
     
     for(Place i: GameData.map.get(1)){
@@ -157,6 +155,14 @@ public class MainFrame extends JFrame {
     worldPanel.add(barn);    
     
     return worldPanel;
+  }
+
+  // gestire azioni del bottone barn
+  private class BarnButtonListener implements ActionListener{
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      System.out.println("Barn button pressed");
+    }
   }
 
   // display animals when opening animal land else display chunks
