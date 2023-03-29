@@ -106,6 +106,12 @@ public class Farmer extends PersonAbstract{
     	return copyItem;
     	
     }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return "Farmer";
+    }
     
 
 }

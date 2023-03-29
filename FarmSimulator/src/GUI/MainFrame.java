@@ -6,6 +6,7 @@ import javax.swing.border.Border;
 import Actors.Actions.ActionsManager;
 import Actors.Actions.PlayerActions;
 import Animal.AnimalAbstract;
+import Exceptions.CustomExceptions.PlaceNotAvailableException;
 import Main.Game;
 import Place.Place;
 import Place.Land.AnimalLand;
@@ -38,6 +39,7 @@ public class MainFrame extends JFrame {
   private JMenuItem ownerItem;
   private JLabel roleLabel;
   private JLabel placeLabel;
+  private Timer placeLabelTimer;
   private Game game;
 
   // constructor
@@ -55,28 +57,30 @@ public class MainFrame extends JFrame {
     // add panels to main layout
     contentPane.add(this.createRolePanel());
     contentPane.add(this.createWorldPanel());
+     
+    updatePlaceLabel(this).start(); // start the timer
+  }
 
-    // set default role to farmer
-     this.setRoleActions("Agricoltore");
-
-     Timer timer = new Timer(100, new ActionListener() {
+  // create timer to update place label
+  private Timer updatePlaceLabel(JFrame frame){
+    placeLabelTimer = new Timer(100, new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
-          if (game.getSelectedPerson().getPlace().getType() != null){
+          if (game.getSelectedPerson().getPlace() != null){
               placeLabel.setText(game.getSelectedPerson().getPlace().getType().toString());
           } else {
               placeLabel.setText("World");
           }
-      }});
-      timer.start(); // start the timer
-      
-      // add a listener to the timer to stop it when the window is closed
-      addWindowListener(new WindowAdapter() {
-        @Override
-        public void windowClosing(WindowEvent e) {
-            timer.stop(); // Ferma il timer quando la finestra viene chiusa
-            dispose(); // Chiude la finestra
-        }
+    }});
+
+    // add a listener to the timer to stop it when the window is closed
+    frame.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+          placeLabelTimer.stop(); // Ferma il timer quando la finestra viene chiusa
+          dispose(); // Chiude la finestra
+      }
     });
+    return placeLabelTimer;
   }
 
   // Crea pannello di gestione ruolo
@@ -94,10 +98,10 @@ public class MainFrame extends JFrame {
     menuBar.setLayout(new BoxLayout(menuBar, BoxLayout.X_AXIS));
     buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     roleMenu = new JMenu("Ruolo");
-    farmerItem = new JMenuItem("Agricoltore");
-    ownerItem = new JMenuItem("Proprietario");
+    farmerItem = new JMenuItem(game.getPersons()[0].toString());
+    ownerItem = new JMenuItem(game.getPersons()[1].toString());
     placeLabel = new JLabel("World");// Inizialmente impostato come World
-    roleLabel = new JLabel("Agricoltore"); // Inizialmente impostato come Agricoltore
+    roleLabel = new JLabel(game.getSelectedPerson().toString()); // Inizialmente impostato come Agricoltore
     placeLabel.setBorder(padding);
 
     buttonPanel.setBackground(Color.RED);
@@ -124,20 +128,21 @@ public class MainFrame extends JFrame {
     menuBar.add(Box.createHorizontalGlue());
     menuBar.add(placeLabel);
     
-
-    
     // Impostare il layout del JPanel
     rolePanel.add(menuBar, BorderLayout.NORTH);
     rolePanel.add(buttonPanel, BorderLayout.CENTER);
+
+    // aggiorna i bottoni in base al ruolo selezionato di default
+    this.setRoleActions(this.game.getPersons()[0].toString());
 
     return rolePanel;
   }
 
   // Pannello Azioni Agricoltore
   private void setRoleActions(String role) {
-    if (role == "Agricoltore") {
+    if (role == game.getPersons()[0].toString()) {
       this.game.setSelectedPerson(this.game.getPersons()[0]);
-    } else if (role == "Proprietario") {
+    } else if (role == game.getPersons()[1].toString()) {
       this.game.setSelectedPerson(this.game.getPersons()[1]);
     }	
 
@@ -170,9 +175,19 @@ public class MainFrame extends JFrame {
     JPanel land = new JPanel(new GridLayout(3, 3));
     
     for(Place i: this.game.getMap().get(1)){
-      land.add(new JButton(i.getType().toString()));
-    }
-
+      JButton button = new JButton(i.getType().toString());
+      button.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+              try {
+                game.getSelectedPerson().getActions().enter(i);
+              } catch (PlaceNotAvailableException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+              };
+          }
+      });
+      land.add(button);
+  }
     barn.add(new JButton( this.game.getMap().get(0).get(0).getType().toString()));
     worldPanel.add(land);
     worldPanel.add(barn);    

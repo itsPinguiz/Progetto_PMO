@@ -33,4 +33,9 @@ public class Landlord extends PersonAbstract {
         this.balance += amount;
     }
 
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return "Landlord";
+    }
 }

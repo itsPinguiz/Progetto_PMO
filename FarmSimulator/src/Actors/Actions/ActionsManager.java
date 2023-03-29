@@ -18,20 +18,35 @@ public abstract class ActionsManager implements Actions{
         /*
          * All possible actions
          */
-        PLANT,
-        WATER,
-        FERTILIZE,
-        HARVEST,
-        PLOW,
-        WATER_ALL,
-        FERTILIZE_ALL,
-        HARVEST_ALL,
-        PLOW_ALL,
-        ADD_ANIMAL,
-        REMOVE_ANIMAL,
-        GET_ALL_RESOURCES,
-        GET_ITEM,
-        MOVE_ITEM
+        PLANT("Plant"),
+        WATER("Water"),
+        FERTILIZE("Fertilize"),
+        HARVEST("Harvest"),
+        PLOW("Plow"),
+        WATER_ALL("Water All"),
+        FERTILIZE_ALL("Fertilize All"),
+        HARVEST_ALL("Harvest All"),
+        PLOW_ALL("Plow All"),
+        ADD_ANIMAL("Add Animal"),
+        REMOVE_ANIMAL("Remove Animal"),
+        GET_ALL_RESOURCES("Get All Resources"),
+        GET_ITEM("Get Item"),
+        MOVE_ITEM("Move Item");
+
+        private String name;
+
+        Action(String name) {
+            this.name = name;
+        }
+    
+        public String getName() {
+            return name;
+        }
+    
+        @Override
+        public String toString() {
+            return getName();
+        }
     }
 
     public void updateActions(Set<Action> actions, boolean add) {
