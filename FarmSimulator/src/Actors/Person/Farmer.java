@@ -9,7 +9,6 @@ import Actors.Actions.PlayerActions;
 import Item.ItemCreator;
 import Item.ItemType;
 import Item.Interface.Item;
-import Main.Game.GameData;
 
 /******************************
  * FARMER PERSON IMPLEMENTATION
@@ -86,18 +85,18 @@ public class Farmer extends PersonAbstract{
     	return found;
     }
     
-    public Item getItem(int itemRequest) {
+    public Item getItem(int numItemReq, Item itemRequest) {
     	
     	Item copyItem = null;
     	
-    	if((this.inventory.get(GameData.firstIndex).getNumber()) - itemRequest <= 0 ) {
-    		copyItem =  this.inventory.get(GameData.firstIndex);
+    	if(this.inventory.get(this.searchItem(itemRequest.getType())).getNumber() - numItemReq <= 0 ) {
+    		copyItem =  this.inventory.get(this.searchItem(itemRequest.getType()));
     	}
     	else {
     		try {
-    			copyItem = (Item)(inventory.get(GameData.firstIndex).clone());
-    			copyItem.setNumber(itemRequest);
-    			inventory.get(GameData.firstIndex).setNumber(inventory.get(GameData.firstIndex).getNumber() - itemRequest);
+    			copyItem = (Item)(inventory.get(this.searchItem(itemRequest.getType())).clone());
+    			copyItem.setNumber(numItemReq);
+    			inventory.get(this.searchItem(itemRequest.getType())).setNumber(inventory.get(this.searchItem(itemRequest.getType())).getNumber() - numItemReq);
     			
 			} catch (CloneNotSupportedException e) {
 				System.err.println(e);
