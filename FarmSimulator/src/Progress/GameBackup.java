@@ -79,16 +79,13 @@ public class GameBackup implements Backup{
         this.classesNamesBackup = List.copyOf(Arrays.asList(this.savePath.list()));
     }
 
-    private List<Serializable> readFromFile(File f) throws Exception{
-        /*
-         * Reads specific file from
-         * saves folder
-         */
+    @SuppressWarnings("unchecked")
+    private List<Serializable> readFromFile(File f) throws Exception {
         FileInputStream fis = new FileInputStream(f);
         ObjectInputStream ois = new ObjectInputStream(fis);
-        this.classesBackup = (List)ois.readObject();
+        List<Serializable> classesBackup = (List<Serializable>) ois.readObject();
         ois.close();
-        return this.classesBackup;
-    }
+        return classesBackup;
+    }   
 }
 

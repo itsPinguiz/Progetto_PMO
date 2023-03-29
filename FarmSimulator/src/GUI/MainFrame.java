@@ -14,6 +14,7 @@ import Place.Land.PlantChunk;
 import Place.Land.LandAbstract;
 import Place.Land.PlantChunk;
 import Place.Places;
+import Main.Game.GameData;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -139,17 +140,19 @@ public class MainFrame extends JFrame {
   
   // Crea pannello di gestione mondo
   private JPanel createWorldPanel(){
+    
     worldPanel = new JPanel(new GridLayout(1, 2));
     worldPanel.setPreferredSize(new Dimension(800, 500));
     worldPanel.setBackground(Color.GREEN);
         
-    JPanel barn = new JPanel();
+    JPanel barn = new JPanel(new GridLayout(1, 1));
     JPanel land = new JPanel(new GridLayout(3, 3));
     
-    for (int i = 1; i <= 9; i++) {
-            JButton button = new JButton(String.valueOf(i)); // creazione del bottone con il testo numerico corrispondente
-            land.add(button); // aggiunta del bottone al pannello principale
-        }
+    for(Place i: GameData.map.get(1)){
+      land.add(new JButton(i.getType().toString()));
+    }
+
+    barn.add(new JButton(GameData.map.get(0).get(0).getType().toString()));
     worldPanel.add(land);
     worldPanel.add(barn);    
     
@@ -161,18 +164,18 @@ public class MainFrame extends JFrame {
     LandAbstract actualPlace = (LandAbstract)this.game.getSelectedPerson().getPlace();
 
     // create the panel that will contain the elements
-    JPanel insideLand = new JPanel(new GridLayout(1, 2));
+    JPanel insideLand = new JPanel(new GridLayout(3, 3));
     insideLand.setPreferredSize(new Dimension(800, 500));
     insideLand.setBackground(Color.GREEN);
 
     // depending on the type of the place, display the elements
     this.placeLabel.setText(actualPlace.getType().toString());
     if (actualPlace.getElements() != null){
-      if (actualPlace.getType() == Places.ANIMAL_LAND){
+      if (actualPlace.getType() == Places.ANIMAL_LAND){ // if it's an animal land
         for(AnimalAbstract animal : ((AnimalLand)(actualPlace)).getElements()){
           insideLand.add(new JButton(animal.getType().toString()));
         }
-      } else if (actualPlace.getType() == Places.PLANT_LAND){
+      } else if (actualPlace.getType() == Places.PLANT_LAND){ // if it's a plant land
         for(PlantChunk chunk : ((PlantLand)(actualPlace)).getElements()){
           insideLand.add(new JButton(chunk.getPlant().getType().toString()));
         }

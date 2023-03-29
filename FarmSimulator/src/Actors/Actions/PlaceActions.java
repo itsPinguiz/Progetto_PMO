@@ -15,7 +15,7 @@ public class PlaceActions extends ActionsManager{
         super();
         this.place = plantLand;
 
-        switch (((LandAbstract)(this.place)).getType()) {
+        switch (((this.place)).getType()) {
             case PLANT_LAND: // Plant Land
                 super.availableActions = new HashSet<Action>(){{
                     add(Action.WATER_ALL);

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Scanner;
-import Main.CLI;
 
 import Progress.GameBackup;
 

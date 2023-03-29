@@ -22,7 +22,7 @@ public abstract class LandAbstract extends Place implements LandInteface {
 
     }
 
-    public <T> ArrayList<T> getElements(){
+    public ArrayList<? extends Object> getElements(){
         /*
          * Returns the elements present in the land
          */

@@ -18,7 +18,8 @@ public class AnimalLand extends LandAbstract {
         this.actions = new PlaceActions(this);
         this.elements = new ArrayList<>();
     }
-
+    //TODO: add methods to add and remove animals
+    //TODO: set max animals
     //methods
     @Override
     public int getNumElements() {
