@@ -19,10 +19,6 @@ import Place.Places;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.*;
-
 
 //Interface Testing
 public class MainFrame extends JFrame {
@@ -39,7 +35,6 @@ public class MainFrame extends JFrame {
   private JMenuItem ownerItem;
   private JLabel roleLabel;
   private JLabel placeLabel;
-  private Timer placeLabelTimer;
   private Game game;
 
   // constructor
@@ -57,31 +52,10 @@ public class MainFrame extends JFrame {
     // add panels to main layout
     contentPane.add(this.createRolePanel());
     contentPane.add(this.createWorldPanel());
-     
-    updatePlaceLabel(this).start(); // start the timer
+
   }
 
-  // create timer to update place label
-  private Timer updatePlaceLabel(JFrame frame){
-    placeLabelTimer = new Timer(100, new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-          if (game.getSelectedPerson().getPlace() != null){
-              placeLabel.setText(game.getSelectedPerson().getPlace().getType().toString());
-          } else {
-              placeLabel.setText("World");
-          }
-    }});
-
-    // add a listener to the timer to stop it when the window is closed
-    frame.addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosing(WindowEvent e) {
-          placeLabelTimer.stop(); // Ferma il timer quando la finestra viene chiusa
-          dispose(); // Chiude la finestra
-      }
-    });
-    return placeLabelTimer;
-  }
+ 
 
   // Crea pannello di gestione ruolo
   private JPanel createRolePanel(){
@@ -157,7 +131,36 @@ public class MainFrame extends JFrame {
     buttonPanel.removeAll();
 
     for (ActionsManager.Action a : actions.getActions()){
-      buttonPanel.add(new JButton(a.toString()), constraints);
+      
+      if ( game.getSelectedPerson().getActions().getActionReqArgs(a) <=1){
+        JButton button = new JButton(a.toString());
+        button.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            System.out.println("Action " + a.toString() + " performed"); // TODO: rimuovere
+            game.getSelectedPerson().getActions().executeAction(a,game.getSelectedPerson().getPlace());
+          }
+        });
+        buttonPanel.add(button, constraints);
+      } else{
+        JToggleButton button = new JToggleButton(a.toString());
+         // Aggiungi un listener di mouse per rilevare le pressioni del pulsante
+         button.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+              JToggleButton button = (JToggleButton) e.getSource();
+              if (button.isSelected()) {
+                  System.out.println("Button is pressed");
+                  // aggiungere il codice da eseguire quando il pulsante viene premuto
+              } else {
+                  System.out.println("Button is released");
+                  // aggiungere il codice da eseguire quando il pulsante viene rilasciato
+              }
+          }
+         });
+        buttonPanel.add(button, constraints);
+      }
+
+        
     }
     // Aggiornare il pannello
     revalidate();
@@ -180,6 +183,12 @@ public class MainFrame extends JFrame {
           public void actionPerformed(ActionEvent e) {
               try {
                 game.getSelectedPerson().getActions().enter(i);
+                setRoleActions(game.getSelectedPerson().toString());
+                if (game.getSelectedPerson().getPlace() != null){
+                  placeLabel.setText(game.getSelectedPerson().getPlace().getType().toString());
+                } else {
+                  placeLabel.setText("World");
+          }
               } catch (PlaceNotAvailableException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();

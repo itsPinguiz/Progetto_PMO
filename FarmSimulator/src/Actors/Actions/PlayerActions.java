@@ -1,5 +1,8 @@
 package Actors.Actions;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,13 +52,59 @@ public class PlayerActions extends ActionsManager{
 
         // find the method and execute it
         try {
+            // ottiene tutti i metodi della classe MyClass
+            Method[] methods = PlayerActions.class.getDeclaredMethods();
+
+            // cerca il metodo desiderato
+            Method method = null;
+            for (Method m : methods) {
+               if (m.getName().equals(s.name().toLowerCase())) {
+                  method = m;
+                  break;
+               }
+            }
+   
+            if (method != null && this.availableActions.contains(s)) {
+               try {
+                method.invoke(argument);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            } else {
+               System.err.println("Action not found.");
+            }
+         } catch (SecurityException e) {
+            System.err.println("Security Error");
+         }
+      }
+
+    public int getActionReqArgs(Action s){
+        /*
+         * Method to get the number of arguments
+         * required for the action
+         */
+        int numParams = 0;
+        try {
             if (this.availableActions.contains(s)){
-            this.getClass().getMethod(s.name().toLowerCase()).invoke(null,argument);
-            System.out.println(s + " executed.");
+                Method[] methods = PlayerActions.class.getDeclaredMethods();
+
+                // cerca il metodo desiderato
+                Method method = null;
+                for (Method m : methods) {
+                   if (m.getName().equals(s.name().toLowerCase())) {
+                      method = m;
+                      break;
+                   }
+                }
+
+                if (method != null){
+                    numParams = method.getParameterCount();
+                }
             } else throw new ActionNotAvailableException();  
         } catch (Exception e) {
             System.out.print(e);
         }
+        return numParams;
     }
 
     public void enter(Place p) throws PlaceNotAvailableException {
@@ -177,7 +226,7 @@ public class PlayerActions extends ActionsManager{
          * Method to fertilize a plant
          */
         Farmer f = (Farmer)this.person;
-        //PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
+        System.out.println("Fertilize");
         
         //check if the farmer has the fertilizer
         if (this.damageItem(ItemType.Tools.HOE)){ //TODO change with fertilizer
@@ -225,6 +274,7 @@ public class PlayerActions extends ActionsManager{
         /*
          * Method to fertilize all plants
          */
+        System.out.println("Fertilize all");
         this.doAll(Action.FERTILIZE,p);
     }
 
