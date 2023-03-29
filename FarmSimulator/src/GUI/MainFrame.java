@@ -14,11 +14,12 @@ import Place.Land.PlantChunk;
 import Place.Land.LandAbstract;
 import Place.Land.PlantChunk;
 import Place.Places;
-import Main.Game.GameData;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.*;
 
 
@@ -39,6 +40,7 @@ public class MainFrame extends JFrame {
   private JLabel placeLabel;
   private Game game;
 
+  // constructor
   public MainFrame() {
     this.game = new Game();
     setTitle("Farming Simulator");
@@ -46,16 +48,35 @@ public class MainFrame extends JFrame {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setResizable(false);
 
-    // Impostazione del layout principale
+    // setup main layout
     Container contentPane = getContentPane();
     contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
     
-    // Aggiunta dei pannelli al contenitore principale
+    // add panels to main layout
     contentPane.add(this.createRolePanel());
     contentPane.add(this.createWorldPanel());
 
-    // Impostare il ruolo predefinito come Agricoltore
+    // set default role to farmer
      this.setRoleActions("Agricoltore");
+
+     Timer timer = new Timer(100, new ActionListener() {
+      public void actionPerformed(ActionEvent evt) {
+          if (game.getSelectedPerson().getPlace().getType() != null){
+              placeLabel.setText(game.getSelectedPerson().getPlace().getType().toString());
+          } else {
+              placeLabel.setText("World");
+          }
+      }});
+      timer.start(); // start the timer
+      
+      // add a listener to the timer to stop it when the window is closed
+      addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowClosing(WindowEvent e) {
+            timer.stop(); // Ferma il timer quando la finestra viene chiusa
+            dispose(); // Chiude la finestra
+        }
+    });
   }
 
   // Crea pannello di gestione ruolo
@@ -148,11 +169,11 @@ public class MainFrame extends JFrame {
     JPanel barn = new JPanel(new GridLayout(1, 1));
     JPanel land = new JPanel(new GridLayout(3, 3));
     
-    for(Place i: GameData.map.get(1)){
+    for(Place i: this.game.getMap().get(1)){
       land.add(new JButton(i.getType().toString()));
     }
 
-    barn.add(new JButton(GameData.map.get(0).get(0).getType().toString()));
+    barn.add(new JButton( this.game.getMap().get(0).get(0).getType().toString()));
     worldPanel.add(land);
     worldPanel.add(barn);    
     
@@ -189,6 +210,6 @@ public class MainFrame extends JFrame {
     MainFrame frame = new MainFrame();
     frame.setVisible(true);
     }
-}
+  }
    
 

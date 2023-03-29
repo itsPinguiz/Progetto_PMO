@@ -130,7 +130,7 @@ public class PlayerActions extends ActionsManager{
         if (seed instanceof PlantAbstract ){ 
             if(c.getDirtStatus()){
                 // add plant to the land 
-                c.setPlant((PlantAbstract)f.getItem(1));
+                c.setPlant((PlantAbstract)f.getItem(1,seed));
                 // add new possible actions
                 c.getActions().updateActions(new HashSet<>(){{
                     add(Action.WATER);
