@@ -57,14 +57,6 @@ public class Game {
         };
 
         this.selectedActor = this.farmer; // default selected actor
-
-        // TODO: Rimuovere questo codice momentaneo
-        try {
-            this.selectedActor.getActions().enter(this.map.get(1).get(0));
-        } catch (PlaceNotAvailableException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 
     public void update(){

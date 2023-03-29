@@ -22,10 +22,11 @@ import java.awt.event.ActionListener;
 
 //Interface Testing
 public class MainFrame extends JFrame {
+  // constants
+  final int MAX_HEIGHT = 600;
+  final int MAX_WIDTH = 800;
 
-  int MAX_HEIGHT = 600;
-  int MAX_WIDTH = 800;
-
+  // attributes
   private JMenuBar menuBar;
   private JPanel buttonPanel;
   private JPanel rolePanel;
@@ -52,22 +53,19 @@ public class MainFrame extends JFrame {
     // add panels to main layout
     contentPane.add(this.createRolePanel());
     contentPane.add(this.createWorldPanel());
-
   }
 
- 
-
-  // Crea pannello di gestione ruolo
+  // Create role panel
   private JPanel createRolePanel(){
-    // Creazione del pannello
+    // panel creation
     rolePanel = new JPanel(new BorderLayout());
     rolePanel.setPreferredSize(new Dimension(800, 100));
     rolePanel.setBackground(Color.RED);
 
-    // Creazione del bordo con padding a destra
+    // creation of the border for right padding
     Border padding = BorderFactory.createEmptyBorder(0, 0, 0, 5);
 
-    //Componenti aggiuntivi
+    // attribututes initialization
     menuBar = new JMenuBar();
     menuBar.setLayout(new BoxLayout(menuBar, BoxLayout.X_AXIS));
     buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -78,42 +76,54 @@ public class MainFrame extends JFrame {
     roleLabel = new JLabel(game.getSelectedPerson().toString()); // Inizialmente impostato come Agricoltore
     placeLabel.setBorder(padding);
 
-    buttonPanel.setBackground(Color.RED);
+    buttonPanel.setBackground(Color.RED); // TODO: remove this line
     
-    // Aggiungere gli ActionListener per i JMenuItem
+    // Action Listener for role selection
     ActionListener roleListener = new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
           setRoleActions(e.getActionCommand());
-          // Aggiornare il testo del JLabel quando viene selezionato un nuovo ruolo
+          // Update the role label
           roleLabel.setText(e.getActionCommand());
+          // Update the panel to disable buttons that are not available for the selected role
+          Container parent = worldPanel.getParent();
+          parent.remove(worldPanel);//remove the old panel
+
+          // Creare un nuovo pannello e aggiungerlo al contenitore padre
+          worldPanel = createWorldPanel();
+          parent.add(worldPanel);
+
+          // Aggiornare il contenitore padre
+          parent.revalidate();
+          parent.repaint();
       }
     };
 
     farmerItem.addActionListener(roleListener);
     ownerItem.addActionListener(roleListener);
 
-    // Aggiungere i componenti alla JMenuBar
+    // add elements to the menu bar
     roleMenu.add(farmerItem);
     roleMenu.add(ownerItem);
     menuBar.add(roleMenu);
-    menuBar.add(new JSeparator(SwingConstants.VERTICAL)); // Aggiungere la riga verticale
+    menuBar.add(new JSeparator(SwingConstants.VERTICAL)); // add a vertical separator
     menuBar.add(roleLabel);
     menuBar.add(Box.createHorizontalGlue());
     menuBar.add(placeLabel);
     
-    // Impostare il layout del JPanel
+    // set the layout of the role panel
     rolePanel.add(menuBar, BorderLayout.NORTH);
     rolePanel.add(buttonPanel, BorderLayout.CENTER);
 
-    // aggiorna i bottoni in base al ruolo selezionato di default
+    // update the role actions panel
     this.setRoleActions(this.game.getPersons()[0].toString());
 
     return rolePanel;
   }
 
-  // Pannello Azioni Agricoltore
+  // Role Actions panel
   private void setRoleActions(String role) {
+    // Set the selected role
     if (role == game.getPersons()[0].toString()) {
       this.game.setSelectedPerson(this.game.getPersons()[0]);
     } else if (role == game.getPersons()[1].toString()) {
@@ -122,26 +132,28 @@ public class MainFrame extends JFrame {
 
     PlayerActions actions = this.game.getSelectedPerson().getActions();
 
+    // Set the layout of the button panel
     GridBagConstraints constraints = new GridBagConstraints();
     constraints.fill = GridBagConstraints.BOTH;
     constraints.weightx = 1.0;
     constraints.weighty = 1.0;
 
-    // Rimuovere tutti i bottoni dal pannello
+    // Remove all the buttons from the panel
     buttonPanel.removeAll();
 
+    // iterate over the actions and add the buttons
     for (ActionsManager.Action a : actions.getActions()){
-      
       if ( game.getSelectedPerson().getActions().getActionReqArgs(a) <=1){
         JButton button = new JButton(a.toString());
         button.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            System.out.println("Action " + a.toString() + " performed"); // TODO: rimuovere
+            System.out.println("Action " + a.toString() + " performed"); // TODO: remove this line
             game.getSelectedPerson().getActions().executeAction(a,game.getSelectedPerson().getPlace());
           }
         });
         buttonPanel.add(button, constraints);
       } else{
+        // TODO
         JToggleButton button = new JToggleButton(a.toString());
          // Aggiungi un listener di mouse per rilevare le pressioni del pulsante
          button.addActionListener(new ActionListener() {
@@ -159,10 +171,8 @@ public class MainFrame extends JFrame {
          });
         buttonPanel.add(button, constraints);
       }
-
-        
     }
-    // Aggiornare il pannello
+    // Update the panel
     revalidate();
     repaint();
   }
@@ -172,11 +182,13 @@ public class MainFrame extends JFrame {
     
     worldPanel = new JPanel(new GridLayout(1, 2));
     worldPanel.setPreferredSize(new Dimension(800, 500));
-    worldPanel.setBackground(Color.GREEN);
+    worldPanel.setBackground(Color.GREEN); // TODO: remove this line
         
     JPanel barn = new JPanel(new GridLayout(1, 1));
     JPanel land = new JPanel(new GridLayout(3, 3));
     
+    roleMenu.setEnabled(true); // enable the possibility to change the role
+
     for(Place i: this.game.getMap().get(1)){
       JButton button = new JButton(i.getType().toString());
       button.addActionListener(new ActionListener() {
@@ -184,24 +196,40 @@ public class MainFrame extends JFrame {
               try {
                 game.getSelectedPerson().getActions().enter(i);
                 setRoleActions(game.getSelectedPerson().toString());
-                if (game.getSelectedPerson().getPlace() != null){
-                  placeLabel.setText(game.getSelectedPerson().getPlace().getType().toString());
-                } else {
-                  placeLabel.setText("World");
-          }
+                worldPanel.removeAll();
+                worldPanel.add(createInsideLand());
+                worldPanel.revalidate();
+                worldPanel.repaint();
+                // Aggiornare il pannello
+                revalidate();
+                repaint();
+                updateLabels(worldPanel);
               } catch (PlaceNotAvailableException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
               };
           }
       });
       land.add(button);
+      // disable land button if the role is not the farmer
+      button.setEnabled((game.getSelectedPerson().toString() == "Farmer")?true:false);
   }
+    // add the barn button
     barn.add(new JButton( this.game.getMap().get(0).get(0).getType().toString()));
     worldPanel.add(land);
     worldPanel.add(barn);    
     
+    updateLabels(worldPanel);
     return worldPanel;
+  }
+
+  // Update labels
+  private void updateLabels(JPanel panel){
+    this.roleLabel.setText(this.game.getSelectedPerson().toString());
+    this.placeLabel.setText((this.game.getSelectedPerson().getPlace() == null)? "World" : this.game.getSelectedPerson().getPlace().getType().toString());
+    setRoleActions(this.game.getSelectedPerson().toString());
+    // Update the panel
+    panel.revalidate();
+    panel.repaint();
   }
 
   // display animals when opening animal land else display chunks
@@ -211,7 +239,9 @@ public class MainFrame extends JFrame {
     // create the panel that will contain the elements
     JPanel insideLand = new JPanel(new GridLayout(3, 3));
     insideLand.setPreferredSize(new Dimension(800, 500));
-    insideLand.setBackground(Color.GREEN);
+    insideLand.setBackground(Color.GREEN); // TODO: remove this line
+
+    roleMenu.setEnabled(false); // disable the possibility to change the role
 
     // depending on the type of the place, display the elements
     this.placeLabel.setText(actualPlace.getType().toString());
@@ -222,12 +252,28 @@ public class MainFrame extends JFrame {
         }
       } else if (actualPlace.getType() == Places.PLANT_LAND){ // if it's a plant land
         for(PlantChunk chunk : ((PlantLand)(actualPlace)).getElements()){
-          insideLand.add(new JButton(chunk.getPlant().getType().toString()));
+          insideLand.add(new JButton((chunk.getPlant() == null )? "Empty" : chunk.getPlant().getType().toString()));
         }
-      }
+      }}
+
+      // add the exit button
+      JButton exitButton = new JButton("Exit");
+      exitButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          worldPanel.removeAll();
+          worldPanel.add(createWorldPanel());
+
+          game.getSelectedPerson().getActions().leave();
+          updateLabels(insideLand);
+          
+          // Aggiornare il pannello
+          worldPanel.revalidate();
+          worldPanel.repaint();
+        }});
+      insideLand.add(exitButton);
+      return insideLand;
     }
-    return insideLand;
-  }
+  
   
   
   public static void main(String[] args) {

@@ -66,7 +66,7 @@ public class PlayerActions extends ActionsManager{
    
             if (method != null && this.availableActions.contains(s)) {
                try {
-                method.invoke(argument);
+                method.invoke(this,argument);
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 e.printStackTrace();
             }
