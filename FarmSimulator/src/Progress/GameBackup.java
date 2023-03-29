@@ -14,10 +14,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GameBackup implements Backup{
+    // attributes
     private List<Serializable> classesBackup;
     private final File savePath;
     private List<String> classesNamesBackup;
 
+    // constructor
     public GameBackup(List<Serializable> currentClasses){
         this.classesBackup = List.copyOf(currentClasses);
         this.classesNamesBackup = new ArrayList<>();

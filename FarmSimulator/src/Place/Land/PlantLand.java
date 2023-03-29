@@ -9,7 +9,7 @@ import Item.ItemType.Plants;
 import Place.Places;
 
 public class PlantLand extends LandAbstract{
-    /*Land that contains chunks of land with plants*/
+    /* Land that contains chunks of land with plants */
 
     // attributes
     ArrayList<PlantChunk> chunks;

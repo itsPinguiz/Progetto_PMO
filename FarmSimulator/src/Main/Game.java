@@ -28,68 +28,94 @@ Variation of the seasons that influence the weather.
 */
 
 public class Game {
+    // attributes\
     private Farmer farmer;
     private Landlord landlord;
     private Person selectedActor;
     private Calendar calendar;
+    private ArrayList<ArrayList<Place>> map;
 
+    // constructor
     public Game(){
+        //attributes initialization
         this.farmer = new Farmer();
         this.landlord = new Landlord();
         this.calendar = Calendar.getInstance();
     
-        GameData.map = new ArrayList<>(){
+        map = new ArrayList<>(){
             {
                 add(new ArrayList<>() {{add(new Barn());}}); // barn
-                add(new ArrayList<>(){
+                add(new ArrayList<>(){ // lands
                     {
                         add(new PlantLand());
                         add(new PlantLand());
                         add(new AnimalLand());
                         add(new AnimalLand());
                     }
-                }); // lands
+                }); 
             }
         };
 
-        this.selectedActor = this.farmer;
+        this.selectedActor = this.farmer; // default selected actor
+
+        // TODO: Rimuovere questo codice momentaneo
         try {
-            GameData.firstIndex = 1;
-            this.selectedActor.getActions().enter();
+            this.selectedActor.getActions().enter(this.map.get(1).get(0));
         } catch (PlaceNotAvailableException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    public static class GameData
-    {
-        public static ArrayList<ArrayList<Place>> map;
-
-        public static int firstIndex; 
-        public static int secondIndex; 
-    }
-    
     public void update(){
+        /*
+         * Method to update the world entities
+         */
         this.calendar.inc();
 
-        GameData.map.get(2).forEach(place -> { LandAbstract land = (LandAbstract) place;
+        this.map.get(2).forEach(place -> { LandAbstract land = (LandAbstract) place;
                                                       land.update();});
     }
 
+    public ArrayList<ArrayList<Place>> getMap(){
+        /*
+         * Method to get the map
+         */
+        return this.map;
+    }
+
+    public ArrayList<Place> getLands(){
+        /*
+         * Method to get the lands
+         */
+        return this.map.get(1);
+    }
+
     public void setSelectedPerson(Person p){
+        /*
+         * Method to set the selected person 
+         */
         this.selectedActor = p;
     }
 
     public Place getPersonPlace(){
+        /*
+         * Method to get the place of the selected person 
+         */
         return this.selectedActor.getPlace();
     }
 
     public Person getSelectedPerson(){
+        /*
+         * Method to get the selected person 
+         */
         return this.selectedActor;
     }
 
     public Person[] getPersons(){
+        /*
+         * Method to get the persons
+         */
         return new Person[]{this.farmer, this.landlord};
     }
 }

@@ -11,13 +11,14 @@ import Item.Interface.Item;
 import Place.Land.PlantChunk;
 
 public abstract class PlantAbstract extends Item implements PlantInteface{
+    // attributes
     private int daysToHarvest;
     private PlantLife lifeStage;
     protected ArrayList<Item> products; 
 
     private PlantChunk chunk;
-    protected Calendar calendar = Calendar.getInstance();
-    private Random random = new Random();
+    protected Calendar calendar;
+    private Random random;
 
     public enum PlantLife {
         // plant life cycle state
@@ -29,11 +30,14 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
         PRODUCT
     }
 
+    // constructor
     protected PlantAbstract(PlantChunk c){
         super.status = 0;
         super.price = 2;
         this.daysToHarvest = random.nextInt(10) + 1;
         this.chunk = c;
+        this.random = new Random();
+        this.calendar = Calendar.getInstance();
     }
 
     public void planted(PlantChunk c){

@@ -5,7 +5,7 @@ import java.util.Set;
 // DESIGN PATTERN MEDIATOR
 
 public abstract class ActionsManager implements Actions{
-    // all actual available actions
+    // attributes
     protected Set<Action> availableActions;
 
     // constructor
@@ -54,6 +54,9 @@ public abstract class ActionsManager implements Actions{
     }  
 
     public void resetActions(){
+        /*
+         * Resets the available actions
+         */
         this.availableActions = null;
     }
 

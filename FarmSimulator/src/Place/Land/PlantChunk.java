@@ -102,13 +102,6 @@ public class PlantChunk extends LandAbstract implements Chunk{
         return this.isPlowed;
     }
 
-    public int getNumElements(){
-        /*
-         * Returns whether there is a plant or not
-         */
-        return (this.plant == null)?0:1;
-    }
-
     public PlantAbstract getPlant(){
         /*
          * Returns the planted plant
@@ -122,7 +115,8 @@ public class PlantChunk extends LandAbstract implements Chunk{
          */
         this.getActions().resetActions();
         this.getActions().updateActions( new HashSet<>(){{
-                                        add(Action.PLOW);
-                                        }}, true);
+                                            add(Action.PLOW);
+                                            }}, true);
     }
+
 }
