@@ -10,8 +10,8 @@ import Plants.PlantAbstract.PlantLife;
 public interface PlantInteface {
     public void grow();
     public void planted(PlantChunk c);
-    public ItemType getPlantType();
 
+    public ItemType getPlantType();
     public PlantLife getLifeStage();
     public int getDaysToHarvest() ;
     public double getGrowthLevel();

@@ -8,14 +8,15 @@ import Place.Land.LandAbstract;
 public class PlaceActions extends ActionsManager{
     protected Place place; // place where the action take place
 
-    public PlaceActions(Place plantLand){
+    public PlaceActions(Place place){
         /*
          * Constructor for the plant land
          */
         super();
-        this.place = plantLand;
+        this.place = place;
 
-        switch (((this.place)).getType()) {
+        // sets the default available actions for the place
+        switch ((this.place).getType()) {
             case PLANT_LAND: // Plant Land
                 super.availableActions = new HashSet<Action>(){{
                     add(Action.WATER_ALL);

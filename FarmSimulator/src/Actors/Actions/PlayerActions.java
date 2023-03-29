@@ -1,5 +1,6 @@
 package Actors.Actions;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -17,18 +18,21 @@ import Place.Land.PlantLand;
 import Plants.PlantAbstract;
 
 public class PlayerActions extends ActionsManager{
+    // attributes
     private final int WATERING_INDEX = 10;
     private final int FERTILIZATION_INDEX = 10;
     private Person person;
     private HashSet<Places> accessiblePlaces;
-    
+
+    // constructor for Landlord    
     public PlayerActions(Landlord p){
         this.person = p;
         this.accessiblePlaces = new HashSet<>(){{
             add(Places.BARN);
             }};;
     }
-
+    
+    // constructor for Farmer
     public PlayerActions(Farmer p){
         this.person = p;
         this.accessiblePlaces = new HashSet<>(){{
@@ -38,7 +42,7 @@ public class PlayerActions extends ActionsManager{
             }};;
     }
 
-    public void executeAction(Action s) {
+    public void executeAction(Action s,Object argument) {
         /*
          * Method to find a method to execute
          */
@@ -46,7 +50,7 @@ public class PlayerActions extends ActionsManager{
         // find the method and execute it
         try {
             if (this.availableActions.contains(s)){
-            this.getClass().getMethod(s.name().toLowerCase()).invoke(null);
+            this.getClass().getMethod(s.name().toLowerCase()).invoke(null,argument);
             System.out.println(s + " executed.");
             } else throw new ActionNotAvailableException();  
         } catch (Exception e) {
@@ -54,17 +58,16 @@ public class PlayerActions extends ActionsManager{
         }
     }
 
-    public void enter() throws PlaceNotAvailableException {
+    public void enter(Place p) throws PlaceNotAvailableException {
         /*
          * Method to change actions when
          * an actors enters somewhere
          */
-        Place place = Game.GameData.map.get(Game.GameData.firstIndex).get(0);
         // TODO indexing to get the place is not working properly
-        if (this.accessiblePlaces.contains(place.getType())){
+        if (this.accessiblePlaces.contains(p.getType())){
             if (person.getPlace() != null)
                 leave();
-            this.person.setPlace(place);
+            this.person.setPlace(p);
             this.person.getActions().updateActions(person.getPlace().getActions().getActions(), true);
         } else throw new PlaceNotAvailableException();
     }
@@ -94,35 +97,37 @@ public class PlayerActions extends ActionsManager{
         //App.getBarn().removeItem(itemIndex);
     }
 
-    public void drop_item(){
+    public void drop_item(int i){
         /*
          * Method to drop item on
          * the floor and lose it
          */
-       ((Farmer)this.person).removeItem(Game.GameData.firstIndex);
+       ((Farmer)this.person).removeItem(i);
     }
 
-    public void move_item(){
+    public void move_item(int i){
         /*
          * Method to move the item
          * to the barn from the farmer's inventory
          */
         Farmer farmer = (Farmer)this.person;
-        Item item = farmer.getInventory().get(Game.GameData.firstIndex);
+        Item item = farmer.getInventory().get(i);
         //farmer.getPlace().barn.getInventory().add(item);
         //farmer.removeItem(item);
     }
     
-    public void plant() throws LandIsNotPlowedException, NoSeedFoundException{
+    public void plant(ArrayList<? extends Object> items) throws LandIsNotPlowedException, NoSeedFoundException{
         /*
          * Method to plant a plant
          */
         Farmer f = (Farmer)this.person;
-        PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
+        PlantChunk c = (PlantChunk)items.get(0);
+        Item seed = (Item)items.get(1);
+        //PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
 
         
         // check if the farmer has a seed and the chunk is plowed
-        if ( f.getInventory().get(Game.GameData.firstIndex) instanceof PlantAbstract ){ 
+        if (seed instanceof PlantAbstract ){ 
             if(c.getDirtStatus()){
                 // add plant to the land 
                 c.setPlant((PlantAbstract)f.getItem(1));
@@ -135,12 +140,12 @@ public class PlayerActions extends ActionsManager{
         } else throw new NoSeedFoundException();                                       
     }
 
-    public void water() throws NoToolFoundException{
+    public void water(PlantChunk c) throws NoToolFoundException{
         /*
          * Method to water a plant
          */
         Farmer f = (Farmer)this.person;
-        PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
+        //PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
 
         //check if the farmer has the watering can
         if ( this.damageItem(ItemType.Tools.WATERINGCAN)){
@@ -149,12 +154,12 @@ public class PlayerActions extends ActionsManager{
         } else throw new NoToolFoundException();
     }
 
-    public void plow() throws NoToolFoundException{
+    public void plow(PlantChunk c) throws NoToolFoundException{
         /*
          * Method to plow dirt
          */
         Farmer f = (Farmer)this.person;
-        PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
+        //PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
 
         //check if the farmer has the hoe
         if (this.damageItem(ItemType.Tools.HOE) && !c.getDirtStatus()){
@@ -167,12 +172,12 @@ public class PlayerActions extends ActionsManager{
         }else throw new NoToolFoundException();
     }
 
-    public void fertilize() throws NoToolFoundException{
+    public void fertilize(PlantChunk c) throws NoToolFoundException{
         /*
          * Method to fertilize a plant
          */
         Farmer f = (Farmer)this.person;
-        PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
+        //PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
         
         //check if the farmer has the fertilizer
         if (this.damageItem(ItemType.Tools.HOE)){ //TODO change with fertilizer
@@ -181,12 +186,12 @@ public class PlayerActions extends ActionsManager{
         }else throw new NoToolFoundException();
     }
 
-    public void harvest(){
+    public void harvest(PlantChunk c){
         /*
          * Method to harvest a plant
          */
         Farmer f = (Farmer)this.person;
-        PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
+        //PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
         List<Item> resources = List.copyOf(c.getPlant().getProduct());
         int multiplier = 1;
 
@@ -205,47 +210,45 @@ public class PlayerActions extends ActionsManager{
         }
         
         // remove plant
-        ((PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex)).setPlant(null);
+        c.setPlant(null);
         c.resetActions();
     }
 
-    public void water_all(){
+    public void water_all(PlantLand p){
         /*
          * Method to water all plants
          */
-        this.doAll(Action.WATER);
+        this.doAll(Action.WATER,p);
     }
 
-    public void fertilize_all(){
+    public void fertilize_all(PlantLand p){
         /*
          * Method to fertilize all plants
          */
-        this.doAll(Action.FERTILIZE);
+        this.doAll(Action.FERTILIZE,p);
     }
 
-    public void harvest_all(){
+    public void harvest_all(PlantLand p){
         /*
          * Method to harvest all plants
          */
-        this.doAll(Action.HARVEST);
+        this.doAll(Action.HARVEST,p);
     }
 
-    public void plow_all(){
+    public void plow_all(PlantLand p){
         /*
          * Method to plow dirt
          */
-        this.doAll(Action.PLOW);
+        this.doAll(Action.PLOW,p);
     }
 
-    private void doAll(Action a){
+    private void doAll(Action a, PlantLand p){
         /*
          * Method to repeat the same action on all chunks in a land
          */
         Farmer f = (Farmer)this.person;
-        Game.GameData.secondIndex = 0;
 
-        ((PlantLand)(f.getPlace())).getChunks().forEach(chunk -> {f.getActions().executeAction(a);
-                                                                  Game.GameData.secondIndex++;});
+        p.getChunks().forEach(chunk -> {f.getActions().executeAction(a,new ArrayList<>() {{add(chunk);}});});
     }
 
     public void buy(){
