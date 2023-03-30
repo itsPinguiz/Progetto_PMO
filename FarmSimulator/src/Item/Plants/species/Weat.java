@@ -9,7 +9,6 @@ public class Weat extends PlantAbstract {
         super(null);
         super.type = ItemType.Plants.WEAT;
         super.price = 5;
-        //TODO products
     }
 
 }

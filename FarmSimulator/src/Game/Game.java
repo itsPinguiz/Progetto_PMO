@@ -1,20 +1,23 @@
-package Main;
+package Game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import Actors.Actions.ActionsManager.Action;
 import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Calendar.Calendar;
 import Exceptions.CustomExceptions.PlaceNotAvailableException;
 import Item.Interface.Item;
+import Item.Plants.PlantAbstract;
+import Item.Plants.species.Carrot;
+import Item.Plants.species.Potato;
 import Place.Place;
 import Place.Barn.Barn;
 import Place.Land.AnimalLand;
 import Place.Land.LandAbstract;
 import Place.Land.PlantLand;
-import Item.Plants.species.Carrot;
 
 /*
 The project consists in the implementation of a farm simulator.
@@ -60,7 +63,7 @@ public class Game implements Serializable{
         };
 
         this.selectedActor = this.farmer; // default selected actor
-
+        
         this.farmer.addItem(new Carrot());
     }
 

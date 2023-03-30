@@ -9,7 +9,6 @@ public class Carrot extends PlantAbstract {
         super(null);
         super.type = ItemType.Plants.CARROT;
         super.price = 5;
-        //TODO products
     }
 
 }

@@ -9,6 +9,5 @@ public class Onion extends PlantAbstract {
         super(null);
         super.type = ItemType.Plants.ONION;
         super.price = 5;
-        //TODO products
     }
 }
