@@ -14,7 +14,7 @@ import Place.Barn.Barn;
 import Place.Land.AnimalLand;
 import Place.Land.LandAbstract;
 import Place.Land.PlantLand;
-import Plants.species.Carrot;
+import Item.Plants.species.Carrot;
 
 /*
 The project consists in the implementation of a farm simulator.

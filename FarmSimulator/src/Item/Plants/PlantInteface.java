@@ -1,4 +1,4 @@
-package Plants;
+package Item.Plants;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import Item.ItemType;
 import Item.Interface.Item;
 import Place.Land.PlantChunk;
-import Plants.PlantAbstract.PlantLife;
+import Item.Plants.PlantAbstract.PlantLife;
 
 public interface PlantInteface  extends Serializable{
     public void grow();

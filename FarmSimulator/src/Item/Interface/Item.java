@@ -11,7 +11,7 @@ import Item.ItemType;
 /****************
  * ITEM INTERFACE
  ***************/
-public abstract class Item implements Cloneable,Serializable{
+public abstract class Item implements Cloneable,Serializable,ItemInterface{
 	
     protected ItemType type;
     protected double status;

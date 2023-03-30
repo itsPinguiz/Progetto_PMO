@@ -5,7 +5,7 @@ import javax.swing.border.Border;
 
 import Actors.Actions.ActionsManager;
 import Actors.Actions.PlayerActions;
-import Animal.AnimalAbstract;
+import Item.Animal.AnimalAbstract;
 import Exceptions.CustomExceptions.PlaceNotAvailableException;
 import Item.Interface.Item;
 import Main.Game;

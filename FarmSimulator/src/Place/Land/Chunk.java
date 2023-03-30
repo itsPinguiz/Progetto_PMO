@@ -1,6 +1,6 @@
 package Place.Land;
 
-import Plants.PlantAbstract;
+import Item.Plants.PlantAbstract;
 
 public interface Chunk {
     public void setWaterLevel(int value);

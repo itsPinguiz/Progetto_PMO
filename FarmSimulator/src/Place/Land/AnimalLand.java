@@ -3,7 +3,7 @@ package Place.Land;
 import java.util.ArrayList;
 
 import Actors.Actions.PlaceActions;
-import Animal.AnimalAbstract;
+import Item.Animal.AnimalAbstract;
 import Place.Places;
 
 public class AnimalLand extends LandAbstract {

@@ -1,7 +1,7 @@
-package Plants.species;
+package Item.Plants.species;
 
 import Item.ItemType;
-import Plants.PlantAbstract;
+import Item.Plants.PlantAbstract;
 
 public class Weat extends PlantAbstract {
 

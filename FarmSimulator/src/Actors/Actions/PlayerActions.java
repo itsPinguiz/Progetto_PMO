@@ -18,7 +18,7 @@ import Place.Place;
 import Place.Places;
 import Place.Land.PlantChunk;
 import Place.Land.PlantLand;
-import Plants.PlantAbstract;
+import Item.Plants.PlantAbstract;
 
 public class PlayerActions extends ActionsManager{
     // attributes
