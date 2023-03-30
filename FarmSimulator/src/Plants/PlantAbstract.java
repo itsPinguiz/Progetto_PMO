@@ -32,11 +32,11 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
 
     // constructor
     protected PlantAbstract(PlantChunk c){
+        this.random = new Random();
         super.status = 0;
         super.price = 2;
         this.daysToHarvest = random.nextInt(10) + 1;
         this.chunk = c;
-        this.random = new Random();
         this.calendar = Calendar.getInstance();
     }
 

@@ -13,15 +13,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Main.Game;
+
 public class GameBackup implements Backup{
     // attributes
-    private List<Serializable> classesBackup;
+    private Game classesBackup;
     private final File savePath;
     private List<String> classesNamesBackup;
 
     // constructor
-    public GameBackup(List<Serializable> currentClasses){
-        this.classesBackup = List.copyOf(currentClasses);
+    public GameBackup(Game currentClasses){
+        this.classesBackup = currentClasses;
         this.classesNamesBackup = new ArrayList<>();
         this.savePath = new File("saves");
         this.savePath.mkdirs();
@@ -53,25 +55,22 @@ public class GameBackup implements Backup{
         out.close();
    }
 
-    public void printSavesList(){
+    public List<String> getSavesList(){
         /*
          * Prints all the saved files
          * of the game session
          */
         this.updateSavesList();
 
-        System.out.println("====== CURRENT BACKUPS ======");
-        for(int i = 1; i <= this.classesNamesBackup.size(); i++){
-            System.out.printf("[%d] %s\n",i,this.classesNamesBackup.get(i-1));
-        }
+        return this.classesNamesBackup;
     }
 
-    public List<Serializable> loadSave(int index) throws Exception{
+    public Game loadSave(String saveName) throws Exception{
         /*
          * Returns a specific saved game session
          */
         this.updateSavesList();
-        return this.readFromFile(new File(this.savePath,this.classesNamesBackup.get(index-1)));
+        return (Game)(this.readFromFile(new File(this.savePath,saveName))).get(0);
     }
 
     private void updateSavesList(){

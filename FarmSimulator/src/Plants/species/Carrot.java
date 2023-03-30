@@ -5,7 +5,7 @@ import Plants.PlantAbstract;
 
 public class Carrot extends PlantAbstract {
 
-    Carrot(){
+    public Carrot(){
         super(null);
         super.type = ItemType.Plants.CARROT;
         super.price = 5;

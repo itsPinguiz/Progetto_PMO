@@ -1,5 +1,6 @@
 package Main;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Actors.Person.Farmer;
@@ -7,11 +8,13 @@ import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Calendar.Calendar;
 import Exceptions.CustomExceptions.PlaceNotAvailableException;
+import Item.Interface.Item;
 import Place.Place;
 import Place.Barn.Barn;
 import Place.Land.AnimalLand;
 import Place.Land.LandAbstract;
 import Place.Land.PlantLand;
+import Plants.species.Carrot;
 
 /*
 The project consists in the implementation of a farm simulator.
@@ -27,7 +30,7 @@ A shop from which to buy seeds, resources, animals or land.
 Variation of the seasons that influence the weather.
 */
 
-public class Game {
+public class Game implements Serializable{
     // attributes\
     private Farmer farmer;
     private Landlord landlord;
@@ -57,6 +60,8 @@ public class Game {
         };
 
         this.selectedActor = this.farmer; // default selected actor
+
+        this.farmer.addItem(new Carrot());
     }
 
     public void update(){

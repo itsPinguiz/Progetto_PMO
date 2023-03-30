@@ -7,10 +7,12 @@ import Actors.Actions.ActionsManager;
 import Actors.Actions.PlayerActions;
 import Animal.AnimalAbstract;
 import Exceptions.CustomExceptions.PlaceNotAvailableException;
+import Item.Interface.Item;
 import Main.Game;
 import Place.Place;
 import Place.Land.AnimalLand;
 import Place.Land.PlantLand;
+import Progress.GameBackup;
 import Place.Land.PlantChunk;
 import Place.Land.LandAbstract;
 import Place.Land.PlantChunk;
@@ -19,6 +21,7 @@ import Place.Places;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 //Interface Testing
 public class MainFrame extends JFrame {
@@ -32,15 +35,20 @@ public class MainFrame extends JFrame {
   private JPanel rolePanel;
   private JPanel worldPanel;
   private JMenu roleMenu;
+  private JMenu backupMenu;
   private JMenuItem farmerItem;
   private JMenuItem ownerItem;
   private JLabel roleLabel;
   private JLabel placeLabel;
   private Game game;
+  private GameBackup backup;
+  private Item selectedItem;
+  private Item selectedEntity;
 
   // constructor
   public MainFrame() {
     this.game = new Game();
+    this.backup = new GameBackup(game);
     setTitle("Farming Simulator");
     setSize(MAX_WIDTH, MAX_HEIGHT);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,12 +78,12 @@ public class MainFrame extends JFrame {
     menuBar.setLayout(new BoxLayout(menuBar, BoxLayout.X_AXIS));
     buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     roleMenu = new JMenu("Ruolo");
+    
     farmerItem = new JMenuItem(game.getPersons()[0].toString());
     ownerItem = new JMenuItem(game.getPersons()[1].toString());
     placeLabel = new JLabel("World");// Inizialmente impostato come World
     roleLabel = new JLabel(game.getSelectedPerson().toString()); // Inizialmente impostato come Agricoltore
     placeLabel.setBorder(padding);
-
     buttonPanel.setBackground(Color.RED); // TODO: remove this line
     
     // Action Listener for role selection
@@ -106,6 +114,7 @@ public class MainFrame extends JFrame {
     roleMenu.add(farmerItem);
     roleMenu.add(ownerItem);
     menuBar.add(roleMenu);
+    menuBar.add(backupMenu());
     menuBar.add(new JSeparator(SwingConstants.VERTICAL)); // add a vertical separator
     menuBar.add(roleLabel);
     menuBar.add(Box.createHorizontalGlue());
@@ -119,6 +128,42 @@ public class MainFrame extends JFrame {
     this.setRoleActions(this.game.getPersons()[0].toString());
 
     return rolePanel;
+  }
+
+  // Create backup panel
+  private JMenu backupMenu(){
+    backupMenu = new JMenu("Backup");
+    JMenuItem saveItem = new JMenuItem("Salva");
+    JMenu loadItem = new JMenu("Carica");
+
+    ActionListener saveCurrentGame = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        try {
+          backup.saveCurrent();
+        } catch (IOException e1) {
+          e1.printStackTrace();
+        }
+      }};
+    saveItem.addActionListener(saveCurrentGame);
+
+    for (String save : backup.getSavesList()){
+      JMenuItem savedBackup = new JMenuItem(save);
+      ActionListener loadSelectedSave = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          try {
+            backup.loadSave(save);
+          } catch (Exception e1) {
+            e1.printStackTrace();
+          }
+        }};
+      savedBackup.addActionListener(loadSelectedSave);
+      loadItem.add(savedBackup);
+    }
+    backupMenu.add(saveItem);
+    backupMenu.add(loadItem);
+    return backupMenu;
   }
 
   // Role Actions panel
@@ -143,7 +188,8 @@ public class MainFrame extends JFrame {
 
     // iterate over the actions and add the buttons
     for (ActionsManager.Action a : actions.getActions()){
-      if ( game.getSelectedPerson().getActions().getActionReqArgs(a) <=1){
+      // actions with 0 or 1 argument
+      if ( game.getSelectedPerson().getActions().getActionReqArgs(a) <=0){
         JButton button = new JButton(a.toString());
         button.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -152,7 +198,7 @@ public class MainFrame extends JFrame {
           }
         });
         buttonPanel.add(button, constraints);
-      } else{
+      } else{ // actions with more than 1 argument
         // TODO
         JToggleButton button = new JToggleButton(a.toString());
          // Aggiungi un listener di mouse per rilevare le pressioni del pulsante
@@ -163,6 +209,7 @@ public class MainFrame extends JFrame {
               if (button.isSelected()) {
                   System.out.println("Button is pressed");
                   // aggiungere il codice da eseguire quando il pulsante viene premuto
+
               } else {
                   System.out.println("Button is released");
                   // aggiungere il codice da eseguire quando il pulsante viene rilasciato
