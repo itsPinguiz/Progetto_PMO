@@ -4,8 +4,6 @@
 
 package Item.Tools.Factory;
 
-import java.io.Serializable;
-
 import Item.Tools.ConcreteTool.IronTool.*;
 import Item.Tools.Interface.AbstractTool;
 

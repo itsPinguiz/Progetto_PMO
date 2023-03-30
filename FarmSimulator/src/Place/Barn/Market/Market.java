@@ -16,11 +16,14 @@ public class Market implements MarketInt{
     private final int MAX_SHOP_LENGTH = 10;
     private ArrayList<Item> itemShop;
     private ItemCreator itemCreator;
+    
 
     public Market(){
         this.itemShop = new ArrayList<Item>(MAX_SHOP_LENGTH);
         this.itemCreator = new ItemCreator();
-        this.itemShop.addAll(itemCreator.getWoodSet());
+        for(int i = 0; i < MAX_SHOP_LENGTH; i++){
+            this.itemShop.add(this.itemCreator.getRandomItem((int)((Math.random() * 7))));
+        }
     }
 
     public ArrayList<Item> getItem(){
@@ -31,7 +34,6 @@ public class Market implements MarketInt{
     }
 
     public void upgradeItemShop(int actualDay){
-
         if(actualDay % 7 == 0){
             replaceItem();
         }
