@@ -21,7 +21,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     protected Calendar c = Calendar.getInstance();
     
     public AnimalAbstract() {
-    	this.typeProduct = new ArrayList<>(); 
+    	this.typeProduct = new ArrayList<ItemType.Products>(); 
 	}
     
      //method for changing hunger
@@ -40,7 +40,17 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         return this.hunger;
     }
 
-    
+    public void updateProduct() {
+        if (this.nProduct == 0){
+            if(this.hunger <= 50){
+                this.nProduct += (int)(Math.random() * 10);
+            }
+            else{
+                this.nProduct += (int)(Math.random() * 20) + 10;
+            }
+        }
+    }
+
     // every time you call this method the number of 
     // product are set to zero
     
