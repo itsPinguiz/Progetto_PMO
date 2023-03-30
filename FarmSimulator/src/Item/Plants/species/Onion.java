@@ -1,7 +1,7 @@
-package Plants.species;
+package Item.Plants.species;
 
 import Item.ItemType;
-import Plants.PlantAbstract;
+import Item.Plants.PlantAbstract;
 
 public class Onion extends PlantAbstract {
     
@@ -9,6 +9,5 @@ public class Onion extends PlantAbstract {
         super(null);
         super.type = ItemType.Plants.ONION;
         super.price = 5;
-        //TODO products
     }
 }

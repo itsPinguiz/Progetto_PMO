@@ -5,10 +5,11 @@ import javax.swing.border.Border;
 
 import Actors.Actions.ActionsManager;
 import Actors.Actions.PlayerActions;
-import Animal.AnimalAbstract;
 import Exceptions.CustomExceptions.PlaceNotAvailableException;
+import Game.Game;
+import Item.Animal.AnimalAbstract;
 import Item.Interface.Item;
-import Main.Game;
+import Item.Plants.PlantAbstract;
 import Place.Place;
 import Place.Land.AnimalLand;
 import Place.Land.PlantLand;
@@ -155,8 +156,16 @@ public class MainFrame extends JFrame {
           @Override
           public void actionPerformed(ActionEvent e) {
               try {
-                  backup.deleteSave(save);
-                  deleteGame.remove(savedBackupToDelete); // remove the menu item from the deleteGame menu
+                  backup.deleteSave(save); // delete file
+                  deleteGame.remove(savedBackupToDelete); // delete from delete menu
+                  // remove from load save menu
+                  Component[] loadGameItems = loadGame.getMenuComponents();
+                  for (Component item : loadGameItems) {
+                      if (item instanceof JMenuItem && ((JMenuItem)item).getText().equals(save)) {
+                          loadGame.remove(item);
+                          break;
+                      }
+                  }
               } catch (Exception e1) {
                   e1.printStackTrace();
               }
@@ -170,6 +179,7 @@ public class MainFrame extends JFrame {
       @Override
       public void actionPerformed(ActionEvent e) {
         try {
+          // add to load and delete menu
           deleteGame.add(new JMenuItem(backup.saveCurrent()));
           loadGame.add(new JMenuItem(backup.saveCurrent()));
         } catch (IOException e1) {
@@ -185,6 +195,7 @@ public class MainFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
           try {
+            // load chosen save
             backup.loadSave(save.substring(0, save.length() - 3));
           } catch (Exception e1) {
             e1.printStackTrace();
@@ -328,13 +339,36 @@ public class MainFrame extends JFrame {
     // depending on the type of the place, display the elements
     this.placeLabel.setText(actualPlace.getType().toString());
     if (actualPlace.getElements() != null){
-      if (actualPlace.getType() == Places.ANIMAL_LAND){ // if it's an animal land
+      // if it's an animal land
+      if (actualPlace.getType() == Places.ANIMAL_LAND){ 
         for(AnimalAbstract animal : ((AnimalLand)(actualPlace)).getElements()){
-          insideLand.add(new JButton(animal.getType().toString()));
-        }
-      } else if (actualPlace.getType() == Places.PLANT_LAND){ // if it's a plant land
+          JButton button = new JButton(animal.getType().toString());
+          insideLand.add(button);
+          // if it's a plant land
+      }} else if (actualPlace.getType() == Places.PLANT_LAND){ 
         for(PlantChunk chunk : ((PlantLand)(actualPlace)).getElements()){
-          insideLand.add(new JButton((chunk.getPlant() == null )? "Empty" : chunk.getPlant().getType().toString()));
+          JButton button = new JButton((chunk.getPlant() == null )? "Empty" : chunk.getPlant().getType().toString());
+          insideLand.add(button);
+          button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // if the chunk isn't empty enter the chunk 
+                if (chunk.getPlant() != null){
+                  try {
+                    game.getSelectedPerson().getActions().enter(actualPlace);
+                  } catch (PlaceNotAvailableException e1) {
+                    e1.printStackTrace();
+                  }
+                  setRoleActions(game.getSelectedPerson().toString());
+                  worldPanel.removeAll();
+                  worldPanel.add(createChunkPanel(chunk));
+                  worldPanel.revalidate();
+                  worldPanel.repaint();
+                  // Aggiornare il pannello
+                  revalidate();
+                  repaint();
+                  updateLabels(worldPanel);
+                }
+            }});
         }
       }}
 
@@ -355,8 +389,51 @@ public class MainFrame extends JFrame {
       insideLand.add(exitButton);
       return insideLand;
     }
-  
-  
+
+  private JPanel createChunkPanel(PlantChunk chunk){
+    JPanel chunkPanel = new JPanel(new GridLayout(1, 2));
+    JLabel plantLabel = new JLabel();
+    PlantAbstract plant = chunk.getPlant();
+    
+    chunkPanel.setPreferredSize(new Dimension(800, 500));
+    chunkPanel.setBackground(Color.GREEN); // TODO: remove this line
+
+    plantLabel.setText("<html> <b>"+ plant.getType().toString()+
+                       "<b> <br> Life Stage: "+ plant.getLifeStage().toString() +
+                       "<br> Water Level: "+ chunk.getWaterLevel() +
+                       "<br> Fertilization Level: "+ chunk.getFertilizationLevel() +
+                       "</html>");
+
+    try {
+      this.game.getSelectedPerson().getActions().enter(chunk);
+    } catch (PlaceNotAvailableException e) {
+      e.printStackTrace();
+    }
+    chunkPanel.add(plantLabel);
+
+    // add the exit button
+    JButton exitButton = new JButton("Exit");
+    exitButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        worldPanel.removeAll();
+        worldPanel.add(createWorldPanel());
+
+        game.getSelectedPerson().getActions().leave();
+        updateLabels(chunkPanel);
+        
+        // Aggiornare il pannello
+        worldPanel.revalidate();
+        worldPanel.repaint();
+      }});
+    chunkPanel.add(exitButton);
+
+    buttonPanel.removeAll();
+    setRoleActions(this.game.getSelectedPerson().toString());
+    // Update the panel
+    revalidate();
+    repaint();
+    return chunkPanel;
+  }  
   
   public static void main(String[] args) {
     MainFrame frame = new MainFrame();

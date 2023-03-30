@@ -29,6 +29,8 @@ public abstract class ActionsManager implements Actions{
         PLOW_ALL("Plow All"),
         ADD_ANIMAL("Add Animal"),
         REMOVE_ANIMAL("Remove Animal"),
+        FEED_ANIMAL("Feed Animal"),
+        GIVE_WATER("Give Water"),
         GET_ALL_RESOURCES("Get All Resources"),
         GET_ITEM("Get Item"),
         MOVE_ITEM("Move Item");

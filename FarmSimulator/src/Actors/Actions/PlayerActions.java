@@ -11,14 +11,14 @@ import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Exceptions.CustomExceptions.*;
+import Game.Game;
 import Item.ItemType;
 import Item.Interface.Item;
-import Main.Game;
+import Item.Plants.PlantAbstract;
 import Place.Place;
 import Place.Places;
 import Place.Land.PlantChunk;
 import Place.Land.PlantLand;
-import Plants.PlantAbstract;
 
 public class PlayerActions extends ActionsManager{
     // attributes
@@ -42,6 +42,7 @@ public class PlayerActions extends ActionsManager{
             add(Places.BARN);
             add(Places.ANIMAL_LAND);
             add(Places.PLANT_LAND);
+            add(Places.PLANT_CHUNK);
             }};;
     }
 
@@ -172,7 +173,6 @@ public class PlayerActions extends ActionsManager{
         Farmer f = (Farmer)this.person;
         PlantChunk c = (PlantChunk)items.get(0);
         Item seed = (Item)items.get(1);
-        //PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
 
         
         // check if the farmer has a seed and the chunk is plowed

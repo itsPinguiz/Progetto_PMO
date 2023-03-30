@@ -5,8 +5,8 @@ import java.util.Random;
 
 import Actors.Actions.PlaceActions;
 import Actors.Actions.ActionsManager.Action;
+import Item.Plants.PlantAbstract;
 import Place.Places;
-import Plants.PlantAbstract;
 
 
 public class PlantChunk extends LandAbstract implements Chunk{

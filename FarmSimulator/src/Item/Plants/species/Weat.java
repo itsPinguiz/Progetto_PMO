@@ -1,7 +1,7 @@
-package Plants.species;
+package Item.Plants.species;
 
 import Item.ItemType;
-import Plants.PlantAbstract;
+import Item.Plants.PlantAbstract;
 
 public class Weat extends PlantAbstract {
 
@@ -9,7 +9,6 @@ public class Weat extends PlantAbstract {
         super(null);
         super.type = ItemType.Plants.WEAT;
         super.price = 5;
-        //TODO products
     }
 
 }

@@ -2,7 +2,7 @@
  * IMPORT AND PACKAGE
  *******************/
 
-package Animal;
+package Item.Animal;
 
 import java.io.Serializable;
 
