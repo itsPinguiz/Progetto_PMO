@@ -4,12 +4,14 @@
 
 package Actors.Person;
 
+import java.io.Serializable;
+
 import Actors.Actions.PlayerActions;
 
 /********************************
  * LANDLORD PERSON IMPLEMENTATION
  *******************************/
-public class Landlord extends PersonAbstract {
+public class Landlord extends PersonAbstract{
     
     /**
      * Fields

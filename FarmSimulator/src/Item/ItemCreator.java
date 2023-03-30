@@ -4,6 +4,7 @@
 
 package Item;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Item.Interface.Item;
@@ -15,7 +16,7 @@ import Item.Tools.Interface.AbstractTool;
 /*******************
  * ITEMCREATOR CLASS
  ******************/
-public class ItemCreator{
+public class ItemCreator implements Serializable{
     
 
     private final int MAX_INVENTORY_SIZE = 4;

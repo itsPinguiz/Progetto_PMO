@@ -65,12 +65,25 @@ public class GameBackup implements Backup{
         return this.classesNamesBackup;
     }
 
+    public void deleteSave(String saveName) throws Exception{
+        /*
+         * Deletes a specific saved game session
+         */
+        File fileToDelete = new File(this.savePath,saveName);
+        if (fileToDelete.delete()) {
+            System.out.println("File eliminato con successo: " + saveName);
+        } else {
+            System.out.println("Impossibile eliminare il file: " + saveName);
+        }
+        this.updateSavesList();
+    }
+
     public Game loadSave(String saveName) throws Exception{
         /*
          * Returns a specific saved game session
          */
         this.updateSavesList();
-        return (Game)(this.readFromFile(new File(this.savePath,saveName))).get(0);
+        return this.readFromFile(new File(this.savePath,saveName));
     }
 
     private void updateSavesList(){
@@ -80,11 +93,11 @@ public class GameBackup implements Backup{
         this.classesNamesBackup = List.copyOf(Arrays.asList(this.savePath.list()));
     }
 
-    @SuppressWarnings("unchecked")
-    private List<Serializable> readFromFile(File f) throws Exception {
+
+    private Game readFromFile(File f) throws Exception {
         FileInputStream fis = new FileInputStream(f);
         ObjectInputStream ois = new ObjectInputStream(fis);
-        List<Serializable> classesBackup = (List<Serializable>) ois.readObject();
+        Game classesBackup = (Game) ois.readObject();
         ois.close();
         return classesBackup;
     }   

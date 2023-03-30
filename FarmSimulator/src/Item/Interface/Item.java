@@ -4,12 +4,14 @@
 
 package Item.Interface;
 
+import java.io.Serializable;
+
 import Item.ItemType;
 
 /****************
  * ITEM INTERFACE
  ***************/
-public abstract class Item implements Cloneable{
+public abstract class Item implements Cloneable,Serializable{
 	
     protected ItemType type;
     protected double status;

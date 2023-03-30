@@ -4,6 +4,8 @@
 
 package Item.Tools.Interface;
 
-public interface ToolInterface {
+import java.io.Serializable;
+
+public interface ToolInterface extends Serializable {
     
 }

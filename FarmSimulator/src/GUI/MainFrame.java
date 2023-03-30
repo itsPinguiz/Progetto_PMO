@@ -133,8 +133,27 @@ public class MainFrame extends JFrame {
   // Create backup panel
   private JMenu backupMenu(){
     backupMenu = new JMenu("Backup");
-    JMenuItem saveItem = new JMenuItem("Salva");
-    JMenu loadItem = new JMenu("Carica");
+    JMenuItem saveGame = new JMenuItem("Save");
+    JMenu loadGame = new JMenu("Load");
+    JMenu deleteGame = new JMenu("Delete");
+
+
+    for (String save : backup.getSavesList()){
+      JMenuItem savedBackupToDelete = new JMenuItem(save);
+      deleteGame.add(savedBackupToDelete);
+      ActionListener deleteCurrentGame = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+              backup.deleteSave(e.toString());
+            } catch (Exception e1) {
+              e1.printStackTrace();
+            }
+  
+        }};
+      savedBackupToDelete.addActionListener(deleteCurrentGame);
+    }
+    
 
     ActionListener saveCurrentGame = new ActionListener() {
       @Override
@@ -145,7 +164,7 @@ public class MainFrame extends JFrame {
           e1.printStackTrace();
         }
       }};
-    saveItem.addActionListener(saveCurrentGame);
+    saveGame.addActionListener(saveCurrentGame);
 
     for (String save : backup.getSavesList()){
       JMenuItem savedBackup = new JMenuItem(save);
@@ -153,16 +172,17 @@ public class MainFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
           try {
-            backup.loadSave(save);
+            backup.loadSave(save.substring(0, save.length() - 3));
           } catch (Exception e1) {
             e1.printStackTrace();
           }
         }};
       savedBackup.addActionListener(loadSelectedSave);
-      loadItem.add(savedBackup);
+      loadGame.add(savedBackup);
     }
-    backupMenu.add(saveItem);
-    backupMenu.add(loadItem);
+    backupMenu.add(saveGame);
+    backupMenu.add(loadGame);
+    backupMenu.add(deleteGame);
     return backupMenu;
   }
 

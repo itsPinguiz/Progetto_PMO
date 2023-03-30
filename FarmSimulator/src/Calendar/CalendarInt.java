@@ -4,13 +4,15 @@
 
 package Calendar;
 
+import java.io.Serializable;
+
 import Calendar.Calendar.Seasons;
 import Calendar.Calendar.Weather;
 
 /********************
  * CALENDAR INTERFACE
  *******************/
-public interface CalendarInt {
+public interface CalendarInt extends Serializable{
     /**
      * Methods for days
      */

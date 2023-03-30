@@ -4,6 +4,7 @@
 
 package Actors.Person;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import Actors.Actions.PlayerActions;
 import Item.ItemCreator;

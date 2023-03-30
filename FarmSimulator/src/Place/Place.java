@@ -1,8 +1,10 @@
 package Place;
 
+import java.io.Serializable;
+
 import Actors.Actions.PlaceActions;
 
-public abstract class Place {
+public abstract class Place implements Serializable{
     // General class of places
     protected PlaceActions actions;
     protected Places type; // the type of the place
