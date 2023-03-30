@@ -29,7 +29,7 @@ public class GameBackup implements Backup{
         this.savePath.mkdirs();
     }
 
-    public void saveCurrent() throws IOException{
+    public String saveCurrent() throws IOException{
         /*
          * Saves current game session in a file
          * with the name of the current date
@@ -44,6 +44,7 @@ public class GameBackup implements Backup{
         FileOutputStream fos = new FileOutputStream(Backup,false);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         this.writeToFile(oos);
+        return formattedDate;
     }
 
     private void writeToFile (ObjectOutputStream out) throws IOException {

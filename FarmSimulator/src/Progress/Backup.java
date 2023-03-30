@@ -7,7 +7,7 @@ import java.util.List;
 import Main.Game;
 
 interface Backup {
-    void saveCurrent() throws IOException;
+    String saveCurrent() throws IOException;
     List<String> getSavesList();
     Game loadSave(String saveName) throws Exception;
 }

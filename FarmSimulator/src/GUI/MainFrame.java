@@ -110,18 +110,27 @@ public class MainFrame extends JFrame {
     farmerItem.addActionListener(roleListener);
     ownerItem.addActionListener(roleListener);
 
+    JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
+    separator.setPreferredSize(new Dimension(1, 20)); // change the size to make it visible
+    separator.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0)); // adjust the border
+
     // add elements to the menu bar
     roleMenu.add(farmerItem);
     roleMenu.add(ownerItem);
-    menuBar.add(roleMenu);
+
     menuBar.add(backupMenu());
-    menuBar.add(new JSeparator(SwingConstants.VERTICAL)); // add a vertical separator
+    menuBar.add(Box.createHorizontalStrut(5));
+    menuBar.add(roleMenu);
+    menuBar.add(Box.createHorizontalStrut(5));
+    menuBar.add(separator);
+    menuBar.add(Box.createHorizontalStrut(5));
     menuBar.add(roleLabel);
     menuBar.add(Box.createHorizontalGlue());
     menuBar.add(placeLabel);
+    menuBar.add(Box.createHorizontalStrut(5));
     
     // set the layout of the role panel
-    rolePanel.add(menuBar, BorderLayout.NORTH);
+    rolePanel.add(menuBar, BorderLayout.NORTH); // align the menu bar to the left
     rolePanel.add(buttonPanel, BorderLayout.CENTER);
 
     // update the role actions panel
@@ -132,40 +141,44 @@ public class MainFrame extends JFrame {
 
   // Create backup panel
   private JMenu backupMenu(){
+    // panel creation
     backupMenu = new JMenu("Backup");
     JMenuItem saveGame = new JMenuItem("Save");
     JMenu loadGame = new JMenu("Load");
     JMenu deleteGame = new JMenu("Delete");
 
-
+    // delete game menu
     for (String save : backup.getSavesList()){
       JMenuItem savedBackupToDelete = new JMenuItem(save);
       deleteGame.add(savedBackupToDelete);
       ActionListener deleteCurrentGame = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-              backup.deleteSave(e.toString());
-            } catch (Exception e1) {
-              e1.printStackTrace();
-            }
-  
-        }};
-      savedBackupToDelete.addActionListener(deleteCurrentGame);
-    }
-    
+          @Override
+          public void actionPerformed(ActionEvent e) {
+              try {
+                  backup.deleteSave(save);
+                  deleteGame.remove(savedBackupToDelete); // remove the menu item from the deleteGame menu
+              } catch (Exception e1) {
+                  e1.printStackTrace();
+              }
 
+          }};
+      savedBackupToDelete.addActionListener(deleteCurrentGame);
+  }
+    
+    // save game menu
     ActionListener saveCurrentGame = new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         try {
-          backup.saveCurrent();
+          deleteGame.add(new JMenuItem(backup.saveCurrent()));
+          loadGame.add(new JMenuItem(backup.saveCurrent()));
         } catch (IOException e1) {
           e1.printStackTrace();
         }
       }};
     saveGame.addActionListener(saveCurrentGame);
 
+    // load game menu
     for (String save : backup.getSavesList()){
       JMenuItem savedBackup = new JMenuItem(save);
       ActionListener loadSelectedSave = new ActionListener() {
@@ -180,6 +193,8 @@ public class MainFrame extends JFrame {
       savedBackup.addActionListener(loadSelectedSave);
       loadGame.add(savedBackup);
     }
+
+    // add elements to the menu bar
     backupMenu.add(saveGame);
     backupMenu.add(loadGame);
     backupMenu.add(deleteGame);
