@@ -72,6 +72,9 @@ public class Game implements Serializable{
 
         this.map.get(2).forEach(place -> { LandAbstract land = (LandAbstract) place;
                                                       land.update();});
+
+        Barn b = (Barn)(this.map.get(0).get(0));
+        b.updateMarket();
     }
 
     public ArrayList<ArrayList<Place>> getMap(){
