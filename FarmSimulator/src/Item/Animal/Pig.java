@@ -14,9 +14,11 @@ public class Pig extends AnimalAbstract {
 	Pig(){
 	       super();
 	       super.type = ItemType.Animals.PIG;
-	       super.hunger = 0;
-	       super.nProduct = 0;
 	       super.typeProduct.add(ItemType.Products.MEAT);
+		   super.price = 60;
+		   super.status = 100;
+		   super.number = 1;
+		   super.maxNumber = 10;
 	    }
     
 }

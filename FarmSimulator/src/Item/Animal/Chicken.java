@@ -16,10 +16,16 @@ public class Chicken extends AnimalAbstract{
     Chicken(){
        super();
        super.type = ItemType.Animals.CHICKEN;
-       super.hunger = 0;
-       super.nProduct = 0;
        super.typeProduct.add(ItemType.Products.MEAT);
        super.typeProduct.add(ItemType.Products.EGGS);
+       super.price = 20;
+	   super.status = 100;
+	   super.number = 1;
+	   super.maxNumber = 30;
+    }
+
+    public void updateHunger(){
+        
     }
     
 }
