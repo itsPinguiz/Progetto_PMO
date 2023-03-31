@@ -18,6 +18,9 @@ public abstract class Item implements Cloneable,Serializable,ItemInterface{
     protected int number;
     protected int maxNumber;
 
+    public Item(){
+    }
+
     public ItemType getType(){
         //method to get the type of the item
         return this.type;

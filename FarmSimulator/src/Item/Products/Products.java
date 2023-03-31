@@ -13,7 +13,7 @@ import Exceptions.CustomExceptions.*;
  ***************/
 public class Products extends Item{
 
-	public Products(ItemType.Products currentType) {
+	public Products(ItemType.productsType currentType) {
 		super.status = 0;
 		super.maxNumber = 64;
 		super.type = currentType;
@@ -37,8 +37,7 @@ public class Products extends Item{
 				break;
 				
 			default:
-				throw new NoProductFoundException();
-				
+				throw new NoProductFoundException();	
 			}
 		}
 		

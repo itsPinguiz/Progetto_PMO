@@ -6,8 +6,8 @@ package Item.Animal;
 
 import java.util.ArrayList;
 import Calendar.Calendar;
-import Item.ItemType;
 import Item.Interface.Item;
+import Item.Products.Products;
 
 /*****************
  * ANIMAL ABSTRACT
@@ -15,13 +15,11 @@ import Item.Interface.Item;
 public abstract class AnimalAbstract extends Item implements AnimalInterface {
     //fields
     protected int hunger;
-    protected ArrayList<ItemType.Products> typeProduct;
+    protected ArrayList<Products> typeProduct;
     protected Calendar c = Calendar.getInstance();
 
     public AnimalAbstract() {
-        super();
-    	this.typeProduct = new ArrayList<ItemType.Products>();
-        this.hunger = 100;
+        this.hunger = 0;
 	}
     
     //method for changing hunger
@@ -41,8 +39,8 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     }
 
     //method for getting the products
-    public void getProducts() {
-        //void momentaneo
+    public ArrayList<Products> getProducts() {
+        return this.typeProduct;
     }
 
 }

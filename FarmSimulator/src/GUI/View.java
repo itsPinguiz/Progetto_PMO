@@ -7,7 +7,6 @@ import Actors.Actions.ActionsManager;
 import Actors.Actions.PlayerActions;
 import Exceptions.CustomExceptions.PlaceNotAvailableException;
 import Item.Animal.AnimalAbstract;
-import Item.Interface.Item;
 import Item.Plants.PlantAbstract;
 import Place.Place;
 import Place.Land.AnimalLand;
