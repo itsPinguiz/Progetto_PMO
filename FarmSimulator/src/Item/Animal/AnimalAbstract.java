@@ -13,21 +13,19 @@ import Item.Interface.Item;
  * ANIMAL ABSTRACT
  ****************/
 public abstract class AnimalAbstract extends Item implements AnimalInterface {
-    
+    //fields
     protected int hunger;
     protected ArrayList<ItemType.Products> typeProduct;
-    protected int nProduct;
-
     protected Calendar c = Calendar.getInstance();
-    
+
     public AnimalAbstract() {
+        super();
     	this.typeProduct = new ArrayList<ItemType.Products>();
-        this.nProduct = 0;
-        this.hunger = 0;
+        this.hunger = 100;
 	}
     
-     //method for changing hunger
-     public void setHunger(){
+    //method for changing hunger
+    public void setHunger(){
         //check if life == 0
         this.hunger = (int)((1/super.status)*c.getDay());
     }
@@ -37,29 +35,14 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         super.status = (1/super.status)*c.getDay();
     }
 
-    
+    //method for getting hunger
     public int getHunger() {
         return this.hunger;
     }
 
-    public void updateProduct() {
-        if (this.nProduct == 0){
-            if(this.hunger <= 50){
-                this.nProduct += (int)(Math.random() * 10);
-            }
-            else{
-                this.nProduct += (int)(Math.random() * 20) + 10;
-            }
-        }
-    }
-
-    // every time you call this method the number of 
-    // product are set to zero
-    
-    public int getProducts() {
-        int tmp = this.nProduct;
-        this.nProduct = 0;        
-        return tmp;
+    //method for getting the products
+    public void getProducts() {
+        //void momentaneo
     }
 
 }
