@@ -6,7 +6,6 @@ import javax.swing.border.Border;
 import Actors.Actions.ActionsManager;
 import Actors.Actions.PlayerActions;
 import Exceptions.CustomExceptions.PlaceNotAvailableException;
-import Game.Game;
 import Item.Animal.AnimalAbstract;
 import Item.Interface.Item;
 import Item.Plants.PlantAbstract;
@@ -24,7 +23,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 //Interface Testing
-public class MainFrame extends JFrame {
+public class View extends JFrame {
   // constants
   final int MAX_HEIGHT = 600;
   final int MAX_WIDTH = 800;
@@ -40,14 +39,13 @@ public class MainFrame extends JFrame {
   private JMenuItem ownerItem;
   private JLabel roleLabel;
   private JLabel placeLabel;
-  private Game game;
+  private Model game;
   private GameBackup backup;
-  private Item selectedItem;
-  private Item selectedEntity;
+  private Controller controller;
 
   // constructor
-  public MainFrame() {
-    this.game = new Game();
+  public View() {
+    this.game = game;
     this.backup = new GameBackup(game);
     setTitle("Farming Simulator");
     setSize(MAX_WIDTH, MAX_HEIGHT);
@@ -137,6 +135,11 @@ public class MainFrame extends JFrame {
     this.setRoleActions(this.game.getPersons()[0].toString());
 
     return rolePanel;
+  }
+
+  // add controller to the view
+  public void addController(Controller controller) {
+    this.controller = controller;
   }
 
   // Create backup panel
@@ -335,8 +338,9 @@ public class MainFrame extends JFrame {
         for(AnimalAbstract animal : ((AnimalLand)(actualPlace)).getElements()){
           JButton button = new JButton(animal.getType().toString());
           insideLand.add(button);
-          // if it's a plant land
-      }} else if (actualPlace.getType() == Places.PLANT_LAND){ 
+          
+      }} // if it's a plant land
+      else if (actualPlace.getType() == Places.PLANT_LAND){ 
         for(PlantChunk chunk : ((PlantLand)(actualPlace)).getElements()){
           JButton button = new JButton((chunk.getPlant() == null )? "Empty" : chunk.getPlant().getType().toString());
           insideLand.add(button);
@@ -349,7 +353,7 @@ public class MainFrame extends JFrame {
                   } catch (PlaceNotAvailableException e1) {
                     e1.printStackTrace();
                   }
-                  updateActualPanel(worldPanel, createChunkPanel(chunk));
+                  updateActualPanel(worldPanel, createChunkPanel(chunk, actualPlace));
                 }
             }});
         }
@@ -359,22 +363,16 @@ public class MainFrame extends JFrame {
       JButton exitButton = new JButton("Exit");
       exitButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          worldPanel.removeAll();
-          worldPanel.add(createWorldPanel());
-
           game.getSelectedPerson().getActions().leave();
-          updateLabels(insideLand);
-          
-          // Aggiornare il pannello
-          worldPanel.revalidate();
-          worldPanel.repaint();
+          updateActualPanel(worldPanel, createWorldPanel());
+          //updateLabels(insideLand);
         }});
       insideLand.add(exitButton);
       return insideLand;
     }
 
   // create the panel that will show the elements inside a chunk
-  private JPanel createChunkPanel(PlantChunk chunk){
+  private JPanel createChunkPanel(PlantChunk chunk, LandAbstract plantLand){
     JPanel chunkPanel = new JPanel(new GridLayout(1, 2));
     JLabel plantLabel = new JLabel();
     PlantAbstract plant = chunk.getPlant();
@@ -399,15 +397,13 @@ public class MainFrame extends JFrame {
     JButton exitButton = new JButton("Exit");
     exitButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        worldPanel.removeAll();
-        worldPanel.add(createWorldPanel());
-
-        game.getSelectedPerson().getActions().leave();
+        try {
+          game.getSelectedPerson().getActions().enter(plantLand);
+        } catch (PlaceNotAvailableException e1) {
+          e1.printStackTrace();
+        }
         updateLabels(chunkPanel);
-        
-        // Aggiornare il pannello
-        worldPanel.revalidate();
-        worldPanel.repaint();
+        updateActualPanel(worldPanel, createInsideLand());
       }});
     chunkPanel.add(exitButton);
 
@@ -434,7 +430,7 @@ public class MainFrame extends JFrame {
 
   // main
   public static void main(String[] args) {
-    MainFrame frame = new MainFrame();
+    View frame = new View();
     frame.setVisible(true);
     }
   }
