@@ -3,7 +3,6 @@ package Game;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import Actors.Actions.ActionsManager.Action;
 import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
@@ -60,6 +59,11 @@ public class Game implements Serializable{
         };
 
         this.selectedActor = this.farmer; // default selected actor
+
+
+        // TODO: remove this
+        PlantLand p = (PlantLand)(this.map.get(1).get(0));
+        p.getChunks().get(0).setPlant(new Plant(Plants.CARROT));
         
         this.farmer.addItem(new Plant(Plants.CARROT));
     }

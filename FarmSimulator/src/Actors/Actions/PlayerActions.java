@@ -17,6 +17,7 @@ import Place.Place;
 import Place.Places;
 import Place.Land.PlantChunk;
 import Place.Land.PlantLand;
+import Item.Tools.Interface.AbstractTool;
 
 public class PlayerActions extends ActionsManager{
     // attributes
@@ -328,7 +329,7 @@ public class PlayerActions extends ActionsManager{
         int tmp = f.searchItem(t);
 
         if (tmp != -1){
-            f.getInventory().get(tmp).useItem();
+            ((AbstractTool)(f.getInventory().get(tmp))).useItem();
             if (f.getInventory().get(tmp).getStatus() == 0){
                 f.removeItem(tmp);
             }

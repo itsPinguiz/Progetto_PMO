@@ -9,5 +9,6 @@ public class Plant extends PlantAbstract {
             super(null);
             this.type = type;
             this.price = 5;
+            this.lifeStage = PlantLife.SEED;
     }   
 }

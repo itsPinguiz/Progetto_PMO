@@ -16,7 +16,6 @@ import Place.Land.PlantLand;
 import Progress.GameBackup;
 import Place.Land.PlantChunk;
 import Place.Land.LandAbstract;
-import Place.Land.PlantChunk;
 import Place.Places;
 
 import java.awt.*;
@@ -288,18 +287,10 @@ public class MainFrame extends JFrame {
           public void actionPerformed(ActionEvent e) {
               try {
                 game.getSelectedPerson().getActions().enter(i);
-                setRoleActions(game.getSelectedPerson().toString());
-                worldPanel.removeAll();
-                worldPanel.add(createInsideLand());
-                worldPanel.revalidate();
-                worldPanel.repaint();
-                // Aggiornare il pannello
-                revalidate();
-                repaint();
-                updateLabels(worldPanel);
               } catch (PlaceNotAvailableException e1) {
                 e1.printStackTrace();
               };
+              updateActualPanel(worldPanel, createInsideLand());
           }
       });
       land.add(button);
@@ -358,15 +349,7 @@ public class MainFrame extends JFrame {
                   } catch (PlaceNotAvailableException e1) {
                     e1.printStackTrace();
                   }
-                  setRoleActions(game.getSelectedPerson().toString());
-                  worldPanel.removeAll();
-                  worldPanel.add(createChunkPanel(chunk));
-                  worldPanel.revalidate();
-                  worldPanel.repaint();
-                  // Aggiornare il pannello
-                  revalidate();
-                  repaint();
-                  updateLabels(worldPanel);
+                  updateActualPanel(worldPanel, createChunkPanel(chunk));
                 }
             }});
         }
@@ -390,6 +373,7 @@ public class MainFrame extends JFrame {
       return insideLand;
     }
 
+  // create the panel that will show the elements inside a chunk
   private JPanel createChunkPanel(PlantChunk chunk){
     JPanel chunkPanel = new JPanel(new GridLayout(1, 2));
     JLabel plantLabel = new JLabel();
@@ -398,11 +382,11 @@ public class MainFrame extends JFrame {
     chunkPanel.setPreferredSize(new Dimension(800, 500));
     chunkPanel.setBackground(Color.GREEN); // TODO: remove this line
 
-    plantLabel.setText("<html> <b>"+ plant.getType().toString()+
-                       "<b> <br> Life Stage: "+ plant.getLifeStage().toString() +
-                       "<br> Water Level: "+ chunk.getWaterLevel() +
-                       "<br> Fertilization Level: "+ chunk.getFertilizationLevel() +
-                       "</html>");
+    plantLabel.setText("<html><div style='font-size:16px; font-weight:bold;'>" + plant.getType().toString() +
+                       "</div><div style='font-size:12px;'>Life Stage: " + plant.getLifeStage().toString() +
+                       "<br>Water Level: " + chunk.getWaterLevel() +
+                       "<br>Fertilization Level: " + chunk.getFertilizationLevel() +
+                       "</div></html>");
 
     try {
       this.game.getSelectedPerson().getActions().enter(chunk);
@@ -435,6 +419,20 @@ public class MainFrame extends JFrame {
     return chunkPanel;
   }  
   
+  // update actual panel
+  public void updateActualPanel(JPanel mainPanel, JPanel newPanel){
+    setRoleActions(game.getSelectedPerson().toString());
+    mainPanel.removeAll();
+    mainPanel.add(newPanel);
+    mainPanel.revalidate();
+    mainPanel.repaint();
+    // Aggiornare il pannello
+    revalidate();
+    repaint();
+    updateLabels(mainPanel);
+  }
+
+  // main
   public static void main(String[] args) {
     MainFrame frame = new MainFrame();
     frame.setVisible(true);

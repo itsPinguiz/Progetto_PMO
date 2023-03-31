@@ -13,7 +13,7 @@ import Place.Land.PlantChunk;
 public abstract class PlantAbstract extends Item implements PlantInteface{
     // attributes
     private int daysToHarvest;
-    private PlantLife lifeStage;
+    protected PlantLife lifeStage;
     protected ArrayList<Item> products; 
 
     private PlantChunk chunk;
@@ -22,12 +22,27 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
 
     public enum PlantLife {
         // plant life cycle state
-        SEED,
-        SPROUT,
-        SMALL_PLANT,
-        ADULT_PLANT,
-        HARVESTABLE,
-        PRODUCT
+        SEED("Seed"),
+        SPROUT("Sprout"),
+        SMALL_PLANT("Small Plant"),
+        ADULT_PLANT("Adult Plant"),
+        HARVESTABLE("Harvestable"),
+        PRODUCT("Product");
+
+        private String name;
+
+        PlantLife(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return getName();
+        }
     }
 
     // constructor
