@@ -7,13 +7,8 @@ package Item.Tools.Interface;
 import Item.Interface.Item;
 
 public abstract class AbstractTool extends Item implements ToolInterface {
-
+    //fields
     private ToolStatus toolStatus;
-
-    protected AbstractTool(){
-        super();
-        this.toolStatus = ToolStatus.EXCELLENT;
-    }
 
     public enum ToolStatus{
         BROKEN, 
@@ -22,12 +17,14 @@ public abstract class AbstractTool extends Item implements ToolInterface {
         EXCELLENT
     }
 
-    public void useItem() {
-    	super.status--;
-        checkToolStatus();
+    //constructor
+    protected AbstractTool(){
+        super();
+        this.toolStatus = ToolStatus.EXCELLENT;
     }
 
     private void checkToolStatus(){
+        //method to check the status of the tool
         if(super.status <= 0){
             this.toolStatus = ToolStatus.BROKEN;
         }
@@ -42,28 +39,10 @@ public abstract class AbstractTool extends Item implements ToolInterface {
         }
     }
 
-    public ToolStatus getToolStatus(){
-        return this.toolStatus;
+    public ToolStatus useTool() {
+        //method to use the tool
+    	super.status--;
+        checkToolStatus();
+        return(this.toolStatus);
     }
-
-    public double getStatus(){
-        return super.status;
-    }
-
-    public int getPrice(){
-        return super.price;
-    }
-
-    public int getNumber(){
-        return super.number;
-    }
-
-    public int getMaxNumber(){
-        return super.maxNumber;
-    }
-
-    
-
-
-
 }

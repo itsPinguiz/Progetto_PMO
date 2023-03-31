@@ -329,7 +329,7 @@ public class PlayerActions extends ActionsManager{
         int tmp = f.searchItem(t);
 
         if (tmp != -1){
-            ((AbstractTool)(f.getInventory().get(tmp))).useItem();
+            ((AbstractTool)(f.getInventory().get(tmp))).useTool();
             if (f.getInventory().get(tmp).getStatus() == 0){
                 f.removeItem(tmp);
             }

@@ -6,8 +6,6 @@ package Item.Tools.Interface;
 
 import java.io.Serializable;
 
-import Item.ItemType;
-
 public interface ToolInterface extends Serializable {
     public double getStatus();
     public int getPrice();
