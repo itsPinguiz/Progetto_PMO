@@ -42,4 +42,10 @@ public class CustomExceptions {
             super("Cannot perform action since this product doesn't exist.");
         }   
     }
+
+    public static class NoAnimalFoundException extends Exception {
+        public NoAnimalFoundException(){
+            super("Cannot perform action since this animal doesn't exist.");
+        }   
+    }
 }

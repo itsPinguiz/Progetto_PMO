@@ -24,7 +24,7 @@ public interface ItemType {
 	}
 	
 	
-	public enum Products implements ItemType{
+	public enum productsType implements ItemType{
 		MEAT,
 		MILK,
 		WOOL,
