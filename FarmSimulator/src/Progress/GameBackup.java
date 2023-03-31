@@ -12,16 +12,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import Game.Game;
+import GUI.Model;
 
 public class GameBackup implements Backup{
     // attributes
-    private Game classesBackup;
+    private Model classesBackup;
     private final File savePath;
     private List<String> classesNamesBackup;
 
     // constructor
-    public GameBackup(Game currentClasses){
+    public GameBackup(Model currentClasses){
         this.classesBackup = currentClasses;
         this.classesNamesBackup = new ArrayList<>();
         this.savePath = new File("saves");
@@ -78,7 +78,7 @@ public class GameBackup implements Backup{
         this.updateSavesList();
     }
 
-    public Game loadSave(String saveName) throws Exception{
+    public Model loadSave(String saveName) throws Exception{
         /*
          * Returns a specific saved game session
          */
@@ -94,10 +94,10 @@ public class GameBackup implements Backup{
     }
 
 
-    private Game readFromFile(File f) throws Exception {
+    private Model readFromFile(File f) throws Exception {
         FileInputStream fis = new FileInputStream(f);
         ObjectInputStream ois = new ObjectInputStream(fis);
-        Game classesBackup = (Game) ois.readObject();
+        Model classesBackup = (Model) ois.readObject();
         ois.close();
         return classesBackup;
     }   

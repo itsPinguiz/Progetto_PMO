@@ -1,4 +1,4 @@
-package Game;
+package GUI;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ A shop from which to buy seeds, resources, animals or land.
 Variation of the seasons that influence the weather.
 */
 
-public class Game implements Serializable{
+public class Model implements Serializable{
     // attributes\
     private Farmer farmer;
     private Landlord landlord;
@@ -38,7 +38,7 @@ public class Game implements Serializable{
     private ArrayList<ArrayList<Place>> map;
 
     // constructor
-    public Game(){
+    public Model(){
         //attributes initialization
         this.farmer = new Farmer();
         this.landlord = new Landlord();
