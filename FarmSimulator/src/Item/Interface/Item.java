@@ -32,11 +32,6 @@ public abstract class Item implements Cloneable,Serializable,ItemInterface{
         return this.number;
     }
     
-    // TODO probabilmente useItem va all'interno di AbstractTool
-    public void useItem() {
-    	this.status--;
-    }
-    
     public int getMaxNumber() {
     	return this.maxNumber;
     }

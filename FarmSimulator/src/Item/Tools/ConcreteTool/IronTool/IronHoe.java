@@ -14,7 +14,6 @@ import Item.Tools.Interface.AbstractTool;
 public class IronHoe extends AbstractTool {
     
     public IronHoe(){
-    	
         super.type = ItemType.Tools.HOE;
         ((ItemType.Tools)(super.type)).setMaterial(Material.IRON);
         super.status = 100;
