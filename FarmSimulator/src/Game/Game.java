@@ -8,11 +8,8 @@ import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Calendar.Calendar;
-import Exceptions.CustomExceptions.PlaceNotAvailableException;
-import Item.Interface.Item;
-import Item.Plants.PlantAbstract;
-import Item.Plants.species.Carrot;
-import Item.Plants.species.Potato;
+import Item.ItemType.Plants;
+import Item.Plants.species.Plant;
 import Place.Place;
 import Place.Barn.Barn;
 import Place.Land.AnimalLand;
@@ -64,7 +61,7 @@ public class Game implements Serializable{
 
         this.selectedActor = this.farmer; // default selected actor
         
-        this.farmer.addItem(new Carrot());
+        this.farmer.addItem(new Plant(Plants.CARROT));
     }
 
     public void update(){

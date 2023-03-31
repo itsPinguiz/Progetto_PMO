@@ -3,7 +3,6 @@ package Actors.Actions;
 import java.util.HashSet;
 
 import Place.Place;
-import Place.Land.LandAbstract;
 
 public class PlaceActions extends ActionsManager{
     protected Place place; // place where the action take place

@@ -2,7 +2,6 @@ package Actors.Actions;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +10,6 @@ import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Exceptions.CustomExceptions.*;
-import Game.Game;
 import Item.ItemType;
 import Item.Interface.Item;
 import Item.Plants.PlantAbstract;
