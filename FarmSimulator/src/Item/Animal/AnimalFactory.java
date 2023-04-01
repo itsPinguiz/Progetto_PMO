@@ -1,8 +1,10 @@
 package Item.Animal;
 
+import java.io.Serializable;
+
 import Item.ItemType.Animals;
 
-public class AnimalFactory {
+public class AnimalFactory implements Serializable{
     public AnimalAbstract createCow(){
         return new ConcreteAnimal(Animals.COW);
     }

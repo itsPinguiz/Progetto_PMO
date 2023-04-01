@@ -4,6 +4,7 @@
 
 package Place.Barn.Market;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Item.Interface.Item;
@@ -11,7 +12,7 @@ import Item.Interface.Item;
 /******************
  * MARKET INTERFACE
  *****************/
-public interface MarketInt {
+public interface MarketInt extends Serializable{
     ArrayList<Item> getItem();
     void removeItem(int itemIndex);
 }

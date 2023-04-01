@@ -1,9 +1,11 @@
 package Item.Plants;
 
+import java.io.Serializable;
+
 import Item.ItemType;
 import Item.Plants.species.Plant;
 
-public class PlantFactory {
+public class PlantFactory implements Serializable {
     public Plant createCarrot(){
         return new Plant(ItemType.Plants.CARROT);
     }
