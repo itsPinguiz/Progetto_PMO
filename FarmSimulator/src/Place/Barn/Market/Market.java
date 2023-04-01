@@ -5,6 +5,8 @@
 package Place.Barn.Market;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+
 import Item.ItemCreator;
 import Item.Interface.Item;
 
@@ -16,6 +18,7 @@ public class Market implements MarketInt{
     private final int MAX_SHOP_LENGTH = 10;
     private ArrayList<Item> itemShop;
     private ItemCreator itemCreator;
+    private HashSet<Integer> boughtItems;
     
 
     public Market(){
@@ -24,13 +27,25 @@ public class Market implements MarketInt{
         for(int i = 0; i < MAX_SHOP_LENGTH; i++){
             this.itemShop.add(this.itemCreator.getRandomItem());
         }
+        this.boughtItems = new HashSet<Integer>();
     }
 
     public ArrayList<Item> getItem(){
         return this.itemShop;
     }
-    public void removeItem(int itemIndex){
-        this.itemShop.remove(itemIndex);
+
+    
+
+    public void buyItem(int itemIndex){
+        this.boughtItems.add(itemIndex);
+    }
+
+    {
+        int availableIndex = -1;
+        do {
+            availableIndex = (int)(Math.random() * 10);
+        } while(boughtItems.contains(availableIndex));
+        this.itemShop.set(availableIndex, this.itemCreator.getRandomItem());
     }
 
     public void upgradeItemShop(int actualDay){
