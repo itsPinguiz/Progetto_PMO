@@ -45,13 +45,17 @@ public class PlayerActions extends ActionsManager{
             }};;
     }
 
-    public void executeAction(Action s,Object argument) {
+    public void executeAction(Action s,Object argument) throws IllegalAccessException,
+                                                               IllegalArgumentException,
+                                                               InvocationTargetException,
+                                                               SecurityException,
+                                                               ActionNotAvailableException {
         /*
          * Method to find a method to execute
          */
 
         // find the method and execute it
-        try {
+
             // ottiene tutti i metodi della classe MyClass
             Method[] methods = PlayerActions.class.getDeclaredMethods();
 
@@ -65,44 +69,33 @@ public class PlayerActions extends ActionsManager{
             }
    
             if (method != null && this.availableActions.contains(s)) {
-               try {
                 method.invoke(this,argument);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
             } else {
-               System.err.println("Action not found.");
+                throw new ActionNotAvailableException();
             }
-         } catch (SecurityException e) {
-            System.err.println("Security Error");
-         }
       }
 
-    public int getActionReqArgs(Action s){
+    public int getActionReqArgs(Action s) throws ActionNotAvailableException{
         /*
          * Method to get the number of arguments
          * required for the action
          */
         int numParams = 0;
-        try {
-            if (this.availableActions.contains(s)){
-                Method[] methods = PlayerActions.class.getDeclaredMethods();
 
-                // cerca il metodo desiderato
-                Method method = null;
-                for (Method m : methods) {
-                   if (m.getName().equals(s.name().toLowerCase())) {
-                      method = m;
-                      break;
-                   }
-                }
+        if (this.availableActions.contains(s)){
+            Method[] methods = PlayerActions.class.getDeclaredMethods();
 
-                if (method != null){
-                    numParams = method.getParameterCount();
+            // cerca il metodo desiderato
+            Method method = null;
+            for (Method m : methods) {
+                if (m.getName().equals(s.name().toLowerCase())) {
+                    method = m;
+                    break;
                 }
-            } else throw new ActionNotAvailableException();  
-        } catch (Exception e) {
-            System.out.print(e);
+            }
+            if (method != null){
+                numParams = method.getParameterCount();
+            }
         }
         return numParams;
     }
@@ -165,7 +158,7 @@ public class PlayerActions extends ActionsManager{
         //farmer.removeItem(item);
     }
     
-    public void plant(ArrayList<? extends Object> items) throws LandIsNotPlowedException, NoSeedFoundException{
+    public void plant(ArrayList<? extends Object> items) throws LandIsNotPlowedException, NoSeedFoundException, CloneNotSupportedException{
         /*
          * Method to plant a plant
          */
@@ -297,7 +290,12 @@ public class PlayerActions extends ActionsManager{
          */
         Farmer f = (Farmer)this.person;
 
-        p.getChunks().forEach(chunk -> {f.getActions().executeAction(a,new ArrayList<>() {{add(chunk);}});});
+        p.getChunks().forEach(chunk -> {try {
+            f.getActions().executeAction(a,new ArrayList<>() {{add(chunk);}});
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException
+                | ActionNotAvailableException e) {
+            e.printStackTrace();
+        }});
     }
 
     public void buy(){
