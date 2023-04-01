@@ -65,7 +65,7 @@ public class GameBackup implements Backup{
         return this.classesNamesBackup;
     }
 
-    public void deleteSave(String saveName) throws Exception{
+    public void deleteSave(String saveName) throws IOException{
         /*
          * Deletes a specific saved game session
          */
@@ -78,7 +78,7 @@ public class GameBackup implements Backup{
         this.updateSavesList();
     }
 
-    public Model loadSave(String saveName) throws Exception{
+    public Model loadSave(String saveName) throws IOException, ClassNotFoundException{
         /*
          * Returns a specific saved game session
          */
@@ -94,7 +94,7 @@ public class GameBackup implements Backup{
     }
 
 
-    private Model readFromFile(File f) throws Exception {
+    private Model readFromFile(File f) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(f);
         ObjectInputStream ois = new ObjectInputStream(fis);
         Model classesBackup = (Model) ois.readObject();

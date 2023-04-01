@@ -86,7 +86,7 @@ public class Farmer extends PersonAbstract{
     	return found;
     }
     
-    public Item getItem(int numItemReq, Item itemRequest) {
+    public Item getItem(int numItemReq, Item itemRequest) throws CloneNotSupportedException {
     	
     	Item copyItem = null;
     	
@@ -94,14 +94,9 @@ public class Farmer extends PersonAbstract{
     		copyItem =  this.inventory.get(this.searchItem(itemRequest.getType()));
     	}
     	else {
-    		try {
-    			copyItem = (Item)(inventory.get(this.searchItem(itemRequest.getType())).clone());
-    			copyItem.setNumber(numItemReq);
-    			inventory.get(this.searchItem(itemRequest.getType())).setNumber(inventory.get(this.searchItem(itemRequest.getType())).getNumber() - numItemReq);
-    			
-			} catch (CloneNotSupportedException e) {
-				System.err.println(e);
-			}
+            copyItem = (Item)(inventory.get(this.searchItem(itemRequest.getType())).clone());
+            copyItem.setNumber(numItemReq);
+            inventory.get(this.searchItem(itemRequest.getType())).setNumber(inventory.get(this.searchItem(itemRequest.getType())).getNumber() - numItemReq);
 		}
     	
     	return copyItem;

@@ -5,6 +5,8 @@ import javax.swing.border.Border;
 
 import Actors.Actions.ActionsManager;
 import Actors.Actions.PlayerActions;
+import Exceptions.CustomExceptions.ActionNotAvailableException;
+import Exceptions.CustomExceptions.PlaceNotAvailableException;
 import Item.Animal.AnimalAbstract;
 import Item.Plants.PlantAbstract;
 import Place.Place;
@@ -18,9 +20,11 @@ import Place.Places;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 //Interface Testing
-public class View extends JFrame {
+public class View extends JFrame{
   // constants
   final int MAX_HEIGHT = 600;
   final int MAX_WIDTH = 800;
@@ -41,7 +45,7 @@ public class View extends JFrame {
   private GameBackup backup;
 
   // constructor
-  public View() {
+  public View(){
     // setup main frame
     setTitle("Farming Simulator");
     setSize(MAX_WIDTH, MAX_HEIGHT);
@@ -50,7 +54,7 @@ public class View extends JFrame {
   }
 
   // add controller to the view
-  public void addController(Controller controller) {
+  public void addController(Controller controller) throws ActionNotAvailableException {
     this.controller = controller;
     this.model = controller.getModel();
     this.backup = controller.getBackup();
@@ -65,7 +69,7 @@ public class View extends JFrame {
   }
 
   // Create role panel
-  private JPanel createRolePanel(){
+  private JPanel createRolePanel() throws ActionNotAvailableException  {
     // panel creation
     rolePanel = new JPanel(new BorderLayout());
     rolePanel.setPreferredSize(new Dimension(800, 100));
@@ -91,7 +95,11 @@ public class View extends JFrame {
     ActionListener roleListener = new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         controller.changeRole(e.getActionCommand());
-        setRoleActions(e.getActionCommand());
+        try {
+          setRoleActions(e.getActionCommand());
+        } catch (ActionNotAvailableException e1) {
+          e1.printStackTrace();
+        }
         // Update the role label
         roleLabel.setText(e.getActionCommand());
         // Update the panel to disable buttons that are not available for the selected role
@@ -99,7 +107,11 @@ public class View extends JFrame {
         parent.remove(worldPanel);//remove the old panel
 
         // Creare un nuovo pannello e aggiungerlo al contenitore padre
-        worldPanel = createWorldPanel();
+        try {
+          worldPanel = createWorldPanel();
+        } catch (ActionNotAvailableException e1) {
+          e1.printStackTrace();
+        }
         parent.add(worldPanel);
 
         // Aggiornare il contenitore padre
@@ -141,7 +153,7 @@ public class View extends JFrame {
   }
 
   // Role Actions panel
-  public void setRoleActions(String role) {
+  public void setRoleActions(String role) throws ActionNotAvailableException {
     // Get the actions of the selected role
     PlayerActions actions = this.model.getSelectedPerson().getActions();
 
@@ -164,7 +176,13 @@ public class View extends JFrame {
         JButton button = new JButton(a.toString());
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controller.performAction(a);
+                try {
+                  controller.performAction(a);
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                    | NoSuchMethodException | SecurityException | PlaceNotAvailableException
+                    | ActionNotAvailableException e1) {
+                  e1.printStackTrace();
+                }
             }
         });
         buttonPanel.add(button, constraints);
@@ -199,7 +217,12 @@ public class View extends JFrame {
       ActionListener deleteCurrentGame = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            controller.deleteSave(save);
+            try {
+              controller.deleteSave(save);
+            } catch (InvocationTargetException | NoSuchMethodException | SecurityException | IOException
+                | InterruptedException e1) {
+              e1.printStackTrace();
+            }
             deleteGame.remove(savedBackupToDelete); // delete from delete menu
             // remove from load save menu
             Component[] loadGameItems = loadGame.getMenuComponents();
@@ -219,7 +242,12 @@ public class View extends JFrame {
     ActionListener saveCurrentGame = new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        String saveName = controller.saveGame();
+        String saveName = null;
+        try {
+          saveName = controller.saveGame();
+        } catch (IOException e1) {
+          e1.printStackTrace();
+        }
         deleteGame.add(new JMenuItem(saveName));
         loadGame.add(new JMenuItem(saveName));
       }
@@ -242,41 +270,49 @@ public class View extends JFrame {
   }
 
   // Crea pannello di gestione mondo
-  public JPanel createWorldPanel(){
+  public JPanel createWorldPanel() throws ActionNotAvailableException{
     // create the panel
     worldPanel = new JPanel(new GridLayout(1, 2));
     worldPanel.setPreferredSize(new Dimension(800, 500));
     worldPanel.setBackground(Color.GREEN); // TODO: remove this line
-    
+
     // create the land and barn panels
     JPanel barn = new JPanel(new GridLayout(1, 1));
     JPanel land = new JPanel(new GridLayout(3, 3));
-    
+
     // enable the possibility to change the role
-    roleMenu.setEnabled(true); 
+    roleMenu.setEnabled(true);
 
     // add the land buttons
-    for(Place i: this.model.getMap().get(1)){
-      JButton button = new JButton(i.getType().toString());
-      button.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-              controller.enterNewPlace(i);
-              updateActualPanel(worldPanel, createInsideLand());
-          }
-      });
-      land.add(button);
-      // disable land button if the role is not the farmer
-      button.setEnabled((model.getSelectedPerson().toString() == "Farmer")?true:false);
+    for (Place i : this.model.getMap().get(1)) {
+        JButton button = new JButton(i.getType().toString());
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)  {
+                try {
+                  controller.enterNewPlace(i);
+                } catch (PlaceNotAvailableException e1) {
+                  e1.printStackTrace();
+                }
+                try {
+                  updateActualPanel(worldPanel, createInsideLand());
+                } catch (ActionNotAvailableException e1) {
+                  e1.printStackTrace();
+                }
+            }
+        });
+        land.add(button);
+        // disable land button if the role is not the farmer
+        button.setEnabled((model.getSelectedPerson().toString() == "Farmer") ? true : false);
     }
     // add the barn button
-    barn.add(new JButton( this.model.getMap().get(0).get(0).getType().toString()));
+    barn.add(new JButton(this.model.getMap().get(0).get(0).getType().toString()));
     worldPanel.add(land);
-    worldPanel.add(barn);    
-    
+    worldPanel.add(barn);
+
     // update the labels
     updateLabels(worldPanel);
     return worldPanel;
-  }
+}
 
   // display animals when opening animal land else display chunks
   private JPanel createInsideLand(){
@@ -309,8 +345,16 @@ public class View extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // if the chunk isn't empty enter the chunk 
                 if (chunk.getPlant() != null){
-                  controller.enterNewPlace(actualPlace);
-                  updateActualPanel(worldPanel, createChunkPanel(chunk, actualPlace));
+                  try {
+                    controller.enterNewPlace(actualPlace);
+                  } catch (PlaceNotAvailableException e1) {
+                    e1.printStackTrace();
+                  }
+                  try {
+                    updateActualPanel(worldPanel, createChunkPanel(chunk, actualPlace));
+                  } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
+                    e1.printStackTrace();
+                  }
                 }
             }});
         }
@@ -321,7 +365,11 @@ public class View extends JFrame {
       exitButton.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           controller.leaveOldPlace();
-          updateActualPanel(worldPanel, createWorldPanel());
+          try {
+            updateActualPanel(worldPanel, createWorldPanel());
+          } catch (ActionNotAvailableException e1) {
+            e1.printStackTrace();
+          }
           //updateLabels(insideLand);
         }});
       insideLand.add(exitButton);
@@ -329,7 +377,7 @@ public class View extends JFrame {
     }
 
   // create the panel that will show the elements inside a chunk
-  private JPanel createChunkPanel(PlantChunk chunk, LandAbstract plantLand){
+  private JPanel createChunkPanel(PlantChunk chunk, LandAbstract plantLand) throws PlaceNotAvailableException, ActionNotAvailableException{
     // get the plant inside the chunk
     PlantAbstract plant = chunk.getPlant();
     
@@ -358,9 +406,17 @@ public class View extends JFrame {
     JButton exitButton = new JButton("Exit");
     exitButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        controller.enterNewPlace(plantLand);
-        updateLabels(chunkPanel);
-        updateActualPanel(worldPanel, createInsideLand());
+        try {
+          controller.enterNewPlace(plantLand);
+        } catch (PlaceNotAvailableException e1) {
+          e1.printStackTrace();
+        }
+        try {
+          updateLabels(chunkPanel);
+          updateActualPanel(worldPanel, createInsideLand());
+        } catch (ActionNotAvailableException e1) {
+          e1.printStackTrace();
+        }
       }});
     // add the exit button to the panel
     chunkPanel.add(exitButton);
@@ -376,7 +432,7 @@ public class View extends JFrame {
   }  
 
   // Update labels
-  private void updateLabels(JPanel panel){
+  private void updateLabels(JPanel panel) throws ActionNotAvailableException{
     this.roleLabel.setText(this.model.getSelectedPerson().toString());
     this.placeLabel.setText((this.model.getSelectedPerson().getPlace() == null)? "World" : this.model.getSelectedPerson().getPlace().getType().toString());
     setRoleActions(this.model.getSelectedPerson().toString());
@@ -387,7 +443,7 @@ public class View extends JFrame {
   }
   
   // update actual panel
-  public void updateActualPanel(JPanel mainPanel, JPanel newPanel){
+  public void updateActualPanel(JPanel mainPanel, JPanel newPanel) throws ActionNotAvailableException{
     setRoleActions(model.getSelectedPerson().toString());
     mainPanel.removeAll();
     mainPanel.add(newPanel);

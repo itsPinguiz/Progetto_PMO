@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -12,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import Actors.Actions.ActionsManager.Action;
+import Exceptions.CustomExceptions.ActionNotAvailableException;
 import Exceptions.CustomExceptions.PlaceNotAvailableException;
 import Place.Place;
 import Progress.GameBackup;
@@ -41,23 +43,16 @@ public class Controller {
     }
 
     // delete save 
-    public void deleteSave(String save){
-        // delete file
-        try {
-            backup.deleteSave(save);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } 
+    public void deleteSave(String save) throws IOException, InterruptedException, InvocationTargetException, NoSuchMethodException, SecurityException{
+        backup.deleteSave(save);
     }
 
     // save game
-    public String saveGame() {
+    public String saveGame() throws IOException{
         String saveName = null;
-        try {
-            backup.saveCurrent();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        backup.saveCurrent();
+
         return saveName;
     }
 
@@ -68,9 +63,9 @@ public class Controller {
                 try {
                     // load chosen save
                     backup.loadSave(save.substring(0, save.length() - 3));
-                  } catch (Exception e1) {
+                } catch (Exception e1) {
                     e1.printStackTrace();
-                  }
+                }
             }
         };
     }
@@ -86,19 +81,21 @@ public class Controller {
     }
 
     // execute the action
-    public void performAction(Action a) {
+    public void performAction(Action a) throws IllegalAccessException,
+                                               IllegalArgumentException,
+                                               InvocationTargetException,
+                                               NoSuchMethodException,
+                                               SecurityException,
+                                               PlaceNotAvailableException,
+                                               ActionNotAvailableException{
         System.out.println("Action " + a.toString() + " performed"); // TODO: remove this line
         model.getSelectedPerson().getActions().executeAction(a,model.getSelectedPerson().getPlace());
     }
 
     // MAP PANEL
     // enter a new place
-    public void enterNewPlace(Place p){
-        try {
-            model.getSelectedPerson().getActions().enter(p);
-          } catch (PlaceNotAvailableException e1) {
-            e1.printStackTrace();
-          };
+    public void enterNewPlace(Place p) throws PlaceNotAvailableException{
+        model.getSelectedPerson().getActions().enter(p);
     }
 
     // leave the current place

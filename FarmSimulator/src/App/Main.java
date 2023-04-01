@@ -1,5 +1,6 @@
 package App;
 
+import Exceptions.CustomExceptions.ActionNotAvailableException;
 import GUI.Controller;
 import GUI.Model;
 import GUI.View;
@@ -11,7 +12,11 @@ public class Main {
         View view = new View();
         Controller controller = new Controller(view,model);
 
-        view.addController(controller);
+        try {
+            view.addController(controller);
+        } catch (ActionNotAvailableException e) {
+            e.printStackTrace();
+        }
 
         view.setVisible(true);
     }
