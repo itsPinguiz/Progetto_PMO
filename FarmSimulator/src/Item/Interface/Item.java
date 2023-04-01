@@ -25,6 +25,7 @@ public abstract class Item implements Cloneable,Serializable,ItemInterface{
         //method to get the type of the item
         return this.type;
     }
+
     public double getStatus(){
         //method to get the status of the item
         return this.status;

@@ -13,5 +13,4 @@ import Item.Interface.Item;
  * MARKET INTERFACE
  *****************/
 public interface MarketInt extends Serializable{
-    ArrayList<Item> getItem();
 }

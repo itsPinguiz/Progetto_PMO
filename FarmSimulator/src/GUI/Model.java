@@ -7,6 +7,7 @@ import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Calendar.Calendar;
+import Item.Interface.Item;
 import Item.ItemType.Plants;
 import Item.Plants.species.Plant;
 import Place.Place;
@@ -65,7 +66,7 @@ public class Model implements Serializable{
         PlantLand p = (PlantLand)(this.map.get(1).get(0));
         p.getChunks().get(0).setPlant(new Plant(Plants.CARROT));
         
-        this.farmer.addItem(new Plant(Plants.CARROT));
+        this.farmer.getInventory().addItem(new Plant(Plants.CARROT));
     }
 
     public void update(){
@@ -78,7 +79,7 @@ public class Model implements Serializable{
                                                       land.update();});
 
         Barn b = (Barn)(this.map.get(0).get(0));
-        b.updateMarket();
+        b.updateBarn();
     }
 
     public ArrayList<ArrayList<Place>> getMap(){

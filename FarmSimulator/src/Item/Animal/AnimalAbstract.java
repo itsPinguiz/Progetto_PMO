@@ -16,12 +16,13 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     //fields
     protected int hunger;
     protected ArrayList<Products> typeProduct;
-    protected Calendar c = Calendar.getInstance();
+    protected Calendar c;
     protected int creationDay;
     protected int lastUpdatedDay;
 
     public AnimalAbstract() {
         this.hunger = 0;
+        this.c = Calendar.getInstance();
         this.creationDay = c.getDay();
         this.lastUpdatedDay = this.creationDay;
 	}

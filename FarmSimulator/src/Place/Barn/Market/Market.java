@@ -4,9 +4,8 @@
 
 package Place.Barn.Market;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
+import Calendar.Calendar;
+import Inventory.Inventory;
 import Item.ItemCreator;
 import Item.Interface.Item;
 
@@ -16,45 +15,40 @@ import Item.Interface.Item;
 public class Market implements MarketInt{
     
     private final int MAX_SHOP_LENGTH = 10;
-    private ArrayList<Item> itemShop;
+    private Inventory itemShop;
     private ItemCreator itemCreator;
-    private HashSet<Integer> boughtItems;
+    private Calendar c;
     
-
     public Market(){
-        this.itemShop = new ArrayList<Item>(MAX_SHOP_LENGTH);
+        this.itemShop = new Inventory(MAX_SHOP_LENGTH);
         this.itemCreator = new ItemCreator();
         for(int i = 0; i < MAX_SHOP_LENGTH; i++){
-            this.itemShop.add(this.itemCreator.getRandomItem());
+            this.itemShop.addItem(this.itemCreator.getRandomItem());
         }
-        this.boughtItems = new HashSet<Integer>();
+        this.c = Calendar.getInstance();
     }
-
-    public ArrayList<Item> getItem(){
-        return this.itemShop;
-    }
-
     
-
-    public void buyItem(int itemIndex){
-        this.boughtItems.add(itemIndex);
-    }
-
-    {
-        int availableIndex = -1;
-        do {
-            availableIndex = (int)(Math.random() * 10);
-        } while(boughtItems.contains(availableIndex));
-        this.itemShop.set(availableIndex, this.itemCreator.getRandomItem());
-    }
-
-    public void upgradeItemShop(int actualDay){
-        if(actualDay % 7 == 0){
+    public void updateItemShop(){
+        if(c.getDay() % 7 == 0){
             replaceItem();
         }
     }
 
     private void replaceItem(){
-        this.itemShop.set((int)Math.random() * 10, this.itemCreator.getRandomItem());
-    }  
+        for (int i = 0; i < itemShop.getInventory().size(); i++) {
+            this.itemShop.setItemInventory(i, this.itemCreator.getRandomItem());
+        }
+    }
+
+    public Item buyItem(int itemIndex, int balance) throws Exception{
+        if(this.itemShop.getInventory().get(itemIndex).getPrice() <= balance){
+            Item  tmp = this.itemShop.getInventory().get(itemIndex);
+            this.itemShop.removeItem(this.itemShop.getInventory().get(itemIndex));
+            return tmp;
+        }
+        else{
+            throw new Exception("Not enough money");
+        }
+    }
 }
+
