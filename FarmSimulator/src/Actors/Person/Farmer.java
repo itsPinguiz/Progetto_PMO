@@ -19,7 +19,7 @@ public class Farmer extends PersonAbstract{
     /**
      * Fields
      */
-    private final int MAX_INVENTORY_SIZE = 4;
+    private final int MAX_INVENTORY_SIZE = 10;
     private ArrayList<Item> inventory;
     private ItemCreator creator;
 
