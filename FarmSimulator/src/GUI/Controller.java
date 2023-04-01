@@ -1,16 +1,9 @@
 package GUI;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 
 import Actors.Actions.ActionsManager.Action;
 import Exceptions.CustomExceptions.ActionNotAvailableException;
