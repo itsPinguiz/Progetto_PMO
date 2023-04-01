@@ -44,7 +44,11 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
 
     //method for getting the products
     public ArrayList<Products> getProducts() {
-        return this.typeProduct;
+        ArrayList<Products> tmp = this.typeProduct;
+        for (int i = 0; i < this.typeProduct.size(); i++){
+            this.typeProduct.get(i).setNumber(0);
+        }
+        return tmp;
     }
 
     private void updateLife() {
@@ -58,17 +62,17 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     private void updateProducts(){
         if (this.hunger > 30){
             for (int i = 0; i < this.typeProduct.size(); i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() - 2);
+                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 10);
             }
         }
         else if (this.hunger > 60){
             for (int i = 0; i < this.typeProduct.size(); i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() - 4);
+                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 5);
             }
         }
         else if (this.hunger > 90){
             for (int i = 0; i < this.typeProduct.size(); i++){
-                this.typeProduct.get(i).setNumber(0);
+                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() - 5);
             }
         }
     }

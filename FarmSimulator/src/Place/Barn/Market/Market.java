@@ -22,7 +22,7 @@ public class Market implements MarketInt{
         this.itemShop = new ArrayList<Item>(MAX_SHOP_LENGTH);
         this.itemCreator = new ItemCreator();
         for(int i = 0; i < MAX_SHOP_LENGTH; i++){
-            this.itemShop.add(this.itemCreator.getRandomItem((int)((Math.random() * 7))));
+            this.itemShop.add(this.itemCreator.getRandomItem());
         }
     }
 
@@ -40,8 +40,6 @@ public class Market implements MarketInt{
     }
 
     private void replaceItem(){
-        this.itemShop.set((int)Math.random() * 10, this.itemCreator.getRandomItem((int)((Math.random() * 7))));
-    }
-    
-    
+        this.itemShop.set((int)Math.random() * 10, this.itemCreator.getRandomItem());
+    }  
 }

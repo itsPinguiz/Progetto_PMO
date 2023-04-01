@@ -29,7 +29,7 @@ public class Farmer extends PersonAbstract{
     public Farmer(){
         super.personAction = new PlayerActions(this);
         super.place = null;
-        this.inventory = new ArrayList<Item>(MAX_INVENTORY_SIZE);
+        this.inventory = new ArrayList<Item>(0);
         this.creator = new ItemCreator();
         this.inventory = creator.getWoodSet();
     }
@@ -59,8 +59,6 @@ public class Farmer extends PersonAbstract{
 				this.inventory.get(check).setNumber(this.inventory.get(check).getNumber() + newTool.getNumber());
 				
 			}	
-    		
-    		
     	}
     	
     	else if(this.inventory.size() < MAX_INVENTORY_SIZE){
