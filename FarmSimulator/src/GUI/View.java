@@ -7,19 +7,28 @@ import Actors.Actions.ActionsManager;
 import Actors.Actions.PlayerActions;
 import Exceptions.CustomExceptions.ActionNotAvailableException;
 import Exceptions.CustomExceptions.PlaceNotAvailableException;
+import GUI.Custom.DeselectableButtonGroup;
+import Inventory.Inventory;
 import Item.Animal.AnimalAbstract;
+import Item.Interface.Item;
 import Item.Plants.PlantAbstract;
 import Place.Place;
 import Place.Land.AnimalLand;
 import Place.Land.PlantLand;
 import Progress.GameBackup;
+import netscape.javascript.JSException;
 import Place.Land.PlantChunk;
 import Place.Land.LandAbstract;
 import Place.Places;
+import Actors.Person.Farmer;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
@@ -34,6 +43,7 @@ public class View extends JFrame{
   private JPanel buttonPanel;
   private JPanel rolePanel;
   private JPanel worldPanel;
+  private JScrollPane scrollableInventoryPanel;
   private JMenu roleMenu;
   private JMenu backupMenu;
   private JMenuItem farmerItem;
@@ -43,7 +53,6 @@ public class View extends JFrame{
   private Model model;
   private Controller controller;
   private GameBackup backup;
-
   // constructor
   public View(){
     // setup main frame
@@ -75,21 +84,61 @@ public class View extends JFrame{
     rolePanel.setPreferredSize(new Dimension(800, 100));
     rolePanel.setBackground(Color.RED);
 
-    // creation of the border for right padding
-    Border padding = BorderFactory.createEmptyBorder(0, 0, 0, 5);
+    // define actions button panel
+    buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
+    buttonPanel.setBackground(Color.RED); // TODO: remove this line
+    
+    // set the layout of the role panel
+    rolePanel.add(createMenuBar(), BorderLayout.NORTH); // align the menu bar to the left
+    rolePanel.add(buttonPanel, BorderLayout.CENTER);
+
+    // update the role actions panel
+    this.setRoleActions(model.getSelectedPerson().toString());
+
+    return rolePanel;
+  }
+
+  public JMenuBar createMenuBar(){
     // define the menu bar
     menuBar = new JMenuBar();
     menuBar.setLayout(new BoxLayout(menuBar, BoxLayout.X_AXIS));
-    buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+    // define menu bar elements
     roleMenu = new JMenu("Ruolo");
-    farmerItem = new JMenuItem(model.getPersons()[0].toString());
-    ownerItem = new JMenuItem(model.getPersons()[1].toString());
+    JToggleButton showInventoryButton = new JToggleButton("Inventory");
     placeLabel = new JLabel("World");
     roleLabel = new JLabel(model.getSelectedPerson().toString());
-    placeLabel.setBorder(padding);
 
-    buttonPanel.setBackground(Color.RED); // TODO: remove this line
+    // define role menu items
+    farmerItem = new JMenuItem(model.getPersons()[0].toString());
+    ownerItem = new JMenuItem(model.getPersons()[1].toString());
+
+    showInventoryButton.setBorderPainted(false);
+    showInventoryButton.setContentAreaFilled(false);
+
+    // action listener for inventory button
+    showInventoryButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if (showInventoryButton.isSelected()) {
+          worldPanel.add(createInventoryPanel());
+          showInventoryButton.setForeground(Color.WHITE);
+        } else {
+         worldPanel.remove(scrollableInventoryPanel);       
+         showInventoryButton.setForeground(Color.BLACK);   
+        }
+        buttonPanel.revalidate();
+        buttonPanel.repaint();
+      }
+    });
+
+    // disable inventory button if the role is "Landlord"
+    if(model.getSelectedPerson().toString().equals("Landlord")) {
+        showInventoryButton.setEnabled(false);
+    } else{
+      showInventoryButton.setEnabled(true);
+    }
     
     // action listener for role selection
     ActionListener roleListener = new ActionListener() {
@@ -100,8 +149,12 @@ public class View extends JFrame{
         } catch (ActionNotAvailableException e1) {
           e1.printStackTrace();
         }
-        // Update the role label
-        roleLabel.setText(e.getActionCommand());
+        rolePanel.remove(menuBar);
+        menuBar = createMenuBar();
+        rolePanel.add(menuBar, BorderLayout.NORTH);
+        rolePanel.revalidate();
+        rolePanel.repaint();
+
         // Update the panel to disable buttons that are not available for the selected role
         Container parent = worldPanel.getParent();
         parent.remove(worldPanel);//remove the old panel
@@ -123,33 +176,22 @@ public class View extends JFrame{
     farmerItem.addActionListener(roleListener);
     ownerItem.addActionListener(roleListener);
 
-    // create the separator
-    JSeparator separator = new JSeparator(SwingConstants.VERTICAL);
-    separator.setPreferredSize(new Dimension(1, 20)); // change the size to make it visible
-    separator.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0)); // adjust the border
+    // setup the position of the elements
 
     // add elements to the menu bar
     roleMenu.add(farmerItem);
     roleMenu.add(ownerItem);
     menuBar.add(createBackupMenu());
-    menuBar.add(Box.createHorizontalStrut(5));
+    menuBar.add(new JSeparator(SwingConstants.VERTICAL));
     menuBar.add(roleMenu);
     menuBar.add(Box.createHorizontalStrut(5));
-    menuBar.add(separator);
-    menuBar.add(Box.createHorizontalStrut(5));
     menuBar.add(roleLabel);
-    menuBar.add(Box.createHorizontalGlue());
+    menuBar.add(Box.createHorizontalStrut(300));
     menuBar.add(placeLabel);
-    menuBar.add(Box.createHorizontalStrut(5));
+    menuBar.add(Box.createHorizontalStrut(200));
+    menuBar.add(showInventoryButton);
     
-    // set the layout of the role panel
-    rolePanel.add(menuBar, BorderLayout.NORTH); // align the menu bar to the left
-    rolePanel.add(buttonPanel, BorderLayout.CENTER);
-
-    // update the role actions panel
-    this.setRoleActions(model.getSelectedPerson().toString());
-
-    return rolePanel;
+    return menuBar;
   }
 
   // Role Actions panel
@@ -269,7 +311,41 @@ public class View extends JFrame{
     return backupMenu;
   }
 
-  // Crea pannello di gestione mondo
+  // Create inventory Panel
+  public JScrollPane createInventoryPanel() {
+    JPanel inventoryPanel = new JPanel(new GridLayout(4, 3));
+    inventoryPanel.setPreferredSize(new Dimension(200, 500));
+    inventoryPanel.setBackground(Color.YELLOW); // TODO: remove this line
+
+    Inventory inventory = ((Farmer) (model.getSelectedPerson())).getInventory();
+
+    // Create a deselectable button group for the toggle buttons
+    DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
+
+    for (Item item : inventory.getInventory()) {
+        // Create a JToggleButton instead of a JButton
+        JToggleButton toggleButton = new JToggleButton(item.getType().toString());
+        toggleButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(((JToggleButton) e.getSource()).getText());
+                buttonGroup.handleClick(toggleButton);
+            }
+        });
+
+        // Add the toggle button to the button group and the panel
+        buttonGroup.add(toggleButton);
+        inventoryPanel.add(toggleButton);
+    }
+
+    // Wrap the inventoryPanel in a JScrollPane
+    JScrollPane scrollableInventoryPanel = new JScrollPane(inventoryPanel);
+    return scrollableInventoryPanel;
+  }
+
+
+
+
+  // Create world panel
   public JPanel createWorldPanel() throws ActionNotAvailableException{
     // create the panel
     worldPanel = new JPanel(new GridLayout(1, 2));
@@ -455,7 +531,12 @@ public class View extends JFrame{
     repaint();
     updateLabels(mainPanel);
   }
+
+  
 }
+
+
+
 
    
 
