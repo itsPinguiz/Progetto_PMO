@@ -10,6 +10,7 @@ import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Exceptions.CustomExceptions.*;
+import Inventory.Inventory;
 import Item.ItemType;
 import Item.Interface.Item;
 import Item.Plants.PlantAbstract;
@@ -139,21 +140,21 @@ public class PlayerActions extends ActionsManager{
         //App.getBarn().removeItem(itemIndex);
     }
 
-    public void drop_item(int i){
+    public void drop_item(Item item){
         /*
          * Method to drop item on
          * the floor and lose it
          */
-       ((Farmer)this.person).removeItem(i);
+       ((Farmer)this.person).getInventory().removeItem(item);
     }
 
-    public void move_item(int i){
+    public void move_item(int nItem,Item item) throws CloneNotSupportedException{
         /*
          * Method to move the item
          * to the barn from the farmer's inventory
          */
         Farmer farmer = (Farmer)this.person;
-        Item item = farmer.getInventory().get(i);
+        Item itemToMove = farmer.getInventory().getItem(nItem,item);
         //farmer.getPlace().barn.getInventory().add(item);
         //farmer.removeItem(item);
     }
@@ -171,7 +172,7 @@ public class PlayerActions extends ActionsManager{
         if (seed instanceof PlantAbstract ){ 
             if(c.getDirtStatus()){
                 // add plant to the land 
-                c.setPlant((PlantAbstract)f.getItem(1,seed));
+                c.setPlant((PlantAbstract)f.getInventory().getItem(1,seed));
                 // add new possible actions
                 c.getActions().updateActions(new HashSet<>(){{
                     add(Action.WATER);
@@ -247,7 +248,7 @@ public class PlayerActions extends ActionsManager{
         // add resources to the inventory
         for(Item item : resources){
             item.setNumber(item.getNumber()*multiplier);
-            f.addItem(item); // TODO CHANGE TO ENABLE ITEM STACKING
+            f.getInventory().addItem(item); // TODO CHANGE TO ENABLE ITEM STACKING
         }
         
         // remove plant
@@ -323,13 +324,14 @@ public class PlayerActions extends ActionsManager{
          * Use an item and destroy it if it's worn out
          */
         Farmer f = (Farmer)this.person;
+        ArrayList<Item> inv = f.getInventory().getInventory();
 
-        int tmp = f.searchItem(t);
+        int tmp = f.getInventory().searchItem(t);
 
         if (tmp != -1){
-            ((AbstractTool)(f.getInventory().get(tmp))).useTool();
-            if (f.getInventory().get(tmp).getStatus() == 0){
-                f.removeItem(tmp);
+            ((AbstractTool)(inv.get(tmp))).useTool();
+            if (inv.get(tmp).getStatus() == 0){
+                f.getInventory().removeItem(inv.get(tmp));
             }
             return true;
         }
