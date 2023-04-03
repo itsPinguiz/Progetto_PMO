@@ -5,6 +5,7 @@
 package Place.Barn.Market;
 
 import Calendar.Calendar;
+import Exceptions.CustomExceptions.NoEnoughMoneyException;
 import Inventory.Inventory;
 import Item.ItemCreator;
 import Item.Interface.Item;
@@ -40,14 +41,14 @@ public class Market implements MarketInt{
         }
     }
 
-    public Item buyItem(int itemIndex, int balance) throws Exception{
+    public Item buyItem (int itemIndex, int balance) throws Exception{
         if(this.itemShop.getInventory().get(itemIndex).getPrice() <= balance){
             Item  tmp = this.itemShop.getInventory().get(itemIndex);
             this.itemShop.removeItem(this.itemShop.getInventory().get(itemIndex));
             return tmp;
         }
         else{
-            throw new Exception("Not enough money");
+            throw new NoEnoughMoneyException();
         }
     }
 }

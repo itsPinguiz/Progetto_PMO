@@ -48,4 +48,10 @@ public class CustomExceptions {
             super("Cannot perform action since this animal doesn't exist.");
         }   
     }
+
+    public static class NoEnoughMoneyException extends Exception {
+        public NoEnoughMoneyException(){
+            super("Cannot perform action since you don't have enough money.");
+        }   
+    }
 }

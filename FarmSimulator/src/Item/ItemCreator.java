@@ -9,11 +9,9 @@ import java.util.ArrayList;
 
 import Item.Interface.Item;
 import Item.Plants.PlantFactory;
-import Item.Plants.species.Plant;
 import Item.Tools.Factory.IronFactory;
 import Item.Tools.Factory.ToolFactory;
 import Item.Tools.Factory.WoodFactory;
-import Item.Tools.Interface.AbstractTool;
 import Item.Animal.*;
 
 /*******************

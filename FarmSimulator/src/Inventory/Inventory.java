@@ -1,8 +1,6 @@
 package Inventory;
 
 import java.util.ArrayList;
-
-import Item.ItemType;
 import Item.Interface.Item;
 
 public class Inventory implements InventoryInterface {
@@ -22,9 +20,9 @@ public class Inventory implements InventoryInterface {
         return this.inventory;
     }
 
-    public void addItem(Item newTool){
+    public int addItem(Item newTool){
     	
-    	int check = this.searchItem(newTool.getType()); 
+    	int check = this.searchItem(newTool); 
     	
     	if(check != -1) {
     		if((this.inventory.get(check).getNumber() + newTool.getNumber()) > this.inventory.get(check).getMaxNumber()) {
@@ -44,10 +42,11 @@ public class Inventory implements InventoryInterface {
             else{
                 System.out.println("\nThere's not enough space in your inventory, drop something to make space.");
             }
+        return check;
     }
 
-    public void removeItem(Item itemToRemove) {
-        int itemIndex = searchItem(itemToRemove.getType());
+    public int removeItem(Item itemToRemove) {
+        int itemIndex = searchItem(itemToRemove);
     
         if (itemIndex == -1) {
             System.out.println("\n" + itemToRemove.getType() + " is not in your inventory.");
@@ -64,10 +63,11 @@ public class Inventory implements InventoryInterface {
                 System.out.println("\nYou only have " + existingItem.getNumber() + " " + itemToRemove.getType() + " in your inventory.");
             }
         }
+        return itemIndex;
     }
     
 
-    public int searchItem(ItemType itemtofind){
+    public int searchItem(Item itemtofind){
     	
     	int found = -1;
     	
@@ -82,13 +82,13 @@ public class Inventory implements InventoryInterface {
     	
     	Item copyItem = null;
     	
-    	if(this.inventory.get(this.searchItem(itemRequest.getType())).getNumber() - numItemReq <= 0 ) {
-    		copyItem =  this.inventory.get(this.searchItem(itemRequest.getType()));
+    	if(this.inventory.get(this.searchItem(itemRequest)).getNumber() - numItemReq <= 0 ) {
+    		copyItem =  this.inventory.get(this.searchItem(itemRequest));
     	}
     	else {
-            copyItem = (Item)(inventory.get(this.searchItem(itemRequest.getType())).clone());
+            copyItem = (Item)(inventory.get(this.searchItem(itemRequest)).clone());
             copyItem.setNumber(numItemReq);
-            inventory.get(this.searchItem(itemRequest.getType())).setNumber(inventory.get(this.searchItem(itemRequest.getType())).getNumber() - numItemReq);
+            inventory.get(this.searchItem(itemRequest)).setNumber(inventory.get(this.searchItem(itemRequest)).getNumber() - numItemReq);
 		}
     	return copyItem;	
     }
