@@ -33,6 +33,8 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 //Interface Testing
 public class View extends JFrame{
@@ -56,6 +58,7 @@ public class View extends JFrame{
   private Model model;
   private Controller controller;
   private GameBackup backup;
+  private Map<String, JMenuItem> savedGameItems;
   private Item selectedTool;
   private Item selecItem;
 
@@ -66,6 +69,7 @@ public class View extends JFrame{
     setSize(MAX_WIDTH, MAX_HEIGHT);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setResizable(false);
+    savedGameItems = new HashMap<>();
   }
 
   // add controller to the view
@@ -264,7 +268,7 @@ public class View extends JFrame{
   }
 
   // Create backup panel
-  private JMenu createBackupMenu(){
+  private JMenu createBackupMenu() {
     // panel creation
     backupMenu = new JMenu("Backup");
     JMenuItem saveGame = new JMenuItem("Save");
@@ -273,55 +277,102 @@ public class View extends JFrame{
 
     // delete game menu
     for (String save : backup.getSavesList()) {
-      JMenuItem savedBackupToDelete = new JMenuItem(save);
-      deleteGame.add(savedBackupToDelete);
+        JMenuItem savedBackupToDelete = new JMenuItem(save.substring(0, save.length() - 4));
+        deleteGame.add(savedBackupToDelete);
 
-      ActionListener deleteCurrentGame = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-              controller.deleteSave(save);
-            } catch (InvocationTargetException | NoSuchMethodException | SecurityException | IOException
-                | InterruptedException e1) {
-              e1.printStackTrace();
-            }
-            deleteGame.remove(savedBackupToDelete); // delete from delete menu
-            // remove from load save menu
-            Component[] loadGameItems = loadGame.getMenuComponents();
-            for (Component item : loadGameItems) {
-                if (item instanceof JMenuItem && ((JMenuItem)item).getText().equals(save)) {
-                    loadGame.remove(item);
-                    break;
+        ActionListener deleteCurrentGame = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    controller.deleteSave(save);
+                } catch (InvocationTargetException | NoSuchMethodException | SecurityException | IOException
+                        | InterruptedException e1) {
+                    e1.printStackTrace();
                 }
-            }
-
+                deleteGame.remove(savedBackupToDelete); // delete from delete menu
+                // remove from load save menu
+                JMenuItem savedBackup = savedGameItems.get(save);
+                if (savedBackup != null) {
+                    loadGame.remove(savedBackup);
+                    savedGameItems.remove(save);
+                }
+                // revalidate and repaint the frame to update the menus
+                revalidate();
+                repaint();
             }
         };
         savedBackupToDelete.addActionListener(deleteCurrentGame);
-      }
-      
+    }
+
     // save game menu
+
     ActionListener saveCurrentGame = new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        String saveName = null;
-        try {
-          saveName = controller.saveGame();
-        } catch (IOException e1) {
-          e1.printStackTrace();
-        }
-        deleteGame.add(new JMenuItem(saveName));
-        loadGame.add(new JMenuItem(saveName));
+          String[] saveName = new String[1];
+          try {
+              saveName[0] = controller.saveGame();
+              JMenuItem savedBackup = new JMenuItem(saveName[0]);
+              savedGameItems.put(saveName[0], savedBackup);
+              loadGame.add(savedBackup);
+
+              // Create a new JMenuItem for the delete menu
+              JMenuItem savedBackupToDelete = new JMenuItem(saveName[0]);
+              savedBackupToDelete.addActionListener(new ActionListener() {
+                  @Override
+                  public void actionPerformed(ActionEvent e) {
+                      try {
+                          controller.deleteSave(saveName[0]);
+                      } catch (InvocationTargetException | NoSuchMethodException | SecurityException | IOException
+                              | InterruptedException e1) {
+                          e1.printStackTrace();
+                      }
+                      deleteGame.remove(savedBackupToDelete); // delete from delete menu
+                      loadGame.remove(savedGameItems.get(saveName[0])); // remove from load save menu
+                      savedGameItems.remove(saveName[0]); // remove from savedGameItems map
+
+                      // revalidate and repaint the frame to update the menus
+                      revalidate();
+                      repaint();
+                  }
+              });
+
+              // Add the new JMenuItem to the delete menu
+              deleteGame.add(savedBackupToDelete);
+
+          } catch (IOException e1) {
+              e1.printStackTrace();
+          }
+          // revalidate and repaint the frame to update the menus
+          revalidate();
+          repaint();
       }
     };
     saveGame.addActionListener(saveCurrentGame);
 
+
     // load game menu
-    for (String save : backup.getSavesList()){
-      JMenuItem savedBackup = new JMenuItem(save);
-      ActionListener loadCurrentGame = controller.createLoadCurrentGameActionListener(save);
-      savedBackup.addActionListener(loadCurrentGame);
-      loadGame.add(savedBackup);
+    for (String save : backup.getSavesList()) {
+        JMenuItem savedBackup = new JMenuItem(save.substring(0, save.length() - 4));
+        savedBackup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.loadGame(save);
+                getContentPane().removeAll();
+                try {
+                    // rebuild the frame
+                    getContentPane().add(createRolePanel());
+                    getContentPane().add(createWorldPanel());
+                } catch (ActionNotAvailableException e1) {
+                    e1.printStackTrace();
+                }
+                // revalidate and repaint the frame to update the menus
+                revalidate();
+                repaint();
+            }
+        });
+        loadGame.add(savedBackup);
+        savedGameItems.put(save, savedBackup);
     }
 
     // add elements to the menu bar

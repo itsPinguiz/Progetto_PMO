@@ -45,23 +45,22 @@ public class Controller {
     public String saveGame() throws IOException{
         String saveName = null;
 
-        backup.saveCurrent();
+        saveName = backup.saveCurrent();
 
         return saveName;
     }
 
-    public ActionListener createLoadCurrentGameActionListener(String save){
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    // load chosen save
-                    backup.loadSave(save.substring(0, save.length() - 3));
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
-            }
-        };
+    // load game
+    public void loadGame(String save){
+        Controller controllerInstance = this; // riferimento all'istanza corrente di Controller
+        try {
+            // load chosen save
+            model = backup.loadSave(save);
+            model.getSelectedPerson().setPlace(null);
+            view.addController(controllerInstance);
+        } catch (Exception e1) {    
+            e1.printStackTrace();
+        }
     }
 
     // ROLE PANEL
