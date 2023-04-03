@@ -17,12 +17,14 @@ import Place.Place;
  * BARN CLASS
  ***********/
 public class Barn extends Place{
+
+    //attributes
     private PlaceActions actionBarn;
     private Inventory barnInventory;
     private Market market;
     private final int MAX_BARN_LENGTH = 40;
 
-    //istanza di market per vendere e comprare
+    //constructor
     public Barn() throws NoItemFoundException{
         super.type = Places.BARN;
         this.actionBarn = new PlaceActions(this);
@@ -30,6 +32,7 @@ public class Barn extends Place{
         this.market = new Market();
     }
 
+    //getters
     public Inventory getBarnInventory() {
         return this.barnInventory;
     }
@@ -41,13 +44,14 @@ public class Barn extends Place{
     public Market getMarket() {
         return this.market;
     }
+
     //update market and animals in the barn
     public void updateBarn(){
         //update market
         this.market.updateItemShop();
         //update animals
         for (Item item : this.barnInventory.getInventory()) {
-            if(item instanceof AnimalAbstract ){
+            if(item instanceof AnimalAbstract){
                 ((AnimalAbstract)item).update();
                 //if the animal is dead, remove it from the barn
                 if(((AnimalAbstract) item).getHunger() == 100 || ((AnimalAbstract) item).getStatus() == 0){

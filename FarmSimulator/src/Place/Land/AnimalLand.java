@@ -7,7 +7,6 @@ import Item.Animal.AnimalAbstract;
 import Place.Places;
 
 public class AnimalLand extends LandAbstract {
-    /*Land that contains different animals*/
 
     private final int MAX_ANIMALS = 30; //max number of animals in the land
     //attributes 
