@@ -58,17 +58,9 @@ public class PlayerActions extends ActionsManager{
         /*
         * Method to find a method to execute
         */
-        // get all the methods from the class
-        Method[] methods = PlayerActions.class.getDeclaredMethods();
 
         // find the desired method
-        Method method = null;
-        for (Method m : methods) {
-            if (m.getName().equals(s.name().toLowerCase())) {
-                method = m;
-                break;
-            }
-        }
+        Method method = getMethodByName(s.name());
 
         // execute the method if it exists and is available
         if (method != null && this.availableActions.contains(s)) {
@@ -78,6 +70,19 @@ public class PlayerActions extends ActionsManager{
         } else {
             throw new ActionNotAvailableException(s, this.availableActions);
         }
+    }
+
+    private  Method getMethodByName(String methodName) {
+        /*
+         * Method to get a method by its name
+         */
+        Method[] methods = this.getClass().getDeclaredMethods();
+        for (Method m : methods) {
+            if (m.getName().equals(methodName.toLowerCase())) {
+                return m;
+            }
+        }
+        return null;
     }
 
     public int getActionReqArgs(Action s) throws ActionNotAvailableException{
@@ -110,7 +115,6 @@ public class PlayerActions extends ActionsManager{
          * Method to change actions when
          * an actors enters somewhere
          */
-        // TODO indexing to get the place is not working properly
         if (this.accessiblePlaces.contains(p.getType())){
             if (person.getPlace() != null)
                 leave();
@@ -289,45 +293,43 @@ public class PlayerActions extends ActionsManager{
         c.resetActions();
     }
 
-    public void water_all(ArrayList<? extends Object> items){
+    public void water_all(ArrayList<? extends Object> items) throws NoSuchMethodException{
         /*
          * Method to water all plants
          */
-        this.doAll(Action.WATER,items);
+        this.doAll(items,this.getMethodByName("water"));
     }
 
-    public void fertilize_all(ArrayList<? extends Object> items){
+    public void fertilize_all(ArrayList<? extends Object> items)throws NoSuchMethodException{
         /*
          * Method to fertilize all plants
          */
-        this.doAll(Action.FERTILIZE,items);
+        this.doAll(items,this.getMethodByName("fertilize"));
     }
 
-    public void harvest_all(ArrayList<? extends Object> items){
+    public void harvest_all(ArrayList<? extends Object> items) throws NoSuchMethodException{
         /*
          * Method to harvest all plants
          */
-        this.doAll(Action.HARVEST,items);
+        this.doAll(items,this.getMethodByName("harvest"));
     }
 
-    public void plow_all(ArrayList<? extends Object> items){
+    public void plow_all(ArrayList<? extends Object> items) throws NoSuchMethodException{
         /*
          * Method to plow dirt
          */
-        this.doAll(Action.PLOW,items);
+        this.doAll(items,this.getMethodByName("plow"));
     }
 
-    private void doAll(Action a, ArrayList<? extends Object> items){
+    private void doAll(ArrayList<? extends Object> items, Method method){
         /*
          * Method to repeat the same action on all chunks in a land
          */
-        Farmer f = (Farmer)this.person;
         PlantLand p = (PlantLand)items.get(0);
 
         p.getChunks().forEach(chunk -> {try {
-            f.getActions().executeAction(a,new ArrayList<>() {{add(chunk); add(items.get(1));}});
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException
-                | ActionNotAvailableException e) {
+            method.invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
             e.printStackTrace();
         }});
     }

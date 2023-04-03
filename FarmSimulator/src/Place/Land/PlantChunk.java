@@ -101,7 +101,7 @@ public class PlantChunk extends LandAbstract implements Chunk{
         /*
          * Returns the chunk's fertilization level
          */
-        return this.waterLevel;
+        return this.fertilizationLevel;
     }
 
     public boolean getDirtStatus(){

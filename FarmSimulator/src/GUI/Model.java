@@ -65,9 +65,6 @@ public class Model implements Serializable{
 
         // TODO: remove this
         PlantLand p = (PlantLand)(this.map.get(1).get(0));
-        p.getChunks().get(0).setPlant(new Plant(Plants.CARROT){{
-            setNumber(10);
-        }});
         
         this.farmer.getInventory().addItem(new Plant(Plants.CARROT));
     }

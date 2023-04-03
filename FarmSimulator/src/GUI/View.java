@@ -9,6 +9,7 @@ import Exceptions.CustomExceptions.ActionNotAvailableException;
 import Exceptions.CustomExceptions.PlaceNotAvailableException;
 import GUI.Custom.DeselectableButtonGroup;
 import Inventory.Inventory;
+import Item.ItemType;
 import Item.Animal.AnimalAbstract;
 import Item.Interface.Item;
 import Item.Plants.PlantAbstract;
@@ -225,8 +226,12 @@ public class View extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 try {
                   controller.performAction(a,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());
-                                                                add(selectedTool);}});
-                  updateActualPanel(worldPanel, createChunkPanel((PlantChunk)model.getSelectedPerson().getPlace()));
+                    add(selectedTool);}});
+                  if (model.getSelectedPerson().getPlace().getType() == Places.PLANT_CHUNK){
+                    updateActualPanel(worldPanel, createChunkPanel((PlantChunk)model.getSelectedPerson().getPlace()));
+                  } else if (model.getSelectedPerson().getPlace().getType() == Places.PLANT_LAND){
+                    updateActualPanel(worldPanel, createInsideLand());
+                  }
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                     | NoSuchMethodException | SecurityException | PlaceNotAvailableException
                     | ActionNotAvailableException e1) {
@@ -338,8 +343,8 @@ public class View extends JFrame{
     DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
 
     for (Item item : inventory.getInventory()) {
-        // Create a JToggleButton instead of a JButton
-        JToggleButton toggleButton = new JToggleButton(item.getType().toString());
+        // Create a JToggleButton instead of a JButton<
+        JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>": item.getType().toString());
         toggleButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 selectedTool = buttonGroup.handleClick(toggleButton,item);
