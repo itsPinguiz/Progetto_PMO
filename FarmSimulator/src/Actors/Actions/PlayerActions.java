@@ -18,6 +18,7 @@ import Place.Place;
 import Place.Places;
 import Place.Land.PlantChunk;
 import Place.Land.PlantLand;
+import Place.Barn.Barn;
 import Item.Tools.Interface.AbstractTool;
 
 public class PlayerActions extends ActionsManager{
@@ -135,7 +136,7 @@ public class PlayerActions extends ActionsManager{
          */
         Farmer f = (Farmer)this.person;
         // grab item from the barn, remove its inventory and add it the the farmer's inventory
-        //Item item = f.getPlace().getInventory().get(itemIndex);
+        Inventory item = ((Barn)(f.getPlace())).getBarnInventory();
         //f.addItem(item);
         //App.getBarn().removeItem(itemIndex);
     }

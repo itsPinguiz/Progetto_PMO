@@ -83,7 +83,7 @@ public class GameBackup implements Backup{
          * Returns a specific saved game session
          */
         this.updateSavesList();
-        return this.readFromFile(new File(this.savePath,saveName));
+        return this.readFromFile(new File(this.savePath,saveName+"txt"));
     }
 
     private void updateSavesList(){

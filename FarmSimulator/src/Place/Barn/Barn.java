@@ -29,6 +29,10 @@ public class Barn extends Place{
         this.market = new Market();
     }
 
+    public Inventory getBarnInventory() {
+        return this.barnInventory;
+    }
+
     public PlaceActions getActionBarn() {
         return this.actionBarn;
     }
