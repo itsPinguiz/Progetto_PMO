@@ -56,30 +56,29 @@ public class PlayerActions extends ActionsManager{
                                                                SecurityException,
                                                                ActionNotAvailableException {
         /*
-         * Method to find a method to execute
-         */
+        * Method to find a method to execute
+        */
+        // get all the methods from the class
+        Method[] methods = PlayerActions.class.getDeclaredMethods();
 
-        // find the method and execute it
-
-            // get all the methods from the class
-            Method[] methods = PlayerActions.class.getDeclaredMethods();
-
-            // find the desired method
-            Method method = null;
-            for (Method m : methods) {
-               if (m.getName().equals(s.name().toLowerCase())) {
-                  method = m;
-                  break;
-               }
+        // find the desired method
+        Method method = null;
+        for (Method m : methods) {
+            if (m.getName().equals(s.name().toLowerCase())) {
+                method = m;
+                break;
             }
+        }
 
-            // execute the method if it exists and is available
-            if (method != null && this.availableActions.contains(s)) {
-                method.invoke(this,argument);
-            } else {
-                throw new ActionNotAvailableException();
-            }
-      }
+        // execute the method if it exists and is available
+        if (method != null && this.availableActions.contains(s)) {
+            person.getActions().updateActions(person.getPlace().getActions().getActions(), false);
+            method.invoke(this,argument);        
+            person.getActions().updateActions(person.getPlace().getActions().getActions(), true);
+        } else {
+            throw new ActionNotAvailableException(s, this.availableActions);
+        }
+    }
 
     public int getActionReqArgs(Action s) throws ActionNotAvailableException{
         /*
@@ -192,7 +191,7 @@ public class PlayerActions extends ActionsManager{
             if(c.getDirtStatus()){
                 // add plant to the land 
                 try {
-                    c.setPlant((PlantAbstract)f.getInventory().getItem(1,seed));
+                    c.setPlant((PlantAbstract)(f.getInventory().getItem(1,seed)));
                 } catch (NoItemFoundException e) {
                     e.printStackTrace();
                 }
@@ -201,6 +200,9 @@ public class PlayerActions extends ActionsManager{
                     add(Action.WATER);
                     add(Action.FERTILIZE);
                     }}, true);
+                c.getActions().updateActions(new HashSet<>(){{
+                    add(Action.PLANT);
+                    }}, false);
             } else throw new LandIsNotPlowedException();
         } else throw new NoSeedFoundException();                                       
     }
@@ -216,10 +218,10 @@ public class PlayerActions extends ActionsManager{
         if (tool.getType() == ItemType.Tools.WATERINGCAN && this.damageTool(tool)){
             // increase water level
             c.setWaterLevel(WATERING_INDEX);
-        } else throw new NoToolFoundException();
+        } else throw new NoToolFoundException(tool.getType(),ItemType.Tools.WATERINGCAN);
     }
 
-    public void plow(ArrayList<? extends Object> items) throws NoToolFoundException{
+    public void plow(ArrayList<? extends Object> items) throws NoToolFoundException, LandIsAlreadyPlowedException{
         /*
          * Method to plow dirt
          */
@@ -227,14 +229,19 @@ public class PlayerActions extends ActionsManager{
         Item tool = (Item)items.get(1);
         
         //check if the farmer has the hoe
-        if (tool.getType() == ItemType.Tools.HOE && this.damageTool(tool) && !c.getDirtStatus()){
+        if (tool.getType() == ItemType.Tools.HOE && this.damageTool(tool)){
+            if (!c.getDirtStatus()){
             // change land status
             c.setDirtStatus(true);
             // add new possible actions
             c.getActions().updateActions(new HashSet<>(){{
                 add(Action.PLANT);
                 }}, true);
-        }else throw new NoToolFoundException();
+            c.getActions().updateActions(new HashSet<>(){{
+                add(Action.PLOW);
+                }}, false);
+            } else throw new LandIsAlreadyPlowedException();
+        }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.HOE);
     }
 
     public void fertilize(ArrayList<? extends Object> items) throws NoToolFoundException{
@@ -248,7 +255,7 @@ public class PlayerActions extends ActionsManager{
         if (tool.getType() == ItemType.Tools.FERTILIZER && this.damageTool(tool)){ 
             // increase water level
             c.setFertilizationLevel(FERTILIZATION_INDEX);
-        }else throw new NoToolFoundException();
+        }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.FERTILIZER);
     }
 
     public void harvest(ArrayList<? extends Object> items){
@@ -293,7 +300,6 @@ public class PlayerActions extends ActionsManager{
         /*
          * Method to fertilize all plants
          */
-        System.out.println("Fertilize all");
         this.doAll(Action.FERTILIZE,items);
     }
 
@@ -351,18 +357,15 @@ public class PlayerActions extends ActionsManager{
          * Use an item and destroy it if it's worn out
          */
         Farmer f = (Farmer)this.person;
-        ArrayList<Item> inv = f.getInventory().getInventory();
 
         try{
-        int tmp = f.getInventory().searchItem(tool);
-
-        if (tmp != -1){
-            ((AbstractTool)(inv.get(tmp))).useTool();
-            if (inv.get(tmp).getStatus() == 0){
-                f.getInventory().removeItem(inv.get(tmp));
+            if (tool != null){
+                ((AbstractTool)tool).useTool();
+                if (tool.getStatus() == 0){
+                    f.getInventory().removeItem(tool);
+                }
+                return true;
             }
-            return true;
-        }
         } catch (NoItemFoundException e) {
             e.printStackTrace();
         }

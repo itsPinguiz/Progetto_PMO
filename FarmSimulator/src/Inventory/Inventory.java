@@ -69,13 +69,12 @@ public class Inventory implements InventoryInterface {
         return itemIndex;
     }
     
-
     public int searchItem(Item itemtofind) throws NoItemFoundException{
     	
     	int found = -1;
     	
     	for (Item item : inventory) {
-    		if(item.getType() == itemtofind)
+    		if(item == itemtofind)
     			found = inventory.indexOf(item);
 		}
     	return found;
@@ -84,6 +83,7 @@ public class Inventory implements InventoryInterface {
     public Item getItem(int numItemReq, Item itemRequest) throws CloneNotSupportedException, NoItemFoundException{
     	
     	Item copyItem = null;
+
     	// If the number of item requested is greater than the number of item in the inventory
     	if(this.inventory.get(this.searchItem(itemRequest)).getNumber() - numItemReq <= 0 ) {
     		copyItem =  this.inventory.get(this.searchItem(itemRequest));
@@ -93,7 +93,7 @@ public class Inventory implements InventoryInterface {
             copyItem = (Item)(inventory.get(this.searchItem(itemRequest)).clone());
             copyItem.setNumber(numItemReq);
             inventory.get(this.searchItem(itemRequest)).setNumber(inventory.get(this.searchItem(itemRequest)).getNumber() - numItemReq);
-		}
+        }
         
         return copyItem;
     }

@@ -224,7 +224,9 @@ public class View extends JFrame{
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                  controller.performAction(a,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());}});
+                  controller.performAction(a,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());
+                                                                add(selectedTool);}});
+                  updateActualPanel(worldPanel, createChunkPanel((PlantChunk)model.getSelectedPerson().getPlace()));
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                     | NoSuchMethodException | SecurityException | PlaceNotAvailableException
                     | ActionNotAvailableException e1) {
@@ -239,11 +241,12 @@ public class View extends JFrame{
                   try {
                     controller.performAction(a,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());
                                                                   add(selectedTool);}} );
+                    updateActualPanel(worldPanel, createInsideLand());
                   } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                       | NoSuchMethodException | SecurityException | PlaceNotAvailableException
                       | ActionNotAvailableException e1) {
                     e1.printStackTrace();
-                  }
+                  } 
                 }
             }
         });
@@ -339,8 +342,7 @@ public class View extends JFrame{
         JToggleButton toggleButton = new JToggleButton(item.getType().toString());
         toggleButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println(((JToggleButton) e.getSource()).getText());
-                buttonGroup.handleClick(toggleButton);
+                selectedTool = buttonGroup.handleClick(toggleButton,item);
             }
         });
 
@@ -353,9 +355,6 @@ public class View extends JFrame{
     scrollableInventoryPanel = new JScrollPane(inventoryPanel);
     return scrollableInventoryPanel;
   }
-
-
-
 
   // Create world panel
   public JPanel createWorldPanel() throws ActionNotAvailableException{
@@ -432,18 +431,13 @@ public class View extends JFrame{
           button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // if the chunk isn't empty enter the chunk 
-                if (chunk.getPlant() != null){
-                  try {
-                    controller.enterNewPlace(actualPlace);
-                  } catch (PlaceNotAvailableException e1) {
-                    e1.printStackTrace();
-                  }
-                  try {
-                    updateActualPanel(worldPanel, createChunkPanel(chunk, actualPlace));
-                  } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
-                    e1.printStackTrace();
-                  }
+                try {
+                  controller.enterNewPlace(chunk);
+                  updateActualPanel(worldPanel, createChunkPanel(chunk));
+                } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
+                  e1.printStackTrace();
                 }
+                
             }});
         }
       }}
@@ -454,6 +448,7 @@ public class View extends JFrame{
         public void actionPerformed(ActionEvent e) {
           controller.leaveOldPlace();
           try {
+
             updateActualPanel(worldPanel, createWorldPanel());
           } catch (ActionNotAvailableException e1) {
             e1.printStackTrace();
@@ -465,7 +460,7 @@ public class View extends JFrame{
     }
 
   // create the panel that will show the elements inside a chunk
-  private JPanel createChunkPanel(PlantChunk chunk, LandAbstract plantLand) throws PlaceNotAvailableException, ActionNotAvailableException{
+  private JPanel createChunkPanel(PlantChunk chunk) throws PlaceNotAvailableException, ActionNotAvailableException{
     // get the plant inside the chunk
     PlantAbstract plant = chunk.getPlant();
     
@@ -478,31 +473,25 @@ public class View extends JFrame{
     chunkPanel.setBackground(Color.GREEN); // TODO: remove this line
 
     // set the label's text
-    plantLabel.setText("<html><div style='font-size:16px; font-weight:bold;'>" + plant.getType().toString() +
-                       "</div><div style='font-size:12px;'>Life Stage: " + plant.getLifeStage().toString() +
-                       "<br>Water Level: " + chunk.getWaterLevel() +
-                       "<br>Fertilization Level: " + chunk.getFertilizationLevel() +
+    plantLabel.setText("<html><div style='font-size:16px;'>" + ((plant == null)?"Empty": plant.getType().toString())+
+                       "</div><div style='font-size:12px;'>Life Stage: " + ((plant == null)?"No Plant": plant.getType().toString()) +
+                       "<br>Water Level: </br>" + chunk.getWaterLevel() +
+                       "<br>Fertilization Level: </br>" + chunk.getFertilizationLevel() +
+                       "<br>Plowed Level:</br> " + ((chunk.getDirtStatus()== true)?"Yes":"No") +
                        "</div></html>");
 
     // add the label to the panel
     chunkPanel.add(plantLabel);
-
-    // enter the chunk
-    controller.enterNewPlace(chunk);
     
     // add the exit button
     JButton exitButton = new JButton("Exit");
     exitButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          controller.enterNewPlace(plantLand);
-        } catch (PlaceNotAvailableException e1) {
-          e1.printStackTrace();
-        }
-        try {
+          controller.enterNewPlace(chunk.getLand());
           updateLabels(chunkPanel);
           updateActualPanel(worldPanel, createInsideLand());
-        } catch (ActionNotAvailableException e1) {
+        } catch (ActionNotAvailableException| PlaceNotAvailableException e1) {
           e1.printStackTrace();
         }
       }});

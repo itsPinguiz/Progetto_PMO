@@ -11,6 +11,7 @@ public interface Chunk {
     public float getWaterLevel();
     public float getFertilizationLevel();
     public PlantAbstract getPlant();
+    public PlantLand getLand();
     
     public void update();
     public void resetActions();

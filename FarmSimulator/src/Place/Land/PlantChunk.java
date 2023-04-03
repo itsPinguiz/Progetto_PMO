@@ -14,16 +14,18 @@ public class PlantChunk extends LandAbstract implements Chunk{
     
     // attributes
     private PlantAbstract plant;
+    private PlantLand land;
     private float waterLevel;
     private float fertilizationLevel;
     private boolean isPlowed;
     private Random random = new Random();
 
     // constructor
-    PlantChunk(PlantAbstract plant){
+    PlantChunk(PlantAbstract plant, PlantLand land){
         super();
         super.type = Places.PLANT_CHUNK;
         this.plant = plant;
+        this.land = land;
         this.actions = new PlaceActions(this);
         this.waterLevel = random.nextInt(10) + 1;
         this.fertilizationLevel = random.nextInt(10) + 1;
@@ -43,6 +45,13 @@ public class PlantChunk extends LandAbstract implements Chunk{
         
         this.waterLevel -= 1;
         this.fertilizationLevel -= 1;
+    }
+
+    public PlantLand getLand(){
+        /*
+         * Returns the land where the chunk is
+         */
+        return this.land;
     }
 
     public void setPlant(PlantAbstract plant){

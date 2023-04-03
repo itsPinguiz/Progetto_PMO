@@ -1,9 +1,15 @@
 package Exceptions;
 
+import java.util.Set;
+
+import Actors.Actions.ActionsManager.Action;
+import Item.ItemType;
+import Item.Interface.Item;
+
 public class CustomExceptions {
     public static class ActionNotAvailableException extends Exception {
-        public ActionNotAvailableException(){
-            super("The action you tried to execute was not possible.");
+        public ActionNotAvailableException(Action action,Set<Action> availableActions){
+            super("The action you tried to execute was not possible. \n Action: " + action.toString() + " \n Available actions: " + availableActions.toString());
         }   
     }
 
@@ -13,9 +19,16 @@ public class CustomExceptions {
         }   
     }
 
+    public static class LandIsAlreadyPlowedException extends Exception {
+        public LandIsAlreadyPlowedException(){
+            super("Cannot perform action since the land is already plowed.");
+        }   
+    }
+
     public static class NoToolFoundException extends Exception {
-        public NoToolFoundException(){
-            super("Cannot perform action since the right tool is not present in your inventory.");
+        public NoToolFoundException(ItemType wrongTool, ItemType rightTool){
+            super("Cannot perform action since the right tool is not present in your inventory:\n Used tool: "
+                  + wrongTool.toString() + " \n Expected: " + rightTool.toString());
         }   
     }
 

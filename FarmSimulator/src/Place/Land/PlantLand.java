@@ -18,7 +18,7 @@ public class PlantLand extends LandAbstract{
         super.type = Places.PLANT_LAND;
         this.chunks = new ArrayList<>(
             IntStream.range(0, 10)
-                    .mapToObj(i -> new PlantChunk(null))
+                    .mapToObj(i -> new PlantChunk(null,this))
                     .collect(Collectors.toList())
         );
         this.actions = new PlaceActions(this);
