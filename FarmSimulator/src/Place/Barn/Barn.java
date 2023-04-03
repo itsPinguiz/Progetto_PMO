@@ -41,13 +41,22 @@ public class Barn extends Place{
     public Market getMarket() {
         return this.market;
     }
-
+    //update market and animals in the barn
     public void updateBarn(){
+        //update market
         this.market.updateItemShop();
-
+        //update animals
         for (Item item : this.barnInventory.getInventory()) {
-            if(item.getType() instanceof AnimalAbstract ){
-                ((AnimalAbstract) item.getType()).update();
+            if(item instanceof AnimalAbstract ){
+                ((AnimalAbstract)item).update();
+                //if the animal is dead, remove it from the barn
+                if(((AnimalAbstract) item).getHunger() == 100 || ((AnimalAbstract) item).getStatus() == 0){
+                    try {
+                        this.barnInventory.removeItem(item);
+                    } catch (NoItemFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }

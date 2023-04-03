@@ -28,14 +28,9 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
 	}
     
     //method for changing hunger
-    private void setHunger(){
+    private void updateHunger(){
         int dayPassed = c.getDay() - this.creationDay;
         this.hunger = dayPassed * 2;
-    }
-
-    //method for changing life 
-    public void setLife(){
-        super.status = (1/super.status)*c.getDay();
     }
 
     //method for getting hunger
@@ -81,7 +76,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     //method for updating the animal
     public void update() {
         this.updateLife();
-        this.setHunger();
+        this.updateHunger();
         this.updateProducts();
     }
 

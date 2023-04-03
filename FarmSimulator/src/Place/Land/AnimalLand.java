@@ -38,6 +38,10 @@ public class AnimalLand extends LandAbstract {
     public void update() {
         for (AnimalAbstract animal : this.elements){
             animal.update();
+            //if the animal is dead, remove it from the land
+            if (animal.getHunger() >= 100 || animal.getStatus() <= 0){
+                this.removeAnimal(animal);
+            }
         }
     }
 
@@ -65,5 +69,6 @@ public class AnimalLand extends LandAbstract {
     //get an animal from the land
     public AnimalAbstract getAnimal(int index){
         return this.elements.get(index);
-    }   
+    }
+
 }
