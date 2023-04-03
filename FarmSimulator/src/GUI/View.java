@@ -48,6 +48,7 @@ public class View extends JFrame{
   private JMenu backupMenu;
   private JMenuItem farmerItem;
   private JMenuItem ownerItem;
+  private JToggleButton showInventoryButton;
   private JLabel roleLabel;
   private JLabel placeLabel;
   private Model model;
@@ -106,7 +107,7 @@ public class View extends JFrame{
 
     // define menu bar elements
     roleMenu = new JMenu("Ruolo");
-    JToggleButton showInventoryButton = new JToggleButton("Inventory");
+    showInventoryButton = new JToggleButton("Inventory");
     placeLabel = new JLabel("World");
     roleLabel = new JLabel(model.getSelectedPerson().toString());
 
@@ -338,7 +339,7 @@ public class View extends JFrame{
     }
 
     // Wrap the inventoryPanel in a JScrollPane
-    JScrollPane scrollableInventoryPanel = new JScrollPane(inventoryPanel);
+    scrollableInventoryPanel = new JScrollPane(inventoryPanel);
     return scrollableInventoryPanel;
   }
 
@@ -525,6 +526,12 @@ public class View extends JFrame{
     mainPanel.add(newPanel);
     mainPanel.revalidate();
     mainPanel.repaint();
+
+    // close inventory when changing world panel
+    if (showInventoryButton.isSelected() == true){
+      showInventoryButton.doClick();
+    }
+
 
     // Update the panel
     revalidate();
