@@ -6,8 +6,8 @@ import Calendar.Calendar;
 import Place.Place;
 
 public abstract class LandAbstract extends Place implements LandInteface {
-    static final float BASE_PRICE_LAND = 50; //initial price of a land 
-    static final float SELL_PRICE = 25; // price for sold land
+    public static final int BASE_PRICE_LAND = 50; //initial price of a land 
+    public static final int SELL_PRICE = 25; // price for sold land
     protected boolean sellable; // decides whether a land can be sold or not
     protected Calendar calendar = Calendar.getInstance();
 
@@ -37,5 +37,12 @@ public abstract class LandAbstract extends Place implements LandInteface {
          * Returns the number of elements present in the land
          */
         return 0;
+    }
+
+    public boolean isSellable(){
+        /*
+         * Returns whether the land is sellable or not
+         */
+        return this.sellable;
     }
 }

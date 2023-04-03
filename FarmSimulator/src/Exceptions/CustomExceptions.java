@@ -4,7 +4,6 @@ import java.util.Set;
 
 import Actors.Actions.ActionsManager.Action;
 import Item.ItemType;
-import Item.Interface.Item;
 
 public class CustomExceptions {
     public static class ActionNotAvailableException extends Exception {
@@ -78,5 +77,11 @@ public class CustomExceptions {
         public NoSpaceFoundException(){
             super("Cannot perform action since there is no space available.");
         }   
+    }
+
+    public static class NoSellableLandException extends Exception{
+        public NoSellableLandException(){
+            super("Cannot perform action since this land is not sellable.");
+        }
     }
 }
