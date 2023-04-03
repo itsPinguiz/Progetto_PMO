@@ -7,6 +7,7 @@ package Place.Barn;
 import Place.Places;
 import Place.Barn.Market.Market;
 import Actors.Actions.PlaceActions;
+import Exceptions.CustomExceptions.NoItemFoundException;
 import Inventory.Inventory;
 import Item.Animal.AnimalAbstract;
 import Item.Interface.Item;
@@ -22,7 +23,7 @@ public class Barn extends Place{
     private final int MAX_BARN_LENGTH = 40;
 
     //istanza di market per vendere e comprare
-    public Barn(){
+    public Barn() throws NoItemFoundException{
         super.type = Places.BARN;
         this.actionBarn = new PlaceActions(this);
         this.barnInventory = new Inventory(MAX_BARN_LENGTH);

@@ -1,6 +1,8 @@
 package Inventory;
 
 import java.util.ArrayList;
+
+import Exceptions.CustomExceptions.NoItemFoundException;
 import Item.Interface.Item;
 
 public class Inventory implements InventoryInterface {
@@ -20,7 +22,7 @@ public class Inventory implements InventoryInterface {
         return this.inventory;
     }
 
-    public int addItem(Item newTool){
+    public int addItem(Item newTool) throws NoItemFoundException{
     	
     	int check = this.searchItem(newTool); 
     	
@@ -42,10 +44,11 @@ public class Inventory implements InventoryInterface {
             else{
                 System.out.println("\nThere's not enough space in your inventory, drop something to make space.");
             }
+
         return check;
     }
 
-    public int removeItem(Item itemToRemove) {
+    public int removeItem(Item itemToRemove) throws NoItemFoundException{
         int itemIndex = searchItem(itemToRemove);
     
         if (itemIndex == -1) {
@@ -67,7 +70,7 @@ public class Inventory implements InventoryInterface {
     }
     
 
-    public int searchItem(Item itemtofind){
+    public int searchItem(Item itemtofind) throws NoItemFoundException{
     	
     	int found = -1;
     	
@@ -78,19 +81,21 @@ public class Inventory implements InventoryInterface {
     	return found;
     }
 
-    public Item getItem(int numItemReq, Item itemRequest) throws CloneNotSupportedException {
+    public Item getItem(int numItemReq, Item itemRequest) throws CloneNotSupportedException, NoItemFoundException{
     	
     	Item copyItem = null;
-    	
+    	// If the number of item requested is greater than the number of item in the inventory
     	if(this.inventory.get(this.searchItem(itemRequest)).getNumber() - numItemReq <= 0 ) {
     		copyItem =  this.inventory.get(this.searchItem(itemRequest));
     	}
+        // If the number of item requested is smaller than the number of item in the inventory
     	else {
             copyItem = (Item)(inventory.get(this.searchItem(itemRequest)).clone());
             copyItem.setNumber(numItemReq);
             inventory.get(this.searchItem(itemRequest)).setNumber(inventory.get(this.searchItem(itemRequest)).getNumber() - numItemReq);
 		}
-    	return copyItem;	
+        
+        return copyItem;
     }
 
     public void setInventory(ArrayList<Item> inventory) {

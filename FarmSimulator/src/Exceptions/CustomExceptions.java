@@ -54,4 +54,10 @@ public class CustomExceptions {
             super("Cannot perform action since you don't have enough money.");
         }   
     }
+
+    public static class NoItemFoundException extends Exception {
+        public NoItemFoundException(){
+            super("Cannot perform action since this item doesn't exist.");
+        }   
+    }
 }

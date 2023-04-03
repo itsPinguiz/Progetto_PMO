@@ -6,6 +6,7 @@ package Place.Barn.Market;
 
 import Calendar.Calendar;
 import Exceptions.CustomExceptions.NoEnoughMoneyException;
+import Exceptions.CustomExceptions.NoItemFoundException;
 import Inventory.Inventory;
 import Item.ItemCreator;
 import Item.Interface.Item;
@@ -20,7 +21,7 @@ public class Market implements MarketInt{
     private ItemCreator itemCreator;
     private Calendar c;
     
-    public Market(){
+    public Market() throws NoItemFoundException{
         this.itemShop = new Inventory(MAX_SHOP_LENGTH);
         this.itemCreator = new ItemCreator();
         for(int i = 0; i < MAX_SHOP_LENGTH; i++){

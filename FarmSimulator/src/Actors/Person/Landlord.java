@@ -4,8 +4,6 @@
 
 package Actors.Person;
 
-import java.io.Serializable;
-
 import Actors.Actions.PlayerActions;
 
 /********************************
