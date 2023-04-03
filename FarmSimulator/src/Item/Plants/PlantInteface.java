@@ -16,7 +16,5 @@ public interface PlantInteface  extends Serializable{
     public PlantLife getLifeStage();
     public int getDaysToHarvest() ;
     public double getGrowthLevel();
-    public ArrayList<Item> getProduct();
-    
-    public void turnToProduct();
+    public Item getProduct();
 }

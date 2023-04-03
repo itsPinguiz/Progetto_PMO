@@ -14,7 +14,6 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
     // attributes
     private int daysToHarvest;
     protected PlantLife lifeStage;
-    protected ArrayList<Item> products; 
 
     private PlantChunk chunk;
     protected Calendar calendar;
@@ -62,21 +61,19 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
         this.chunk = c;
     }
 
-    public ArrayList<Item> getProduct() {
+    public Item getProduct() {
         /*
          * Returns all the products the plant has produced
          */
-        ArrayList<Item> temp = new ArrayList<>(this.products);
-        this.products = null;
-        return temp;
+        this.turnToProduct();
+        return this;
     }
 
-    public void turnToProduct(){
+    private void turnToProduct(){
         /*
          * Turns the plant to product when harvested
          */
         this.lifeStage = PlantLife.PRODUCT;
-        this.products.add(this);
     }
 
     private void checklifeStage(){

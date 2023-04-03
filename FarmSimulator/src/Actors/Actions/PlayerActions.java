@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.tools.Tool;
+
 import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
@@ -16,6 +18,7 @@ import Item.Interface.Item;
 import Item.Plants.PlantAbstract;
 import Place.Place;
 import Place.Places;
+import Place.Land.LandAbstract;
 import Place.Land.PlantChunk;
 import Place.Land.PlantLand;
 import Place.Barn.Barn;
@@ -58,10 +61,10 @@ public class PlayerActions extends ActionsManager{
 
         // find the method and execute it
 
-            // ottiene tutti i metodi della classe MyClass
+            // get all the methods from the class
             Method[] methods = PlayerActions.class.getDeclaredMethods();
 
-            // cerca il metodo desiderato
+            // find the desired method
             Method method = null;
             for (Method m : methods) {
                if (m.getName().equals(s.name().toLowerCase())) {
@@ -69,7 +72,8 @@ public class PlayerActions extends ActionsManager{
                   break;
                }
             }
-   
+
+            // execute the method if it exists and is available
             if (method != null && this.availableActions.contains(s)) {
                 method.invoke(this,argument);
             } else {
@@ -128,7 +132,7 @@ public class PlayerActions extends ActionsManager{
 
     // METHODS FOR THE FARMER
 
-    public void grab_item(){
+    public void grab_item(Item item){
         /*
          * Method to grab item from
          * the barn, remove its inventory
@@ -136,8 +140,15 @@ public class PlayerActions extends ActionsManager{
          */
         Farmer f = (Farmer)this.person;
         // grab item from the barn, remove its inventory and add it the the farmer's inventory
-        Inventory item = ((Barn)(f.getPlace())).getBarnInventory();
-        //f.addItem(item);
+        Inventory barnInventory = ((Barn)(f.getPlace())).getBarnInventory();
+        try {
+            if (barnInventory.removeItem(item) != -1){
+                f.getInventory().addItem(item);
+            }
+        } catch (NoItemFoundException e) {
+            e.printStackTrace();
+        }
+        
         //App.getBarn().removeItem(itemIndex);
     }
 
@@ -146,7 +157,11 @@ public class PlayerActions extends ActionsManager{
          * Method to drop item on
          * the floor and lose it
          */
-       ((Farmer)this.person).getInventory().removeItem(item);
+       try {
+        ((Farmer)this.person).getInventory().removeItem(item);
+    } catch (NoItemFoundException e) {
+        e.printStackTrace();
+    }
     }
 
     public void move_item(int nItem,Item item) throws CloneNotSupportedException{
@@ -155,7 +170,11 @@ public class PlayerActions extends ActionsManager{
          * to the barn from the farmer's inventory
          */
         Farmer farmer = (Farmer)this.person;
-        Item itemToMove = farmer.getInventory().getItem(nItem,item);
+        try {
+            Item itemToMove = farmer.getInventory().getItem(nItem,item);
+        } catch (NoItemFoundException e) {
+            e.printStackTrace();
+        }
         //farmer.getPlace().barn.getInventory().add(item);
         //farmer.removeItem(item);
     }
@@ -168,12 +187,15 @@ public class PlayerActions extends ActionsManager{
         PlantChunk c = (PlantChunk)items.get(0);
         Item seed = (Item)items.get(1);
 
-        
         // check if the farmer has a seed and the chunk is plowed
         if (seed instanceof PlantAbstract ){ 
             if(c.getDirtStatus()){
                 // add plant to the land 
-                c.setPlant((PlantAbstract)f.getInventory().getItem(1,seed));
+                try {
+                    c.setPlant((PlantAbstract)f.getInventory().getItem(1,seed));
+                } catch (NoItemFoundException e) {
+                    e.printStackTrace();
+                }
                 // add new possible actions
                 c.getActions().updateActions(new HashSet<>(){{
                     add(Action.WATER);
@@ -183,29 +205,29 @@ public class PlayerActions extends ActionsManager{
         } else throw new NoSeedFoundException();                                       
     }
 
-    public void water(PlantChunk c) throws NoToolFoundException{
+    public void water(ArrayList<? extends Object> items) throws NoToolFoundException{
         /*
          * Method to water a plant
          */
-        Farmer f = (Farmer)this.person;
-        //PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
+        PlantChunk c = (PlantChunk)items.get(0);
+        Item tool = (Item)items.get(1);
 
         //check if the farmer has the watering can
-        if ( this.damageItem(ItemType.Tools.WATERINGCAN)){
+        if (tool.getType() == ItemType.Tools.WATERINGCAN && this.damageTool(tool)){
             // increase water level
             c.setWaterLevel(WATERING_INDEX);
         } else throw new NoToolFoundException();
     }
 
-    public void plow(PlantChunk c) throws NoToolFoundException{
+    public void plow(ArrayList<? extends Object> items) throws NoToolFoundException{
         /*
          * Method to plow dirt
          */
-        Farmer f = (Farmer)this.person;
-        //PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
-
+        PlantChunk c = (PlantChunk)items.get(0);
+        Item tool = (Item)items.get(1);
+        
         //check if the farmer has the hoe
-        if (this.damageItem(ItemType.Tools.HOE) && !c.getDirtStatus()){
+        if (tool.getType() == ItemType.Tools.HOE && this.damageTool(tool) && !c.getDirtStatus()){
             // change land status
             c.setDirtStatus(true);
             // add new possible actions
@@ -215,85 +237,89 @@ public class PlayerActions extends ActionsManager{
         }else throw new NoToolFoundException();
     }
 
-    public void fertilize(PlantChunk c) throws NoToolFoundException{
+    public void fertilize(ArrayList<? extends Object> items) throws NoToolFoundException{
         /*
          * Method to fertilize a plant
          */
-        Farmer f = (Farmer)this.person;
-        System.out.println("Fertilize");
-        
+        PlantChunk c = (PlantChunk)items.get(0);
+        Item tool = (Item)items.get(1);
+
         //check if the farmer has the fertilizer
-        if (this.damageItem(ItemType.Tools.HOE)){ //TODO change with fertilizer
+        if (tool.getType() == ItemType.Tools.FERTILIZER && this.damageTool(tool)){ 
             // increase water level
             c.setFertilizationLevel(FERTILIZATION_INDEX);
         }else throw new NoToolFoundException();
     }
 
-    public void harvest(PlantChunk c){
+    public void harvest(ArrayList<? extends Object> items){
         /*
          * Method to harvest a plant
          */
+        PlantChunk c = (PlantChunk)items.get(0);
+        Item tool = (Item)items.get(1);
+        
         Farmer f = (Farmer)this.person;
-        //PlantChunk c = (PlantChunk)((PlantLand)f.getPlace()).getChunks().get(Game.GameData.secondIndex);
-        List<Item> resources = List.copyOf(c.getPlant().getProduct());
+
+        Item product = c.getPlant().getProduct();
         int multiplier = 1;
 
-        c.getPlant().turnToProduct();
-
         // if sickle is equipped double the harvested resources
-        if (this.damageItem(ItemType.Tools.SICKLE)){
+        if (tool.getType() == ItemType.Tools.SICKLE && this.damageTool(tool)){
             multiplier = 2;
         }
 
-        // TODO IF INVETORY IS NOT FULL 
         // add resources to the inventory
-        for(Item item : resources){
-            item.setNumber(item.getNumber()*multiplier);
-            f.getInventory().addItem(item); // TODO CHANGE TO ENABLE ITEM STACKING
-        }
+
+        product.setNumber(product.getNumber()*multiplier);
+        try {
+            f.getInventory().addItem(product);
+        } catch (NoItemFoundException e) {
+            e.printStackTrace();
+        } 
         
         // remove plant
         c.setPlant(null);
         c.resetActions();
     }
 
-    public void water_all(PlantLand p){
+    public void water_all(ArrayList<? extends Object> items){
         /*
          * Method to water all plants
          */
-        this.doAll(Action.WATER,p);
+        this.doAll(Action.WATER,items);
     }
 
-    public void fertilize_all(PlantLand p){
+    public void fertilize_all(ArrayList<? extends Object> items){
         /*
          * Method to fertilize all plants
          */
         System.out.println("Fertilize all");
-        this.doAll(Action.FERTILIZE,p);
+        this.doAll(Action.FERTILIZE,items);
     }
 
-    public void harvest_all(PlantLand p){
+    public void harvest_all(ArrayList<? extends Object> items){
         /*
          * Method to harvest all plants
          */
-        this.doAll(Action.HARVEST,p);
+        this.doAll(Action.HARVEST,items);
     }
 
-    public void plow_all(PlantLand p){
+    public void plow_all(ArrayList<? extends Object> items){
         /*
          * Method to plow dirt
          */
-        this.doAll(Action.PLOW,p);
+        this.doAll(Action.PLOW,items);
     }
 
-    private void doAll(Action a, PlantLand p){
+    private void doAll(Action a, ArrayList<? extends Object> items){
         /*
          * Method to repeat the same action on all chunks in a land
          */
         Farmer f = (Farmer)this.person;
+        PlantLand p = (PlantLand)items.get(0);
 
         p.getChunks().forEach(chunk -> {try {
-            f.getActions().executeAction(a,new ArrayList<>() {{add(chunk);}});
+            f.getActions().executeAction(a,new ArrayList<>() {{add(chunk); add(items.get(1));}});
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException
                 | ActionNotAvailableException e) {
             e.printStackTrace();
@@ -320,14 +346,15 @@ public class PlayerActions extends ActionsManager{
         // add the money in the balance
     }
 
-    private boolean damageItem(ItemType.Tools t){
+    private boolean damageTool(Item tool){
         /*
          * Use an item and destroy it if it's worn out
          */
         Farmer f = (Farmer)this.person;
         ArrayList<Item> inv = f.getInventory().getInventory();
 
-        int tmp = f.getInventory().searchItem(t);
+        try{
+        int tmp = f.getInventory().searchItem(tool);
 
         if (tmp != -1){
             ((AbstractTool)(inv.get(tmp))).useTool();
@@ -335,6 +362,9 @@ public class PlayerActions extends ActionsManager{
                 f.getInventory().removeItem(inv.get(tmp));
             }
             return true;
+        }
+        } catch (NoItemFoundException e) {
+            e.printStackTrace();
         }
         return false;
     }

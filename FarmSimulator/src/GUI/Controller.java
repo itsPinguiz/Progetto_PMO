@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 import Actors.Actions.ActionsManager.Action;
 import Exceptions.CustomExceptions.ActionNotAvailableException;
@@ -74,7 +75,7 @@ public class Controller {
     }
 
     // execute the action
-    public void performAction(Action a) throws IllegalAccessException,
+    public void performAction(Action a,ArrayList<? extends Object> items) throws IllegalAccessException,
                                                IllegalArgumentException,
                                                InvocationTargetException,
                                                NoSuchMethodException,
@@ -82,7 +83,7 @@ public class Controller {
                                                PlaceNotAvailableException,
                                                ActionNotAvailableException{
         System.out.println("Action " + a.toString() + " performed"); // TODO: remove this line
-        model.getSelectedPerson().getActions().executeAction(a,model.getSelectedPerson().getPlace());
+        model.getSelectedPerson().getActions().executeAction(a,items);
     }
 
     // MAP PANEL

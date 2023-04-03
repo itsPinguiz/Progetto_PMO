@@ -31,6 +31,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
 //Interface Testing
 public class View extends JFrame{
@@ -54,6 +55,9 @@ public class View extends JFrame{
   private Model model;
   private Controller controller;
   private GameBackup backup;
+  private Item selectedTool;
+  private Item selecItem;
+
   // constructor
   public View(){
     // setup main frame
@@ -214,13 +218,13 @@ public class View extends JFrame{
 
     // iterate over the actions and add the buttons
     for (ActionsManager.Action a : actions.getActions()){
+      JButton button = new JButton(a.toString());
       // actions with < 1 argument
       if ( model.getSelectedPerson().getActions().getActionReqArgs(a) <=1){
-        JButton button = new JButton(a.toString());
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                  controller.performAction(a);
+                  controller.performAction(a,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());}});
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                     | NoSuchMethodException | SecurityException | PlaceNotAvailableException
                     | ActionNotAvailableException e1) {
@@ -228,16 +232,23 @@ public class View extends JFrame{
                 }
             }
         });
-        buttonPanel.add(button, constraints);
       } else{ // actions with more than 1 argument
-        JToggleButton toggleButton = new JToggleButton(a.toString());
-        toggleButton.addActionListener(new ActionListener() {
+        button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // TODO
+                if (model.getSelectedPerson().getPlace().getType() == Places.PLANT_CHUNK){
+                  try {
+                    controller.performAction(a,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());
+                                                                  add(selectedTool);}} );
+                  } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                      | NoSuchMethodException | SecurityException | PlaceNotAvailableException
+                      | ActionNotAvailableException e1) {
+                    e1.printStackTrace();
+                  }
+                }
             }
         });
-        buttonPanel.add(toggleButton, constraints);
       }
+      buttonPanel.add(button, constraints);
     }
     // Update the panel
     revalidate();

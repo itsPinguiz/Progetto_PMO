@@ -7,6 +7,7 @@ import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Calendar.Calendar;
+import Exceptions.CustomExceptions.NoItemFoundException;
 import Item.Interface.Item;
 import Item.ItemType.Plants;
 import Item.Plants.species.Plant;
@@ -39,7 +40,7 @@ public class Model implements Serializable{
     private ArrayList<ArrayList<Place>> map;
 
     // constructor
-    public Model(){
+    public Model() throws NoItemFoundException{
         //attributes initialization
         this.farmer = new Farmer();
         this.landlord = new Landlord();
