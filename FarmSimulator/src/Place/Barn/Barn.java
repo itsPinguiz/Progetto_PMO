@@ -19,7 +19,6 @@ import Place.Place;
 public class Barn extends Place{
 
     //attributes
-    private PlaceActions actionBarn;
     private Inventory barnInventory;
     private Market market;
     private final int MAX_BARN_LENGTH = 40;
@@ -27,7 +26,7 @@ public class Barn extends Place{
     //constructor
     public Barn() throws NoItemFoundException{
         super.type = Places.BARN;
-        this.actionBarn = new PlaceActions(this);
+        super.actions = new PlaceActions(this);
         this.barnInventory = new Inventory(MAX_BARN_LENGTH);
         this.market = new Market();
     }
@@ -35,10 +34,6 @@ public class Barn extends Place{
     //getters
     public Inventory getBarnInventory() {
         return this.barnInventory;
-    }
-
-    public PlaceActions getActionBarn() {
-        return this.actionBarn;
     }
 
     public Market getMarket() {

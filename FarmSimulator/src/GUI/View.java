@@ -19,6 +19,7 @@ import Progress.GameBackup;
 import Place.Land.PlantChunk;
 import Place.Land.LandAbstract;
 import Place.Places;
+import Place.Barn.Barn;
 import Actors.Person.Farmer;
 import Calendar.Calendar;
 
@@ -464,6 +465,22 @@ public class View extends JFrame{
     }
      // add the barn button
      JButton barnButton = new JButton(this.model.getMap().get(0).get(0).getType().toString());
+     
+     barnButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e)  {
+          try {
+            controller.enterNewPlace(model.getMap().get(0).get(0));
+          } catch (PlaceNotAvailableException e1) {
+            e1.printStackTrace();
+          }
+          try {
+            updateActualPanel(worldPanel, createBarnPlace());
+          } catch (ActionNotAvailableException e1) {
+            e1.printStackTrace();
+          }
+      }
+  });
+
      barnButton.setPreferredSize(new Dimension(200,200));
      GridBagConstraints gbc = new GridBagConstraints();
      gbc.gridx = 0;
@@ -614,6 +631,43 @@ public class View extends JFrame{
     repaint();
     return chunkPanel;
   }  
+
+  private JPanel createBarnPlace(){
+    // get the actual place
+    Barn actualPlace = (Barn)this.model.getSelectedPerson().getPlace();
+
+    // create the panel that will contain the elements
+    JPanel insideBarn = new JPanel(new GridLayout(3, 4));
+    insideBarn.setPreferredSize(new Dimension(800, 500));
+    insideBarn.setBackground(Color.GREEN); // TODO: remove this line
+
+    // disable the possibility to change the role
+    roleMenu.setEnabled(false);
+
+    // depending on the type of the place, display the elements
+    this.placeLabel.setText(actualPlace.getType().toString());
+    if (actualPlace.getBarnInventory() != null){
+      for(Item item : actualPlace.getBarnInventory().getInventory()){
+        JButton button = new JButton(item.getType().toString());
+        insideBarn.add(button);
+      }
+    }
+
+    // add the exit button
+    JButton exitButton = new JButton("Exit");
+    exitButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        controller.leaveOldPlace();
+        try {
+
+          updateActualPanel(worldPanel, createWorldPanel());
+        } catch (ActionNotAvailableException e1) {
+          e1.printStackTrace();
+        }
+      }});
+    insideBarn.add(exitButton);
+    return insideBarn;
+  }
 
   // Update labels
   private void updateLabels() throws ActionNotAvailableException{
