@@ -9,5 +9,5 @@ public interface InventoryInterface extends Serializable {
     public int addItem(Item newItem) throws NoItemFoundException;
     public int removeItem(Item item) throws NoItemFoundException;
     public Item getItem(int numItemReq, Item itemRequest) throws CloneNotSupportedException, NoItemFoundException;
-    public int searchItem(Item itemtofind) throws NoItemFoundException;
+    public int searchItem(Item itemtofind, boolean accLessMax) throws NoItemFoundException;
 }

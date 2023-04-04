@@ -35,11 +35,10 @@ public class Barn extends Place{
     public Inventory getBarnInventory() {
         return this.barnInventory;
     }
-
     public Market getMarket() {
         return this.market;
     }
-
+    
     //update market and animals in the barn
     public void updateBarn(){
         //update market

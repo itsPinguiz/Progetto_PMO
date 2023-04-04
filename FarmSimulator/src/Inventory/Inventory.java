@@ -23,24 +23,27 @@ public class Inventory implements InventoryInterface {
 
     public int addItem(Item newTool) throws NoItemFoundException{
     	
-    	int check = this.searchItem(newTool); 
+    	int check = this.searchItem(newTool, true); 
     	
+        // If the item is already in the inventory, add the number of the new item to the existing item
     	if(check != -1) {
+            // If the new item has more quantity than the max number of the existing item, set the new item quantity to the max number of the existing item
     		if((this.inventory.get(check).getNumber() + newTool.getNumber()) > this.inventory.get(check).getMaxNumber()) {
     			newTool.setNumber(this.inventory.get(check).getMaxNumber() - this.inventory.get(check).getNumber());
-    			this.inventory.get(check).setNumber(this.inventory.get(check).getMaxNumber());
-					
+    			this.inventory.get(check).setNumber(this.inventory.get(check).getMaxNumber());		
     		}
+            // Else, add the new item quantity to the existing item quantity
 			else {
 				this.inventory.get(check).setNumber(this.inventory.get(check).getNumber() + newTool.getNumber());	
 			}	
     	}
+        // If the item is not in the inventory, add it to the inventory
     	else if(this.inventory.size() < maxSize){
                 this.inventory.add(newTool);
                 System.out.println("\n" + newTool.getType() +
                                    " has been added in your inventory.");
             }
-            else{
+        else{
                 System.out.println("\nThere's not enough space in your inventory, drop something to make space.");
             }
 
@@ -48,7 +51,7 @@ public class Inventory implements InventoryInterface {
     }
 
     public int removeItem(Item itemToRemove) throws NoItemFoundException{
-        int itemIndex = searchItem(itemToRemove);
+        int itemIndex = searchItem(itemToRemove, false);
     
         if (itemIndex == -1) {
             System.out.println("\n" + itemToRemove.getType() + " is not in your inventory.");
@@ -68,13 +71,20 @@ public class Inventory implements InventoryInterface {
         return itemIndex;
     }
     
-    public int searchItem(Item itemtofind) throws NoItemFoundException{
+    public int searchItem(Item itemtofind, boolean accLessMax) throws NoItemFoundException{
     	
     	int found = -1;
     	
     	for (Item item : inventory) {
-    		if(item == itemtofind)
-    			found = inventory.indexOf(item);
+    		if(item.getType() == itemtofind.getType())
+                if(accLessMax) {
+                    if(item.getNumber() < item.getMaxNumber()) {
+                        found = inventory.indexOf(item);
+                    }
+                }
+                else {
+                    found = inventory.indexOf(item);
+                }
 		}
     	return found;
     }
@@ -84,14 +94,14 @@ public class Inventory implements InventoryInterface {
     	Item copyItem = null;
 
     	// If the number of item requested is greater than the number of item in the inventory
-    	if(this.inventory.get(this.searchItem(itemRequest)).getNumber() - numItemReq <= 0 ) {
-    		copyItem =  this.inventory.get(this.searchItem(itemRequest));
+    	if(this.inventory.get(this.searchItem(itemRequest, false)).getNumber() - numItemReq <= 0 ) {
+    		copyItem =  this.inventory.get(this.searchItem(itemRequest, false));
     	}
         // If the number of item requested is smaller than the number of item in the inventory
     	else {
-            copyItem = (Item)(inventory.get(this.searchItem(itemRequest)).clone());
+            copyItem = (Item)(inventory.get(this.searchItem(itemRequest, false)).clone());
             copyItem.setNumber(numItemReq);
-            inventory.get(this.searchItem(itemRequest)).setNumber(inventory.get(this.searchItem(itemRequest)).getNumber() - numItemReq);
+            inventory.get(this.searchItem(itemRequest,false)).setNumber(inventory.get(this.searchItem(itemRequest,false)).getNumber() - numItemReq);
         }
         
         return copyItem;

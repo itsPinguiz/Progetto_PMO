@@ -661,7 +661,7 @@ public class View extends JFrame{
     this.placeLabel.setText(actualPlace.getType().toString());
     if (actualPlace.getBarnInventory() != null){
       for(Item item : actualPlace.getBarnInventory().getInventory()){
-        JButton button = new JButton(item.getType().toString());
+        JButton button = new JButton(item.getType().toString() + " " + item.getNumber());
         insideBarn.add(button);
       }
     }

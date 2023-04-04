@@ -19,6 +19,7 @@ public abstract class Item implements Cloneable,Serializable,ItemInterface{
     protected int maxNumber;
 
     public Item(){
+        this.number = 1;
     }
 
     public ItemType getType(){

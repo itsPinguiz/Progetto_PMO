@@ -8,9 +8,11 @@ import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Calendar.Calendar;
 import Exceptions.CustomExceptions.NoItemFoundException;
+import Item.ItemType;
 import Item.Interface.Item;
 import Item.ItemType.Plants;
 import Item.Plants.species.Plant;
+import Item.Products.Products;
 import Place.Place;
 import Place.Barn.Barn;
 import Place.Land.AnimalLand;
@@ -62,11 +64,13 @@ public class Model implements Serializable{
 
         this.selectedActor = this.farmer; // default selected actor
 
-
-        // TODO: remove this
-        PlantLand p = (PlantLand)(this.map.get(1).get(0));
-        
+         // TODO: remove this
         this.farmer.getInventory().addItem(new Plant(Plants.CARROT));
+        Barn b = (Barn)(this.map.get(0).get(0));
+
+        for (int i = 0; i < 70; i++) {
+            b.getBarnInventory().addItem(new Products(ItemType.productsType.MEAT));
+        }
     }
 
     public void update(){
