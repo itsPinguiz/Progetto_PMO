@@ -31,6 +31,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 //Interface Testing
 public class View extends JFrame{
@@ -99,18 +100,12 @@ public class View extends JFrame{
     rolePanel.setPreferredSize(new Dimension(800, 100));
     rolePanel.setBackground(Color.RED);
 
-    // define actions button panel
-    buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-    buttonPanel.setBackground(Color.RED); // TODO: remove this line
+    
     
     // set the layout of the role panel
     rolePanel.add(createMenuBar(), BorderLayout.NORTH); // align the menu bar to the left
-    rolePanel.add(buttonPanel, BorderLayout.CENTER);
-
-    // update the role actions panel
-    this.setRoleActions(model.getSelectedPerson().toString());
-
+    rolePanel.add(createActionsButtonPanel(model.getSelectedPerson().toString()), BorderLayout.CENTER);
+    
     return rolePanel;
   }
 
@@ -163,7 +158,7 @@ public class View extends JFrame{
       public void actionPerformed(ActionEvent e) {
         controller.changeRole(e.getActionCommand());
         try {
-          setRoleActions(e.getActionCommand());
+          updateActualPanel(rolePanel, createActionsButtonPanel(e.getActionCommand()));
         } catch (ActionNotAvailableException e1) {
           e1.printStackTrace();
         }
@@ -220,9 +215,13 @@ public class View extends JFrame{
   }
 
   // Role Actions panel
-  public void setRoleActions(String role) throws ActionNotAvailableException {
+  public JPanel createActionsButtonPanel(String role) throws ActionNotAvailableException {
     // Get the actions of the selected role
     PlayerActions actions = this.model.getSelectedPerson().getActions();
+    // define actions button panel
+    buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+    buttonPanel.setBackground(Color.RED); // TODO: remove this line
 
     // Set the selected role
     controller.changeRole(role);
@@ -234,7 +233,7 @@ public class View extends JFrame{
     constraints.weighty = 1.0;
 
     // Remove all the buttons from the panel
-    buttonPanel.removeAll();
+    //buttonPanel.removeAll();
 
     // iterate over the actions and add the buttons
     for (ActionsManager.Action a : actions.getActions()){
@@ -277,10 +276,13 @@ public class View extends JFrame{
       }
       buttonPanel.add(button, constraints);
     }
+    updateActionButtons();
     // Update the panel
     revalidate();
     repaint();
+    return buttonPanel;
   }
+
 
   // Create backup panel
   private JMenu createBackupMenu() {
@@ -415,6 +417,7 @@ public class View extends JFrame{
         toggleButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 selectedTool = buttonGroup.handleClick(toggleButton,item);
+                updateActionButtons();
             }
         });
 
@@ -573,7 +576,6 @@ public class View extends JFrame{
         public void actionPerformed(ActionEvent e) {
           controller.leaveOldPlace();
           try {
-
             updateActualPanel(worldPanel, createWorldPanel());
           } catch (ActionNotAvailableException e1) {
             e1.printStackTrace();
@@ -621,10 +623,6 @@ public class View extends JFrame{
       }});
     // add the exit button to the panel
     chunkPanel.add(exitButton);
-    
-    // remove the previous buttons
-    buttonPanel.removeAll();
-    setRoleActions(this.model.getSelectedPerson().toString());
 
     // Update the panel
     revalidate();
@@ -676,7 +674,6 @@ public class View extends JFrame{
     this.calendar.setText(("Day: " + this.model.getCalendar().getDay() + 
                            "      Season: " + this.model.getCalendar().getSeason().toString().toLowerCase() +
                            "      Weather: " + this.model.getCalendar().getWeather().toString().toLowerCase()));
-    setRoleActions(this.model.getSelectedPerson().toString());
 
     // Update the panel
     revalidate();
@@ -685,22 +682,42 @@ public class View extends JFrame{
   
   // update actual panel
   public void updateActualPanel(JPanel mainPanel, JPanel newPanel) throws ActionNotAvailableException{
-    setRoleActions(model.getSelectedPerson().toString());
     mainPanel.removeAll();
     mainPanel.add(newPanel);
     mainPanel.revalidate();
     mainPanel.repaint();
 
+    rolePanel.remove(buttonPanel);
+    rolePanel.add(createActionsButtonPanel(this.model.getSelectedPerson().toString()));
+
     // close inventory when changing world panel
     if (showInventoryButton.isSelected() == true){
       showInventoryButton.doClick();
     }
-
+    updateLabels();
 
     // Update the panel
     revalidate();
     repaint();
-    updateLabels();
+  }
+
+  private void updateActionButtons() {
+    Set<ActionsManager.Action> actions = this.model.getSelectedPerson().getActions().getActions();
+    
+    for (Component component : buttonPanel.getComponents()) {
+        if (component instanceof JButton) {
+            JButton button = (JButton) component;
+            ActionsManager.Action action = ActionsManager.Action.valueOf((button.getText().replace(" ", "_")).toUpperCase());
+            
+            // Controlla se l'azione corrente è presente nel set di azioni del personaggio selezionato
+            if (actions.contains(action)) {
+                boolean isEnabled = action.isOptional() || action.isItemValid(null) || (selectedTool != null && action.isItemValid(selectedTool.getType()));
+                button.setEnabled(isEnabled);
+            } else {
+                button.setEnabled(false);
+            }
+        }
+    }
   }
 }
 

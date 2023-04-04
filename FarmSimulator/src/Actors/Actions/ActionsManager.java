@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 // DESIGN PATTERN MEDIATOR
 
+import Item.ItemType;
+
 public abstract class ActionsManager implements Actions{
     // attributes
     protected Set<Action> availableActions;
@@ -11,38 +13,58 @@ public abstract class ActionsManager implements Actions{
     // constructor
     protected ActionsManager(){
         this.availableActions = new HashSet<>();
-
     }
 
     public enum Action {
         /*
          * All possible actions
          */
-        PLANT("Plant"),
-        WATER("Water"),
-        FERTILIZE("Fertilize"),
-        HARVEST("Harvest"),
-        PLOW("Plow"),
-        WATER_ALL("Water All"),
-        FERTILIZE_ALL("Fertilize All"),
-        HARVEST_ALL("Harvest All"),
-        PLOW_ALL("Plow All"),
-        ADD_ANIMAL("Add Animal"),
-        REMOVE_ANIMAL("Remove Animal"),
-        FEED_ANIMAL("Feed Animal"),
-        GIVE_WATER("Give Water"),
-        GET_ALL_RESOURCES("Get All Resources"),
-        GET_ITEM("Get Item"),
-        MOVE_ITEM("Move Item");
+        PLANT("Plant",item -> item instanceof ItemType.Plants),
+        WATER("Water",item -> item == ItemType.Tools.WATERINGCAN),
+        FERTILIZE("Fertilize",item -> item == ItemType.Tools.FERTILIZER),
+        HARVEST("Harvest", item -> item == ItemType.Tools.SICKLE || item == null, true),
+        PLOW("Plow",item -> item == ItemType.Tools.HOE),
+        WATER_ALL("Water All",item -> item == ItemType.Tools.WATERINGCAN),
+        FERTILIZE_ALL("Fertilize All",item -> item == ItemType.Tools.FERTILIZER),
+        HARVEST_ALL("Harvest All",item -> item == ItemType.Tools.SICKLE || item == null, true),
+        PLOW_ALL("Plow All",item -> item == ItemType.Tools.HOE),
+        ADD_ANIMAL("Add Animal",item -> item instanceof ItemType.Animals),
+        REMOVE_ANIMAL("Remove Animal",item -> item instanceof ItemType.Animals),
+        FEED_ANIMAL("Feed Animal",item -> item instanceof ItemType.Plants),
+        GIVE_WATER("Give Water",item -> true),
+        GET_ALL_RESOURCES("Get All Resources",item -> true),
+        GET_ITEM("Get Item",item -> item instanceof ItemType),
+        MOVE_ITEM("Move Item",item -> item instanceof ItemType);
 
-        private String name;
+        private final String name;
+        private final ItemValidator itemValidator;
+        private final boolean optional;
 
-        Action(String name) {
+        Action(String name, ItemValidator itemValidator, boolean optional) {
             this.name = name;
+            this.itemValidator = itemValidator;
+            this.optional = optional;
         }
-    
+
+        Action(String name, ItemValidator itemValidator) {
+            this(name, itemValidator, false);
+        }
+
         public String getName() {
             return name;
+        }
+
+        public boolean isItemValid(ItemType item) {
+            return itemValidator.validate(item);
+        }
+
+        public boolean isOptional() {
+            return optional;
+        }
+    
+        @FunctionalInterface
+        public interface ItemValidator {
+            boolean validate(ItemType item);
         }
     
         @Override
