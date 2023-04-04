@@ -128,8 +128,9 @@ public class PlayerActions extends ActionsManager{
          * Method to change actions when
          * an actors leaves from somewhere
          */
-        person.getActions().updateActions(person.getPlace().getActions().getActions(), false);
-
+        if (person.getPlace()!= null){
+            person.getActions().updateActions(person.getPlace().getActions().getActions(), false);
+        }
         person.setPlace(null);
     }
 

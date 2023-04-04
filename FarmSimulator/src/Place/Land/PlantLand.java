@@ -21,7 +21,6 @@ public class PlantLand extends LandAbstract{
                     .mapToObj(i -> new PlantChunk(null,this))
                     .collect(Collectors.toList())
         );
-        System.out.println(this.chunks.toString());
         this.actions = new PlaceActions(this);
     }
 
