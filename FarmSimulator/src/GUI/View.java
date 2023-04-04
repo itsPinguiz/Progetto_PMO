@@ -1,7 +1,6 @@
 package GUI;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import Actors.Actions.ActionsManager;
 import Actors.Actions.PlayerActions;
@@ -17,7 +16,6 @@ import Place.Place;
 import Place.Land.AnimalLand;
 import Place.Land.PlantLand;
 import Progress.GameBackup;
-import netscape.javascript.JSException;
 import Place.Land.PlantChunk;
 import Place.Land.LandAbstract;
 import Place.Places;
@@ -26,10 +24,6 @@ import Actors.Person.Farmer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -88,6 +82,7 @@ public class View extends JFrame{
     }
   }
 
+  // update MVC
   public void updateMVC(Controller c, Model m){
     this.controller = c;
     this.model = m;
