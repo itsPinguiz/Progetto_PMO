@@ -299,40 +299,45 @@ public class PlayerActions extends ActionsManager{
         /*
          * Method to water all plants
          */
-        this.doAll(items,this.getMethodByName("water"));
+        this.doAll(items,Action.WATER);
     }
 
     public void fertilize_all(ArrayList<? extends Object> items)throws NoSuchMethodException{
         /*
          * Method to fertilize all plants
          */
-        this.doAll(items,this.getMethodByName("fertilize"));
+        this.doAll(items,Action.FERTILIZE);
     }
 
     public void harvest_all(ArrayList<? extends Object> items) throws NoSuchMethodException{
         /*
          * Method to harvest all plants
          */
-        this.doAll(items,this.getMethodByName("harvest"));
+        this.doAll(items,Action.HARVEST);
     }
 
     public void plow_all(ArrayList<? extends Object> items) throws NoSuchMethodException{
         /*
          * Method to plow dirt
          */
-        this.doAll(items,this.getMethodByName("plow"));
+        this.doAll(items,Action.PLOW);
     }
 
-    private void doAll(ArrayList<? extends Object> items, Method method){
+    private void doAll(ArrayList<? extends Object> items, Action action){
         /*
          * Method to repeat the same action on all chunks in a land
          */
         PlantLand p = (PlantLand)items.get(0);
 
-        p.getChunks().forEach(chunk -> {try {
-            method.invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
-            e.printStackTrace();
+        p.getChunks().forEach(chunk -> 
+        {try {
+            if (chunk.getActions().getActions().contains(action)){
+                this.getMethodByName(action.toString().toLowerCase()).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
+            } else {
+                throw new ActionNotAvailableException(action,chunk.getActions().getActions());
+            }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException|ActionNotAvailableException e) {
+            System.out.println(e);; //TODO: might change to printstacktace
         }});
     }
 

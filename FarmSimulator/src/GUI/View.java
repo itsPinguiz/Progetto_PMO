@@ -110,6 +110,9 @@ public class View extends JFrame{
   }
 
   public JMenuBar createMenuBar(){
+    /*
+     * Menu bar creation
+     */
     // define the menu bar
     menuBar = new JMenuBar();
     menuBar.setLayout(new BoxLayout(menuBar, BoxLayout.X_AXIS));
@@ -180,7 +183,7 @@ public class View extends JFrame{
         }
         parent.add(worldPanel);
 
-        // Aggiornare il contenitore padre
+        // Update parent panel
         parent.revalidate();
         parent.repaint();
       }
@@ -214,8 +217,10 @@ public class View extends JFrame{
     return menuBar;
   }
 
-  // Role Actions panel
   public JPanel createActionsButtonPanel(String role) throws ActionNotAvailableException {
+    /*
+     * This method creates the panel that contains the buttons for the actions
+     */
     // Get the actions of the selected role
     PlayerActions actions = this.model.getSelectedPerson().getActions();
     // define actions button panel
@@ -283,9 +288,10 @@ public class View extends JFrame{
     return buttonPanel;
   }
 
-
-  // Create backup panel
   private JMenu createBackupMenu() {
+    /*
+     * Backup menu creation
+     */
     // panel creation
     backupMenu = new JMenu("Backup");
     JMenuItem saveGame = new JMenuItem("Save");
@@ -322,7 +328,6 @@ public class View extends JFrame{
     }
 
     // save game menu
-
     ActionListener saveCurrentGame = new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -400,8 +405,10 @@ public class View extends JFrame{
     return backupMenu;
   }
 
-  // Create inventory Panel
   public JScrollPane createInventoryPanel() {
+    /*
+     * Create a panel with a grid layout to hold the inventory buttons
+     */
     JPanel inventoryPanel = new JPanel(new GridLayout(4, 3));
     inventoryPanel.setPreferredSize(new Dimension(200, 500));
     inventoryPanel.setBackground(Color.YELLOW); // TODO: remove this line
@@ -431,8 +438,10 @@ public class View extends JFrame{
     return scrollableInventoryPanel;
   }
 
-  // Create world panel
   public JPanel createWorldPanel() throws ActionNotAvailableException{
+    /*
+     * This method creates the world panel, which contains the land and barn panels
+     */
     // create the panel
     worldPanel = new JPanel(new GridLayout(1, 2));
     worldPanel.setPreferredSize(new Dimension(800, 500));
@@ -526,11 +535,12 @@ public class View extends JFrame{
     // update the labels
     updateLabels();
     return worldPanel;
-}
+  }
 
-
-  // display animals when opening animal land else display chunks
   private JPanel createInsideLand(){
+    /*
+     * This method creates the panel that will be displayed when the user clicks on a land
+     */
     // get the actual place
     LandAbstract actualPlace = (LandAbstract)this.model.getSelectedPerson().getPlace();
 
@@ -585,8 +595,10 @@ public class View extends JFrame{
       return insideLand;
     }
 
-  // create the panel that will show the elements inside a chunk
   private JPanel createChunkPanel(PlantChunk chunk) throws PlaceNotAvailableException, ActionNotAvailableException{
+    /*
+     * This method creates the panel that will be displayed when the player enters a chunk
+     */
     // get the plant inside the chunk
     PlantAbstract plant = chunk.getPlant();
     
@@ -631,6 +643,9 @@ public class View extends JFrame{
   }  
 
   private JPanel createBarnPlace(){
+    /*
+     * TODO: create the panel that will show the elements inside the barn
+     */
     // get the actual place
     Barn actualPlace = (Barn)this.model.getSelectedPerson().getPlace();
 
@@ -667,8 +682,10 @@ public class View extends JFrame{
     return insideBarn;
   }
 
-  // Update labels
   private void updateLabels() throws ActionNotAvailableException{
+    /*
+     * Update the labels with the new values
+     */
     this.roleLabel.setText(this.model.getSelectedPerson().toString());
     this.placeLabel.setText((this.model.getSelectedPerson().getPlace() == null)? "World" : this.model.getSelectedPerson().getPlace().getType().toString());
     this.calendar.setText(("Day: " + this.model.getCalendar().getDay() + 
@@ -680,8 +697,10 @@ public class View extends JFrame{
     repaint();
   }
   
-  // update actual panel
   public void updateActualPanel(JPanel mainPanel, JPanel newPanel) throws ActionNotAvailableException{
+    /*
+     * Update the main panel with the new panel
+     */
     mainPanel.removeAll();
     mainPanel.add(newPanel);
     mainPanel.revalidate();
@@ -693,6 +712,7 @@ public class View extends JFrame{
     // close inventory when changing world panel
     if (showInventoryButton.isSelected() == true){
       showInventoryButton.doClick();
+      selectedTool = null;
     }
     updateLabels();
 
@@ -702,6 +722,9 @@ public class View extends JFrame{
   }
 
   private void updateActionButtons() {
+  /*
+   * Check if the selected person has the action enabled and if the action is valid
+   */
     Set<ActionsManager.Action> actions = this.model.getSelectedPerson().getActions().getActions();
     
     for (Component component : buttonPanel.getComponents()) {
