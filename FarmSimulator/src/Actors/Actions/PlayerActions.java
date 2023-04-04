@@ -221,7 +221,7 @@ public class PlayerActions extends ActionsManager{
         Item tool = (Item)items.get(1);
 
         //check if the farmer has the watering can
-        if (tool.getType() == ItemType.Tools.WATERINGCAN && this.damageTool(tool)){
+        if (tool.getType() == ItemType.Tools.WATERINGCAN && tool.getStatus() > 0&& this.damageTool(tool)){
             // increase water level
             c.setWaterLevel(WATERING_INDEX);
         } else throw new NoToolFoundException(tool.getType(),ItemType.Tools.WATERINGCAN);
@@ -235,7 +235,7 @@ public class PlayerActions extends ActionsManager{
         Item tool = (Item)items.get(1);
         
         //check if the farmer has the hoe
-        if (tool.getType() == ItemType.Tools.HOE && this.damageTool(tool)){
+        if (tool.getType() == ItemType.Tools.HOE && tool.getStatus() > 0 && this.damageTool(tool)){
             if (!c.getDirtStatus()){
             // change land status
             c.setDirtStatus(true);
@@ -258,7 +258,7 @@ public class PlayerActions extends ActionsManager{
         Item tool = (Item)items.get(1);
 
         //check if the farmer has the fertilizer
-        if (tool.getType() == ItemType.Tools.FERTILIZER && this.damageTool(tool)){ 
+        if (tool.getType() == ItemType.Tools.FERTILIZER && tool.getStatus() > 0&& this.damageTool(tool)){ 
             // increase water level
             c.setFertilizationLevel(FERTILIZATION_INDEX);
         }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.FERTILIZER);
@@ -277,7 +277,7 @@ public class PlayerActions extends ActionsManager{
         int multiplier = 1;
 
         // if sickle is equipped double the harvested resources
-        if (tool.getType() == ItemType.Tools.SICKLE && this.damageTool(tool)){
+        if (tool.getType() == ItemType.Tools.SICKLE && tool.getStatus() > 0&& this.damageTool(tool)){
             multiplier = 2;
         }
 
@@ -337,7 +337,7 @@ public class PlayerActions extends ActionsManager{
                 throw new ActionNotAvailableException(action,chunk.getActions().getActions());
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException|ActionNotAvailableException e) {
-            System.out.println(e);; //TODO: might change to printstacktace
+            System.out.println(e); //TODO: might change to printstacktace
         }});
     }
 
