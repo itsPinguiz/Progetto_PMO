@@ -69,7 +69,7 @@ public class GameBackup implements Backup{
         /*
          * Deletes a specific saved game session
          */
-        File fileToDelete = new File(this.savePath,saveName);
+        File fileToDelete = new File(this.savePath,saveName+ ".txt");
         if (fileToDelete.delete()) {
             System.out.println("File eliminato con successo: " + saveName);
         } else {

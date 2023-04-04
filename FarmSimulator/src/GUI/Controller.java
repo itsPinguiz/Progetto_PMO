@@ -57,7 +57,7 @@ public class Controller {
             // load chosen save
             model = backup.loadSave(save);
             model.getSelectedPerson().setPlace(null);
-            view.addController(controllerInstance);
+            view.updateMVC(controllerInstance, model);;
         } catch (Exception e1) {    
             e1.printStackTrace();
         }
@@ -94,6 +94,10 @@ public class Controller {
     // leave the current place
     public void leaveOldPlace(){
         model.getSelectedPerson().getActions().leave();
+    }
+
+    public void setView(View view) {
+        this.view = view;
     }    
 }
 

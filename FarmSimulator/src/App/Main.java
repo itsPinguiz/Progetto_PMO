@@ -1,5 +1,7 @@
 package App;
 
+import javax.swing.SwingUtilities;
+
 import Exceptions.CustomExceptions.ActionNotAvailableException;
 import Exceptions.CustomExceptions.NoItemFoundException;
 import GUI.Controller;
@@ -11,13 +13,15 @@ public class Main {
     public static void main(String[] args) {
         try {
             Model model = new Model();
-            View view = new View();
-            Controller controller = new Controller(view,model);
-
-            view.addController(controller);
-            view.setVisible(true);
-        } catch (NoItemFoundException | ActionNotAvailableException e ) {
+            Controller controller = new Controller(null, model);
+    
+            SwingUtilities.invokeLater(() -> {
+                View view = new View(model,controller);
+                controller.setView(view); // Aggiungi questa linea
+                view.setVisible(true);
+            });
+        } catch (NoItemFoundException e) {
             e.printStackTrace();
-        } 
+        }
     }
 }

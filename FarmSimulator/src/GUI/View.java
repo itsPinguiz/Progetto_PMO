@@ -63,28 +63,35 @@ public class View extends JFrame{
   private Item selecItem;
 
   // constructor
-  public View(){
+  public View(Model model,Controller controller){
     // setup main frame
     setTitle("Farming Simulator");
     setSize(MAX_WIDTH, MAX_HEIGHT);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setResizable(false);
-    savedGameItems = new HashMap<>();
-  }
 
-  // add controller to the view
-  public void addController(Controller controller) throws ActionNotAvailableException {
+    savedGameItems = new HashMap<>();
+    this.model = model;
     this.controller = controller;
-    this.model = controller.getModel();
     this.backup = controller.getBackup();
 
-     // setup main layout
-     Container contentPane = getContentPane();
-     contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
+    // setup main layout
+    Container contentPane = getContentPane();
+    contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.PAGE_AXIS));
 
-     // add panels to main layout
-     contentPane.add(this.createRolePanel());
-     contentPane.add(this.createWorldPanel());
+    // add panels to main layout
+    try {
+      contentPane.add(this.createRolePanel());
+      contentPane.add(this.createWorldPanel());
+    } catch (ActionNotAvailableException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void updateMVC(Controller c, Model m){
+    this.controller = c;
+    this.model = m;
+    this.backup = controller.getBackup();
   }
 
   // Create role panel
@@ -602,4 +609,3 @@ public class View extends JFrame{
 
 
    
-
