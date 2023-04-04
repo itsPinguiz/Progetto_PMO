@@ -326,12 +326,12 @@ public class View extends JFrame{
           String[] saveName = new String[1];
           try {
               saveName[0] = controller.saveGame();
-              JMenuItem savedBackup = new JMenuItem(saveName[0]);
+              JMenuItem savedBackup = new JMenuItem(saveName[0].substring(0, saveName[0].length() - 4));
               savedGameItems.put(saveName[0], savedBackup);
               loadGame.add(savedBackup);
 
               // Create a new JMenuItem for the delete menu
-              JMenuItem savedBackupToDelete = new JMenuItem(saveName[0]);
+              JMenuItem savedBackupToDelete = new JMenuItem(saveName[0].substring(0, saveName[0].length() - 4));
               savedBackupToDelete.addActionListener(new ActionListener() {
                   @Override
                   public void actionPerformed(ActionEvent e) {

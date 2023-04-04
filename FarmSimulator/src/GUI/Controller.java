@@ -47,7 +47,7 @@ public class Controller {
 
         saveName = backup.saveCurrent();
 
-        return saveName;
+        return saveName + ".txt";
     }
 
     // load game
