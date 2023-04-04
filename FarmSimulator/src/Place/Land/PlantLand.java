@@ -21,6 +21,7 @@ public class PlantLand extends LandAbstract{
                     .mapToObj(i -> new PlantChunk(null,this))
                     .collect(Collectors.toList())
         );
+        System.out.println(this.chunks.toString());
         this.actions = new PlaceActions(this);
     }
 
@@ -52,7 +53,7 @@ public class PlantLand extends LandAbstract{
         /*
          * Updates all the chunks in the land
          */
-        this.chunks.forEach(chunk -> {chunk.update();});
+        this.chunks.forEach(chunk -> {((PlantChunk)chunk).update();});
     }
 
     public ArrayList<PlantChunk> getElements(){

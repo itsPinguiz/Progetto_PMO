@@ -75,7 +75,7 @@ public class Model implements Serializable{
          */
         this.calendar.inc();
 
-        this.map.get(2).forEach(place -> { LandAbstract land = (LandAbstract) place;
+        this.map.get(1).forEach(place -> { LandAbstract land = (LandAbstract) place;
                                                       land.update();});
 
         Barn b = (Barn)(this.map.get(0).get(0));
@@ -122,5 +122,12 @@ public class Model implements Serializable{
          * Method to get the persons
          */
         return new Person[]{this.farmer, this.landlord};
+    }
+
+    public Calendar getCalendar(){
+        /*
+         * Method to get the calendar
+         */
+        return this.calendar;
     }
 }

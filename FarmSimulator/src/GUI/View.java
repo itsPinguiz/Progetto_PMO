@@ -20,6 +20,7 @@ import Place.Land.PlantChunk;
 import Place.Land.LandAbstract;
 import Place.Places;
 import Actors.Person.Farmer;
+import Calendar.Calendar;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -41,6 +42,7 @@ public class View extends JFrame{
   private JPanel buttonPanel;
   private JPanel rolePanel;
   private JPanel worldPanel;
+  private JLabel calendar;
   private JScrollPane scrollableInventoryPanel;
   private JMenu roleMenu;
   private JMenu backupMenu;
@@ -121,6 +123,9 @@ public class View extends JFrame{
     showInventoryButton = new JToggleButton("Inventory");
     placeLabel = new JLabel("World");
     roleLabel = new JLabel(model.getSelectedPerson().toString());
+    calendar = new JLabel("Day: " + Calendar.getInstance().getDay() + 
+                          "      Season: " + Calendar.getInstance().getSeason().toString().toLowerCase() +
+                          "      Weather: " + Calendar.getInstance().getWeather().toString().toLowerCase());
 
     // define role menu items
     farmerItem = new JMenuItem(model.getPersons()[0].toString());
@@ -198,9 +203,16 @@ public class View extends JFrame{
     menuBar.add(roleMenu);
     menuBar.add(Box.createHorizontalStrut(5));
     menuBar.add(roleLabel);
-    menuBar.add(Box.createHorizontalStrut(300));
+    menuBar.add(Box.createHorizontalStrut(50));
+    menuBar.add(new JSeparator(SwingConstants.VERTICAL));
     menuBar.add(placeLabel);
-    menuBar.add(Box.createHorizontalStrut(200));
+    menuBar.add(Box.createHorizontalStrut(50));
+    menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+    menuBar.add(Box.createHorizontalStrut(5));
+    menuBar.add(calendar);
+    menuBar.add(Box.createHorizontalStrut(15));
+    menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+    menuBar.add(Box.createHorizontalStrut(100));
     menuBar.add(showInventoryButton);
     
     return menuBar;
@@ -365,6 +377,7 @@ public class View extends JFrame{
                     // rebuild the frame
                     getContentPane().add(createRolePanel());
                     getContentPane().add(createWorldPanel());
+                    updateLabels();
                 } catch (ActionNotAvailableException e1) {
                     e1.printStackTrace();
                 }
@@ -422,7 +435,7 @@ public class View extends JFrame{
     worldPanel.setBackground(Color.GREEN); // TODO: remove this line
 
     // create the land and barn panels
-    JPanel barn = new JPanel(new GridLayout(1, 1));
+    JPanel barn = new JPanel(new GridBagLayout());
     JPanel land = new JPanel(new GridLayout(3, 3));
 
     // enable the possibility to change the role
@@ -449,15 +462,52 @@ public class View extends JFrame{
         // disable land button if the role is not the farmer
         button.setEnabled((model.getSelectedPerson().toString() == "Farmer") ? true : false);
     }
-    // add the barn button
-    barn.add(new JButton(this.model.getMap().get(0).get(0).getType().toString()));
+     // add the barn button
+     JButton barnButton = new JButton(this.model.getMap().get(0).get(0).getType().toString());
+     barnButton.setPreferredSize(new Dimension(200,200));
+     GridBagConstraints gbc = new GridBagConstraints();
+     gbc.gridx = 0;
+     gbc.gridy = 0;
+     gbc.gridwidth = 1;
+     gbc.gridheight = 1;
+     gbc.weightx = 0;
+     gbc.weighty = 0;
+     gbc.fill = GridBagConstraints.BOTH;
+     gbc.anchor = GridBagConstraints.CENTER;
+     gbc.insets = new Insets(0, 0, 0, 0);
+     barn.add(barnButton, gbc);
+ 
+     // add the next day button
+     JButton nextDay = new JButton("Next day");
+     nextDay.addActionListener(new ActionListener() {
+       @Override
+       public void actionPerformed(ActionEvent e) {
+         controller.updateModel();
+         try {
+           updateActualPanel(worldPanel, createWorldPanel());
+         } catch (ActionNotAvailableException e1) {
+           e1.printStackTrace();
+         }
+       }
+ 
+     });
+
+     GridBagConstraints c = new GridBagConstraints();
+     c.gridx = 0;
+     c.gridy = 1;
+     c.anchor = GridBagConstraints.SOUTHEAST;
+     c.insets = new Insets(10, 10, 10, 0);
+     c.gridwidth = 1;
+     barn.add(nextDay, c);    
+
     worldPanel.add(land);
     worldPanel.add(barn);
 
     // update the labels
-    updateLabels(worldPanel);
+    updateLabels();
     return worldPanel;
 }
+
 
   // display animals when opening animal land else display chunks
   private JPanel createInsideLand(){
@@ -511,7 +561,6 @@ public class View extends JFrame{
           } catch (ActionNotAvailableException e1) {
             e1.printStackTrace();
           }
-          //updateLabels(insideLand);
         }});
       insideLand.add(exitButton);
       return insideLand;
@@ -532,7 +581,7 @@ public class View extends JFrame{
 
     // set the label's text
     plantLabel.setText("<html><div style='font-size:16px;'>" + ((plant == null)?"Empty": plant.getType().toString())+
-                       "</div><div style='font-size:12px;'>Life Stage: " + ((plant == null)?"No Plant": plant.getType().toString()) +
+                       "</div><div style='font-size:12px;'>Life Stage: " + ((plant == null)?"No Plant": plant.getLifeStage().toString()) +
                        "<br>Water Level: </br>" + chunk.getWaterLevel() +
                        "<br>Fertilization Level: </br>" + chunk.getFertilizationLevel() +
                        "<br>Plowed Level:</br> " + ((chunk.getDirtStatus()== true)?"Yes":"No") +
@@ -547,7 +596,7 @@ public class View extends JFrame{
       public void actionPerformed(ActionEvent e) {
         try {
           controller.enterNewPlace(chunk.getLand());
-          updateLabels(chunkPanel);
+          updateLabels();
           updateActualPanel(worldPanel, createInsideLand());
         } catch (ActionNotAvailableException| PlaceNotAvailableException e1) {
           e1.printStackTrace();
@@ -567,14 +616,17 @@ public class View extends JFrame{
   }  
 
   // Update labels
-  private void updateLabels(JPanel panel) throws ActionNotAvailableException{
+  private void updateLabels() throws ActionNotAvailableException{
     this.roleLabel.setText(this.model.getSelectedPerson().toString());
     this.placeLabel.setText((this.model.getSelectedPerson().getPlace() == null)? "World" : this.model.getSelectedPerson().getPlace().getType().toString());
+    this.calendar.setText(("Day: " + this.model.getCalendar().getDay() + 
+                           "      Season: " + this.model.getCalendar().getSeason().toString().toLowerCase() +
+                           "      Weather: " + this.model.getCalendar().getWeather().toString().toLowerCase()));
     setRoleActions(this.model.getSelectedPerson().toString());
 
     // Update the panel
-    panel.revalidate();
-    panel.repaint();
+    revalidate();
+    repaint();
   }
   
   // update actual panel
@@ -594,10 +646,8 @@ public class View extends JFrame{
     // Update the panel
     revalidate();
     repaint();
-    updateLabels(mainPanel);
+    updateLabels();
   }
-
-  
 }
 
 

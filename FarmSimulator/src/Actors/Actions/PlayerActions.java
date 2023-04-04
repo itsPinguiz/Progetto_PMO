@@ -196,6 +196,7 @@ public class PlayerActions extends ActionsManager{
                 // add plant to the land 
                 try {
                     c.setPlant((PlantAbstract)(f.getInventory().getItem(1,seed)));
+                    c.getPlant().planted(c);
                 } catch (NoItemFoundException e) {
                     e.printStackTrace();
                 }

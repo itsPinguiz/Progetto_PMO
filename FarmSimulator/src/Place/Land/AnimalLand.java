@@ -18,8 +18,6 @@ public class AnimalLand extends LandAbstract {
         this.actions = new PlaceActions(this);
         this.elements = new ArrayList<AnimalAbstract>();
     }
-    
-    //methods
 
     //returns the animals in the land
     public ArrayList<AnimalAbstract> getElements(){
