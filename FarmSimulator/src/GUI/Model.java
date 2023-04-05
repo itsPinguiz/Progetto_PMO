@@ -2,15 +2,14 @@ package GUI;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Calendar.Calendar;
 import Exceptions.CustomExceptions.NoItemFoundException;
+import Exceptions.CustomExceptions.InventoryIsFullException;
 import Item.ItemCreator;
 import Item.ItemType;
-import Item.Interface.Item;
 import Item.ItemType.Plants;
 import Item.Plants.species.Plant;
 import Item.Products.Products;
@@ -43,7 +42,7 @@ public class Model implements Serializable{
     private ArrayList<ArrayList<Place>> map;
 
     // constructor
-    public Model() throws NoItemFoundException{
+    public Model() throws NoItemFoundException, InventoryIsFullException{
         //attributes initialization
         this.farmer = new Farmer();
         this.landlord = new Landlord();

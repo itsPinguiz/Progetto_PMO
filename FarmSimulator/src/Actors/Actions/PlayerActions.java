@@ -136,7 +136,7 @@ public class PlayerActions extends ActionsManager{
 
     // METHODS FOR THE FARMER
 
-    public void grab_item(Item item){
+    public void grab_item(Item item) throws InventoryIsFullException{
         /*
          * Method to grab item from
          * the barn, remove its inventory
@@ -264,7 +264,7 @@ public class PlayerActions extends ActionsManager{
         }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.FERTILIZER);
     }
 
-    public void harvest(ArrayList<? extends Object> items){
+    public void harvest(ArrayList<? extends Object> items) throws InventoryIsFullException{
         /*
          * Method to harvest a plant
          */
@@ -341,7 +341,7 @@ public class PlayerActions extends ActionsManager{
         }});
     }
 
-    public void buy(){
+    public void buy_item(){
         /*
          * Method to buy item
          * from the market
@@ -352,7 +352,7 @@ public class PlayerActions extends ActionsManager{
         // remove the money from the balance
     }
 
-    public void sell(){
+    public void sell_item(){
         /*
          * Method to sell item
          * to the market

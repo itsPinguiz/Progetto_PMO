@@ -40,6 +40,13 @@ public class PlaceActions extends ActionsManager{
                     }};
                 break;
 
+            case MARKET: // Market
+                super.availableActions = new HashSet<Action>(){{
+                    add(Action.BUY_ITEM);
+                    add(Action.SELL_ITEM);
+                    }};
+                break;
+
             case PLANT_CHUNK: // Plant Chunk
                 super.availableActions = new HashSet<>(){{
                     add(Action.PLOW);

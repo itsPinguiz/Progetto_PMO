@@ -13,5 +13,5 @@ import Item.Interface.Item;
  *****************/
 public interface MarketInt extends Serializable{
     public void updateItemShop();
-    public Item buyItem(int itemIndex, int balance) throws Exception;
+    public Item buyItem(Item boughtItem, int balance) throws Exception;
 }

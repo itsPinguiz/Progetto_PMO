@@ -34,7 +34,10 @@ public abstract class ActionsManager implements Actions{
         GIVE_WATER("Give Water",item -> true),
         GET_ALL_RESOURCES("Get All Resources",item -> true),
         GET_ITEM("Get Item",item -> item instanceof ItemType),
-        MOVE_ITEM("Move Item",item -> item instanceof ItemType);
+        MOVE_ITEM("Move Item",item -> item instanceof ItemType),
+        BUY_ITEM("Buy",item -> item instanceof ItemType),
+        SELL_ITEM("Sell",item -> item instanceof ItemType);
+
 
         private final String name;
         private final ItemValidator itemValidator;

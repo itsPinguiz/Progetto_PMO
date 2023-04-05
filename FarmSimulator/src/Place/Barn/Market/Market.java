@@ -6,13 +6,17 @@ package Place.Barn.Market;
 
 import java.util.ArrayList;
 
+import Actors.Actions.PlaceActions;
 import Calendar.Calendar;
+import Exceptions.CustomExceptions.InventoryIsFullException;
 import Exceptions.CustomExceptions.NoEnoughMoneyException;
 import Exceptions.CustomExceptions.NoItemFoundException;
 import Exceptions.CustomExceptions.NoSellableLandException;
 import Inventory.Inventory;
 import Item.ItemCreator;
 import Item.Interface.Item;
+import Place.Place;
+import Place.Places;
 import Place.Land.AnimalLand;
 import Place.Land.LandAbstract;
 import Place.Land.PlantLand;
@@ -20,7 +24,7 @@ import Place.Land.PlantLand;
 /**************
  * MARKET CLASS
  *************/
-public class Market implements MarketInt{
+public class Market extends Place implements MarketInt{
     
     //attributes
     private final int MAX_SHOP_LENGTH = 10;
@@ -30,7 +34,9 @@ public class Market implements MarketInt{
     private Calendar c;
     
     //constructor
-    public Market() throws NoItemFoundException{
+    public Market() throws NoItemFoundException, InventoryIsFullException{
+        super.type = Places.MARKET;
+        super.actions = new PlaceActions(this);
         this.itemShop = new Inventory(MAX_SHOP_LENGTH);
         this.itemCreator = new ItemCreator();
         for(int i = 0; i < MAX_SHOP_LENGTH; i++){
@@ -59,11 +65,9 @@ public class Market implements MarketInt{
     }
     
     //buy an item from the shop
-    public Item buyItem (int itemIndex, int balance) throws NoEnoughMoneyException, NoItemFoundException{
-        if(this.itemShop.getInventory().get(itemIndex).getPrice() <= balance){
-            Item  tmp = this.itemShop.getInventory().get(itemIndex);
-            this.itemShop.removeItem(this.itemShop.getInventory().get(itemIndex));
-            return tmp;
+    public Item buyItem (Item boughtItem, int balance) throws NoEnoughMoneyException, NoItemFoundException, CloneNotSupportedException{
+        if(boughtItem.getPrice() <= balance){
+            return this.itemShop.getItem(1, boughtItem);
         }
         else{
             throw new NoEnoughMoneyException();

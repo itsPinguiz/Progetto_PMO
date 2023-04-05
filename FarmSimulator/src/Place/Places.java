@@ -3,9 +3,11 @@ package Place;
 public enum Places {
     // List of places an actor can be in
     BARN("Barn"),
+    MARKET("Market"),
     ANIMAL_LAND("Animal Land"),
     PLANT_LAND("Plant Land"),
     PLANT_CHUNK("Plant Chunk");
+
 
     private String name;
 

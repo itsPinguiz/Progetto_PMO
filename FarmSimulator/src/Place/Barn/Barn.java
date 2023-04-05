@@ -10,6 +10,7 @@ import Place.Barn.Market.Market;
 import java.util.Iterator;
 
 import Actors.Actions.PlaceActions;
+import Exceptions.CustomExceptions.InventoryIsFullException;
 import Exceptions.CustomExceptions.NoItemFoundException;
 import Inventory.Inventory;
 import Item.Animal.AnimalAbstract;
@@ -27,7 +28,7 @@ public class Barn extends Place{
     private final int MAX_BARN_LENGTH = 40;
 
     //constructor
-    public Barn() throws NoItemFoundException{
+    public Barn() throws NoItemFoundException, InventoryIsFullException{
         super.type = Places.BARN;
         super.actions = new PlaceActions(this);
         this.barnInventory = new Inventory(MAX_BARN_LENGTH);
@@ -40,6 +41,11 @@ public class Barn extends Place{
     }
     public Market getMarket() {
         return this.market;
+    }
+
+    //setters
+    public void setItemBarnInventory(Item item) throws NoItemFoundException, InventoryIsFullException {
+        this.barnInventory.addItem(item);
     }
 
     //update market and animals in the barn

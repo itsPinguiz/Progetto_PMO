@@ -1,7 +1,6 @@
 package Place.Land;
 
 import java.util.ArrayList;
-
 import Calendar.Calendar;
 import Place.Place;
 

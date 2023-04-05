@@ -2,7 +2,7 @@ package Place.Land;
 
 import java.util.ArrayList;
 import Actors.Actions.PlaceActions;
-import Exceptions.CustomExceptions.NoSpaceFoundException;
+import Exceptions.CustomExceptions.InventoryIsFullException;
 import Item.Animal.AnimalAbstract;
 import Place.Places;
 
@@ -43,7 +43,7 @@ public class AnimalLand extends LandAbstract {
     }
 
     //add an animal to the land
-    public void addAnimal(AnimalAbstract animal) throws NoSpaceFoundException{
+    public void addAnimal(AnimalAbstract animal) throws InventoryIsFullException{
         if (this.isFull() == false){
             this.elements.add(animal);
         }

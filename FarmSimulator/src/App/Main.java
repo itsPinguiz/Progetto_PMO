@@ -1,8 +1,7 @@
 package App;
 
 import javax.swing.SwingUtilities;
-
-import Exceptions.CustomExceptions.ActionNotAvailableException;
+import Exceptions.CustomExceptions.InventoryIsFullException;
 import Exceptions.CustomExceptions.NoItemFoundException;
 import GUI.Controller;
 import GUI.Model;
@@ -20,7 +19,7 @@ public class Main {
                 controller.setView(view); // Aggiungi questa linea
                 view.setVisible(true);
             });
-        } catch (NoItemFoundException e) {
+        } catch (InventoryIsFullException | NoItemFoundException e) {
             e.printStackTrace();
         }
     }

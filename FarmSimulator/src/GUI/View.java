@@ -656,6 +656,9 @@ public class View extends JFrame{
     JPanel barnInventory = new JPanel(new GridLayout(4, 6));
 
     insideBarn.setPreferredSize(new Dimension(800, 500));
+
+    insideMarket.setBorder(BorderFactory.createTitledBorder("Inside Market"));
+    barnInventory.setBorder(BorderFactory.createTitledBorder("Barn inventory"));
     insideMarket.setBackground(Color.GREEN); // TODO: remove this line
     barnInventory.setBackground(Color.ORANGE); // TODO: remove this line
 

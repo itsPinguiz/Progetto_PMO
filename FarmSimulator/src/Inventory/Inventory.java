@@ -2,7 +2,7 @@ package Inventory;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
+import Exceptions.CustomExceptions.InventoryIsFullException;
 import Exceptions.CustomExceptions.NoItemFoundException;
 import Item.Interface.Item;
 
@@ -24,7 +24,7 @@ public class Inventory implements InventoryInterface {
         return this.inventory;
     }
 
-    public int addItem(Item newTool) throws NoItemFoundException{
+    public int addItem(Item newTool) throws NoItemFoundException, InventoryIsFullException{
     	
     	int check = this.searchItem(newTool, true); 
     	
@@ -47,7 +47,7 @@ public class Inventory implements InventoryInterface {
                                    " has been added in your inventory.");
             }
         else{
-                System.out.println("\nThere's not enough space in your inventory, drop something to make space.");
+                throw new InventoryIsFullException();
             }
 
         return check;
