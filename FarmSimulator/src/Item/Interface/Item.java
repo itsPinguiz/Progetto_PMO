@@ -20,6 +20,7 @@ public abstract class Item implements Cloneable,Serializable,ItemInterface,Compa
 
     public Item(){
         this.number = 1;
+        this.maxNumber = 64;
     }
 
     public ItemType getType(){

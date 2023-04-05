@@ -21,6 +21,7 @@ import Place.Land.LandAbstract;
 import Place.Places;
 import Place.Barn.Barn;
 import Actors.Person.Farmer;
+import Actors.Person.Landlord;
 import Calendar.Calendar;
 
 import java.awt.*;
@@ -702,9 +703,9 @@ public class View extends JFrame{
      */
     this.roleLabel.setText(this.model.getSelectedPerson().toString());
     this.placeLabel.setText((this.model.getSelectedPerson().getPlace() == null)? "World" : this.model.getSelectedPerson().getPlace().getType().toString());
-    this.calendar.setText(("Day: " + this.model.getCalendar().getDay() + 
-                           "      Season: " + this.model.getCalendar().getSeason().toString().toLowerCase() +
-                           "      Weather: " + this.model.getCalendar().getWeather().toString().toLowerCase()));
+    this.calendar.setText((this.model.getSelectedPerson().toString()=="Farmer")?("Day: " + this.model.getCalendar().getDay() + 
+    "      Season: " + this.model.getCalendar().getSeason().toString().toLowerCase() +
+    "      Weather: " + this.model.getCalendar().getWeather().toString().toLowerCase()) : "Day: " + this.model.getCalendar().getDay() + "      Balance: " + ((Landlord)(this.model.getSelectedPerson())).getBalance());
 
     // Update the panel
     revalidate();

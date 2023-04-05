@@ -21,6 +21,7 @@ public abstract class AbstractTool extends Item implements ToolInterface {
     protected AbstractTool(){
         super();
         this.toolStatus = ToolStatus.EXCELLENT;
+        super.maxNumber = 1;
     }
 
     private void checkToolStatus(){
