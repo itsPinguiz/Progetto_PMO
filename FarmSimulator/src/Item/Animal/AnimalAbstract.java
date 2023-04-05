@@ -4,24 +4,34 @@
 
 package Item.Animal;
 
+// Import
 import java.util.ArrayList;
 import Calendar.Calendar;
+import Exceptions.CustomExceptions.MaxWaterLevelReachedException;
+import Exceptions.CustomExceptions.NoFoodFoundException;
+import Exceptions.CustomExceptions.NoItemFoundException;
 import Item.Interface.Item;
+import Item.ItemType.Plants;
+import Item.Plants.species.Plant;
 import Item.Products.Products;
 
 /*****************
  * ANIMAL ABSTRACT
  ****************/
 public abstract class AnimalAbstract extends Item implements AnimalInterface {
+
     //fields
     protected int hunger;
+    protected int thirst;
     protected ArrayList<Products> typeProduct;
     protected Calendar c;
     protected int creationDay;
     protected int lastUpdatedDay;
 
+    //constructor
     public AnimalAbstract() {
         this.hunger = 0;
+        this.thirst = 0;
         this.c = Calendar.getInstance();
         this.creationDay = c.getDay();
         this.lastUpdatedDay = this.creationDay;
@@ -31,6 +41,17 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     private void updateHunger(){
         int dayPassed = c.getDay() - this.creationDay;
         this.hunger = dayPassed * 2;
+    }
+
+    //method for changing thirst
+    private void updateThirst(){
+        int dayPassed = c.getDay() - this.creationDay;
+        this.thirst = dayPassed * 2;
+    }
+
+    //method for getting thirst
+    public int getThirst() {
+        return this.thirst;
     }
 
     //method for getting hunger
@@ -47,26 +68,32 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         return tmp;
     }
 
+    //method for updating the life
     private void updateLife() {
-        int daysPassed = c.getDay() - lastUpdatedDay; // calcola i giorni passati dall'ultimo aggiornamento
+        int daysPassed = c.getDay() - lastUpdatedDay; // calcola quanti giorni sono passati dall'ultimo aggiornamento
         if (daysPassed > 0) { // se sono passati almeno 1 giorno
-            super.status -= 47 * daysPassed; // diminuisci la vita di uno per ogni giorno trascorso
+            super.status -= 1 * daysPassed; // diminuisci la vita di uno per ogni giorno trascorso
             this.lastUpdatedDay = c.getDay(); // aggiorna il campo "lastUpdatedDay"
         }
     }
 
+    //method for updating the products
     private void updateProducts(){
-        if (this.hunger > 30){
+
+        //if the hunger is less than 30, the animal will produce more products
+        if (this.hunger > 30 || this.thirst > 30){
             for (int i = 0; i < this.typeProduct.size(); i++){
                 this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 10);
             }
         }
-        else if (this.hunger > 60){
+        //if the hunger is less than 60, the animal will produce less products
+        else if (this.hunger > 60 || this.thirst > 60){
             for (int i = 0; i < this.typeProduct.size(); i++){
                 this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 5);
             }
         }
-        else if (this.hunger > 90){
+        //if the hunger is less than 90, the animal will lose some products
+        else if (this.hunger > 90 || this.thirst > 90){
             for (int i = 0; i < this.typeProduct.size(); i++){
                 this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() - 5);
             }
@@ -77,8 +104,36 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     public void update() {
         this.updateLife();
         this.updateHunger();
+        this.updateThirst();
         this.updateProducts();
     }
 
+    //method for feeding the animal
+    public void feed(Item item) throws NoFoodFoundException{
+        try {
+            if (item instanceof Plant){
+                this.hunger -= 10;
+            }
+            else {
+                throw new NoFoodFoundException();
+            }
+        } catch (NoFoodFoundException e) {
+            e.getStackTrace();
+        }
+    }
 
+    //method for watering the animal
+    public void waterAnimal() throws MaxWaterLevelReachedException{
+
+        try {
+            if (this.thirst > 10){
+                this.thirst -= 10;
+            }
+            else {
+                throw new MaxWaterLevelReachedException();
+            }
+        } catch (MaxWaterLevelReachedException e) {
+            e.getStackTrace();
+        }
+    }
 }

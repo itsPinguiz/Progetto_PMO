@@ -78,4 +78,16 @@ public class CustomExceptions {
             super("Cannot perform action since this land is not sellable.");
         }
     }
+
+    public static class NoFoodFoundException extends Exception {
+        public NoFoodFoundException(){
+            super("Cannot perform action since you have no food selected in your inventory.");
+        }   
+    }
+
+    public static class MaxWaterLevelReachedException extends Exception {
+        public MaxWaterLevelReachedException(){
+            super("Cannot perform action since the water level is already at maximum.");
+        }   
+    }
 }
