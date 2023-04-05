@@ -62,13 +62,14 @@ public class Model implements Serializable{
                 }); 
             }
         };
+        Barn b = (Barn)(this.map.get(0).get(0));
+        b.getMarket().addBarn(b);
 
         this.selectedActor = this.farmer; // default selected actor
 
          // TODO: remove this
         this.farmer.getInventory().addItem(new Plant(Plants.CARROT));
         this.farmer.getInventory().addItem(new AnimalFactory().createChicken());
-        Barn b = (Barn)(this.map.get(0).get(0));
 
         for (int i = 0; i < 70; i++) {
             b.getBarnInventory().addItem(new Products(ItemType.productsType.MEAT));

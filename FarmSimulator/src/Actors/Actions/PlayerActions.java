@@ -19,6 +19,7 @@ import Place.Land.AnimalLand;
 import Place.Land.PlantChunk;
 import Place.Land.PlantLand;
 import Place.Barn.Barn;
+import Place.Barn.Market.Market;
 import Item.Tools.Interface.AbstractTool;
 
 public class PlayerActions extends ActionsManager{
@@ -58,7 +59,8 @@ public class PlayerActions extends ActionsManager{
         */
 
         // find the desired method
-        Method method = getMethodByName(s.name());
+        Method method = getMethodByName(s.name().toLowerCase());
+        System.out.println(s.name());
 
         // execute the method if it exists and is available
         if (method != null && this.availableActions.contains(s)) {
@@ -440,23 +442,23 @@ public class PlayerActions extends ActionsManager{
          */
         Item item = (Item)items.get(1);
         Landlord landlord = (Landlord)this.person;
-        Barn barn = (Barn)landlord.getPlace();
+        Market market = (Market)items.get(0);
         Item boughtItem = null;
 
         try {
             // buy from maket 
-            boughtItem = barn.getMarket().buyItem(item, 1);
+            boughtItem = market.buyItem(item, 1);
              // add it to the barn
-            barn.getBarnInventory().addItem(boughtItem);
+             market.getBarn().getBarnInventory().addItem(boughtItem);
             // remove the money from the balance
-            landlord.setBalance(landlord.getBalance() - boughtItem.getPrice());
+            landlord.setBalance(- boughtItem.getPrice());
         } catch (NoEnoughMoneyException e) {
             e.printStackTrace();
         } catch (InventoryIsFullException e){
             // give money back and add the item back to the market
             if (boughtItem != null){
-                landlord.setBalance(landlord.getBalance() + boughtItem.getPrice());
-                barn.getMarket().getItemShop().addItem(boughtItem);
+                landlord.setBalance(boughtItem.getPrice());
+                market.getItemShop().addItem(boughtItem);
             }
         }
         
@@ -468,21 +470,21 @@ public class PlayerActions extends ActionsManager{
          * Method to sell item
          * to the market
          */
+        Market market = (Market)items.get(0);
         Item item = (Item)items.get(1);
         Landlord landlord = (Landlord)this.person;
-        Barn barn = (Barn)landlord.getPlace();
 
         try {
-            if (barn.getMarket().getItemShop().getInventory().contains(item)){
+            if (market.getBarn().getBarnInventory().getInventory().contains(item)){
                 // remove item from the barn
-                barn.getBarnInventory().removeItem(item);
+                market.getBarn().getBarnInventory().removeItem(item);
                 // add money to the balance
-                landlord.setBalance(landlord.getBalance() + item.getPrice());
+                landlord.setBalance(item.getPrice());
             }
         } catch (NoItemFoundException e) {
             e.printStackTrace();
         }
-        }
+    }
     
 
     

@@ -773,6 +773,7 @@ public class View extends JFrame{
     for (Component component : buttonPanel.getComponents()) {
         if (component instanceof JButton) {
             JButton button = (JButton) component;
+            System.out.println((button.getText().replace(" ", "_").toUpperCase()));
             ActionsManager.Action action = ActionsManager.Action.valueOf((button.getText().replace(" ", "_")).toUpperCase());
             
             // Controlla se l'azione corrente è presente nel set di azioni del personaggio selezionato

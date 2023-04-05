@@ -17,6 +17,7 @@ import Item.ItemCreator;
 import Item.Interface.Item;
 import Place.Place;
 import Place.Places;
+import Place.Barn.Barn;
 import Place.Land.AnimalLand;
 import Place.Land.LandAbstract;
 import Place.Land.PlantLand;
@@ -32,6 +33,7 @@ public class Market extends Place implements MarketInt{
     private ItemCreator itemCreator;
     private ArrayList<LandAbstract> landShop;
     private Calendar c;
+    private Barn barn;
     
     //constructor
     public Market() throws NoItemFoundException, InventoryIsFullException{
@@ -48,6 +50,14 @@ public class Market extends Place implements MarketInt{
         this.landShop = new ArrayList<LandAbstract>();
         this.landShop.add(new AnimalLand());
         this.landShop.add(new PlantLand());
+    }
+
+    public void addBarn(Barn b){
+        this.barn = b;
+    }
+
+    public Barn getBarn(){
+        return this.barn;
     }
     
     //update the shop

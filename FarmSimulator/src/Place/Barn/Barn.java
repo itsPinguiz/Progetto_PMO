@@ -34,7 +34,7 @@ public class Barn extends Place{
         this.barnInventory = new Inventory(MAX_BARN_LENGTH);
         this.market = new Market();
     }
-
+    
     //getters
     public Inventory getBarnInventory() {
         return this.barnInventory;

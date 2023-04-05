@@ -35,8 +35,8 @@ public abstract class ActionsManager implements Actions{
         GET_ALL_RESOURCES("Get All Resources",item -> true),
         GET_RESOURCES("Get Resources",item -> item instanceof ItemType.Animals),
         MOVE_ITEM("Move Item",item -> item instanceof ItemType),
-        BUY_ITEM("Buy",item -> item instanceof ItemType),
-        SELL_ITEM("Sell",item -> item instanceof ItemType);
+        BUY_ITEM("Buy Item",item -> item instanceof ItemType),
+        SELL_ITEM("Sell Item",item -> item instanceof ItemType);
 
 
         private final String name;
