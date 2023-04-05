@@ -1,6 +1,8 @@
 package Inventory;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
 import Exceptions.CustomExceptions.NoItemFoundException;
 import Item.Interface.Item;
 
@@ -18,6 +20,7 @@ public class Inventory implements InventoryInterface {
     }
 
     public ArrayList<Item> getInventory(){
+        Collections.sort(this.inventory);
         return this.inventory;
     }
 

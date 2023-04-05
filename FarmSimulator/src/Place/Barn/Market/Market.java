@@ -97,6 +97,7 @@ public class Market implements MarketInt{
 
     //return the item shop
     public Inventory getItemShop() {
+        
         return this.itemShop;
     }
 

@@ -575,7 +575,6 @@ public class View extends JFrame{
                 } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
                   e1.printStackTrace();
                 }
-                
             }});
         }
       }}
@@ -650,9 +649,14 @@ public class View extends JFrame{
     Barn actualPlace = (Barn)this.model.getSelectedPerson().getPlace();
 
     // create the panel that will contain the elements
-    JPanel insideBarn = new JPanel(new GridLayout(3, 4));
+    JPanel insideBarn = new JPanel(new GridLayout(1, 2));
+
+    JPanel insideMarket = new JPanel(new GridLayout(4, 3));
+    JPanel barnInventory = new JPanel(new GridLayout(4, 6));
+
     insideBarn.setPreferredSize(new Dimension(800, 500));
-    insideBarn.setBackground(Color.GREEN); // TODO: remove this line
+    insideMarket.setBackground(Color.GREEN); // TODO: remove this line
+    barnInventory.setBackground(Color.ORANGE); // TODO: remove this line
 
     // disable the possibility to change the role
     roleMenu.setEnabled(false);
@@ -661,8 +665,16 @@ public class View extends JFrame{
     this.placeLabel.setText(actualPlace.getType().toString());
     if (actualPlace.getBarnInventory() != null){
       for(Item item : actualPlace.getBarnInventory().getInventory()){
-        JButton button = new JButton(item.getType().toString() + " " + item.getNumber());
-        insideBarn.add(button);
+        JButton button = new JButton(item.getType().toString() + " " + item.getNumber() + " " + item.getStatus() );
+        barnInventory.add(button);
+      }
+    }
+
+    this.placeLabel.setText(actualPlace.getType().toString());
+    if (actualPlace.getMarket().getItemShop() != null){
+      for(Item item : actualPlace.getMarket().getItemShop().getInventory()){
+        JButton button = new JButton(item.getType().toString() + " " + item.getNumber() + " " + item.getStatus() );
+        insideMarket.add(button);
       }
     }
 
@@ -678,7 +690,9 @@ public class View extends JFrame{
           e1.printStackTrace();
         }
       }});
-    insideBarn.add(exitButton);
+    barnInventory.add(exitButton);
+    insideBarn.add(barnInventory);
+    insideBarn.add(insideMarket);
     return insideBarn;
   }
 

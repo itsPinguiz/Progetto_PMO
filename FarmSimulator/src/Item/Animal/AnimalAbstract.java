@@ -50,7 +50,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     private void updateLife() {
         int daysPassed = c.getDay() - lastUpdatedDay; // calcola i giorni passati dall'ultimo aggiornamento
         if (daysPassed > 0) { // se sono passati almeno 1 giorno
-            super.status = (1/super.status) * Math.pow(2, daysPassed); // diminuisci la vita di uno per ogni giorno trascorso
+            super.status -= 47 * daysPassed; // diminuisci la vita di uno per ogni giorno trascorso
             this.lastUpdatedDay = c.getDay(); // aggiorna il campo "lastUpdatedDay"
         }
     }

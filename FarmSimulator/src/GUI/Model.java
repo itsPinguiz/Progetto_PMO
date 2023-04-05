@@ -8,6 +8,7 @@ import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Calendar.Calendar;
 import Exceptions.CustomExceptions.NoItemFoundException;
+import Item.ItemCreator;
 import Item.ItemType;
 import Item.Interface.Item;
 import Item.ItemType.Plants;
@@ -71,6 +72,9 @@ public class Model implements Serializable{
         for (int i = 0; i < 70; i++) {
             b.getBarnInventory().addItem(new Products(ItemType.productsType.MEAT));
         }
+
+        b.getBarnInventory().addItem(new ItemCreator().getRandomItem());
+        b.getBarnInventory().addItem(new Plant(Plants.CARROT));
     }
 
     public void update(){

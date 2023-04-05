@@ -10,7 +10,7 @@ import Item.ItemType;
 /****************
  * ITEM INTERFACE
  ***************/
-public abstract class Item implements Cloneable,Serializable,ItemInterface{
+public abstract class Item implements Cloneable,Serializable,ItemInterface,Comparable<Item>{
 	//fields
     protected ItemType type;
     protected double status;
@@ -54,5 +54,25 @@ public abstract class Item implements Cloneable,Serializable,ItemInterface{
         //method to clone the item
     	return super.clone();
     }
+
+    @Override
+    public int compareTo(Item otherItem) {
+        if (this.type.equals(otherItem.getType())) {
+            return 0;
+        } else if (this.type instanceof ItemType.Plants) {
+            return -1;
+        } else if (this.type instanceof ItemType.Animals && !(otherItem.getType() instanceof ItemType.Plants)) {
+            return -1;
+        } else if (this.type instanceof ItemType.Tools && !(otherItem.getType() instanceof ItemType.Plants) && !(otherItem.getType() instanceof ItemType.Animals)) {
+            return -1;
+        } else if (this.type instanceof ItemType.productsType && !(otherItem.getType() instanceof ItemType.Plants) && !(otherItem.getType() instanceof ItemType.Animals) && !(otherItem.getType() instanceof ItemType.Tools)) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
     
 }
+    
+
+    
