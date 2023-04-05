@@ -35,7 +35,6 @@ public class PlaceActions extends ActionsManager{
             
             case BARN: // Barn
                 super.availableActions = new HashSet<Action>(){{
-                    add(Action.GET_ITEM);
                     add(Action.MOVE_ITEM);
                     }};
                 break;

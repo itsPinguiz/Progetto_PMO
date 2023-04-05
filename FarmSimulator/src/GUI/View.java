@@ -58,8 +58,7 @@ public class View extends JFrame{
   private Controller controller;
   private GameBackup backup;
   private Map<String, JMenuItem> savedGameItems;
-  private Item selectedTool;
-  private Item selecItem;
+  private Item selectedItem;
 
   // constructor
   public View(Model model,Controller controller){
@@ -238,19 +237,14 @@ public class View extends JFrame{
     constraints.weightx = 1.0;
     constraints.weighty = 1.0;
 
-    // Remove all the buttons from the panel
-    //buttonPanel.removeAll();
-
     // iterate over the actions and add the buttons
     for (ActionsManager.Action a : actions.getActions()){
-      JButton button = new JButton(a.toString());
-      // actions with < 1 argument
-      if ( model.getSelectedPerson().getActions().getActionReqArgs(a) <=1){
+      JButton button = new JButton(a.toString());   
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
                   controller.performAction(a,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());
-                    add(selectedTool);}});
+                                                                add(selectedItem);}});
                   if (model.getSelectedPerson().getPlace().getType() == Places.PLANT_CHUNK){
                     updateActualPanel(worldPanel, createChunkPanel((PlantChunk)model.getSelectedPerson().getPlace()));
                   } else if (model.getSelectedPerson().getPlace().getType() == Places.PLANT_LAND){
@@ -263,23 +257,6 @@ public class View extends JFrame{
                 }
             }
         });
-      } else{ // actions with more than 1 argument
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (model.getSelectedPerson().getPlace().getType() == Places.PLANT_CHUNK){
-                  try {
-                    controller.performAction(a,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());
-                                                                  add(selectedTool);}} );
-                    updateActualPanel(worldPanel, createInsideLand());
-                  } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                      | NoSuchMethodException | SecurityException | PlaceNotAvailableException
-                      | ActionNotAvailableException e1) {
-                    e1.printStackTrace();
-                  } 
-                }
-            }
-        });
-      }
       buttonPanel.add(button, constraints);
     }
     updateActionButtons();
@@ -424,7 +401,7 @@ public class View extends JFrame{
         JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>": item.getType().toString());
         toggleButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                selectedTool = buttonGroup.handleClick(toggleButton,item);
+                selectedItem = buttonGroup.handleClick(toggleButton,item);
                 updateActionButtons();
             }
         });
@@ -730,7 +707,7 @@ public class View extends JFrame{
     // close inventory when changing world panel
     if (showInventoryButton.isSelected() == true){
       showInventoryButton.doClick();
-      selectedTool = null;
+      selectedItem = null;
     }
     updateLabels();
 
@@ -752,7 +729,7 @@ public class View extends JFrame{
             
             // Controlla se l'azione corrente è presente nel set di azioni del personaggio selezionato
             if (actions.contains(action)) {
-                boolean isEnabled = action.isOptional() || action.isItemValid(null) || (selectedTool != null && action.isItemValid(selectedTool.getType()));
+                boolean isEnabled = action.isOptional() || action.isItemValid(null) || (selectedItem != null && action.isItemValid(selectedItem.getType()));
                 button.setEnabled(isEnabled);
             } else {
                 button.setEnabled(false);
