@@ -29,7 +29,6 @@ public class PlaceActions extends ActionsManager{
                 super.availableActions = new HashSet<Action>(){{
                     add(Action.ADD_ANIMAL);
                     add(Action.REMOVE_ANIMAL);
-                    add(Action.GET_ALL_RESOURCES);
                     }};
                 break;
             

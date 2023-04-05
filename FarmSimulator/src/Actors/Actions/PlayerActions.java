@@ -4,21 +4,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-
-import javax.tools.Tool;
 
 import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Actors.Person.Person;
 import Exceptions.CustomExceptions.*;
-import Inventory.Inventory;
 import Item.ItemType;
+import Item.Animal.AnimalAbstract;
 import Item.Interface.Item;
 import Item.Plants.PlantAbstract;
 import Place.Place;
 import Place.Places;
-import Place.Land.LandAbstract;
+import Place.Land.AnimalLand;
 import Place.Land.PlantChunk;
 import Place.Land.PlantLand;
 import Place.Barn.Barn;
@@ -330,19 +327,90 @@ public class PlayerActions extends ActionsManager{
         /*
          * Method to repeat the same action on all chunks in a land
          */
-        PlantLand p = (PlantLand)items.get(0);
 
-        p.getChunks().forEach(chunk -> 
-        {try {
-            if (chunk.getActions().getActions().contains(action)){
-                this.getMethodByName(action.toString().toLowerCase()).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
-            } else {
-                throw new ActionNotAvailableException(action,chunk.getActions().getActions());
-            }
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException|ActionNotAvailableException e) {
-            System.out.println(e); //TODO: might change to printstacktace
-        }});
+        if (items.get(0) instanceof PlantLand){
+            PlantLand p = (PlantLand)items.get(0);
+            p.getChunks().forEach(chunk -> 
+            {try {
+                if (chunk.getActions().getActions().contains(action)){
+                    this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
+                } else {
+                    throw new ActionNotAvailableException(action,chunk.getActions().getActions());
+                }
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException|ActionNotAvailableException e) {
+                System.out.println(e); //TODO: might change to printstacktace
+            }});
+        } else if (items.get(0) instanceof AnimalLand){
+            AnimalLand a = (AnimalLand)items.get(0);
+            a.getElements().forEach(animal -> 
+            {try {
+                if (a.getActions().getActions().contains(action)){
+                    System.out.println((action.toString().toLowerCase()).replace(' ', '_'));
+                    this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this,new ArrayList<>() {{add(a); add(animal);}});
+                } else {
+                    throw new ActionNotAvailableException(action,a.getActions().getActions());
+                }
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException|ActionNotAvailableException e) {
+                System.out.println(e); //TODO: might change to printstacktace
+            }});
+        }
     }
+
+    public void add_animal(ArrayList<? extends Object> items) throws NoItemFoundException, InventoryIsFullException{
+        /*
+         * Method to add an animal to the farm
+         */
+        AnimalAbstract animal = (AnimalAbstract)items.get(1);
+        Farmer farmer = (Farmer)this.person;
+
+        try {
+            farmer.getInventory().removeItem(animal);
+            ((AnimalLand)(farmer.getPlace())).addAnimal(animal);
+            ((AnimalLand)(farmer.getPlace())).getActions().updateActions(new HashSet<Action>(){{add(Action.GET_RESOURCES);add(Action.GET_ALL_RESOURCES);}}, true);
+        } catch (InventoryIsFullException e) {
+            farmer.getInventory().addItem(animal);
+        }
+    }
+
+    public void remove_animal(ArrayList<? extends Object> items) throws NoItemFoundException, InventoryIsFullException{
+        /*
+         * Method to remove an animal from the farm
+         */
+        AnimalAbstract animal = (AnimalAbstract)items.get(1);
+        Farmer farmer = (Farmer)this.person;
+
+        try {
+            ((AnimalLand)(farmer.getPlace())).removeAnimal(animal);
+            farmer.getInventory().addItem(animal);
+        } catch (InventoryIsFullException e) {
+            ((AnimalLand)(farmer.getPlace())).addAnimal(animal);
+        }
+    }
+
+    public void get_resources(ArrayList<? extends Object> items) throws InventoryIsFullException{
+        /*
+         * Method to get resources from the farm
+         */
+        AnimalAbstract animal = (AnimalAbstract)items.get(1);
+        Farmer farmer = (Farmer)this.person;
+
+        animal.getProducts().forEach(item -> {
+            try {
+                farmer.getInventory().addItem(item);
+            } catch (InventoryIsFullException | NoItemFoundException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void get_all_resources(ArrayList<? extends Object> items) throws InventoryIsFullException{
+        /*
+         * Method to get all resources from the farm
+         */
+
+        doAll(items, Action.GET_RESOURCES);
+    }
+
 
     private boolean damageTool(Item tool){
         /*

@@ -707,7 +707,7 @@ public class View extends JFrame{
     // close inventory when changing world panel
     if (showInventoryButton.isSelected() == true){
       showInventoryButton.doClick();
-      selectedItem = null;
+       selectedItem= null;
     }
     updateLabels();
 

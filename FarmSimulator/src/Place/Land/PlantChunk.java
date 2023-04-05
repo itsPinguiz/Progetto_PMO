@@ -39,12 +39,12 @@ public class PlantChunk extends LandAbstract implements Chunk{
          */
         if (this.plant != null){
             this.plant.grow();
-            this.waterLevel -= 5;
-            this.fertilizationLevel -= 5;
+            this.setWaterLevel(-5);
+            this.setFertilizationLevel(-5);
         }
         
-        this.waterLevel -= 1;
-        this.fertilizationLevel -= 1;
+        this.setWaterLevel(-1);
+        this.setFertilizationLevel(-1);
     }
 
     public PlantLand getLand(){
@@ -65,7 +65,9 @@ public class PlantChunk extends LandAbstract implements Chunk{
         /*
          * Increases water value
          */
-        if ((this.waterLevel + value) < 100){
+        if ((this.waterLevel + value) < 0)
+            this.waterLevel = 0;
+        else if ((this.waterLevel + value) < 100){
             this.waterLevel =+ value;
         }else{
             this.waterLevel = 100;
@@ -76,11 +78,13 @@ public class PlantChunk extends LandAbstract implements Chunk{
         /*
          * Increases fertilization value
          */
-        if ((this.fertilizationLevel + value) < 100){
+
+        if ((this.fertilizationLevel + value) < 0)
+            this.fertilizationLevel = 0;
+        else if ((this.fertilizationLevel + value) < 100)
             this.fertilizationLevel =+ value;
-        }else{
+        else 
             this.fertilizationLevel = 100;
-        }
     }
 
     public void setDirtStatus(boolean b){

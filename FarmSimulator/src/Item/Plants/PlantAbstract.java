@@ -103,13 +103,13 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
                 super.status += this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()* 2;
                 break;
             case RAINY:
-                super.status += (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel());
+                super.status += (this.chunk.getWaterLevel()*2 + this.chunk.getFertilizationLevel());
                 break;
             case SNOWY:
                 super.status += (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()) / 2;
                 break;       
             default:
-                super.status += this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel();
+                super.status += this.chunk.getWaterLevel()/2 + this.chunk.getFertilizationLevel();
                 break;
         }
 

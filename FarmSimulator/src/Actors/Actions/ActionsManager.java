@@ -33,6 +33,7 @@ public abstract class ActionsManager implements Actions{
         FEED_ANIMAL("Feed Animal",item -> item instanceof ItemType.Plants),
         GIVE_WATER("Give Water",item -> true),
         GET_ALL_RESOURCES("Get All Resources",item -> true),
+        GET_RESOURCES("Get Resources",item -> item instanceof ItemType.Animals),
         MOVE_ITEM("Move Item",item -> item instanceof ItemType),
         BUY_ITEM("Buy",item -> item instanceof ItemType),
         SELL_ITEM("Sell",item -> item instanceof ItemType);

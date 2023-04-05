@@ -10,6 +10,7 @@ import Exceptions.CustomExceptions.NoItemFoundException;
 import Exceptions.CustomExceptions.InventoryIsFullException;
 import Item.ItemCreator;
 import Item.ItemType;
+import Item.Animal.AnimalFactory;
 import Item.ItemType.Plants;
 import Item.Plants.species.Plant;
 import Item.Products.Products;
@@ -66,6 +67,7 @@ public class Model implements Serializable{
 
          // TODO: remove this
         this.farmer.getInventory().addItem(new Plant(Plants.CARROT));
+        this.farmer.getInventory().addItem(new AnimalFactory().createChicken());
         Barn b = (Barn)(this.map.get(0).get(0));
 
         for (int i = 0; i < 70; i++) {
