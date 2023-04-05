@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import Calendar.Calendar;
 import Exceptions.CustomExceptions.MaxWaterLevelReachedException;
 import Exceptions.CustomExceptions.NoFoodFoundException;
-import Exceptions.CustomExceptions.NoItemFoundException;
 import Item.Interface.Item;
-import Item.ItemType.Plants;
 import Item.Plants.species.Plant;
 import Item.Products.Products;
 

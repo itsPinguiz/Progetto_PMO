@@ -153,12 +153,11 @@ public class PlayerActions extends ActionsManager{
          * Method to move the item
          * to the barn from the farmer's inventory
          */
-        Item item = (Item)items.get(1);
+        Item itemToMove = (Item)items.get(1);
         Farmer farmer = (Farmer)this.person;
         Barn barn = (Barn)farmer.getPlace();
 
         try {
-            Item itemToMove = farmer.getInventory().getItem(1,item);
             if (barn.getBarnInventory().getInventory().contains(itemToMove)){
                 // if the item is in the barn, remove it and add it to the farmer's inventory
                 try {

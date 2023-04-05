@@ -79,7 +79,7 @@ public class Inventory implements InventoryInterface {
     	int found = -1;
     	
     	for (Item item : inventory) {
-    		if(item.getType() == itemtofind.getType())
+                if(item.getType() == itemtofind.getType())
                 if(accLessMax) {
                     if(item.getNumber() < item.getMaxNumber()) {
                         found = inventory.indexOf(item);
@@ -89,6 +89,7 @@ public class Inventory implements InventoryInterface {
                     found = inventory.indexOf(item);
                 }
 		}
+        
     	return found;
     }
 

@@ -1,7 +1,6 @@
 package Item.Plants;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import Item.ItemType;
 import Item.Interface.Item;

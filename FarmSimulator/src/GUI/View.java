@@ -20,6 +20,7 @@ import Place.Land.PlantChunk;
 import Place.Land.LandAbstract;
 import Place.Places;
 import Place.Barn.Barn;
+import Place.Barn.Market.Market;
 import Actors.Person.Farmer;
 import Actors.Person.Landlord;
 import Calendar.Calendar;
@@ -45,6 +46,7 @@ public class View extends JFrame{
   private JPanel buttonPanel;
   private JPanel rolePanel;
   private JPanel worldPanel;
+  private JPanel insideBarn;
   private JLabel calendar;
   private JScrollPane scrollableInventoryPanel;
   private JMenu roleMenu;
@@ -620,24 +622,39 @@ public class View extends JFrame{
   }  
 
   private JPanel createBarnPlace(){
-    /*
-     * TODO: create the panel that will show the elements inside the barn
-     */
     // get the actual place
     Barn actualPlace = (Barn)this.model.getSelectedPerson().getPlace();
 
     // create the panel that will contain the elements
-    JPanel insideBarn = new JPanel(new GridLayout(1, 2));
+    insideBarn = new JPanel(new GridLayout(1, 2));
 
-    JPanel insideMarket = new JPanel(new GridLayout(4, 3));
+    JPanel market = new JPanel(new GridLayout(4, 3));
     JPanel barnInventory = new JPanel(new GridLayout(4, 6));
+
+    // Create a deselectable button group for the toggle buttons
+    DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
 
     insideBarn.setPreferredSize(new Dimension(800, 500));
 
-    insideMarket.setBorder(BorderFactory.createTitledBorder("Inside Market"));
+    market.setBorder(BorderFactory.createTitledBorder("Inside Market"));
     barnInventory.setBorder(BorderFactory.createTitledBorder("Barn inventory"));
-    insideMarket.setBackground(Color.GREEN); // TODO: remove this line
+    market.setBackground(Color.GREEN); // TODO: remove this line
     barnInventory.setBackground(Color.ORANGE); // TODO: remove this line
+
+    JButton enterMarket = new JButton("Market");
+    enterMarket.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        try {
+          controller.enterNewPlace(((Barn)(model.getSelectedPerson().getPlace())).getMarket());
+          updateActualPanel(market, createMarketPanel());
+        } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
+          e1.printStackTrace();
+        }
+      }
+      
+    });
 
     // disable the possibility to change the role
     roleMenu.setEnabled(false);
@@ -646,18 +663,21 @@ public class View extends JFrame{
     this.placeLabel.setText(actualPlace.getType().toString());
     if (actualPlace.getBarnInventory() != null){
       for(Item item : actualPlace.getBarnInventory().getInventory()){
-        JButton button = new JButton(item.getType().toString() + " " + item.getNumber() + " " + item.getStatus() );
-        barnInventory.add(button);
+        JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>": item.getType().toString());
+        toggleButton.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+              selectedItem = buttonGroup.handleClick(toggleButton,item);
+              updateActionButtons();
+          }
+      });
+
+        buttonGroup.add(toggleButton);
+        barnInventory.add(toggleButton);
       }
     }
 
     this.placeLabel.setText(actualPlace.getType().toString());
-    if (actualPlace.getMarket().getItemShop() != null){
-      for(Item item : actualPlace.getMarket().getItemShop().getInventory()){
-        JButton button = new JButton(item.getType().toString() + " " + item.getNumber() + " " + item.getStatus() );
-        insideMarket.add(button);
-      }
-    }
+    
 
     // add the exit button
     JButton exitButton = new JButton("Exit");
@@ -673,8 +693,36 @@ public class View extends JFrame{
       }});
     barnInventory.add(exitButton);
     insideBarn.add(barnInventory);
-    insideBarn.add(insideMarket);
+    insideBarn.add(market);
+    market.add(enterMarket);
     return insideBarn;
+  }
+
+  private JPanel createMarketPanel(){
+    JPanel insideMarket = new JPanel(new GridLayout(4, 3));
+    Market actualPlace = (Market)this.model.getSelectedPerson().getPlace();
+    if (actualPlace.getItemShop() != null){
+      for(Item item : actualPlace.getItemShop().getInventory()){
+        JButton button = new JButton(item.getType().toString() + " " + item.getNumber() + " " + item.getStatus() );
+        insideMarket.add(button);
+      }
+    }
+
+    // add the exit button
+    JButton exitButton = new JButton("Exit");
+    exitButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        controller.leaveOldPlace();
+        try {
+          controller.enterNewPlace(model.getMap().get(0).get(0));
+          updateActualPanel(insideBarn, createBarnPlace());
+        } catch (PlaceNotAvailableException|ActionNotAvailableException e1) {
+          e1.printStackTrace();
+        }
+      }});
+      insideMarket.add(exitButton);
+
+    return insideMarket;
   }
 
   private void updateLabels() throws ActionNotAvailableException{
