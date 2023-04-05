@@ -36,6 +36,7 @@ public class PlayerActions extends ActionsManager{
         this.person = p;
         this.accessiblePlaces = new HashSet<>(){{
             add(Places.BARN);
+            add(Places.MARKET);
             }};;
     }
     
@@ -119,7 +120,10 @@ public class PlayerActions extends ActionsManager{
             if (person.getPlace() != null)
                 leave();
             this.person.setPlace(p);
-            this.person.getActions().updateActions(person.getPlace().getActions().getActions(), true);
+            // the landlord cannot move items
+            if (!(person instanceof Landlord && p.getType() == Places.BARN)){
+                this.person.getActions().updateActions(person.getPlace().getActions().getActions(), true);
+            }
         } else throw new PlaceNotAvailableException();
     }
 
@@ -135,27 +139,6 @@ public class PlayerActions extends ActionsManager{
     }
 
     // METHODS FOR THE FARMER
-
-    public void grab_item(Item item) throws InventoryIsFullException{
-        /*
-         * Method to grab item from
-         * the barn, remove its inventory
-         * and add it the the farmer's inventory
-         */
-        Farmer f = (Farmer)this.person;
-        // grab item from the barn, remove its inventory and add it the the farmer's inventory
-        Inventory barnInventory = ((Barn)(f.getPlace())).getBarnInventory();
-        try {
-            if (barnInventory.removeItem(item) != -1){
-                f.getInventory().addItem(item);
-            }
-        } catch (NoItemFoundException e) {
-            e.printStackTrace();
-        }
-        
-        //App.getBarn().removeItem(itemIndex);
-    }
-
     public void drop_item(Item item){
         /*
          * Method to drop item on
@@ -168,19 +151,39 @@ public class PlayerActions extends ActionsManager{
     }
     }
 
-    public void move_item(int nItem,Item item) throws CloneNotSupportedException{
+    public void move_item(ArrayList<? extends Object> items) throws CloneNotSupportedException{
         /*
          * Method to move the item
          * to the barn from the farmer's inventory
          */
+        Item item = (Item)items.get(1);
         Farmer farmer = (Farmer)this.person;
+        Barn barn = (Barn)farmer.getPlace();
+
         try {
-            Item itemToMove = farmer.getInventory().getItem(nItem,item);
-        } catch (NoItemFoundException e) {
+            Item itemToMove = farmer.getInventory().getItem(1,item);
+            if (barn.getBarnInventory().getInventory().contains(itemToMove)){
+                // if the item is in the barn, remove it and add it to the farmer's inventory
+                try {
+                    farmer.getInventory().addItem(itemToMove);
+                    barn.getBarnInventory().removeItem(itemToMove);
+                } catch (InventoryIsFullException e) {
+                    // if inventory is full, add the item back to the barn
+                    barn.getBarnInventory().addItem(itemToMove);
+                }
+            } else if (farmer.getInventory().getInventory().contains(itemToMove)){
+                // if the item is in the inventory, remove it and add it to the barn
+                try {
+                    barn.getBarnInventory().addItem(itemToMove);
+                    farmer.getInventory().removeItem(itemToMove);
+                } catch (InventoryIsFullException e) {
+                    // if inventory is full, add the item back to the farmer's inventory
+                    farmer.getInventory().addItem(itemToMove);
+                }
+            }
+        } catch (NoItemFoundException | InventoryIsFullException e) {
             e.printStackTrace();
         }
-        //farmer.getPlace().barn.getInventory().add(item);
-        //farmer.removeItem(item);
     }
     
     public void plant(ArrayList<? extends Object> items) throws LandIsNotPlowedException, NoSeedFoundException, CloneNotSupportedException{
@@ -341,26 +344,6 @@ public class PlayerActions extends ActionsManager{
         }});
     }
 
-    public void buy_item(){
-        /*
-         * Method to buy item
-         * from the market
-         */
-        // remove from maket 
-        // add it to the barn 
-        // if the bought item is a land add it to the lands
-        // remove the money from the balance
-    }
-
-    public void sell_item(){
-        /*
-         * Method to sell item
-         * to the market
-         */
-        // remove from barn 
-        // add the money in the balance
-    }
-
     private boolean damageTool(Item tool){
         /*
          * Use an item and destroy it if it's worn out
@@ -380,4 +363,60 @@ public class PlayerActions extends ActionsManager{
         }
         return false;
     }
+
+    // METHODS FOR THE LANDLORD
+
+    public void buy_item(ArrayList<? extends Object> items) throws NoItemFoundException, InventoryIsFullException, CloneNotSupportedException{
+        /*
+         * Method to buy item
+         * from the market
+         */
+        Item item = (Item)items.get(1);
+        Landlord landlord = (Landlord)this.person;
+        Barn barn = (Barn)landlord.getPlace();
+        Item boughtItem = null;
+
+        try {
+            // buy from maket 
+            boughtItem = barn.getMarket().buyItem(item, 1);
+             // add it to the barn
+            barn.getBarnInventory().addItem(boughtItem);
+            // remove the money from the balance
+            landlord.setBalance(landlord.getBalance() - boughtItem.getPrice());
+        } catch (NoEnoughMoneyException e) {
+            e.printStackTrace();
+        } catch (InventoryIsFullException e){
+            // give money back and add the item back to the market
+            if (boughtItem != null){
+                landlord.setBalance(landlord.getBalance() + boughtItem.getPrice());
+                barn.getMarket().getItemShop().addItem(boughtItem);
+            }
+        }
+        
+        // TODO: if the bought item is a land add it to the lands
+    }
+
+    public void sell_item(ArrayList<? extends Object> items){
+        /*
+         * Method to sell item
+         * to the market
+         */
+        Item item = (Item)items.get(1);
+        Landlord landlord = (Landlord)this.person;
+        Barn barn = (Barn)landlord.getPlace();
+
+        try {
+            if (barn.getMarket().getItemShop().getInventory().contains(item)){
+                // remove item from the barn
+                barn.getBarnInventory().removeItem(item);
+                // add money to the balance
+                landlord.setBalance(landlord.getBalance() + item.getPrice());
+            }
+        } catch (NoItemFoundException e) {
+            e.printStackTrace();
+        }
+        }
+    
+
+    
 }
