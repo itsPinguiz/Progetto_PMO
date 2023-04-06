@@ -553,9 +553,6 @@ public class View extends JFrame{
     insideLand.setPreferredSize(new Dimension(800, 500));
     insideLand.setBackground(Color.GREEN); // TODO: remove this line
 
-    // disable the possibility to change the role
-    roleMenu.setEnabled(false); 
-
     // depending on the type of the place, display the elements
     this.placeLabel.setText(actualPlace.getType().toString());
     if (actualPlace.getElements() != null){
@@ -680,9 +677,6 @@ public class View extends JFrame{
       
     });
 
-    // disable the possibility to change the role
-    roleMenu.setEnabled(false);
-
     // depending on the type of the place, display the elements
     this.placeLabel.setText(actualPlace.getType().toString());
     if (actualPlace.getBarnInventory() != null){
@@ -698,10 +692,7 @@ public class View extends JFrame{
         buttonGroup.add(toggleButton);
         barnInventory.add(toggleButton);
       }
-    }
-
-    this.placeLabel.setText(actualPlace.getType().toString());
-    
+    }    
 
     // add the exit button
     JButton exitButton = new JButton("Exit");
@@ -715,10 +706,15 @@ public class View extends JFrame{
           e1.printStackTrace();
         }
       }});
+
+    // add the elements to the panel
     barnInventory.add(exitButton);
     insideBarn.add(barnInventory);
     insideBarn.add(market);
     market.add(enterMarket);
+
+    // disable the possibility to enter the market if the player is not a landlord
+    enterMarket.setEnabled(model.getSelectedPerson().toString().equals("Landlord")? true : false);
     return insideBarn;
   }
 
@@ -772,6 +768,9 @@ public class View extends JFrame{
     mainPanel.add(newPanel);
     mainPanel.revalidate();
     mainPanel.repaint();
+
+    showInventoryButton.setEnabled(model.getSelectedPerson().toString().equals("Farmer")? true : false);
+    roleMenu.setEnabled(model.getSelectedPerson().getPlace() == null? true : false);
 
     rolePanel.remove(buttonPanel);
     rolePanel.add(createActionsButtonPanel(this.model.getSelectedPerson().toString()));
