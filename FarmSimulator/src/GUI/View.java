@@ -47,6 +47,8 @@ public class View extends JFrame{
   private JPanel rolePanel;
   private JPanel worldPanel;
   private JPanel insideBarn;
+  private JPanel insideMarket;
+  private JPanel barnInventory;
   private JLabel calendar;
   private JScrollPane scrollableInventoryPanel;
   private JMenu roleMenu;
@@ -247,10 +249,32 @@ public class View extends JFrame{
                 try {
                   controller.performAction(a,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());
                                                                 add(selectedItem);}});
+                  switch (model.getSelectedPerson().getPlace().getType()) {
+                    case ANIMAL_LAND:
+                      updateActualPanel(worldPanel, createInsideLand());
+                      break;
+                    case PLANT_LAND:
+                      updateActualPanel(worldPanel, createInsideLand());
+                      break;
+                    case PLANT_CHUNK:
+                      updateActualPanel(worldPanel, createChunkPanel((PlantChunk)model.getSelectedPerson().getPlace()));
+                      break;
+                    case BARN:
+                      updateActualPanel(worldPanel, createBarnPlace());
+                      break;
+                    case MARKET:
+                      updateActualPanel(worldPanel, createBarnPlace());
+                      updateActualPanel(insideMarket, createMarketPanel());
+                      break;
+                    default:
+                      System.out.println("Error: place not found");
+                      break;
+                  }
+                  
                   if (model.getSelectedPerson().getPlace().getType() == Places.PLANT_CHUNK){
-                    updateActualPanel(worldPanel, createChunkPanel((PlantChunk)model.getSelectedPerson().getPlace()));
+                   
                   } else if (model.getSelectedPerson().getPlace().getType() == Places.PLANT_LAND){
-                    updateActualPanel(worldPanel, createInsideLand());
+                   
                   }
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                     | NoSuchMethodException | SecurityException | PlaceNotAvailableException
@@ -594,7 +618,7 @@ public class View extends JFrame{
                        "</div><div style='font-size:12px;'>Life Stage: " + ((plant == null)?"No Plant": plant.getLifeStage().toString()) +
                        "<br>Water Level: </br>" + chunk.getWaterLevel() +
                        "<br>Fertilization Level: </br>" + chunk.getFertilizationLevel() +
-                       "<br>Plowed Level:</br> " + ((chunk.getDirtStatus()== true)?"Yes":"No") +
+                       "<br>Plowed :</br> " + ((chunk.getDirtStatus()== true)?"Yes":"No") +
                        "</div></html>");
 
     // add the label to the panel
@@ -629,7 +653,7 @@ public class View extends JFrame{
     insideBarn = new JPanel(new GridLayout(1, 2));
 
     JPanel market = new JPanel(new GridLayout(4, 3));
-    JPanel barnInventory = new JPanel(new GridLayout(4, 6));
+    barnInventory = new JPanel(new GridLayout(4, 6));
 
     // Create a deselectable button group for the toggle buttons
     DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
@@ -699,7 +723,7 @@ public class View extends JFrame{
   }
 
   private JPanel createMarketPanel(){
-    JPanel insideMarket = new JPanel(new GridLayout(4, 3));
+    insideMarket = new JPanel(new GridLayout(4, 3));
     Market actualPlace = (Market)this.model.getSelectedPerson().getPlace();
     if (actualPlace.getItemShop() != null){
       for(Item item : actualPlace.getItemShop().getInventory()){
@@ -753,10 +777,7 @@ public class View extends JFrame{
     rolePanel.add(createActionsButtonPanel(this.model.getSelectedPerson().toString()));
 
     // close inventory when changing world panel
-    if (showInventoryButton.isSelected() == true){
-      showInventoryButton.doClick();
-       selectedItem= null;
-    }
+    selectedItem= null;
     updateLabels();
 
     // Update the panel
