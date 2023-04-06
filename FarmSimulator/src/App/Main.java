@@ -1,11 +1,12 @@
-package App;
+package app;
 
 import javax.swing.SwingUtilities;
-import Exceptions.CustomExceptions.InventoryIsFullException;
-import Exceptions.CustomExceptions.NoItemFoundException;
-import GUI.Controller;
-import GUI.Model;
-import GUI.View;
+
+import controller.Controller;
+import model.Model;
+import model.exceptions.CustomExceptions.InventoryIsFullException;
+import model.exceptions.CustomExceptions.NoItemFoundException;
+import view.View;
 
 public class Main {
     // Design pattern: MVC and Observer
