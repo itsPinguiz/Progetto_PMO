@@ -263,7 +263,7 @@ public class View extends JFrame{
                       updateActualPanel(worldPanel, createBarnPlace());
                       break;
                     case MARKET:
-                      updateActualPanel(worldPanel, createBarnPlace());
+                      //updateActualPanel(worldPanel, createBarnPlace()); TODO: Fix
                       updateActualPanel(insideMarket, createMarketPanel());
                       break;
                     default:
@@ -721,12 +721,22 @@ public class View extends JFrame{
   private JPanel createMarketPanel(){
     insideMarket = new JPanel(new GridLayout(4, 3));
     Market actualPlace = (Market)this.model.getSelectedPerson().getPlace();
+    // Create a deselectable button group for the toggle buttons
+    DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
+
     if (actualPlace.getItemShop() != null){
       for(Item item : actualPlace.getItemShop().getInventory()){
-        JButton button = new JButton(item.getType().toString() + " " + item.getNumber() + " " + item.getStatus() );
-        insideMarket.add(button);
+        JToggleButton toggleButton = new JToggleButton(item.getType().toString() + " " + item.getNumber() + " " + item.getStatus() );
+        toggleButton.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+              selectedItem = buttonGroup.handleClick(toggleButton,item);
+              updateActionButtons();
+          }
+      });
+        buttonGroup.add(toggleButton);
+        insideMarket.add(toggleButton);
       }
-    }
+    }    
 
     // add the exit button
     JButton exitButton = new JButton("Exit");

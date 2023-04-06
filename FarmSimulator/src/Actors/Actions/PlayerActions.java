@@ -447,7 +447,7 @@ public class PlayerActions extends ActionsManager{
 
         try {
             // buy from maket 
-            boughtItem = market.buyItem(item, 1);
+            boughtItem = market.buyItem(item, landlord.getBalance());
              // add it to the barn
              market.getBarn().getBarnInventory().addItem(boughtItem);
             // remove the money from the balance
