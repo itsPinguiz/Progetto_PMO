@@ -47,9 +47,6 @@ public class View extends JFrame{
   private JPanel buttonPanel;
   private JPanel rolePanel;
   private JPanel worldPanel;
-  private JPanel insideBarn;
-  private JPanel insideMarket;
-  private JPanel barnInventory;
   private JLabel calendar;
   private JScrollPane scrollableInventoryPanel;
   private JMenu roleMenu;
@@ -59,7 +56,7 @@ public class View extends JFrame{
   private JToggleButton showInventoryButton;
   private JLabel roleLabel;
   private JLabel placeLabel;
-  private JButton enterMarket;
+  private JButton enterMarketButton;
   private Model model;
   private Controller controller;
   private GameBackup backup;
@@ -262,11 +259,10 @@ public class View extends JFrame{
                       updateActualPanel(worldPanel, createChunkPanel((PlantChunk)model.getSelectedPerson().getPlace()));
                       break;
                     case BARN:
-                      updateActualPanel(worldPanel, createBarnPlace());
+                      updateActualPanel(worldPanel, createBarnPlace(model.getSelectedPerson().getPlace()));
                       break;
                     case MARKET:
-                      updateActualPanel(worldPanel, createBarnPlace()); 
-                      enterMarket.doClick();
+                      updateActualPanel(worldPanel, createBarnPlace(model.getSelectedPerson().getPlace())); 
                       break;
                     default:
                       System.out.println("Error: place not found");
@@ -488,12 +484,8 @@ public class View extends JFrame{
       public void actionPerformed(ActionEvent e)  {
           try {
             controller.enterNewPlace(model.getMap().get(0).get(0));
-          } catch (PlaceNotAvailableException e1) {
-            e1.printStackTrace();
-          }
-          try {
-            updateActualPanel(worldPanel, createBarnPlace());
-          } catch (ActionNotAvailableException e1) {
+            updateActualPanel(worldPanel, createBarnPlace(model.getSelectedPerson().getPlace()));
+          } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
             e1.printStackTrace();
           }
       }
@@ -644,40 +636,27 @@ public class View extends JFrame{
     return chunkPanel;
   }  
 
-  private JPanel createBarnPlace(){
+  private JPanel createBarnPlace(Place p){
     // get the actual place
     Barn actualPlace = (Barn)this.model.getMap().get(0).get(0);
 
     // create the panel that will contain the elements
-    insideBarn = new JPanel(new GridLayout(1, 2));
+    JPanel insideBarnPanel = new JPanel(new GridLayout(1, 2));
 
-    JPanel market = new JPanel(new GridLayout(4, 3));
-    barnInventory = new JPanel(new GridLayout(4, 6));
+    JPanel marketPanel = new JPanel(new GridLayout(4, 3));
+    JPanel barnInventoryPanel = new JPanel(new GridLayout(4, 6));
+
+    JButton exitButton;
 
     // Create a deselectable button group for the toggle buttons
     DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
 
-    insideBarn.setPreferredSize(new Dimension(800, 500));
+    insideBarnPanel.setPreferredSize(new Dimension(800, 500));
 
-    market.setBorder(BorderFactory.createTitledBorder("Inside Market"));
-    barnInventory.setBorder(BorderFactory.createTitledBorder("Barn inventory"));
-    market.setBackground(Color.GREEN); // TODO: remove this line
-    barnInventory.setBackground(Color.ORANGE); // TODO: remove this line
-
-    enterMarket = new JButton("Market");
-    enterMarket.addActionListener(new ActionListener() {
-
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        try {
-          controller.enterNewPlace(actualPlace.getMarket());
-          updateActualPanel(market, createMarketPanel());
-        } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
-          e1.printStackTrace();
-        }
-      }
-      
-    });
+    marketPanel.setBorder(BorderFactory.createTitledBorder("Inside Market"));
+    barnInventoryPanel.setBorder(BorderFactory.createTitledBorder("Barn inventory"));
+    marketPanel.setBackground(Color.GREEN); // TODO: remove this line
+    barnInventoryPanel.setBackground(Color.ORANGE); // TODO: remove this line
 
     // display the items in the barn inventory
     if (actualPlace.getBarnInventory() != null){
@@ -692,69 +671,83 @@ public class View extends JFrame{
       });
 
         buttonGroup.add(toggleButton);
-        barnInventory.add(toggleButton);
+        barnInventoryPanel.add(toggleButton);
       }
     }    
 
-    // add the exit button
-    JButton exitButton = new JButton("Exit");
-    exitButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        controller.leaveOldPlace();
-        try {
+    if (actualPlace == p){ // if the player is in the barn
+      enterMarketButton = new JButton("Market");
+      exitButton = new JButton("Exit");
 
-          updateActualPanel(worldPanel, createWorldPanel());
-        } catch (ActionNotAvailableException e1) {
-          e1.printStackTrace();
-        }
-      }});
-
-    // add the elements to the panel
-    barnInventory.add(exitButton);
-    insideBarn.add(barnInventory);
-    insideBarn.add(market);
-    market.add(enterMarket);
-
-    // disable the possibility to enter the market if the player is not a landlord
-    enterMarket.setEnabled(model.getSelectedPerson().toString().equals("Landlord")? true : false);
-    return insideBarn;
-  }
-
-  private JPanel createMarketPanel(){
-    insideMarket = new JPanel(new GridLayout(4, 3));
-    Market actualPlace = (Market)this.model.getSelectedPerson().getPlace();
-    // Create a deselectable button group for the toggle buttons
-    DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
-
-    if (actualPlace.getItemShop() != null){
-      for(Item item : actualPlace.getItemShop().getInventory()){
-        JToggleButton toggleButton = new JToggleButton(item.getType().toString() + " " + item.getNumber() + " " + item.getStatus() );
-        toggleButton.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-              selectedItem = buttonGroup.handleClick(toggleButton,item);
-              updateActionButtons();
+      // add the button to enter the market
+      enterMarketButton.addActionListener(new ActionListener() {
+  
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          try {
+            controller.enterNewPlace(actualPlace.getMarket());
+            updateActualPanel(worldPanel, createBarnPlace(actualPlace.getMarket()));
+          } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
+            e1.printStackTrace();
           }
-      });
-        buttonGroup.add(toggleButton);
-        insideMarket.add(toggleButton);
-      }
-    }    
-
-    // add the exit button
-    JButton exitButton = new JButton("Exit");
-    exitButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        controller.leaveOldPlace();
-        try {
-          controller.enterNewPlace(model.getMap().get(0).get(0));
-          updateActualPanel(insideBarn, createBarnPlace());
-        } catch (PlaceNotAvailableException|ActionNotAvailableException e1) {
-          e1.printStackTrace();
         }
-      }});
-      insideMarket.add(exitButton);
+      });
+      
+      // add the exit button
+      exitButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.leaveOldPlace();
+          try {
 
-    return insideMarket;
+            updateActualPanel(worldPanel, createWorldPanel());
+          } catch (ActionNotAvailableException e1) {
+            e1.printStackTrace();
+          }
+        }});
+
+        marketPanel.add(enterMarketButton);
+        barnInventoryPanel.add(exitButton);
+    } else{ // if the player is in the market
+      Market marketPlace = actualPlace.getMarket();
+      exitButton = new JButton("Exit");
+
+      // create buttons for shop items
+      if (marketPlace.getItemShop() != null){
+        for(Item item : marketPlace.getItemShop().getInventory()){
+          JToggleButton toggleButton = new JToggleButton(item.getType().toString() + " " 
+                                                       + item.getNumber() + " " 
+                                                       + item.getStatus() );
+          toggleButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                selectedItem = buttonGroup.handleClick(toggleButton,item);
+                updateActionButtons();
+            }
+        });
+          buttonGroup.add(toggleButton);
+          marketPanel.add(toggleButton);
+        }
+      }   
+
+      // add the exit button
+      exitButton.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          controller.leaveOldPlace();
+          try {
+            controller.enterNewPlace(model.getMap().get(0).get(0));
+            updateActualPanel(worldPanel, createBarnPlace(model.getSelectedPerson().getPlace()));
+          } catch (PlaceNotAvailableException|ActionNotAvailableException e1) {
+            e1.printStackTrace();
+          }
+        }});
+        marketPanel.add(exitButton);
+    }
+    // add the elements to the panel
+    insideBarnPanel.add(barnInventoryPanel);
+    insideBarnPanel.add(marketPanel);
+    
+    // disable the possibility to enter the market if the player is not a landlord
+    enterMarketButton.setEnabled(model.getSelectedPerson().toString().equals("Landlord")? true : false);
+    return insideBarnPanel;
   }
 
   private void updateLabels() throws ActionNotAvailableException{
