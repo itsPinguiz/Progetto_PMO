@@ -101,6 +101,7 @@ public class Inventory implements InventoryInterface {
     	// If the number of item requested is greater than the number of item in the inventory
     	if(this.inventory.get(this.searchItem(itemRequest, false)).getNumber() - numItemReq <= 0 ) {
     		copyItem =  this.inventory.get(this.searchItem(itemRequest, false));
+            this.inventory.remove(this.inventory.get(searchItem(itemRequest, false)));
     	}
         // If the number of item requested is smaller than the number of item in the inventory
     	else {
