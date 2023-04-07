@@ -8,7 +8,7 @@ import model.item.Item;
 
 public interface InventoryInterface extends Serializable {
     public int addItem(Item newItem) throws NoItemFoundException, InventoryIsFullException;
-    public int removeItem(Item item) throws NoItemFoundException;
+    public void removeItem(Item item, int numItemReq) throws NoItemFoundException;
     public Item getItem(int numItemReq, Item itemRequest) throws CloneNotSupportedException, NoItemFoundException;
     public int searchItem(Item itemtofind, boolean accLessMax) throws NoItemFoundException;
 }

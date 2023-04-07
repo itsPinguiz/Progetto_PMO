@@ -12,6 +12,7 @@ import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.item.ItemCreator;
 import model.item.ItemType;
 import model.item.ItemType.Plants;
+import model.item.ItemType.productsType;
 import model.item.animal.AnimalFactory;
 import model.item.plants.species.Plant;
 import model.item.products.Products;
@@ -72,8 +73,8 @@ public class Model implements Serializable{
         this.farmer.getInventory().addItem(new Plant(Plants.CARROT));
         this.farmer.getInventory().addItem(new AnimalFactory().createChicken());
 
-        for (int i = 0; i < 70; i++) {
-            b.getBarnInventory().addItem(new Products(ItemType.productsType.MEAT));
+        for(int i = 0; i < 70; i++){
+            b.getBarnInventory().addItem(new Products(productsType.MEAT));
         }
 
         b.getBarnInventory().addItem(new ItemCreator().getRandomItem());

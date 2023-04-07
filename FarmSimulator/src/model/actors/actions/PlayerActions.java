@@ -143,7 +143,7 @@ public class PlayerActions extends ActionsManager{
          * the floor and lose it
          */
        try {
-        ((Farmer)this.person).getInventory().removeItem(item);
+        ((Farmer)this.person).getInventory().removeItem(item, 1);
     } catch (NoItemFoundException e) {
         e.printStackTrace();
     }
@@ -163,7 +163,7 @@ public class PlayerActions extends ActionsManager{
                 // if the item is in the barn, remove it and add it to the farmer's inventory
                 try {
                     farmer.getInventory().addItem(itemToMove);
-                    barn.getBarnInventory().removeItem(itemToMove);
+                    barn.getBarnInventory().removeItem(itemToMove, 1);
                 } catch (InventoryIsFullException e) {
                     // if inventory is full, add the item back to the barn
                     barn.getBarnInventory().addItem(itemToMove);
@@ -172,7 +172,7 @@ public class PlayerActions extends ActionsManager{
                 // if the item is in the inventory, remove it and add it to the barn
                 try {
                     barn.getBarnInventory().addItem(itemToMove);
-                    farmer.getInventory().removeItem(itemToMove);
+                    farmer.getInventory().removeItem(itemToMove, 1);
                 } catch (InventoryIsFullException e) {
                     // if inventory is full, add the item back to the farmer's inventory
                     farmer.getInventory().addItem(itemToMove);
@@ -364,7 +364,7 @@ public class PlayerActions extends ActionsManager{
         Farmer farmer = (Farmer)this.person;
 
         try {
-            farmer.getInventory().removeItem(animal);
+            farmer.getInventory().removeItem(animal, 1);
             ((AnimalLand)(farmer.getPlace())).addAnimal(animal);
             ((AnimalLand)(farmer.getPlace())).getActions().updateActions(new HashSet<Action>(){{add(Action.GET_RESOURCES);
                                                                                                 add(Action.GET_ALL_RESOURCES);
@@ -451,7 +451,7 @@ public class PlayerActions extends ActionsManager{
             if (tool != null){
                 ((AbstractTool)tool).useTool();
                 if (tool.getStatus() == 0){
-                    f.getInventory().removeItem(tool);
+                    f.getInventory().removeItem(tool, 1);
                 }
                 return true;
             }

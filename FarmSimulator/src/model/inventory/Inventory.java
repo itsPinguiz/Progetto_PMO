@@ -3,6 +3,8 @@ package model.inventory;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.lang.model.util.ElementScanner14;
+
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.item.Item;
@@ -54,33 +56,35 @@ public class Inventory implements InventoryInterface {
         return check;
     }
 
-    public int removeItem(Item itemToRemove) throws NoItemFoundException{
-        int itemIndex = searchItem(itemToRemove, false);
-    
-        if (itemIndex == -1) {
-            System.out.println("\n" + itemToRemove.getType() + " is not in your inventory.");
-        } else {
-            Item existingItem = inventory.get(itemIndex);
-            if (existingItem.getNumber() == itemToRemove.getNumber()) {
+    public void removeItem(Item itemToRemove, int numItemReq) throws NoItemFoundException{
+
+        if(this.inventory.contains(itemToRemove)){
+
+            if (itemToRemove.getNumber() == numItemReq) {
                 // If the item to remove has the same quantity as the existing item, remove it completely
-                inventory.remove(itemIndex);
-            } else if (existingItem.getNumber() > itemToRemove.getNumber()) {
+                inventory.remove(itemToRemove);
+            } 
+            else if (itemToRemove.getNumber() > numItemReq){
                 // If the item to remove has a smaller quantity than the existing item, subtract the quantity
-                existingItem.setNumber(existingItem.getNumber() - itemToRemove.getNumber());
-            } else {
+                itemToRemove.setNumber(itemToRemove.getNumber() - numItemReq);
+            } 
+            else {
                 // If the item to remove has a larger quantity than the existing item, print an error message
-                System.out.println("\nYou only have " + existingItem.getNumber() + " " + itemToRemove.getType() + " in your inventory.");
+                System.out.println("\nYou only have " + itemToRemove.getNumber() + " " + itemToRemove.getType() + " in your inventory.");
             }
         }
-        return itemIndex;
+        else{
+            throw new NoItemFoundException();
+        }
     }
+
     
     public int searchItem(Item itemtofind, boolean accLessMax) throws NoItemFoundException{
     	
     	int found = -1;
     	
     	for (Item item : inventory) {
-                if(item.getType() == itemtofind.getType())
+                if(item.getType() == itemtofind.getType()){
                 if(accLessMax) {
                     if(item.getNumber() < item.getMaxNumber()) {
                         found = inventory.indexOf(item);
@@ -89,6 +93,7 @@ public class Inventory implements InventoryInterface {
                 else {
                     found = inventory.indexOf(item);
                 }
+            }
 		}
         
     	return found;
@@ -98,16 +103,21 @@ public class Inventory implements InventoryInterface {
     	
     	Item copyItem = null;
 
-    	// If the number of item requested is greater than the number of item in the inventory
-    	if(this.inventory.get(this.searchItem(itemRequest, false)).getNumber() - numItemReq <= 0 ) {
-    		copyItem =  this.inventory.get(this.searchItem(itemRequest, false));
-            this.inventory.remove(this.inventory.get(searchItem(itemRequest, false)));
-    	}
-        // If the number of item requested is smaller than the number of item in the inventory
-    	else {
-            copyItem = (Item)(inventory.get(this.searchItem(itemRequest, false)).clone());
-            copyItem.setNumber(numItemReq);
-            inventory.get(this.searchItem(itemRequest,false)).setNumber(inventory.get(this.searchItem(itemRequest,false)).getNumber() - numItemReq);
+        if(this.inventory.contains(itemRequest)){
+            // If the number of item requested is greater than the number of item in the inventory
+            if(itemRequest.getNumber() - numItemReq <= 0 ) {
+                copyItem =  itemRequest;
+                this.inventory.remove(itemRequest);
+            }
+            // If the number of item requested is smaller than the number of item in the inventory
+            else {
+                copyItem = (Item)itemRequest.clone();
+                copyItem.setNumber(numItemReq);
+                itemRequest.setNumber((itemRequest).getNumber() - numItemReq);
+            }
+        }
+        else{
+            throw new NoItemFoundException();
         }
         
         return copyItem;
