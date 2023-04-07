@@ -366,7 +366,10 @@ public class PlayerActions extends ActionsManager{
         try {
             farmer.getInventory().removeItem(animal);
             ((AnimalLand)(farmer.getPlace())).addAnimal(animal);
-            ((AnimalLand)(farmer.getPlace())).getActions().updateActions(new HashSet<Action>(){{add(Action.GET_RESOURCES);add(Action.GET_ALL_RESOURCES);}}, true);
+            ((AnimalLand)(farmer.getPlace())).getActions().updateActions(new HashSet<Action>(){{add(Action.GET_RESOURCES);
+                                                                                                add(Action.GET_ALL_RESOURCES);
+                                                                                                add(Action.FEED_ANIMAL);
+                                                                                                add(Action.GIVE_WATER);}}, true);
         } catch (InventoryIsFullException e) {
             farmer.getInventory().addItem(animal);
         }
@@ -403,6 +406,32 @@ public class PlayerActions extends ActionsManager{
         });
     }
 
+    public void feed_animal(ArrayList<? extends Object> items){
+        /*
+         * Method to feed an animal
+         */
+        AnimalAbstract animal = (AnimalAbstract)items.get(1);
+        Item food = (Item)items.get(0);
+
+        try {
+            animal.feed(food);
+        } catch (NoFoodFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void give_water(ArrayList<? extends Object> items){
+        /*
+         * Method to give water to an animal
+         */
+        AnimalAbstract animal = (AnimalAbstract)items.get(1);
+
+        try {
+            animal.waterAnimal();
+        } catch (MaxWaterLevelReachedException e) {
+            e.printStackTrace();
+        }
+    }
     public void get_all_resources(ArrayList<? extends Object> items) throws InventoryIsFullException{
         /*
          * Method to get all resources from the farm
@@ -478,15 +507,12 @@ public class PlayerActions extends ActionsManager{
         try {
             if (market.getBarn().getBarnInventory().getInventory().contains(item)){
                 // remove item from the barn
-                market.getBarn().getBarnInventory().removeItem(item);
+                market.getBarn().getBarnInventory().getItem(1,item);
                 // add money to the balance
                 landlord.setBalance(item.getPrice());
             }
-        } catch (NoItemFoundException e) {
+        } catch (NoItemFoundException|CloneNotSupportedException e) {
             e.printStackTrace();
         }
     }
-    
-
-    
 }
