@@ -37,7 +37,7 @@ public class PlayerActions extends ActionsManager{
         this.accessiblePlaces = new HashSet<>(){{
             add(Places.BARN);
             add(Places.MARKET);
-            }};;
+            }};
     }
     
     // constructor for Farmer
@@ -49,7 +49,7 @@ public class PlayerActions extends ActionsManager{
             add(Places.PLANT_LAND);
             add(Places.PLANT_CHUNK);
             add(Places.ANIMAL_CHUNK);
-            }};;
+            }};
     }
 
     public void executeAction(Action s,Object argument) {
@@ -130,19 +130,21 @@ public class PlayerActions extends ActionsManager{
             // if the item is in the barn, remove it and add it to the farmer's inventory
             try {
                 farmer.getInventory().addItem(itemToMove);
-                barn.getBarnInventory().removeItem(itemToMove, 1);
+                barn.getBarnInventory().getItem(1,itemToMove);
             } catch (NoItemFoundException e) {
                 // if inventory is full, add the item back to the barn
-                farmer.getInventory().removeItem(itemToMove, itemToMove.getNumber());
+                farmer.getInventory().getItem(1,itemToMove);
+                throw new NoItemFoundException();
             }
         } else if (farmer.getInventory().getInventory().contains(itemToMove)){
             // if the item is in the inventory, remove it and add it to the barn
             try {
                 barn.getBarnInventory().addItem(itemToMove);
-                farmer.getInventory().removeItem(itemToMove, 1);
+                farmer.getInventory().getItem(1,itemToMove);
             } catch (NoItemFoundException e) {
                 // if the item was not found add the item back to the inventory
-                barn.getBarnInventory().removeItem(itemToMove, itemToMove.getNumber());
+                barn.getBarnInventory().getItem(1,itemToMove);
+                throw new NoItemFoundException();
             }
         }
 
@@ -178,6 +180,7 @@ public class PlayerActions extends ActionsManager{
                     add(Action.HARVEST_ALL);
                     }}, true);
                 
+                // if all lands are planted remove the plant all action
                 long plowedChunk = c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() == null).count();
 
                 if (plowedChunk == 0){
@@ -273,14 +276,9 @@ public class PlayerActions extends ActionsManager{
         }
 
         // add resources to the inventory
-
         product.setNumber(product.getNumber()*multiplier);
-        try {
-            f.getInventory().addItem(product);
-        } catch (NoItemFoundException e) {
-            e.printStackTrace();
-        } 
-        
+        f.getInventory().addItem(product);
+  
         // remove plant
         c.setPlant(null);
         c.resetActions();
@@ -416,6 +414,7 @@ public class PlayerActions extends ActionsManager{
         
         animalCunk.getActions().updateActions(new HashSet<Action>(){{add(Action.ADD_ANIMAL);}}, true);
 
+        // if all the chunks do not have animals, remove the get all resources action
         long occupiedChunks = animalCunk.getLand().getElements().stream().filter(chunk -> chunk.getAnimal() != null).count();
 
         if (occupiedChunks == 0){
@@ -441,7 +440,7 @@ public class PlayerActions extends ActionsManager{
          * Method to feed an animal
          */
         AnimalChunk chunk = (AnimalChunk)items.get(0);
-        Item food = (Item)items.get(0);
+        Item food = (Item)items.get(1);
 
         chunk.getAnimal().feed(food);
     }
@@ -517,14 +516,14 @@ public class PlayerActions extends ActionsManager{
         Item item = (Item)items.get(1);
         Landlord landlord = (Landlord)this.person;
         Market market = (Market)items.get(0);
-        Item boughtItem = null;
+        
 
         // add it to the barn
-        market.getBarn().getBarnInventory().addItem(boughtItem);
+        market.getBarn().getBarnInventory().addItem(item);
         // buy from maketz 
-        boughtItem = market.buyItem(item, landlord.getBalance());
+        item = market.buyItem(item, landlord.getBalance());
         // remove the money from the balance
-        landlord.setBalance(- boughtItem.getPrice());
+        landlord.setBalance(- item.getPrice());
         // TODO: if the bought item is a land add it to the lands
     }
 
