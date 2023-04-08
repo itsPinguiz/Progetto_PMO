@@ -18,17 +18,16 @@ public class PlaceActions extends ActionsManager{
         switch ((this.place).getType()) {
             case PLANT_LAND: // Plant Land
                 super.availableActions = new HashSet<Action>(){{
-                    add(Action.WATER_ALL);
-                    add(Action.FERTILIZE_ALL);
-                    add(Action.HARVEST_ALL);
                     add(Action.PLOW_ALL);
                     }};
                 break;
 
             case ANIMAL_LAND: // Animal Land
+                super.availableActions = new HashSet<Action>();
+                break;
+            case ANIMAL_CHUNK: // Animal Chunk
                 super.availableActions = new HashSet<Action>(){{
                     add(Action.ADD_ANIMAL);
-                    add(Action.REMOVE_ANIMAL);
                     }};
                 break;
             

@@ -41,13 +41,6 @@ public class PlantLand extends LandAbstract{
         return elements;
     }
 
-    public ArrayList<PlantChunk> getChunks(){
-        /*
-         * Returns all the chunks present in the land
-         */
-        return this.chunks;
-    }
-
     public void update(){
         /*
          * Updates all the chunks in the land

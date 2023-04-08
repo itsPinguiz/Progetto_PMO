@@ -1,14 +1,18 @@
 package model.exceptions;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import model.actors.actions.ActionsManager.Action;
 import model.item.ItemType;
+import model.place.Place;
+import model.place.Places;
 
 public class CustomExceptions {
     public static class ActionNotAvailableException extends Exception {
         public ActionNotAvailableException(Action action,Set<Action> availableActions){
-            super("The action you tried to execute was not possible. \n Action: " + action.toString() + " \n Available actions: " + availableActions.toString());
+            super("The action you tried to execute was not possible. \n Action: " +
+                  action.toString() + " \n Available actions: " + availableActions.toString());
         }   
     }
 
@@ -38,8 +42,9 @@ public class CustomExceptions {
     }
 
     public static class PlaceNotAvailableException extends Exception {
-        public PlaceNotAvailableException(){
-            super("Cannot perform action since the role you are using cannot enter this place.");
+        public PlaceNotAvailableException(Place enteringPlace,HashSet<Places> availablePlaces){
+            super("Cannot perform action since the role you are using cannot enter " + enteringPlace.toString() +
+                   ". \n Available places: " + availablePlaces.toString());
         }   
     }
 

@@ -22,8 +22,9 @@ public abstract class ActionsManager implements Actions{
         PLANT("Plant",item -> item instanceof ItemType.Plants),
         WATER("Water",item -> item == ItemType.Tools.WATERINGCAN),
         FERTILIZE("Fertilize",item -> item == ItemType.Tools.FERTILIZER),
-        HARVEST("Harvest", item -> item == ItemType.Tools.SICKLE || item == null, true),
+        HARVEST("Harvest",item -> item == ItemType.Tools.SICKLE || item == null, true),
         PLOW("Plow",item -> item == ItemType.Tools.HOE),
+        PLANT_ALL("Plant All",item -> item instanceof ItemType.Plants),
         WATER_ALL("Water All",item -> item == ItemType.Tools.WATERINGCAN),
         FERTILIZE_ALL("Fertilize All",item -> item == ItemType.Tools.FERTILIZER),
         HARVEST_ALL("Harvest All",item -> item == ItemType.Tools.SICKLE || item == null, true),
@@ -32,8 +33,10 @@ public abstract class ActionsManager implements Actions{
         REMOVE_ANIMAL("Remove Animal",item -> item instanceof ItemType.Animals),
         FEED_ANIMAL("Feed Animal",item -> item instanceof ItemType.Plants),
         GIVE_WATER("Give Water",item -> true),
-        GET_ALL_RESOURCES("Get All Resources",item -> true),
         GET_RESOURCES("Get Resources",item -> item instanceof ItemType.Animals),
+        FEED_ALL_ANIMALS("Feed All Animals",item -> item instanceof ItemType.Plants),
+        GIVE_WATER_ALL("Give Water All",item -> true),
+        GET_ALL_RESOURCES("Get All Resources",item -> true),
         MOVE_ITEM("Move Item",item -> item instanceof ItemType),
         BUY_ITEM("Buy Item",item -> item instanceof ItemType),
         SELL_ITEM("Sell Item",item -> item instanceof ItemType);
@@ -99,7 +102,7 @@ public abstract class ActionsManager implements Actions{
         /*
          * Resets the available actions
          */
-        this.availableActions = null;
+        this.availableActions.clear();
     }
 
     
