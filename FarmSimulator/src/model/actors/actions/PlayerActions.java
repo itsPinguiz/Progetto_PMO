@@ -368,11 +368,13 @@ public class PlayerActions extends ActionsManager{
         } else if (items.get(0) instanceof AnimalLand){
             AnimalLand a = (AnimalLand)items.get(0);
             for (AnimalChunk chunk : a.getElements()){
-                if (chunk.getActions().getActions().contains(action)){
-                    this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
-                } else {
-                    throw new ActionNotAvailableException(action,a.getActions().getActions());
-                }
+                if (chunk.getAnimal()!=null){
+                    if (chunk.getActions().getActions().contains(action)){
+                        this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
+                    } else {
+                        throw new ActionNotAvailableException(action,a.getActions().getActions());
+                    }
+                } 
             }
         }
     }

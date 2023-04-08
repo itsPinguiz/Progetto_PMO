@@ -259,6 +259,9 @@ public class View extends JFrame{
                     case PLANT_CHUNK:
                       updateActualPanel(worldPanel, createChunkPanel((PlantChunk)model.getSelectedPerson().getPlace()));
                       break;
+                    case ANIMAL_CHUNK:
+                      updateActualPanel(worldPanel, createAnimalChunkPanel((AnimalChunk)model.getSelectedPerson().getPlace()));
+                      break;
                     case BARN:
                       updateActualPanel(worldPanel, createBarnPlace(model.getSelectedPerson().getPlace()));
                       break;
@@ -840,6 +843,10 @@ public class View extends JFrame{
     // close inventory when changing world panel
     selectedItem= null;
     updateLabels();
+
+    if (showInventoryButton.isSelected()){
+      showInventoryButton.doClick();
+    }
 
     // Update the panel
     revalidate();
