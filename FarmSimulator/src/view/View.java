@@ -425,7 +425,7 @@ public class View extends JFrame{
     DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
 
     for (Item item : inventory.getInventory()) {
-        // Create a JToggleButton instead of a JButton<
+        // Create a JToggleButton instead of a JButton
         JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>":
                                                                                                    "<html>" + item.getType().toString() + "<br>" + item.getNumber() +  "<html>");
         toggleButton.addActionListener(new ActionListener() {
