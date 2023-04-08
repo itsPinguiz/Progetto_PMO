@@ -257,7 +257,7 @@ public class View extends JFrame{
                       updateActualPanel(worldPanel, createInsideLand());
                       break;
                     case PLANT_CHUNK:
-                      updateActualPanel(worldPanel, createChunkPanel((PlantChunk)model.getSelectedPerson().getPlace()));
+                      updateActualPanel(worldPanel, createPlantChunkPanel((PlantChunk)model.getSelectedPerson().getPlace()));
                       break;
                     case ANIMAL_CHUNK:
                       updateActualPanel(worldPanel, createAnimalChunkPanel((AnimalChunk)model.getSelectedPerson().getPlace()));
@@ -426,7 +426,8 @@ public class View extends JFrame{
 
     for (Item item : inventory.getInventory()) {
         // Create a JToggleButton instead of a JButton<
-        JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>": item.getType().toString());
+        JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>":
+                                                                                                   "<html>" + item.getType().toString() + "<br>" + item.getNumber() +  "<html>");
         toggleButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 selectedItem = buttonGroup.handleClick(toggleButton,item);
@@ -582,7 +583,7 @@ public class View extends JFrame{
                 // if the chunk isn't empty enter the chunk 
                 try {
                   controller.enterNewPlace(chunk);
-                  updateActualPanel(worldPanel, createChunkPanel(chunk));
+                  updateActualPanel(worldPanel, createPlantChunkPanel(chunk));
                 } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
                   e1.printStackTrace();
                 }
@@ -605,7 +606,7 @@ public class View extends JFrame{
       return insideLand;
     }
 
-  private JPanel createChunkPanel(PlantChunk chunk) throws PlaceNotAvailableException, ActionNotAvailableException{
+  private JPanel createPlantChunkPanel(PlantChunk chunk) throws PlaceNotAvailableException, ActionNotAvailableException{
     /*
      * This method creates the panel that will be displayed when the player enters a chunk
      */
@@ -829,6 +830,7 @@ public class View extends JFrame{
     /*
      * Update the main panel with the new panel
      */
+    selectedItem= null;
     mainPanel.removeAll();
     mainPanel.add(newPanel);
     mainPanel.revalidate();
@@ -841,7 +843,7 @@ public class View extends JFrame{
     rolePanel.add(createActionsButtonPanel(this.model.getSelectedPerson().toString()));
 
     // close inventory when changing world panel
-    selectedItem= null;
+    
     updateLabels();
 
     if (showInventoryButton.isSelected()){

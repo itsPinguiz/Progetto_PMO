@@ -66,11 +66,12 @@ public class PlayerActions extends ActionsManager{
                 person.getActions().updateActions(person.getPlace().getActions().getActions(), false);
                 method.invoke(this,argument);        
                 person.getActions().updateActions(person.getPlace().getActions().getActions(), true);
+                System.out.println("Action executed: " + s.name());
             } else {
                 throw new ActionNotAvailableException(s, this.availableActions);
             }
         } catch (Exception e){
-            System.out.println(e);
+           e.printStackTrace();
         }  
     }
 
@@ -129,25 +130,22 @@ public class PlayerActions extends ActionsManager{
         if (barn.getBarnInventory().getInventory().contains(itemToMove)){
             // if the item is in the barn, remove it and add it to the farmer's inventory
             try {
-                farmer.getInventory().addItem(itemToMove);
-                barn.getBarnInventory().getItem(1,itemToMove);
+                farmer.getInventory().addItem(barn.getBarnInventory().getItem(1,itemToMove));
             } catch (NoItemFoundException e) {
                 // if inventory is full, add the item back to the barn
-                farmer.getInventory().getItem(1,itemToMove);
+                farmer.getInventory().removeItem(itemToMove,1);
                 throw new NoItemFoundException();
             }
         } else if (farmer.getInventory().getInventory().contains(itemToMove)){
             // if the item is in the inventory, remove it and add it to the barn
             try {
-                barn.getBarnInventory().addItem(itemToMove);
-                farmer.getInventory().getItem(1,itemToMove);
+                barn.getBarnInventory().addItem(farmer.getInventory().getItem(1,itemToMove));
             } catch (NoItemFoundException e) {
                 // if the item was not found add the item back to the inventory
-                barn.getBarnInventory().getItem(1,itemToMove);
+                barn.getBarnInventory().removeItem(itemToMove,1);
                 throw new NoItemFoundException();
             }
         }
-
     }
     
     public void plant(ArrayList<? extends Object> items) throws LandIsNotPlowedException,
@@ -538,7 +536,7 @@ public class PlayerActions extends ActionsManager{
         Landlord landlord = (Landlord)this.person;
 
         // remove item from the barn
-        market.getBarn().getBarnInventory().getItem(1,item);
+        market.getBarn().getBarnInventory().removeItem(item,1);
         // add money to the balance
         landlord.setBalance(item.getPrice());
     }

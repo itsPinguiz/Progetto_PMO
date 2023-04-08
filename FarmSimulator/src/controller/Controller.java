@@ -80,8 +80,7 @@ public class Controller {
                                                NoSuchMethodException,
                                                SecurityException,
                                                PlaceNotAvailableException,
-                                               ActionNotAvailableException{
-        System.out.println("Action " + a.toString() + " performed"); // TODO: remove this line
+                                               ActionNotAvailableException{ 
         model.getSelectedPerson().getActions().executeAction(a,items);
     }
 
