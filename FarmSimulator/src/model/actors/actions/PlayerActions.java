@@ -48,6 +48,7 @@ public class PlayerActions extends ActionsManager{
             add(Places.ANIMAL_LAND);
             add(Places.PLANT_LAND);
             add(Places.PLANT_CHUNK);
+            add(Places.ANIMAL_CHUNK);
             }};;
     }
 

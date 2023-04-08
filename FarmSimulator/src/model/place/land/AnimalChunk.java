@@ -35,12 +35,19 @@ public class AnimalChunk extends LandAbstract {
         return this.animal;
     }
 
+    // method to remove an animal
+    public void removeAnimal(){
+        this.animal = null;
+    }
+
     @Override
     public void update() {
-        this.animal.update();
-        //if the animal is dead, remove it from the land
-        if (animal.getHunger() >= 100 || animal.getStatus() <= 0){
-            this.animal= null;
+        if(animal != null){
+            this.animal.update();
+            //if the animal is dead, remove it from the land
+            if (animal.getHunger() >= 100 || animal.getStatus() <= 0){
+                this.animal= null;
+            }
         }
     }
 }

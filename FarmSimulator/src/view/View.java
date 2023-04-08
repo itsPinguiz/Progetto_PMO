@@ -554,8 +554,20 @@ public class View extends JFrame{
       // if it's an animal land
       if (actualPlace.getType() == Places.ANIMAL_LAND){ 
         for(AnimalChunk animal : ((AnimalLand)(actualPlace)).getElements()){
-          JButton button = new JButton((animal.getAnimal() == null)? "Empty" : animal.getType().toString());
+          JButton button = new JButton((animal.getAnimal() == null)? "Empty" : animal.getAnimal().getType().toString());
           insideLand.add(button);
+          button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              try {
+                controller.enterNewPlace(animal);
+                updateActualPanel(worldPanel, createAnimalChunkPanel(animal));
+              } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
+                e1.printStackTrace();
+              }
+            }
+          });
           
       }} // if it's a plant land
       else if (actualPlace.getType() == Places.PLANT_LAND){ 
@@ -635,7 +647,51 @@ public class View extends JFrame{
     revalidate();
     repaint();
     return chunkPanel;
-  }  
+  }
+
+  private JPanel createAnimalChunkPanel(AnimalChunk chunk) throws PlaceNotAvailableException, ActionNotAvailableException{
+    /*
+     * This method creates the panel that will be displayed when the player enters a chunk
+     */
+    // get the animal inside the chunk
+    AnimalAbstract animal = chunk.getAnimal();
+    
+    // create the panel that will contain the elements
+    JPanel chunkPanel = new JPanel(new GridLayout(1, 2));
+    JLabel animalLabel = new JLabel();
+    
+    // set the panel's size 
+    chunkPanel.setPreferredSize(new Dimension(800, 500));
+    chunkPanel.setBackground(Color.GREEN); // TODO: remove this line
+
+    // set the label's text
+    animalLabel.setText("<html><divstyle = 'font-size:16px;'>" + ((animal == null)? "Empty" : animal.getType().toString()) +
+                        "</div><div style='font-size:12px;' Status>" + ((animal == null)? "No status" : animal.getStatus()) +
+                        "<br>Hunger Level:<br>" + ((animal == null)? "No hunger" : animal.getHunger()));
+
+    // add the label to the panel
+    chunkPanel.add(animalLabel);
+    
+    // add the exit button
+    JButton exitButton = new JButton("Exit");
+    exitButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        try {
+          controller.enterNewPlace(chunk.getLand());
+          updateLabels();
+          updateActualPanel(worldPanel, createInsideLand());
+        } catch (ActionNotAvailableException| PlaceNotAvailableException e1) {
+          e1.printStackTrace();
+        }
+      }});
+    // add the exit button to the panel
+    chunkPanel.add(exitButton);
+
+    // Update the panel
+    revalidate();
+    repaint();
+    return chunkPanel;
+  }
 
   private JPanel createBarnPlace(Place p){
     // get the actual place
