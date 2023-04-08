@@ -20,6 +20,7 @@ import model.place.Place;
 import model.place.Places;
 import model.place.barn.Barn;
 import model.place.barn.market.Market;
+import model.place.land.AnimalChunk;
 import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
 import model.place.land.PlantChunk;
@@ -552,8 +553,8 @@ public class View extends JFrame{
     if (actualPlace.getElements() != null){
       // if it's an animal land
       if (actualPlace.getType() == Places.ANIMAL_LAND){ 
-        for(AnimalAbstract animal : ((AnimalLand)(actualPlace)).getElements()){
-          JButton button = new JButton(animal.getType().toString());
+        for(AnimalChunk animal : ((AnimalLand)(actualPlace)).getElements()){
+          JButton button = new JButton((animal.getAnimal() == null)? "Empty" : animal.getType().toString());
           insideLand.add(button);
           
       }} // if it's a plant land

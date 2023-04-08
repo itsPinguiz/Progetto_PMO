@@ -5,6 +5,7 @@ public enum Places {
     BARN("Barn"),
     MARKET("Market"),
     ANIMAL_LAND("Animal Land"),
+    ANIMAL_CHUNK("Animal Chunk"),
     PLANT_LAND("Plant Land"),
     PLANT_CHUNK("Plant Chunk");
 
