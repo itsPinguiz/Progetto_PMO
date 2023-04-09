@@ -26,7 +26,6 @@ import model.place.land.LandAbstract;
 import model.place.land.PlantChunk;
 import model.place.land.PlantLand;
 import model.progress.GameBackup;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -698,12 +697,12 @@ public class View extends JFrame{
   }
 
   private JPanel createBarnPlace(Place p){
+
     // get the actual place
     Barn actualPlace = (Barn)this.model.getMap().get(0).get(0);
 
     // create the panel that will contain the elements
     JPanel insideBarnPanel = new JPanel(new GridLayout(1, 2));
-
     JPanel marketPanel = new JPanel(new GridLayout(4, 3));
     JPanel barnInventoryPanel = new JPanel(new GridLayout(4, 6));
 
@@ -716,7 +715,6 @@ public class View extends JFrame{
 
     marketPanel.setBorder(BorderFactory.createTitledBorder("Inside Market"));
     barnInventoryPanel.setBorder(BorderFactory.createTitledBorder("Barn inventory"));
-    marketPanel.setBackground(Color.GREEN); // TODO: remove this line
     barnInventoryPanel.setBackground(Color.ORANGE); // TODO: remove this line
 
     // display the items in the barn inventory

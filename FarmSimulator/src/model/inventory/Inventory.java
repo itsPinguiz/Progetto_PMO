@@ -2,9 +2,6 @@ package model.inventory;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import javax.lang.model.util.ElementScanner14;
-
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.item.Item;

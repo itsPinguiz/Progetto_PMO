@@ -3,6 +3,8 @@ package model.exceptions;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import model.actors.actions.ActionsManager.Action;
 import model.item.ItemType;
 import model.place.Place;
@@ -30,8 +32,8 @@ public class CustomExceptions {
 
     public static class NoToolFoundException extends Exception {
         public NoToolFoundException(ItemType wrongTool, ItemType rightTool){
-            super("Cannot perform action since the right tool is not present in your inventory:\n Used tool: "
-                  + wrongTool.toString() + " \n Expected: " + rightTool.toString());
+            JOptionPane.showMessageDialog(null,"Cannot perform action since the right tool is not present in your inventory:\n Used tool: "
+            + wrongTool.toString() + " \n Expected: " + rightTool.toString());
         }   
     }
 
@@ -68,7 +70,7 @@ public class CustomExceptions {
 
     public static class NoEnoughMoneyException extends Exception {
         public NoEnoughMoneyException(){
-            super("Cannot perform action since you don't have enough money.");
+            JOptionPane.showMessageDialog(null, "You don't have enough money to buy this item.");
         }   
     }
 

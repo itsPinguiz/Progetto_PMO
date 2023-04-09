@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import model.actors.person.Farmer;
 import model.actors.person.Landlord;
 import model.actors.person.Person;
@@ -10,7 +9,6 @@ import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.item.ItemCreator;
-import model.item.ItemType;
 import model.item.ItemType.Plants;
 import model.item.ItemType.productsType;
 import model.item.animal.AnimalFactory;

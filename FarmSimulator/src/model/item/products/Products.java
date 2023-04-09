@@ -4,6 +4,7 @@
 
 package model.item.products;
 
+import model.Constants;
 import model.exceptions.CustomExceptions.*;
 import model.item.Item;
 import model.item.ItemType;
@@ -21,19 +22,19 @@ public class Products extends Item{
 		try {
 		switch (currentType) {
 			case MEAT:
-				super.price = 20;
+				super.price = Constants.MEAT_PRICE.getValue();
 				break;
 			
 			case MILK:
-				super.price = 4;
+				super.price = Constants.MILK_PRICE.getValue();
 				break;
 				
 			case EGGS:
-				super.price = 2;
+				super.price = Constants.EGGS_PRICE.getValue();
 				break;
 				
 			case WOOL:
-				super.price = 15;
+				super.price = Constants.WOOL_PRICE.getValue();
 				break;
 				
 			default:

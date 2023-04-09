@@ -6,6 +6,7 @@ package model.place.barn.market;
 
 import java.util.ArrayList;
 
+import model.Constants;
 import model.actors.actions.PlaceActions;
 import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
@@ -97,7 +98,7 @@ public class Market extends Place implements MarketInt{
     //sell a land to the shop
     public int sellLand(LandAbstract landToSell) throws NoSellableLandException{
         if(landToSell.isSellable()){
-            return (LandAbstract.SELL_PRICE);
+            return (Constants.SELL_PRICE.getValue());
         }
         else{
             throw new NoSellableLandException();

@@ -2,10 +2,8 @@ package model.actors.actions;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.rmi.MarshalException;
 import java.util.ArrayList;
 import java.util.HashSet;
-
 import model.actors.person.Farmer;
 import model.actors.person.Landlord;
 import model.actors.person.Person;

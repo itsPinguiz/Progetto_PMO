@@ -2,6 +2,7 @@ package model.item.animal;
 
 import java.util.ArrayList;
 
+import model.Constants;
 import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.item.ItemType;
 import model.item.ItemType.Animals;
@@ -15,7 +16,7 @@ public class ConcreteAnimal extends AnimalAbstract {
             switch(type){
                 case COW:
                     this.type = Animals.COW;
-                    this.price = 200;
+                    this.price = Constants.COW_PRICE.getValue();
                     this.status = 100;
                     this.number = 1;
                     this.maxNumber = 5;
@@ -28,7 +29,7 @@ public class ConcreteAnimal extends AnimalAbstract {
                     break;
                 case PIG:
                     this.type = Animals.PIG;
-                    this.price = 60;
+                    this.price = Constants.PIG_PRICE.getValue();
                     this.status = 100;
                     this.number = 1;
                     this.maxNumber = 10;
@@ -40,7 +41,7 @@ public class ConcreteAnimal extends AnimalAbstract {
                     break;
                 case GOAT:
                     this.type = Animals.GOAT;
-                    this.price = 100;
+                    this.price = Constants.GOAT_PRICE.getValue();
                     this.status = 100;
                     this.number = 1;
                     this.maxNumber = 7;
@@ -54,7 +55,7 @@ public class ConcreteAnimal extends AnimalAbstract {
                     break;
                 case CHICKEN:
                     this.type = Animals.CHICKEN;
-                    this.price = 20;
+                    this.price = Constants.CHICKEN_PRICE.getValue();
                     this.status = 100;
                     this.number = 1;
                     this.maxNumber = 30;

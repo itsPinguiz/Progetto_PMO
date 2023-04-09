@@ -2,12 +2,11 @@ package model.place.land;
 
 import java.util.ArrayList;
 
+import model.Constants;
 import model.calendar.Calendar;
 import model.place.Place;
 
 public abstract class LandAbstract extends Place implements LandInteface {
-    public static final int BASE_PRICE_LAND = 50; //initial price of a land 
-    public static final int SELL_PRICE = 25; // price for sold land
     protected boolean sellable; // decides whether a land can be sold or not
     protected Calendar calendar = Calendar.getInstance();
 
@@ -15,7 +14,7 @@ public abstract class LandAbstract extends Place implements LandInteface {
         /*
          *  Returns the price of the land to sell
          */
-        return LandAbstract.SELL_PRICE;
+        return Constants.SELL_PRICE.getValue();
     }
 
     public void update(){

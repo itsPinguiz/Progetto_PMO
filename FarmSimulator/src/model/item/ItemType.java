@@ -36,9 +36,6 @@ public interface ItemType {
 		SCISSORS,
 		SICKLE,
 		FERTILIZER,
-		/*
-		 * TODO realizzare la classe fertilizer poiché adesso è uno strumento e non è più solo un prodotto.
-		 */
 		WATERINGCAN;
 		
 		public enum Material{
