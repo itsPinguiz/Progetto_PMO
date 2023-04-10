@@ -102,10 +102,8 @@ public class View extends JFrame{
     // panel creation
     rolePanel = new JPanel(new BorderLayout());
     rolePanel.setPreferredSize(new Dimension(800, 100));
-    rolePanel.setBackground(Color.RED);
+    rolePanel.setBackground(Color.RED); //TODO: remove this line
 
-    
-    
     // set the layout of the role panel
     rolePanel.add(createMenuBar(), BorderLayout.NORTH); // align the menu bar to the left
     rolePanel.add(createActionsButtonPanel(model.getSelectedPerson().toString()), BorderLayout.CENTER);
@@ -378,7 +376,6 @@ public class View extends JFrame{
     };
     saveGame.addActionListener(saveCurrentGame);
 
-
     // load game menu
     for (String save : backup.getSavesList()) {
         JMenuItem savedBackup = new JMenuItem(save.substring(0, save.length() - 4));
@@ -391,7 +388,6 @@ public class View extends JFrame{
                     // rebuild the frame
                     getContentPane().add(createRolePanel());
                     getContentPane().add(createWorldPanel());
-                    updateLabels();
                 } catch (ActionNotAvailableException e1) {
                     e1.printStackTrace();
                 }
@@ -722,7 +718,7 @@ public class View extends JFrame{
     /*
      * Update the main panel with the new panel
      */
-    
+    oldPlace = model.getSelectedPerson().getPlace();
     updateActionButtons();
 
     // remove the old panel and add the new one
@@ -743,11 +739,11 @@ public class View extends JFrame{
     // update the labels
     updateLabels();
 
-    // close inventory when changing world panel
-    if (showInventoryButton.isSelected()){
+    // TODO keep inventory open when in the same place
+    if(showInventoryButton.isSelected()){
       showInventoryButton.doClick();
+      showInventoryButton.setSelected(false);
     }
-
     // Update the panel
     revalidate();
     repaint();
@@ -813,9 +809,10 @@ public class View extends JFrame{
                 if (exit) {
                     controller.leaveOldPlace();
                 } else {
-                    oldPlace = controller.enterNewPlace(place);
+                    controller.enterNewPlace(place);
                     // keep the selected item if the player is in the same place
-                    selectedItem = oldPlace == model.getSelectedPerson().getPlace()? selectedItem : null;
+                    if (!(oldPlace == model.getSelectedPerson().getPlace()))
+                      selectedItem = null;
                 }
                 updateActualPanel(worldPanel, reqArgs ? (JPanel) (getMethodByName(methodName).invoke(tempView, place))
                                                       : (JPanel) (getMethodByName(methodName).invoke(tempView)));
