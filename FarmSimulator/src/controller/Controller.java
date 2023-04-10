@@ -86,8 +86,10 @@ public class Controller {
 
     // MAP PANEL
     // enter a new place
-    public void enterNewPlace(Place p) throws PlaceNotAvailableException{
+    public Place enterNewPlace(Place p) throws PlaceNotAvailableException{
+        Place oldPlace = model.getSelectedPerson().getPlace();
         model.getSelectedPerson().getActions().enter(p);
+        return oldPlace;
     }
 
     // leave the current place

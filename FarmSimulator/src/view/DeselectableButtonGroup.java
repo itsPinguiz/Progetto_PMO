@@ -7,7 +7,7 @@ import model.item.Item;
 
 public class DeselectableButtonGroup extends ButtonGroup {
 
-    private JToggleButton lastSelected = null;
+    protected static JToggleButton lastSelected = null;
 
     public Item handleClick(JToggleButton button, Item item) {
         Item tempItem = null;

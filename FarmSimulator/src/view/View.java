@@ -31,12 +31,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-//Interface Testing
 public class View extends JFrame{
   // constants
   final int MAX_HEIGHT = 600;
@@ -62,6 +62,7 @@ public class View extends JFrame{
   private GameBackup backup;
   private Map<String, JMenuItem> savedGameItems;
   private Item selectedItem;
+  private Place oldPlace;
 
   // constructor
   public View(Model model,Controller controller){
@@ -427,12 +428,7 @@ public class View extends JFrame{
         // Create a JToggleButton instead of a JButton
         JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>":
                                                                                                    "<html>" + item.getType().toString() + "<br>" + item.getNumber() +  "<html>");
-        toggleButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                selectedItem = buttonGroup.handleClick(toggleButton,item);
-                updateActionButtons();
-            }
-        });
+        toggleButton.addActionListener(toggleButtonListener(buttonGroup, item, toggleButton));
 
         // Add the toggle button to the button group and the panel
         buttonGroup.add(toggleButton);
@@ -455,45 +451,23 @@ public class View extends JFrame{
 
     // create the land and barn panels
     JPanel barn = new JPanel(new GridBagLayout());
-    JPanel land = new JPanel(new GridLayout(3, 3));
+    JPanel landsPanel = new JPanel(new GridLayout(3, 3));
 
     // enable the possibility to change the role
     roleMenu.setEnabled(true);
 
     // add the land buttons
-    for (Place i : this.model.getMap().get(1)) {
-        JButton button = new JButton(i.getType().toString());
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e)  {
-                try {
-                  controller.enterNewPlace(i);
-                } catch (PlaceNotAvailableException e1) {
-                  e1.printStackTrace();
-                }
-                try {
-                  updateActualPanel(worldPanel, createInsideLand());
-                } catch (ActionNotAvailableException e1) {
-                  e1.printStackTrace();
-                }
-            }
-        });
-        land.add(button);
+    for (Place land : this.model.getMap().get(1)) {
+        JButton button = new JButton(land.getType().toString());
+        button.addActionListener(changePlaceListener("createInsideLand",land,false,false));
+        landsPanel.add(button);
         // disable land button if the role is not the farmer
         button.setEnabled((model.getSelectedPerson().toString() == "Farmer") ? true : false);
     }
      // add the barn button
      JButton barnButton = new JButton(this.model.getMap().get(0).get(0).getType().toString());
      
-     barnButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e)  {
-          try {
-            controller.enterNewPlace(model.getMap().get(0).get(0));
-            updateActualPanel(worldPanel, createBarnPlace(model.getSelectedPerson().getPlace()));
-          } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
-            e1.printStackTrace();
-          }
-      }
-  });
+     barnButton.addActionListener(changePlaceListener("createBarnPlace", model.getMap().get(0).get(0),true,false));
 
      barnButton.setPreferredSize(new Dimension(200,200));
      GridBagConstraints gbc = new GridBagConstraints();
@@ -531,7 +505,7 @@ public class View extends JFrame{
      c.gridwidth = 1;
      barn.add(nextDay, c);    
 
-    worldPanel.add(land);
+    worldPanel.add(landsPanel);
     worldPanel.add(barn);
 
     // update the labels
@@ -552,55 +526,26 @@ public class View extends JFrame{
     insideLand.setBackground(Color.GREEN); // TODO: remove this line
 
     // depending on the type of the place, display the elements
-    this.placeLabel.setText(actualPlace.getType().toString());
     if (actualPlace.getElements() != null){
       // if it's an animal land
       if (actualPlace.getType() == Places.ANIMAL_LAND){ 
-        for(AnimalChunk animal : ((AnimalLand)(actualPlace)).getElements()){
-          JButton button = new JButton((animal.getAnimal() == null)? "Empty" : animal.getAnimal().getType().toString());
+        for(AnimalChunk animalChunk : ((AnimalLand)(actualPlace)).getElements()){
+          JButton button = new JButton((animalChunk.getAnimal() == null)? "Empty" : animalChunk.getAnimal().getType().toString());
           insideLand.add(button);
-          button.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-              try {
-                controller.enterNewPlace(animal);
-                updateActualPanel(worldPanel, createAnimalChunkPanel(animal));
-              } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
-                e1.printStackTrace();
-              }
-            }
-          });
-          
-      }} // if it's a plant land
+          button.addActionListener(changePlaceListener("createAnimalChunkPanel", animalChunk,true,false));
+        }
+      } // if it's a plant land
       else if (actualPlace.getType() == Places.PLANT_LAND){ 
         for(PlantChunk chunk : ((PlantLand)(actualPlace)).getElements()){
           JButton button = new JButton((chunk.getPlant() == null )? "Empty" : chunk.getPlant().getType().toString());
           insideLand.add(button);
-          button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // if the chunk isn't empty enter the chunk 
-                try {
-                  controller.enterNewPlace(chunk);
-                  updateActualPanel(worldPanel, createPlantChunkPanel(chunk));
-                } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
-                  e1.printStackTrace();
-                }
-            }});
+          button.addActionListener(changePlaceListener("createPlantChunkPanel",chunk,true,false));
         }
       }}
 
       // add the exit button
       JButton exitButton = new JButton("Exit");
-      exitButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          controller.leaveOldPlace();
-          try {
-            updateActualPanel(worldPanel, createWorldPanel());
-          } catch (ActionNotAvailableException e1) {
-            e1.printStackTrace();
-          }
-        }});
+      exitButton.addActionListener(changePlaceListener("createWorldPanel", null, false, true));
       insideLand.add(exitButton);
       return insideLand;
     }
@@ -633,16 +578,7 @@ public class View extends JFrame{
     
     // add the exit button
     JButton exitButton = new JButton("Exit");
-    exitButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        try {
-          controller.enterNewPlace(chunk.getLand());
-          updateLabels();
-          updateActualPanel(worldPanel, createInsideLand());
-        } catch (ActionNotAvailableException| PlaceNotAvailableException e1) {
-          e1.printStackTrace();
-        }
-      }});
+    exitButton.addActionListener(changePlaceListener("createInsideLand", chunk.getLand(),false,false));
     // add the exit button to the panel
     chunkPanel.add(exitButton);
 
@@ -677,16 +613,7 @@ public class View extends JFrame{
     
     // add the exit button
     JButton exitButton = new JButton("Exit");
-    exitButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        try {
-          controller.enterNewPlace(chunk.getLand());
-          updateLabels();
-          updateActualPanel(worldPanel, createInsideLand());
-        } catch (ActionNotAvailableException| PlaceNotAvailableException e1) {
-          e1.printStackTrace();
-        }
-      }});
+    exitButton.addActionListener(changePlaceListener("createInsideLand", chunk.getLand(),false,false));
     // add the exit button to the panel
     chunkPanel.add(exitButton);
 
@@ -722,50 +649,28 @@ public class View extends JFrame{
       for(Item item : actualPlace.getBarnInventory().getInventory()){
         JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>":
                                                                                                    "<html>" + item.getType().toString() + "<br>" + item.getNumber() +  "<html>");
-        toggleButton.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-              selectedItem = buttonGroup.handleClick(toggleButton,item);
-              updateActionButtons();
-          }
-      });
-
+        toggleButton.addActionListener(toggleButtonListener(buttonGroup, item, toggleButton));
+        // add the button to the button group
         buttonGroup.add(toggleButton);
+        toggleButton.setSelected(selectedItem != null && item == selectedItem? true : false);
         barnInventoryPanel.add(toggleButton);
       }
     }    
 
+    // display the items in the market or the market button
     if (actualPlace == p){ // if the player is in the barn
       enterMarketButton = new JButton("Market");
       exitButton = new JButton("Exit");
 
       // add the button to enter the market
-      enterMarketButton.addActionListener(new ActionListener() {
-  
-        @Override
-        public void actionPerformed(ActionEvent e) {
-          try {
-            controller.enterNewPlace(actualPlace.getMarket());
-            updateActualPanel(worldPanel, createBarnPlace(actualPlace.getMarket()));
-          } catch (ActionNotAvailableException | PlaceNotAvailableException e1) {
-            e1.printStackTrace();
-          }
-        }
-      });
+      enterMarketButton.addActionListener(changePlaceListener("createBarnPlace", actualPlace.getMarket(),true,false));
       
       // add the exit button
-      exitButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          controller.leaveOldPlace();
-          try {
-
-            updateActualPanel(worldPanel, createWorldPanel());
-          } catch (ActionNotAvailableException e1) {
-            e1.printStackTrace();
-          }
-        }});
-
-        marketPanel.add(enterMarketButton);
-        barnInventoryPanel.add(exitButton);
+      exitButton.addActionListener(changePlaceListener("createWorldPanel", null, false, true));
+      marketPanel.add(enterMarketButton);
+      barnInventoryPanel.add(exitButton);
+      // disable the possibility to enter the market if the player is not a landlord
+      enterMarketButton.setEnabled(model.getSelectedPerson().toString().equals("Landlord")? true : false);
     } else{ // if the player is in the market
       Market marketPlace = actualPlace.getMarket();
       exitButton = new JButton("Exit");
@@ -775,12 +680,7 @@ public class View extends JFrame{
         for(Item item : marketPlace.getItemShop().getInventory()){
           JToggleButton toggleButton = new JToggleButton("<html>" + item.getType().toString() 
                                                           + "<br> $" + item.getPrice() +  "<html>"); 
-          toggleButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                selectedItem = buttonGroup.handleClick(toggleButton,item);
-                updateActionButtons();
-            }
-        });
+          toggleButton.addActionListener(toggleButtonListener(buttonGroup, item, toggleButton));
           // disable the button if the player doesn't have enough money
           if (item.getPrice() > ((Landlord)(model.getSelectedPerson())).getBalance()) {
           toggleButton.setEnabled(false);
@@ -792,26 +692,14 @@ public class View extends JFrame{
           marketPanel.add(toggleButton);
         }
       }   
-
       // add the exit button
-      exitButton.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          controller.leaveOldPlace();
-          try {
-            controller.enterNewPlace(model.getMap().get(0).get(0));
-            updateActualPanel(worldPanel, createBarnPlace(model.getSelectedPerson().getPlace()));
-          } catch (PlaceNotAvailableException|ActionNotAvailableException e1) {
-            e1.printStackTrace();
-          }
-        }});
-        marketPanel.add(exitButton);
+      exitButton.addActionListener(changePlaceListener("createBarnPlace", model.getMap().get(0).get(0), true, true));
+      marketPanel.add(exitButton);
     }
+
     // add the elements to the panel
     insideBarnPanel.add(barnInventoryPanel);
     insideBarnPanel.add(marketPanel);
-    
-    // disable the possibility to enter the market if the player is not a landlord
-    enterMarketButton.setEnabled(model.getSelectedPerson().toString().equals("Landlord")? true : false);
     return insideBarnPanel;
   }
 
@@ -834,22 +722,28 @@ public class View extends JFrame{
     /*
      * Update the main panel with the new panel
      */
-    selectedItem= null;
+    
+    updateActionButtons();
+
+    // remove the old panel and add the new one
     mainPanel.removeAll();
     mainPanel.add(newPanel);
     mainPanel.revalidate();
     mainPanel.repaint();
 
+    // enable the inventory button if the player is a farmer
     showInventoryButton.setEnabled(model.getSelectedPerson().toString().equals("Farmer")? true : false);
+    // enable the role button if the player is not in the world
     roleMenu.setEnabled(model.getSelectedPerson().getPlace() == null? true : false);
 
+    // update the action buttons
     rolePanel.remove(buttonPanel);
     rolePanel.add(createActionsButtonPanel(this.model.getSelectedPerson().toString()));
 
-    // close inventory when changing world panel
-    
+    // update the labels
     updateLabels();
 
+    // close inventory when changing world panel
     if (showInventoryButton.isSelected()){
       showInventoryButton.doClick();
     }
@@ -879,6 +773,61 @@ public class View extends JFrame{
             }
         }
     }
+  }
+
+  public ActionListener toggleButtonListener(DeselectableButtonGroup buttonGroup ,Item item, JToggleButton toggleButton){
+    /*
+     * Method to create an action listener for the toggle buttons
+     */
+    return new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        // if the player is in the same place, keep the selected item
+        selectedItem = buttonGroup.handleClick(toggleButton,item);
+        updateActionButtons();
+      }};
+  }
+
+  private  Method getMethodByName(String methodName) {
+    /*
+     * Method to get a method by its name
+     */
+    Method[] methods = this.getClass().getDeclaredMethods();
+    for (Method m : methods) {
+        if (m.getName().equals(methodName)) {
+            return m;
+        }
+    }
+    return null;
+}
+
+  public ActionListener changePlaceListener(String methodName, Place place, Boolean reqArgs, Boolean exit) {
+    /*
+     * Method to create an action listener for the enter and leave buttons
+     */
+    View tempView = this;
+    return new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                if (exit) {
+                    controller.leaveOldPlace();
+                } else {
+                    oldPlace = controller.enterNewPlace(place);
+                    // keep the selected item if the player is in the same place
+                    selectedItem = oldPlace == model.getSelectedPerson().getPlace()? selectedItem : null;
+                }
+                updateActualPanel(worldPanel, reqArgs ? (JPanel) (getMethodByName(methodName).invoke(tempView, place))
+                                                      : (JPanel) (getMethodByName(methodName).invoke(tempView)));
+            } catch (IllegalAccessException |
+                    IllegalArgumentException | 
+                    InvocationTargetException | 
+                    ActionNotAvailableException | 
+                    PlaceNotAvailableException e1) {
+            e1.printStackTrace();
+          }
+        }
+    };
   }
 }
 
