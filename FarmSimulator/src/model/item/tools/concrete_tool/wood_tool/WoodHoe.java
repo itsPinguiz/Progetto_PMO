@@ -19,7 +19,7 @@ public class WoodHoe extends AbstractTool{
         super.type = ItemType.Tools.HOE;
         ((ItemType.Tools)(super.type)).setMaterial(Material.WOOD);
         super.status = 100;
-        super.price = Constants.WOOD_HOE_PRICE.getValue();
+        super.price = Constants.WOOD_HOE_PRICE;
         super.number = 1;
     }
 }

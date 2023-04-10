@@ -98,7 +98,7 @@ public class Market extends Place implements MarketInt{
     //sell a land to the shop
     public int sellLand(LandAbstract landToSell) throws NoSellableLandException{
         if(landToSell.isSellable()){
-            return (Constants.SELL_PRICE.getValue());
+            return (Constants.LAND_SELL_PRICE);
         }
         else{
             throw new NoSellableLandException();

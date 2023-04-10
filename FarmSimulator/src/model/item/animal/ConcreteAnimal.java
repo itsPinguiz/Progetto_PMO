@@ -16,7 +16,7 @@ public class ConcreteAnimal extends AnimalAbstract {
             switch(type){
                 case COW:
                     this.type = Animals.COW;
-                    this.price = Constants.COW_PRICE.getValue();
+                    this.price = Constants.COW_PRICE;
                     this.status = 100;
                     this.number = 1;
                     this.maxNumber = 5;
@@ -29,7 +29,7 @@ public class ConcreteAnimal extends AnimalAbstract {
                     break;
                 case PIG:
                     this.type = Animals.PIG;
-                    this.price = Constants.PIG_PRICE.getValue();
+                    this.price = Constants.PIG_PRICE;
                     this.status = 100;
                     this.number = 1;
                     this.maxNumber = 10;
@@ -41,7 +41,7 @@ public class ConcreteAnimal extends AnimalAbstract {
                     break;
                 case GOAT:
                     this.type = Animals.GOAT;
-                    this.price = Constants.GOAT_PRICE.getValue();
+                    this.price = Constants.GOAT_PRICE;
                     this.status = 100;
                     this.number = 1;
                     this.maxNumber = 7;
@@ -55,7 +55,7 @@ public class ConcreteAnimal extends AnimalAbstract {
                     break;
                 case CHICKEN:
                     this.type = Animals.CHICKEN;
-                    this.price = Constants.CHICKEN_PRICE.getValue();
+                    this.price = Constants.CHICKEN_PRICE;
                     this.status = 100;
                     this.number = 1;
                     this.maxNumber = 30;

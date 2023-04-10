@@ -20,7 +20,7 @@ public interface ItemType {
 		CARROT,
 	    ONION,
 	    POTATO,
-	    WEAT;
+	    WHEAT;
 	}
 	
 	

@@ -18,7 +18,7 @@ public class IronWateringCan extends AbstractTool {
         super.type = ItemType.Tools.WATERINGCAN;
         ((ItemType.Tools)(super.type)).setMaterial(Material.IRON);
         super.status = 100;
-        super.price = Constants.IRON_WATERINGCAN_PRICE.getValue();
+        super.price = Constants.IRON_WATERINGCAN_PRICE;
         super.number = 1;
     }
 }

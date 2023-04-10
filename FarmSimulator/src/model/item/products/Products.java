@@ -22,19 +22,19 @@ public class Products extends Item{
 		try {
 		switch (currentType) {
 			case MEAT:
-				super.price = Constants.MEAT_PRICE.getValue();
+				super.price = Constants.MEAT_PRICE;
 				break;
 			
 			case MILK:
-				super.price = Constants.MILK_PRICE.getValue();
+				super.price = Constants.MILK_PRICE;
 				break;
 				
 			case EGGS:
-				super.price = Constants.EGGS_PRICE.getValue();
+				super.price = Constants.EGGS_PRICE;
 				break;
 				
 			case WOOL:
-				super.price = Constants.WOOL_PRICE.getValue();
+				super.price = Constants.WOOL_PRICE;
 				break;
 				
 			default:

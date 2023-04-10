@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import model.Constants;
 import model.actors.person.Farmer;
 import model.actors.person.Landlord;
 import model.actors.person.Person;
@@ -12,20 +14,19 @@ import model.item.Item;
 import model.item.ItemType;
 import model.item.animal.AnimalAbstract;
 import model.item.plants.PlantAbstract;
+import model.item.plants.PlantAbstract.PlantLife;
 import model.item.tools.AbstractTool;
 import model.place.Place;
 import model.place.Places;
 import model.place.barn.Barn;
 import model.place.barn.market.Market;
-import model.place.land.AnimalChunk;
 import model.place.land.AnimalLand;
-import model.place.land.PlantChunk;
 import model.place.land.PlantLand;
+import model.place.land.chunks.AnimalChunk;
+import model.place.land.chunks.PlantChunk;
 
 public class PlayerActions extends ActionsManager{
     // attributes
-    private final int WATERING_INDEX = 10;
-    private final int FERTILIZATION_INDEX = 10;
     private Person person;
     private HashSet<Places> accessiblePlaces;
 
@@ -159,7 +160,7 @@ public class PlayerActions extends ActionsManager{
 
         // check if the farmer has a seed and the chunk is plowed
         if (seed instanceof PlantAbstract){ 
-            if(c.getDirtStatus()){
+            if(c.getDirtStatus() && f.getInventory().searchItem(seed, false) != -1 && c.getPlant() == null){
                 // add plant to the land 
                 c.setPlant((PlantAbstract)(f.getInventory().getItem(1,seed)));
                 c.getPlant().planted(c);
@@ -177,14 +178,12 @@ public class PlayerActions extends ActionsManager{
                     }}, true);
                 
                 // if all lands are planted remove the plant all action
-                long plowedChunk = c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() == null).count();
-
-                if (plowedChunk == 0){
+                if (c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() == null).count() == 0){
                     c.getLand().getActions().updateActions(new HashSet<>(){{
                         add(Action.PLANT_ALL);
                         }}, false);
                 }
-            } else throw new LandIsNotPlowedException();
+            } 
         } else throw new NoSeedFoundException();                                       
     }
 
@@ -199,7 +198,7 @@ public class PlayerActions extends ActionsManager{
         //check if the farmer has the watering can
         if (tool.getType() == ItemType.Tools.WATERINGCAN && tool.getStatus() > 0&& this.damageTool(tool)){
             // increase water level
-            c.setWaterLevel(WATERING_INDEX);
+            c.setWaterLevel(Constants.WATERING_INDEX);
         } else throw new NoToolFoundException(tool.getType(),ItemType.Tools.WATERINGCAN);
     }
 
@@ -227,9 +226,7 @@ public class PlayerActions extends ActionsManager{
                 }}, true);
 
             // if all the chunks are plowed, remove the plow all action
-            long plowedChunk = c.getLand().getElements().stream().filter(chunk -> chunk.getDirtStatus() == false).count();
-
-            if (plowedChunk == 0){
+            if (c.getLand().getElements().stream().filter(chunk -> chunk.getDirtStatus() == false).count() == 0){
                 c.getLand().getActions().updateActions(new HashSet<>(){{
                     add(Action.PLOW_ALL);
                     }}, false);
@@ -249,7 +246,7 @@ public class PlayerActions extends ActionsManager{
         //check if the farmer has the fertilizer
         if (tool.getType() == ItemType.Tools.FERTILIZER && tool.getStatus() > 0&& this.damageTool(tool)){ 
             // increase water level
-            c.setFertilizationLevel(FERTILIZATION_INDEX);
+            c.setFertilizationLevel(Constants.FERTILIZATION_INDEX);
         }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.FERTILIZER);
     }
 
@@ -264,11 +261,11 @@ public class PlayerActions extends ActionsManager{
         Farmer f = (Farmer)this.person;
 
         Item product = c.getPlant().getProduct();
-        int multiplier = 1;
+        int multiplier = 3;
 
         // if sickle is equipped double the harvested resources
-        if (tool.getType() == ItemType.Tools.SICKLE && tool.getStatus() > 0&& this.damageTool(tool)){
-            multiplier = 2;
+        if (tool != null && tool.getType() == ItemType.Tools.SICKLE && tool.getStatus() > 0&& this.damageTool(tool)){
+            multiplier = Constants.SICKLE_MODIFIER;
         }
 
         // add resources to the inventory
@@ -280,12 +277,16 @@ public class PlayerActions extends ActionsManager{
         c.resetActions();
 
         // if all the chunks do not have plants, remove the harvest all action
-        long occupiedChunks = c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() != null).count();
-
-        if (occupiedChunks == 0){
+        if (c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() != null).count() == 0){
             c.getLand().getActions().updateActions(new HashSet<>(){{
                 add(Action.FERTILIZE_ALL);
                 add(Action.WATER_ALL);
+                add(Action.HARVEST_ALL);
+                }}, false);
+        }
+
+        if(c.getLand().getElements().stream().filter(chunk -> chunk.getPlant().getLifeStage() == PlantLife.HARVESTABLE).count() == 0){
+            c.getLand().getActions().updateActions(new HashSet<>(){{
                 add(Action.HARVEST_ALL);
                 }}, false);
         }
@@ -404,18 +405,19 @@ public class PlayerActions extends ActionsManager{
         AnimalAbstract animal = (AnimalAbstract)items.get(1);
         Farmer farmer = (Farmer)this.person;
 
-        farmer.getInventory().addItem(animal);
-        animalCunk.setAnimal(null);
-        animalCunk.getActions().resetActions();
-        
-        animalCunk.getActions().updateActions(new HashSet<Action>(){{add(Action.ADD_ANIMAL);}}, true);
-
-        // if all the chunks do not have animals, remove the get all resources action
-        long occupiedChunks = animalCunk.getLand().getElements().stream().filter(chunk -> chunk.getAnimal() != null).count();
-
-        if (occupiedChunks == 0){
-            animalCunk.getLand().getActions().resetActions();
+        if (animalCunk.getAnimal() == animal){
+            farmer.getInventory().addItem(animal);
+            animalCunk.setAnimal(null);
+            animalCunk.getActions().resetActions();
+            
+            animalCunk.getActions().updateActions(new HashSet<Action>(){{add(Action.ADD_ANIMAL);}}, true);
+    
+            // if all the chunks do not have animals, remove the get all resources action
+            if (animalCunk.getLand().getElements().stream().filter(chunk -> chunk.getAnimal() != null).count() == 0){
+                animalCunk.getLand().getActions().resetActions();
+            }
         }
+       
     }
 
     public void get_resources(ArrayList<? extends Object> items) throws InventoryIsFullException, 
@@ -515,9 +517,8 @@ public class PlayerActions extends ActionsManager{
         
 
         // add it to the barn
-        market.getBarn().getBarnInventory().addItem(item);
+        market.getBarn().getBarnInventory().addItem(market.buyItem(item, landlord.getBalance()));
         // buy from maketz 
-        item = market.buyItem(item, landlord.getBalance());
         // remove the money from the balance
         landlord.setBalance(- item.getPrice());
         // TODO: if the bought item is a land add it to the lands

@@ -1,12 +1,15 @@
-package model.place.land;
+package model.place.land.chunks;
 
 import java.util.HashSet;
 import java.util.Random;
 
+import model.Constants;
 import model.actors.actions.PlaceActions;
 import model.actors.actions.ActionsManager.Action;
 import model.item.plants.PlantAbstract;
 import model.place.Places;
+import model.place.land.LandAbstract;
+import model.place.land.PlantLand;
 
 
 public class PlantChunk extends LandAbstract implements Chunk{
@@ -21,7 +24,7 @@ public class PlantChunk extends LandAbstract implements Chunk{
     private Random random = new Random();
 
     // constructor
-    PlantChunk(PlantAbstract plant, PlantLand land){
+    public PlantChunk(PlantAbstract plant, PlantLand land){
         super();
         super.type = Places.PLANT_CHUNK;
         this.plant = plant;
@@ -65,12 +68,12 @@ public class PlantChunk extends LandAbstract implements Chunk{
         /*
          * Increases water value
          */
-        if ((this.waterLevel + value) < 0)
+        if ((this.waterLevel + value) <= 0)
             this.waterLevel = 0;
-        else if ((this.waterLevel + value) < 100){
-            this.waterLevel =+ value;
+        else if ((this.waterLevel + value) < Constants.WATERING_MAX){
+            this.waterLevel += value;
         }else{
-            this.waterLevel = 100;
+            this.waterLevel = Constants.WATERING_MAX;
         }
     }
 
@@ -81,10 +84,10 @@ public class PlantChunk extends LandAbstract implements Chunk{
 
         if ((this.fertilizationLevel + value) < 0)
             this.fertilizationLevel = 0;
-        else if ((this.fertilizationLevel + value) < 100)
-            this.fertilizationLevel =+ value;
+        else if ((this.fertilizationLevel + value) < Constants.FERTILIZATION_MAX)
+            this.fertilizationLevel += value;
         else 
-            this.fertilizationLevel = 100;
+            this.fertilizationLevel = Constants.FERTILIZATION_MAX;
     }
 
     public void setDirtStatus(boolean b){

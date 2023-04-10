@@ -14,7 +14,7 @@ public abstract class LandAbstract extends Place implements LandInteface {
         /*
          *  Returns the price of the land to sell
          */
-        return Constants.SELL_PRICE.getValue();
+        return Constants.LAND_SELL_PRICE;
     }
 
     public void update(){

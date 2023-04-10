@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 
 import model.actors.actions.PlaceActions;
 import model.place.Places;
+import model.place.land.chunks.AnimalChunk;
 
 public class AnimalLand extends LandAbstract {
 
@@ -39,7 +40,7 @@ public class AnimalLand extends LandAbstract {
 
         for (AnimalChunk p: this.animalChunks){
             if (p.getAnimal() != null){
-                elements =+ 1;
+                elements += 1;
             }
         }
         return elements;

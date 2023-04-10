@@ -30,7 +30,7 @@ public abstract class ActionsManager implements Actions{
         HARVEST_ALL("Harvest All",item -> item == ItemType.Tools.SICKLE || item == null, true),
         PLOW_ALL("Plow All",item -> item == ItemType.Tools.HOE),
         ADD_ANIMAL("Add Animal",item -> item instanceof ItemType.Animals),
-        REMOVE_ANIMAL("Remove Animal",item -> item instanceof ItemType.Animals),
+        REMOVE_ANIMAL("Remove Animal",item -> true),
         FEED_ANIMAL("Feed Animal",item -> item instanceof ItemType.Plants),
         GIVE_WATER("Give Water",item -> true),
         GET_RESOURCES("Get Resources",item -> item instanceof ItemType.Animals),

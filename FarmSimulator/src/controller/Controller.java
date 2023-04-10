@@ -57,7 +57,7 @@ public class Controller {
             // load chosen save
             model = backup.loadSave(save);
             model.getSelectedPerson().getActions().leave();
-            view.updateMVC(controllerInstance, model);;
+            view.updateMVC(controllerInstance, model);
         } catch (Exception e1) {    
             e1.printStackTrace();
         }

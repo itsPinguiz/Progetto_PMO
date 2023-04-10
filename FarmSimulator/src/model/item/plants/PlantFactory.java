@@ -16,6 +16,6 @@ public class PlantFactory implements Serializable {
         return new Plant(ItemType.Plants.POTATO);
     }
     public Plant createWeat(){
-        return new Plant(ItemType.Plants.WEAT);
+        return new Plant(ItemType.Plants.WHEAT);
     }
 }

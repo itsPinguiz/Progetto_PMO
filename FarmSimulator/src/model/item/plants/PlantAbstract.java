@@ -3,17 +3,20 @@ package model.item.plants;
 import java.util.HashSet;
 import java.util.Random;
 
+import model.Constants;
 import model.actors.actions.ActionsManager.Action;
 import model.calendar.Calendar;
 import model.item.Item;
 import model.item.ItemType;
-import model.place.land.PlantChunk;
+import model.place.land.chunks.PlantChunk;
 
 public abstract class PlantAbstract extends Item implements PlantInteface{
     // attributes
     private int daysToHarvest;
     protected PlantLife lifeStage;
-
+    private int daysToHarvestInitial; 
+    private int growthRate;
+    private int maxGrowthLevel;
     private PlantChunk chunk;
     protected Calendar calendar;
     private Random random;
@@ -48,9 +51,11 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
         this.random = new Random();
         super.status = 0;
         super.price = 2;
-        this.daysToHarvest = random.nextInt(10) + 1;
+        this.daysToHarvest = this.daysToHarvestInitial = random.nextInt(10) + 1; 
+        this.growthRate = Constants.GROWTH_RATE; 
         this.chunk = c;
         this.calendar = Calendar.getInstance();
+        this.maxGrowthLevel = Constants.MAX_GROWTH;
     }
 
     public void planted(PlantChunk c){
@@ -79,48 +84,61 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
         /*
          * Changes life stage if needed
          */
-        if (super.status > 20){
-            this.lifeStage = PlantLife.SPROUT;
-        } else if (super.status > 50){
-            this.lifeStage = PlantLife.SMALL_PLANT;
-        } else if (super.status > 80){
-            this.lifeStage = PlantLife.ADULT_PLANT;
-        } else if (super.status == 100){
+        if (super.status == 100){
             this.lifeStage = PlantLife.HARVESTABLE;
-            
             this.chunk.getActions().updateActions(new HashSet<>(){{
                 add(Action.HARVEST);
                 }}, true);
-        }
-        this.daysToHarvest--;
+            this.chunk.getLand().getActions().updateActions(new HashSet<>(){{
+                add(Action.HARVEST_ALL);
+                }}, false);
+            
+            this.daysToHarvest = this.daysToHarvestInitial;
+        }  else if (super.status > 80){
+            this.lifeStage = PlantLife.ADULT_PLANT;
+        } else if (super.status > 50){
+            this.lifeStage = PlantLife.SMALL_PLANT;
+        } else if (super.status > 20){
+            this.lifeStage = PlantLife.SPROUT;
+        }  
     }
 
     public void grow() {
         /*
          * Grows the plant depending on all the conditions 
          */
+        double growthFactor = 0;
         switch (this.calendar.getWeather()) {
             case CLOUDY:
-                super.status += this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()* 2;
+                growthFactor =  this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()* 2;
                 break;
             case RAINY:
-                super.status += (this.chunk.getWaterLevel()*2 + this.chunk.getFertilizationLevel());
+                growthFactor = (this.chunk.getWaterLevel()*2 + this.chunk.getFertilizationLevel());
                 break;
             case SNOWY:
-                super.status += (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()) / 2;
+                growthFactor = (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()) / 2;
                 break;       
             default:
-                super.status += this.chunk.getWaterLevel()/2 + this.chunk.getFertilizationLevel();
+                 growthFactor =  this.chunk.getWaterLevel()/2 + this.chunk.getFertilizationLevel();
                 break;
         }
 
-        if (super.status >= this.daysToHarvest * 10) {
-          super.status = this.daysToHarvest * 10;
-        }
+         // percentuale di crescita in base ai giorni rimanenti alla raccolta
+        double growthPercentage = (double)(this.daysToHarvest / this.daysToHarvestInitial)/50;
+        
+        // calcolo della crescita effettiva
+        super.status += growthPercentage * growthFactor * this.growthRate;
 
+        // controllo del massimo livello di crescita
+        if (super.status > this.maxGrowthLevel) {
+            super.status = this.maxGrowthLevel;
+        }
         this.checklifeStage();
     
-        this.daysToHarvest--;
+        // decremento giorni alla raccolta solo quando la pianta è pronta
+        if (this.lifeStage == PlantLife.HARVESTABLE) {
+            this.daysToHarvest--;
+        }
       }
     
       public int getDaysToHarvest() {

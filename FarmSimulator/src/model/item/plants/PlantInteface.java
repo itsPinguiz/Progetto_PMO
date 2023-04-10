@@ -5,7 +5,7 @@ import java.io.Serializable;
 import model.item.Item;
 import model.item.ItemType;
 import model.item.plants.PlantAbstract.PlantLife;
-import model.place.land.PlantChunk;
+import model.place.land.chunks.PlantChunk;
 
 public interface PlantInteface  extends Serializable{
     public void grow();

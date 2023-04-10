@@ -6,6 +6,7 @@ import java.util.stream.IntStream;
 
 import model.actors.actions.PlaceActions;
 import model.place.Places;
+import model.place.land.chunks.PlantChunk;
 
 public class PlantLand extends LandAbstract{
     /* Land that contains chunks of land with plants */
@@ -35,7 +36,7 @@ public class PlantLand extends LandAbstract{
 
         for (PlantChunk p: this.chunks){
             if (p.getPlant() != null){
-                elements =+ 1;
+                elements += 1;
             }
         }
         return elements;

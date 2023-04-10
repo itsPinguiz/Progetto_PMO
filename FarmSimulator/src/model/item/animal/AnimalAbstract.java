@@ -7,6 +7,7 @@ package model.item.animal;
 // Import
 import java.util.ArrayList;
 
+import model.Constants;
 import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.MaxWaterLevelReachedException;
 import model.exceptions.CustomExceptions.NoFoodFoundException;
@@ -111,7 +112,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     public void feed(Item item) throws NoFoodFoundException{
         try {
             if (item instanceof Plant){
-                this.hunger -= 10;
+                this.hunger -= Constants.FEED_INDEX;
             }
             else {
                 throw new NoFoodFoundException();
@@ -125,8 +126,8 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     public void waterAnimal() throws MaxWaterLevelReachedException{
 
         try {
-            if (this.thirst > 10){
-                this.thirst -= 10;
+            if (this.thirst > Constants.GIVE_WATER_MAX){
+                this.thirst -= Constants.GIVE_WATER_INDEX;
             }
             else {
                 throw new MaxWaterLevelReachedException();

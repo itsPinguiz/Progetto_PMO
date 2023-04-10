@@ -1,6 +1,7 @@
-package model.place.land;
+package model.place.land.chunks;
 
 import model.item.plants.PlantAbstract;
+import model.place.land.PlantLand;
 
 public interface Chunk {
     public void setWaterLevel(int value);
