@@ -773,15 +773,21 @@ public class View extends JFrame{
       // create buttons for shop items
       if (marketPlace.getItemShop() != null){
         for(Item item : marketPlace.getItemShop().getInventory()){
-          JToggleButton toggleButton = new JToggleButton(item.getType().toString() + " " 
-                                                       + item.getNumber() + " " 
-                                                       + item.getStatus() );
+          JToggleButton toggleButton = new JToggleButton("<html>" + item.getType().toString() 
+                                                          + "<br> $" + item.getPrice() +  "<html>"); 
           toggleButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 selectedItem = buttonGroup.handleClick(toggleButton,item);
                 updateActionButtons();
             }
         });
+          // disable the button if the player doesn't have enough money
+          if (item.getPrice() > ((Landlord)(model.getSelectedPerson())).getBalance()) {
+          toggleButton.setEnabled(false);
+          } else{
+            toggleButton.setEnabled(true);
+          }
+          // add the button to the button group
           buttonGroup.add(toggleButton);
           marketPanel.add(toggleButton);
         }
