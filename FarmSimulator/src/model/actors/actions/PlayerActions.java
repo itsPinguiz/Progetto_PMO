@@ -21,6 +21,7 @@ import model.place.Places;
 import model.place.barn.Barn;
 import model.place.barn.market.Market;
 import model.place.land.AnimalLand;
+import model.place.land.LandAbstract;
 import model.place.land.PlantLand;
 import model.place.land.chunks.AnimalChunk;
 import model.place.land.chunks.PlantChunk;
@@ -178,7 +179,7 @@ public class PlayerActions extends ActionsManager{
                     }}, true);
                 
                 // if all lands are planted remove the plant all action
-                if (c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() == null).count() == 0){
+                if (c.getLand().getNumElements() == 10){
                     c.getLand().getActions().updateActions(new HashSet<>(){{
                         add(Action.PLANT_ALL);
                         }}, false);
@@ -277,7 +278,7 @@ public class PlayerActions extends ActionsManager{
         c.resetActions();
 
         // if all the chunks do not have plants, remove the harvest all action
-        if (c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() != null).count() == 0){
+        if (c.getLand().getNumElements() == 0){
             c.getLand().getActions().updateActions(new HashSet<>(){{
                 add(Action.FERTILIZE_ALL);
                 add(Action.WATER_ALL);
@@ -413,7 +414,7 @@ public class PlayerActions extends ActionsManager{
             animalCunk.getActions().updateActions(new HashSet<Action>(){{add(Action.ADD_ANIMAL);}}, true);
     
             // if all the chunks do not have animals, remove the get all resources action
-            if (animalCunk.getLand().getElements().stream().filter(chunk -> chunk.getAnimal() != null).count() == 0){
+            if (animalCunk.getLand().getNumElements() == 0){
                 animalCunk.getLand().getActions().resetActions();
             }
         }
@@ -502,7 +503,7 @@ public class PlayerActions extends ActionsManager{
     }
 
     // METHODS FOR THE LANDLORD
-
+    @SuppressWarnings("unchecked")
     public void buy_item(ArrayList<? extends Object> items) throws NoItemFoundException, 
                                                                    InventoryIsFullException, 
                                                                    CloneNotSupportedException,
@@ -511,17 +512,42 @@ public class PlayerActions extends ActionsManager{
          * Method to buy item
          * from the market
          */
-        Item item = (Item)items.get(1);
+        Item item;
+        LandAbstract land;
         Landlord landlord = (Landlord)this.person;
-        Market market = (Market)items.get(0);
         
 
-        // add it to the barn
-        market.getBarn().getBarnInventory().addItem(market.buyItem(item, landlord.getBalance()));
-        // buy from maketz 
-        // remove the money from the balance
-        landlord.setBalance(- item.getPrice());
-        // TODO: if the bought item is a land add it to the lands
+        // check if the item is a land or not
+        if (items.get(1) instanceof LandAbstract){
+            ArrayList<ArrayList<Place>> map = (ArrayList<ArrayList<Place>>) items.get(0);
+            ArrayList<Place> places = map.get(1);
+            ArrayList<LandAbstract> lands = new ArrayList<>();
+            Market market = ((Barn)map.get(0).get(0)).getMarket();
+
+            for (Place place : places) {
+                if (place instanceof LandAbstract) {
+                    lands.add((LandAbstract) place);
+                }
+            }
+
+            //TODO:
+            /*
+            if (lands.size()<10){
+                land = market.buyLand(land, landlord.getBalance());
+                lands.add(landlord.buyLand(land, landlord.getBalance()));
+                landlord.setBalance(- land.getPrice());
+            }
+            */
+        } else {
+            Market market = (Market)items.get(0);
+            item = (Item)items.get(1);
+
+            // add it to the barn
+            market.getBarn().getBarnInventory().addItem(market.buyItem(item, landlord.getBalance()));
+            // buy from maketz 
+            // remove the money from the balance
+            landlord.setBalance(- item.getPrice());
+        }
     }
 
     public void sell_item(ArrayList<? extends Object> items) throws NoItemFoundException, 
@@ -538,5 +564,22 @@ public class PlayerActions extends ActionsManager{
         market.getBarn().getBarnInventory().removeItem(item,1);
         // add money to the balance
         landlord.setBalance(item.getPrice());
+    }
+
+    @SuppressWarnings("unchecked")
+    public void sell_land(ArrayList<? extends Object> items) throws NoItemFoundException, 
+                                                                    CloneNotSupportedException{
+        /*
+         * Method to sell land
+         * to the market
+         */
+        ArrayList<LandAbstract> lands = (ArrayList<LandAbstract>)items.get(0);
+        LandAbstract land = (LandAbstract)items.get(1);
+        Landlord landlord = (Landlord)this.person;
+
+        lands.remove(land);
+
+        // add money to the balance
+        landlord.setBalance(land.getPrice());
     }
 }

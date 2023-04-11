@@ -10,7 +10,7 @@ public abstract class LandAbstract extends Place implements LandInteface {
     protected boolean sellable; // decides whether a land can be sold or not
     protected Calendar calendar = Calendar.getInstance();
 
-    public float getPrice() {
+    public int getPrice() {
         /*
          *  Returns the price of the land to sell
          */
