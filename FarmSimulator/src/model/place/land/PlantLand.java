@@ -1,10 +1,13 @@
 package model.place.land;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import model.actors.actions.PlaceActions;
+import model.actors.actions.ActionsManager.Action;
+import model.item.plants.PlantAbstract.PlantLife;
 import model.place.Places;
 import model.place.land.chunks.PlantChunk;
 
@@ -46,7 +49,20 @@ public class PlantLand extends LandAbstract{
         /*
          * Updates all the chunks in the land
          */
-        this.chunks.forEach(chunk -> {((PlantChunk)chunk).update();});
+        this.chunks.forEach(chunk -> {((PlantChunk)chunk).update();
+                                        int count = 0;
+                                        if (chunk.getPlant().getLifeStage()==PlantLife.HARVESTABLE){
+                                            count++;
+                                        }
+                                        if (count == 0){
+                                        this.getActions().updateActions(new HashSet<>(){{
+                                            add(Action.HARVEST_ALL);
+                                            }}, false);
+                                        } else {
+                                        this.getActions().updateActions(new HashSet<>(){{
+                                            add(Action.HARVEST_ALL);
+                                            }}, true);
+                                        }});
     }
 
     public ArrayList<PlantChunk> getElements(){

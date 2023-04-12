@@ -7,8 +7,6 @@ import model.actors.person.Landlord;
 import model.actors.person.Person;
 import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
-import model.exceptions.CustomExceptions.MaxWaterLevelReachedException;
-import model.exceptions.CustomExceptions.MinimumHungerException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.item.ItemCreator;
 import model.item.ItemType.Plants;
@@ -46,7 +44,7 @@ public class Model implements Serializable{
     private ArrayList<ArrayList<Place>> map;
 
     // constructor
-    public Model() throws NoItemFoundException, InventoryIsFullException, MinimumHungerException, MaxWaterLevelReachedException{
+    public Model() throws NoItemFoundException, InventoryIsFullException{
         //attributes initialization
         this.farmer = new Farmer();
         this.landlord = new Landlord();

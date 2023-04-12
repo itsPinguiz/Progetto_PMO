@@ -69,6 +69,16 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         return tmp;
     }
 
+    //method for getting the products
+    public boolean areProductsAvailable(){
+        for (int i = 0; i < this.typeProduct.size(); i++){
+            if (this.typeProduct.get(i).getNumber() > 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
     //method for updating the life
     private void updateLife() {
         int daysPassed = c.getDay() - lastUpdatedDay; // calcola quanti giorni sono passati dall'ultimo aggiornamento
@@ -117,7 +127,6 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
                     this.hunger -= Constants.FEED_INDEX;
                 }
                 else{
-                    System.out.println("Eccezione fame minima");
                     throw new MinimumHungerException();
                 }
             }

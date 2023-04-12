@@ -1,9 +1,11 @@
 package model.place.land;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import model.actors.actions.ActionsManager.Action;
 import model.actors.actions.PlaceActions;
 import model.place.Places;
 import model.place.land.chunks.AnimalChunk;
@@ -49,7 +51,21 @@ public class AnimalLand extends LandAbstract {
     //update the animals in the land
     @Override
     public void update() {
-        this.animalChunks.forEach(animalChunks -> {animalChunks.update();});
+        this.animalChunks.forEach(animalChunks -> {animalChunks.update();
+                                                   int count = 0;
+                                                   if (animalChunks.getAnimal().areProductsAvailable()){
+                                                        count++;
+                                                   }
+                                                   if (count == 0){
+                                                    this.getActions().updateActions(new HashSet<>(){{
+                                                        add(Action.GET_ALL_RESOURCES);
+                                                        }}, false);
+                                                   } else {
+                                                    this.getActions().updateActions(new HashSet<>(){{
+                                                        add(Action.GET_ALL_RESOURCES);
+                                                        }}, true);
+                                                   }
+                                                });
     }
 
 }

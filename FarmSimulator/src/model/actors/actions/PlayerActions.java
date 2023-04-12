@@ -173,7 +173,6 @@ public class PlayerActions extends ActionsManager{
                 c.getLand().getActions().updateActions(new HashSet<>(){{
                     add(Action.FERTILIZE_ALL);
                     add(Action.WATER_ALL);
-                    add(Action.HARVEST_ALL);
                     }}, true);
                 
                 // if all lands are planted remove the plant all action
@@ -399,22 +398,18 @@ public class PlayerActions extends ActionsManager{
          * Method to remove an animal from the farm
          */
         AnimalChunk animalCunk = (AnimalChunk)items.get(0);
-        AnimalAbstract animal = (AnimalAbstract)items.get(1);
         Farmer farmer = (Farmer)this.person;
 
-        if (animalCunk.getAnimal() == animal){
-            farmer.getInventory().addItem(animal);
-            animalCunk.setAnimal(null);
-            animalCunk.getActions().resetActions();
-            
-            animalCunk.getActions().updateActions(new HashSet<Action>(){{add(Action.ADD_ANIMAL);}}, true);
-    
-            // if all the chunks do not have animals, remove the get all resources action
-            if (animalCunk.getLand().getNumElements() == 0){
-                animalCunk.getLand().getActions().resetActions();
-            }
-        }
-       
+        farmer.getInventory().addItem(animalCunk.getAnimal());
+        animalCunk.setAnimal(null);
+        animalCunk.getActions().resetActions();
+        
+        animalCunk.getActions().updateActions(new HashSet<Action>(){{add(Action.ADD_ANIMAL);}}, true);
+
+        // if all the chunks do not have animals, remove the get all resources action
+        if (animalCunk.getLand().getNumElements() == 0){
+            animalCunk.getLand().getActions().resetActions();
+        } 
     }
 
     public void get_resources(ArrayList<? extends Object> items) throws InventoryIsFullException, 

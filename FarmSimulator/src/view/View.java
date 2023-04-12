@@ -62,10 +62,15 @@ public class View extends JFrame{
   private GameBackup backup;
   private Map<String, JMenuItem> savedGameItems;
   private Item selectedItem;
+  private Inventory oldInventory;
   private Place oldPlace;
 
   // constructor
   public View(Model model,Controller controller){
+    oldInventory = null;
+    selectedItem = null;
+    oldPlace = null;
+
     // setup main frame
     setTitle("Farming Simulator");
     setSize(MAX_WIDTH, MAX_HEIGHT);
@@ -269,7 +274,7 @@ public class View extends JFrame{
                       updateActualPanel(worldPanel, createBarnPlace(model.getSelectedPerson().getPlace())); 
                       break;
                     default:
-                      System.out.println("Error: place not found");
+                      exceptionPopup("Place not found");
                       break;
                   }
                   
@@ -418,14 +423,14 @@ public class View extends JFrame{
     DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
 
     for (Item item : inventory.getInventory()) {
-        // Create a JToggleButton instead of a JButton
-        JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>":
-                                                                                                   "<html>" + item.getType().toString() + "<br>" + item.getNumber() +  "<html>");
-        toggleButton.addActionListener(toggleButtonListener(buttonGroup, item, toggleButton));
+      // Create a JToggleButton instead of a JButton
+      JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>":
+                                                                                                 "<html>" + item.getType().toString() + "<br>" + item.getNumber() +  "<html>");
+      toggleButton.addActionListener(toggleButtonListener(buttonGroup, item, toggleButton));
 
-        // Add the toggle button to the button group and the panel
-        buttonGroup.add(toggleButton);
-        inventoryPanel.add(toggleButton);
+      // Add the toggle button to the button group and the panel
+      buttonGroup.add(toggleButton);
+      inventoryPanel.add(toggleButton);
     }
 
     // Wrap the inventoryPanel in a JScrollPane
@@ -721,13 +726,25 @@ public class View extends JFrame{
     mainPanel.add(newPanel);
     mainPanel.revalidate();
     mainPanel.repaint();
-    System.out.println(oldPlace);
-
+    
     // keep the selected item if the player is in the same place
-    if (!(oldPlace == model.getSelectedPerson().getPlace()))
+    if (!(oldPlace == model.getSelectedPerson().getPlace())){
       selectedItem = null;
-    else if (showInventoryButton.isSelected()){
-      showInventoryButton.doClick();
+    } else {
+      if (showInventoryButton.isSelected())
+        showInventoryButton.getActionListeners()[0].actionPerformed(null);
+      // keep item selected and deselct if the item is not in the inventory anymore
+      if (selectedItem != null && selectedItem.getNumber() == 1){
+        if (oldInventory!= null && !oldInventory.getInventory().contains(selectedItem)){
+          selectedItem = null;
+          oldInventory = null;
+        }
+        if (((Farmer)(this.model.getSelectedPerson())).getInventory().getInventory().contains(selectedItem)){
+            oldInventory = ((Farmer)(this.model.getSelectedPerson())).getInventory();
+        } else if (this.model.getSelectedPerson().getPlace().getType() == Places.BARN){
+          oldInventory = ((Barn)(this.model.getSelectedPerson().getPlace())).getBarnInventory();
+        } 
+      }
     }
     
     // enable the inventory button if the player is a farmer
@@ -810,6 +827,8 @@ public class View extends JFrame{
                 } else {
                     oldPlace = controller.enterNewPlace(place);
                 }
+                if (showInventoryButton.isSelected())
+                  showInventoryButton.doClick();
                 updateActualPanel(worldPanel, reqArgs ? (JPanel) (getMethodByName(methodName).invoke(tempView, place))
                                                       : (JPanel) (getMethodByName(methodName).invoke(tempView)));
             } catch (IllegalAccessException |
