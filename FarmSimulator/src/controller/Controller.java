@@ -1,12 +1,10 @@
 package controller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import model.Model;
 import model.actors.actions.ActionsManager.Action;
-import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
 import model.place.Place;
 import model.progress.GameBackup;
@@ -37,15 +35,23 @@ public class Controller {
     }
 
     // delete save 
-    public void deleteSave(String save) throws IOException, InterruptedException, InvocationTargetException, NoSuchMethodException, SecurityException{
-        backup.deleteSave(save);
+    public void deleteSave(String save) {
+        try {
+            backup.deleteSave(save);
+        } catch (IOException e) {
+            this.exceptionPopup(e);
+        }
     }
 
     // save game
-    public String saveGame() throws IOException{
+    public String saveGame(){
         String saveName = null;
 
-        saveName = backup.saveCurrent();
+        try {
+            saveName = backup.saveCurrent();
+        } catch (IOException e) {
+            this.exceptionPopup(e);
+        }
 
         return saveName + ".txt";
     }
@@ -74,27 +80,31 @@ public class Controller {
     }
 
     // execute the action
-    public void performAction(Action a,ArrayList<? extends Object> items) throws IllegalAccessException,
-                                               IllegalArgumentException,
-                                               InvocationTargetException,
-                                               NoSuchMethodException,
-                                               SecurityException,
-                                               PlaceNotAvailableException,
-                                               ActionNotAvailableException{ 
-        model.getSelectedPerson().getActions().executeAction(a,items);
+    public void performAction(Action a,ArrayList<? extends Object> items){ 
+        try {
+            model.getSelectedPerson().getActions().executeAction(a,items);
+        } catch (Exception e) {
+            this.exceptionPopup(e);
+        }
     }
 
     // MAP PANEL
     // enter a new place
-    public Place enterNewPlace(Place p) throws PlaceNotAvailableException{
+    public Place enterNewPlace(Place p){
         Place oldPlace = model.getSelectedPerson().getPlace();
-        model.getSelectedPerson().getActions().enter(p);
+        try {
+            model.getSelectedPerson().getActions().enter(p);
+        } catch (PlaceNotAvailableException e) {
+            this.exceptionPopup(e);
+        }
         return oldPlace;
     }
 
     // leave the current place
-    public void leaveOldPlace(){
+    public Place leaveOldPlace(){
+        Place oldPlace = model.getSelectedPerson().getPlace();
         model.getSelectedPerson().getActions().leave();
+        return oldPlace;
     }
 
     public void setView(View view) {
@@ -104,6 +114,12 @@ public class Controller {
     // update model 
     public void updateModel(){
         model.update();
+    }
+
+    // exception popup
+    public void exceptionPopup(Exception exception){
+        view.exceptionPopup(exception.getCause().getMessage());
+        exception.printStackTrace();
     }
 
 }
