@@ -26,10 +26,10 @@ import model.place.land.PlantLand;
 import model.place.land.chunks.AnimalChunk;
 import model.place.land.chunks.PlantChunk;
 import model.progress.GameBackup;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -163,6 +163,7 @@ public class View extends JFrame{
       public void actionPerformed(ActionEvent e) {
         controller.changeRole(e.getActionCommand());
         try {
+          oldPlace = model.getSelectedPerson().getPlace();
           updateActualPanel(rolePanel, createActionsButtonPanel(e.getActionCommand()));
         } catch (ActionNotAvailableException e1) {
           e1.printStackTrace();
@@ -247,6 +248,7 @@ public class View extends JFrame{
                 try {
                   controller.performAction(a,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());
                                                                 add(selectedItem);}});
+                  oldPlace = model.getSelectedPerson().getPlace();
                   switch (model.getSelectedPerson().getPlace().getType()) {
                     case ANIMAL_LAND:
                       updateActualPanel(worldPanel, createInsideLand());
@@ -276,8 +278,8 @@ public class View extends JFrame{
                   } else if (model.getSelectedPerson().getPlace().getType() == Places.PLANT_LAND){
                    
                   }
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                    | NoSuchMethodException | SecurityException | PlaceNotAvailableException
+                } catch ( IllegalArgumentException 
+                     | SecurityException | PlaceNotAvailableException
                     | ActionNotAvailableException e1) {
                   e1.printStackTrace();
                 }
@@ -312,8 +314,7 @@ public class View extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 try {
                     controller.deleteSave(save);
-                } catch (InvocationTargetException | NoSuchMethodException | SecurityException | IOException
-                        | InterruptedException e1) {
+                } catch (SecurityException e1) {
                     e1.printStackTrace();
                 }
                 deleteGame.remove(savedBackupToDelete); // delete from delete menu
@@ -336,39 +337,35 @@ public class View extends JFrame{
       @Override
       public void actionPerformed(ActionEvent e) {
           String[] saveName = new String[1];
-          try {
-              saveName[0] = controller.saveGame();
-              JMenuItem savedBackup = new JMenuItem(saveName[0].substring(0, saveName[0].length() - 4));
-              savedGameItems.put(saveName[0], savedBackup);
-              loadGame.add(savedBackup);
 
-              // Create a new JMenuItem for the delete menu
-              JMenuItem savedBackupToDelete = new JMenuItem(saveName[0].substring(0, saveName[0].length() - 4));
-              savedBackupToDelete.addActionListener(new ActionListener() {
-                  @Override
-                  public void actionPerformed(ActionEvent e) {
-                      try {
-                          controller.deleteSave(saveName[0]);
-                      } catch (InvocationTargetException | NoSuchMethodException | SecurityException | IOException
-                              | InterruptedException e1) {
-                          e1.printStackTrace();
-                      }
-                      deleteGame.remove(savedBackupToDelete); // delete from delete menu
-                      loadGame.remove(savedGameItems.get(saveName[0])); // remove from load save menu
-                      savedGameItems.remove(saveName[0]); // remove from savedGameItems map
+          saveName[0] = controller.saveGame();
+          JMenuItem savedBackup = new JMenuItem(saveName[0].substring(0, saveName[0].length() - 4));
+          savedGameItems.put(saveName[0], savedBackup);
+          loadGame.add(savedBackup);
 
-                      // revalidate and repaint the frame to update the menus
-                      revalidate();
-                      repaint();
+          // Create a new JMenuItem for the delete menu
+          JMenuItem savedBackupToDelete = new JMenuItem(saveName[0].substring(0, saveName[0].length() - 4));
+          savedBackupToDelete.addActionListener(new ActionListener() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                  try {
+                      controller.deleteSave(saveName[0]);
+                  } catch ( SecurityException e1) {
+                      e1.printStackTrace();
                   }
-              });
+                  deleteGame.remove(savedBackupToDelete); // delete from delete menu
+                  loadGame.remove(savedGameItems.get(saveName[0])); // remove from load save menu
+                  savedGameItems.remove(saveName[0]); // remove from savedGameItems map
 
-              // Add the new JMenuItem to the delete menu
-              deleteGame.add(savedBackupToDelete);
+                  // revalidate and repaint the frame to update the menus
+                  revalidate();
+                  repaint();
+              }
+          });
 
-          } catch (IOException e1) {
-              e1.printStackTrace();
-          }
+          // Add the new JMenuItem to the delete menu
+          deleteGame.add(savedBackupToDelete);
+
           // revalidate and repaint the frame to update the menus
           revalidate();
           repaint();
@@ -485,6 +482,7 @@ public class View extends JFrame{
        public void actionPerformed(ActionEvent e) {
          controller.updateModel();
          try {
+           oldPlace = model.getSelectedPerson().getPlace();
            updateActualPanel(worldPanel, createWorldPanel());
          } catch (ActionNotAvailableException e1) {
            e1.printStackTrace();
@@ -718,32 +716,33 @@ public class View extends JFrame{
     /*
      * Update the main panel with the new panel
      */
-    oldPlace = model.getSelectedPerson().getPlace();
-    updateActionButtons();
-
     // remove the old panel and add the new one
     mainPanel.removeAll();
     mainPanel.add(newPanel);
     mainPanel.revalidate();
     mainPanel.repaint();
+    System.out.println(oldPlace);
 
+    // keep the selected item if the player is in the same place
+    if (!(oldPlace == model.getSelectedPerson().getPlace()))
+      selectedItem = null;
+    else if (showInventoryButton.isSelected()){
+      showInventoryButton.doClick();
+    }
+    
     // enable the inventory button if the player is a farmer
     showInventoryButton.setEnabled(model.getSelectedPerson().toString().equals("Farmer")? true : false);
     // enable the role button if the player is not in the world
     roleMenu.setEnabled(model.getSelectedPerson().getPlace() == null? true : false);
 
     // update the action buttons
+    updateActionButtons();
     rolePanel.remove(buttonPanel);
     rolePanel.add(createActionsButtonPanel(this.model.getSelectedPerson().toString()));
 
     // update the labels
     updateLabels();
 
-    // TODO keep inventory open when in the same place
-    if(showInventoryButton.isSelected()){
-      showInventoryButton.doClick();
-      showInventoryButton.setSelected(false);
-    }
     // Update the panel
     revalidate();
     repaint();
@@ -807,24 +806,33 @@ public class View extends JFrame{
         public void actionPerformed(ActionEvent e) {
             try {
                 if (exit) {
-                    controller.leaveOldPlace();
+                    oldPlace = controller.leaveOldPlace();
                 } else {
-                    controller.enterNewPlace(place);
-                    // keep the selected item if the player is in the same place
-                    if (!(oldPlace == model.getSelectedPerson().getPlace()))
-                      selectedItem = null;
+                    oldPlace = controller.enterNewPlace(place);
                 }
                 updateActualPanel(worldPanel, reqArgs ? (JPanel) (getMethodByName(methodName).invoke(tempView, place))
                                                       : (JPanel) (getMethodByName(methodName).invoke(tempView)));
             } catch (IllegalAccessException |
                     IllegalArgumentException | 
                     InvocationTargetException | 
-                    ActionNotAvailableException | 
-                    PlaceNotAvailableException e1) {
+                    ActionNotAvailableException e1) {
             e1.printStackTrace();
           }
         }
     };
+  }
+
+  public void exceptionPopup(String message) {
+    /*
+     * Method to show a popup with the error message
+     */
+    Place place = this.model.getSelectedPerson().getPlace();
+    JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+    try {
+      this.model.getSelectedPerson().getActions().enter(place);
+    } catch (PlaceNotAvailableException e) {
+      this.exceptionPopup(e.toString());
+    }
   }
 }
 

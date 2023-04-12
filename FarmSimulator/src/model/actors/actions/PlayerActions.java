@@ -52,7 +52,7 @@ public class PlayerActions extends ActionsManager{
             }};
     }
 
-    public void executeAction(Action s,Object argument) {
+    public void executeAction(Action s,Object argument) throws Exception{
         /*
         * Method to find a method to execute
         */
@@ -60,19 +60,17 @@ public class PlayerActions extends ActionsManager{
         // find the desired method
         Method method = getMethodByName(s.name().toLowerCase());
 
-        try{
-            // execute the method if it exists and is available
-            if (method != null && this.availableActions.contains(s)) {
-                person.getActions().updateActions(person.getPlace().getActions().getActions(), false);
-                method.invoke(this,argument);        
-                person.getActions().updateActions(person.getPlace().getActions().getActions(), true);
-                System.out.println("Action executed: " + s.name());
-            } else {
-                throw new ActionNotAvailableException(s, this.availableActions);
-            }
-        } catch (Exception e){
-           e.printStackTrace();
-        }  
+
+        // execute the method if it exists and is available
+        if (method != null && this.availableActions.contains(s)) {
+            person.getActions().updateActions(person.getPlace().getActions().getActions(), false);
+            method.invoke(this,argument);        
+            person.getActions().updateActions(person.getPlace().getActions().getActions(), true);
+            System.out.println("Action executed: " + s.name());
+        } else {
+            throw new ActionNotAvailableException(s, this.availableActions);
+        }
+
     }
 
     private  Method getMethodByName(String methodName) {
@@ -258,12 +256,14 @@ public class PlayerActions extends ActionsManager{
          */
         PlantChunk c = (PlantChunk)items.get(0);
         Item tool = (Item)items.get(1);
-        
         Farmer f = (Farmer)this.person;
-
-        Item product = c.getPlant().getProduct();
         int multiplier = 3;
+        Item product;
 
+        if (c.getPlant() == null || c.getPlant().getLifeStage() != PlantLife.HARVESTABLE) return;
+
+        product = c.getPlant().getProduct();
+        
         // if sickle is equipped double the harvested resources
         if (tool != null && tool.getType() == ItemType.Tools.SICKLE && tool.getStatus() > 0&& this.damageTool(tool)){
             multiplier = Constants.SICKLE_MODIFIER;
@@ -357,9 +357,7 @@ public class PlayerActions extends ActionsManager{
             for (PlantChunk chunk : p.getElements()){
                 if (chunk.getActions().getActions().contains(action)){
                     this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
-                } else {
-                    throw new ActionNotAvailableException(action,chunk.getActions().getActions());
-                }
+                } 
             }
         } else if (items.get(0) instanceof AnimalLand){
             AnimalLand a = (AnimalLand)items.get(0);
@@ -367,9 +365,7 @@ public class PlayerActions extends ActionsManager{
                 if (chunk.getAnimal()!=null){
                     if (chunk.getActions().getActions().contains(action)){
                         this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
-                    } else {
-                        throw new ActionNotAvailableException(action,a.getActions().getActions());
-                    }
+                    } 
                 } 
             }
         }
@@ -434,14 +430,16 @@ public class PlayerActions extends ActionsManager{
         }
     }
 
-    public void feed_animal(ArrayList<? extends Object> items) throws NoFoodFoundException, MinimumHungerException{
+    public void feed_animal(ArrayList<? extends Object> items) throws NoFoodFoundException, MinimumHungerException, NoItemFoundException{
         /*
          * Method to feed an animal
          */
         AnimalChunk chunk = (AnimalChunk)items.get(0);
         Item food = (Item)items.get(1);
+        Farmer farmer = (Farmer)this.person;
 
         chunk.getAnimal().feed(food);
+        farmer.getInventory().removeItem(food, 1);
     }
 
     public void give_water(ArrayList<? extends Object> items) throws MaxWaterLevelReachedException, 
