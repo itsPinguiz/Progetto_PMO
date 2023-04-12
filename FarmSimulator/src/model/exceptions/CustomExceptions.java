@@ -103,4 +103,10 @@ public class CustomExceptions {
             super("Cannot perform action since the water level is already at maximum.");
         }   
     }
+
+    public static class MinimumHungerException extends Exception {
+        public MinimumHungerException(){
+            super("Cannot perform action since the hunger level is already at minimum.");
+        }
+    }
 }

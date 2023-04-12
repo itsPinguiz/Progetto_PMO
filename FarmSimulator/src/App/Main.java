@@ -1,10 +1,12 @@
-package app;
+package App;
 
 import javax.swing.SwingUtilities;
 
 import controller.Controller;
 import model.Model;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
+import model.exceptions.CustomExceptions.MaxWaterLevelReachedException;
+import model.exceptions.CustomExceptions.MinimumHungerException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
 import view.View;
 
@@ -20,7 +22,7 @@ public class Main {
                 controller.setView(view); // Aggiungi questa linea
                 view.setVisible(true);
             });
-        } catch (InventoryIsFullException | NoItemFoundException e) {
+        } catch (InventoryIsFullException | NoItemFoundException | MaxWaterLevelReachedException | MinimumHungerException e) {
             e.printStackTrace();
         }
     }

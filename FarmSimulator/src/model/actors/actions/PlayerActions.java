@@ -434,7 +434,7 @@ public class PlayerActions extends ActionsManager{
         }
     }
 
-    public void feed_animal(ArrayList<? extends Object> items) throws NoFoodFoundException{
+    public void feed_animal(ArrayList<? extends Object> items) throws NoFoodFoundException, MinimumHungerException{
         /*
          * Method to feed an animal
          */

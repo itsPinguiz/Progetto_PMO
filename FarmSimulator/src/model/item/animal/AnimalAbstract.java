@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import model.Constants;
 import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.MaxWaterLevelReachedException;
+import model.exceptions.CustomExceptions.MinimumHungerException;
 import model.exceptions.CustomExceptions.NoFoodFoundException;
 import model.item.Item;
 import model.item.plants.species.Plant;
@@ -109,15 +110,21 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     }
 
     //method for feeding the animal
-    public void feed(Item item) throws NoFoodFoundException{
+    public void feed(Item item) throws NoFoodFoundException, MinimumHungerException{
         try {
-            if (item instanceof Plant){
-                this.hunger -= Constants.FEED_INDEX;
+            if(item instanceof Plant){
+                if(this.hunger >= Constants.FEED_MAX){
+                    this.hunger -= Constants.FEED_INDEX;
+                }
+                else{
+                    System.out.println("Eccezione fame minima");
+                    throw new MinimumHungerException();
+                }
             }
-            else {
+            else{
                 throw new NoFoodFoundException();
             }
-        } catch (NoFoodFoundException e) {
+        } catch (NoFoodFoundException | MinimumHungerException e) {
             e.getStackTrace();
         }
     }
