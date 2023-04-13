@@ -2,7 +2,6 @@ package view.worldpanel;
 
 import javax.swing.*;
 
-import controller.Controller;
 import model.Model;
 import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
@@ -20,13 +19,11 @@ import java.awt.*;
 
 public class LandView {
     private Model model;
-    private Controller controller;
     private View view;
     GridBagConstraints constraints;
 
-    public LandView(Model model, Controller controller, View view) {
+    public LandView(Model model, View view) {
         this.model = model;
-        this.controller = controller;
         this.view = view;
     }
 

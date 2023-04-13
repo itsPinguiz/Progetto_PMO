@@ -4,12 +4,10 @@ import javax.swing.*;
 import controller.Controller;
 import model.Model;
 import model.actors.actions.ActionsManager;
-import model.actors.actions.PlayerActions;
 import model.actors.person.Landlord;
 import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
-import model.place.Places;
 import model.place.land.chunks.AnimalChunk;
 import model.place.land.chunks.PlantChunk;
 import model.progress.GameBackup;
@@ -20,10 +18,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Flow;
 
 // Create role panel
   public class RolePanelView{

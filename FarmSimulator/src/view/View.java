@@ -57,7 +57,7 @@ public class View extends JFrame{
     try {
       this.rolePanelView = new RolePanelView(this.model, this.controller,this);
       this.worldPanelView = new WorldPanelView(this.model, this.controller,this);
-      this.landView = new LandView(this.model, this.controller,this);
+      this.landView = new LandView(this.model,this);
       this.barnView = new BarnView(this.model, this.controller,this);
     } catch (ActionNotAvailableException e) {
       exceptionPopup(e.getCause().getMessage());

@@ -36,7 +36,7 @@ public class BarnView {
         // create the panel that will contain the elements
         JPanel insideBarnPanel = new JPanel(new GridLayout(1, 2));
         JPanel marketPanel = new JPanel(new GridLayout(4, 3,20,20));
-        JPanel barnInventoryPanel = new JPanel(new GridLayout(4, 6,20,20));
+        JPanel barnInventoryPanel = new JPanel(new GridLayout(4, 3,20,20));
 
         JButton exitButton;
 
@@ -63,42 +63,43 @@ public class BarnView {
 
         // display the items in the market or the market button
         if (actualPlace == p){ // if the player is in the barn
-        enterMarketButton = new JButton("Market");
-        exitButton = new JButton("Exit");
+            enterMarketButton = new JButton("Market");
+            exitButton = new JButton("Exit");
 
-        // add the button to enter the market
-        enterMarketButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createBarnPlace", actualPlace.getMarket(),true,false));
-        
-        // add the exit button
-        exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(view.getWorldPanelView(),"createWorldPanel", null, false, true));
-        marketPanel.add(enterMarketButton);
-        barnInventoryPanel.add(exitButton);
-        // disable the possibility to enter the market if the player is not a landlord
-        enterMarketButton.setEnabled(model.getSelectedPerson().toString().equals("Landlord")? true : false);
-        } else{ // if the player is in the market
-        Market marketPlace = actualPlace.getMarket();
-        exitButton = new JButton("Exit");
+            // add the button to enter the market
+            enterMarketButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createBarnPlace", actualPlace.getMarket(),true,false));
+            
+            // add the exit button
+            exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(view.getWorldPanelView(),"createWorldPanel", null, false, true));
+            marketPanel.add(enterMarketButton);
+            barnInventoryPanel.add(exitButton);
 
-        // create buttons for shop items
-        if (marketPlace.getItemShop() != null){
-            for(Item item : marketPlace.getItemShop().getInventory()){
-            JToggleButton toggleButton = new JToggleButton("<html>" + item.getType().toString() 
-                                                            + "<br> $" + item.getPrice() +  "<html>"); 
-            toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
-            // disable the button if the player doesn't have enough money
-            if (item.getPrice() > ((Landlord)(model.getSelectedPerson())).getBalance()) {
-            toggleButton.setEnabled(false);
-            } else{
-                toggleButton.setEnabled(true);
-            }
-            // add the button to the button group
-            buttonGroup.add(toggleButton);
-            marketPanel.add(toggleButton);
-            }
-        }   
-        // add the exit button
-        exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createBarnPlace", model.getMap().get(0).get(0), true, true));
-        marketPanel.add(exitButton);
+            // disable the possibility to enter the market if the player is not a landlord
+            enterMarketButton.setEnabled(model.getSelectedPerson().toString().equals("Landlord")? true : false);
+        } else{  // if the player is in the market
+            Market marketPlace = actualPlace.getMarket();
+            exitButton = new JButton("Exit");
+
+            // create buttons for shop items
+            if (marketPlace.getItemShop() != null){
+                for(Item item : marketPlace.getItemShop().getInventory()){
+                JToggleButton toggleButton = new JToggleButton("<html>" + item.getType().toString() 
+                                                                + "<br> $" + item.getPrice() +  "<html>"); 
+                toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
+                // disable the button if the player doesn't have enough money
+                if (item.getPrice() > ((Landlord)(model.getSelectedPerson())).getBalance()) {
+                toggleButton.setEnabled(false);
+                } else{
+                    toggleButton.setEnabled(true);
+                }
+                // add the button to the button group
+                buttonGroup.add(toggleButton);
+                marketPanel.add(toggleButton);
+                }
+            }   
+            // add the exit button
+            exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createBarnPlace", model.getMap().get(0).get(0), true, true));
+            marketPanel.add(exitButton);
         }
 
         // add the elements to the panel
