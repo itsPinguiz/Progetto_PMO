@@ -52,7 +52,7 @@ public class BarnView {
         if (actualPlace.getBarnInventory() != null){
         for(Item item : actualPlace.getBarnInventory().getInventory()){
             JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>":
-                                                                                                    "<html>" + item.getType().toString() + "<br>" + item.getNumber() +  "<html>");
+                                                                                                       "<html>" + item.getType().toString() + "<br>" + item.getNumber() +  "<html>");
             toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
             // add the button to the button group
             buttonGroup.add(toggleButton);

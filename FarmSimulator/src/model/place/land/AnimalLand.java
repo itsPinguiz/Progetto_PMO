@@ -54,9 +54,9 @@ public class AnimalLand extends LandAbstract {
         int count = 0;
         for (AnimalChunk chunk: this.animalChunks){
             if (chunk.getAnimal() == null){
-                return;
+                break;
             }
-            chunk.getAnimal().update();
+            chunk.update();
             
             if (chunk.getAnimal().areProductsAvailable()){
                 count++;

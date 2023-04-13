@@ -31,7 +31,7 @@ public class InventoryPanelView {
         /*
         * Create a panel with a grid layout to hold the inventory buttons
         */
-        inventoryPanel = new JPanel(new GridLayout(4, 3));
+        inventoryPanel = new JPanel(new GridLayout(4, 3,20,20));
         inventoryPanel.setPreferredSize(new Dimension(200, 500));
 
         inventoryPanel.setBorder(BorderFactory.createTitledBorder("Inventory"));
@@ -42,14 +42,14 @@ public class InventoryPanelView {
         DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
 
         for (Item item : inventory.getInventory()) {
-        // Create a JToggleButton instead of a JButton
-        JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>":
-                                                                                                    "<html>" + item.getType().toString() + "<br>" + item.getNumber() +  "<html>");
-        toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
-
-        // Add the toggle button to the button group and the panel
-        buttonGroup.add(toggleButton);
-        inventoryPanel.add(toggleButton);
+            // Create a JToggleButton instead of a JButton
+            JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>":
+                                                                                                        "<html>" + item.getType().toString() + "<br>" + item.getNumber() +  "<html>");
+            toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
+            toggleButton.setSelected(controller.getSelectedItem() != null && item == controller.getSelectedItem()? true : false);
+            // Add the toggle button to the button group and the panel
+            buttonGroup.add(toggleButton);
+            inventoryPanel.add(toggleButton);
         }
 
         // Wrap the inventoryPanel in a JScrollPane

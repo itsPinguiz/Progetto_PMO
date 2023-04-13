@@ -64,42 +64,50 @@ public class LandView {
         return insideLand;
         }
 
-    public JPanel createPlantChunkPanel(PlantChunk chunk) throws PlaceNotAvailableException, ActionNotAvailableException{
-        /*
-        * This method creates the panel that will be displayed when the player enters a chunk
-        */
-        // get the plant inside the chunk
-        PlantAbstract plant = chunk.getPlant();
+        public JPanel createPlantChunkPanel(PlantChunk chunk) throws PlaceNotAvailableException, ActionNotAvailableException{
+            /*
+            * This method creates the panel that will be displayed when the player enters a chunk
+            */
+            // get the plant inside the chunk
+            PlantAbstract plant = chunk.getPlant();
+            
+            // create the panel that will contain the elements
+            JPanel chunkPanel = new JPanel(new GridBagLayout());
+            GridBagConstraints c = new GridBagConstraints();
         
-        // create the panel that will contain the elements
-        JPanel chunkPanel = new JPanel(new GridLayout(1, 2));
-        JLabel plantLabel = new JLabel();
+            // set the panel's size 
+            chunkPanel.setPreferredSize(new Dimension(800, 500));
         
-        // set the panel's size 
-        chunkPanel.setPreferredSize(new Dimension(800, 500));
-
-        // set the label's text
-        plantLabel.setText("<html><div style='font-size:16px;'>" + ((plant == null)?"Empty": plant.getType().toString())+
-                        "</div><div style='font-size:12px;'>Life Stage: " + ((plant == null)?"No Plant": plant.getLifeStage().toString()) +
-                        "<br>Water Level: </br>" + chunk.getWaterLevel() +
-                        "<br>Fertilization Level: </br>" + chunk.getFertilizationLevel() +
-                        "<br>Plowed :</br> " + ((chunk.getDirtStatus()== true)?"Yes":"No") +
-                        "</div></html>");
-
-        // add the label to the panel
-        chunkPanel.add(plantLabel);
+            // set the label's text
+            JLabel plantLabel = new JLabel("<html><div style='font-size:16px;'>" + ((plant == null)?"Empty": plant.getType().toString())+
+                            "</div><div style='font-size:12px;'>Life Stage: " + ((plant == null)?"No Plant": plant.getLifeStage().toString()) +
+                            "<br>Water Level: </br>" + chunk.getWaterLevel() +
+                            "<br>Fertilization Level: </br>" + chunk.getFertilizationLevel() +
+                            "<br>Plowed :</br> " + ((chunk.getDirtStatus()== true)?"Yes":"No") +
+                            "</div></html>");
+            c.gridx = 0;
+            c.gridy = 0;
+            c.insets = new Insets(10, 10, 10, 10);
+            c.anchor = GridBagConstraints.CENTER;
+            chunkPanel.add(plantLabel, c);
+            
+            // add the exit button
+            JButton exitButton = new JButton("Exit");
+            exitButton.setPreferredSize(new Dimension(100, 50));
+            exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createInsideLand", chunk.getLand(),false,false));
+            c.gridx = 1;
+            c.gridy = 3;
+            c.insets = new Insets(0, 0, 30,0 );
+            c.anchor = GridBagConstraints.WEST;
+            chunkPanel.add(exitButton, c);
         
-        // add the exit button
-        JButton exitButton = new JButton("Exit");
-        exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createInsideLand", chunk.getLand(),false,false));
-        // add the exit button to the panel
-        chunkPanel.add(exitButton);
-
-        // Update the panel
-        view.getWorldPanelView().getWorldPanel().revalidate();
-        view.getWorldPanelView().getWorldPanel().repaint();
-        return chunkPanel;
-    }
+            // Update the panel
+            view.getWorldPanelView().getWorldPanel().revalidate();
+            view.getWorldPanelView().getWorldPanel().repaint();
+            return chunkPanel;
+        }
+        
+        
 
     public JPanel createAnimalChunkPanel(AnimalChunk chunk) throws PlaceNotAvailableException, ActionNotAvailableException{
         /*

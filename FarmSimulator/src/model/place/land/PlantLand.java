@@ -52,9 +52,9 @@ public class PlantLand extends LandAbstract{
         int count = 0;
         for (PlantChunk chunk: this.chunks){
             if (chunk.getPlant() == null){
-                return;
+                break;
             }
-            chunk.getPlant().grow();
+            chunk.update();
 
             // check if there are harvestable plants
             if (chunk.getPlant().getLifeStage()==PlantLife.HARVESTABLE){
