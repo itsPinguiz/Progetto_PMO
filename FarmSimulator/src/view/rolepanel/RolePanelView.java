@@ -1,0 +1,428 @@
+package view.rolepanel;
+import javax.swing.*;
+
+import controller.Controller;
+import model.Model;
+import model.actors.actions.ActionsManager;
+import model.actors.actions.PlayerActions;
+import model.actors.person.Landlord;
+import model.calendar.Calendar;
+import model.exceptions.CustomExceptions.ActionNotAvailableException;
+import model.exceptions.CustomExceptions.PlaceNotAvailableException;
+import model.place.Places;
+import model.place.land.chunks.AnimalChunk;
+import model.place.land.chunks.PlantChunk;
+import model.progress.GameBackup;
+import view.View;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Flow;
+
+// Create role panel
+  public class RolePanelView{
+    private Model model;
+    private Controller controller;
+    private View view;
+
+    private InventoryPanelView inventoryPanelView;
+    private JPanel buttonPanel;
+    private JPanel rolePanel;
+    private JMenuBar menuBar;
+    private JMenu roleMenu;
+    private JToggleButton showInventoryButton;
+    private JMenu backupMenu;
+    private JLabel placeLabel;
+    private JLabel roleLabel;
+    private JLabel calendar;
+    private Map<String, JMenuItem> savedGameItems;
+
+
+    public RolePanelView(Model model, Controller controller, View view) throws ActionNotAvailableException{
+        this.model = model;
+        this.controller = controller;
+        this.view = view;
+        savedGameItems = new HashMap<>();
+        
+        rolePanel = createRolePanel();
+        inventoryPanelView = new InventoryPanelView(model, controller, view);
+    }
+
+    public JPanel getRolePanel() {
+        return rolePanel;
+    }
+
+    public JPanel createRolePanel() throws ActionNotAvailableException {
+        // panel creation
+        rolePanel = new JPanel(new BorderLayout());
+        rolePanel.setPreferredSize(new Dimension((int)view.getSize().getWidth(), 75));
+
+        // set the layout of the role panel
+        createMenuBar();
+        createActionsButtonPanel(model.getSelectedPerson().toString());
+
+        return rolePanel;
+    }
+
+    public void createMenuBar(){
+        /*
+         * Menu bar creation
+         */
+        // define the menu bar
+        menuBar = new JMenuBar();
+        menuBar.setLayout(new BoxLayout(menuBar, BoxLayout.X_AXIS));
+    
+        // define menu bar elements
+        roleMenu = new JMenu("Ruolo");
+        showInventoryButton = new JToggleButton("Inventory");
+        placeLabel = new JLabel("World");
+        roleLabel = new JLabel(model.getSelectedPerson().toString());
+        calendar = new JLabel("Day: " + Calendar.getInstance().getDay() +
+                "      Season: " + Calendar.getInstance().getSeason().toString().toLowerCase() +
+                "      Weather: " + Calendar.getInstance().getWeather().toString().toLowerCase());
+
+        // define role menu items
+        JMenuItem farmerItem = new JMenuItem(model.getPersons()[0].toString());
+        JMenuItem ownerItem = new JMenuItem(model.getPersons()[1].toString());
+
+    
+        showInventoryButton.setBorderPainted(false);
+        showInventoryButton.setContentAreaFilled(false);
+    
+        // action listener for inventory button
+        showInventoryButton.addActionListener(new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent e) {
+            if (showInventoryButton.isSelected()) {
+                view.getWorldPanelView().getWorldPanel().add(inventoryPanelView.createInventoryPanel());
+              showInventoryButton.setForeground(Color.WHITE);
+            } else {
+                view.getWorldPanelView().getWorldPanel().remove(inventoryPanelView.getInventoryPanel());       
+             showInventoryButton.setForeground(Color.BLACK);   
+            }
+            menuBar.revalidate();
+            menuBar.repaint();
+          }
+        });
+    
+        // disable inventory button if the role is "Landlord"
+        if(model.getSelectedPerson().toString().equals("Landlord")) {
+            showInventoryButton.setEnabled(false);
+        } else{
+          showInventoryButton.setEnabled(true);
+        }
+        
+        // action listener for role selection
+        ActionListener roleListener = new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            controller.changeRole(e.getActionCommand());
+            rolePanel.removeAll();
+            createMenuBar();
+            try {
+              controller.setOldPlace(model.getSelectedPerson().getPlace());
+              createActionsButtonPanel(model.getSelectedPerson().toString());
+            } catch (ActionNotAvailableException e1) {
+              e1.printStackTrace();
+            }
+            rolePanel.revalidate();
+            rolePanel.repaint();
+    
+            // Update the panel to disable buttons that are not available for the selected role
+            Container parent = view.getWorldPanelView().getWorldPanel().getParent();
+            parent.remove(view.getWorldPanelView().getWorldPanel());//remove the old panel
+    
+            // Creare un nuovo pannello e aggiungerlo al contenitore padre
+            try {
+                view.getWorldPanelView().createWorldPanel();
+            } catch (ActionNotAvailableException e1) {
+              e1.printStackTrace();
+            }
+            parent.add(view.getWorldPanelView().getWorldPanel());
+    
+            // Update parent panel
+            parent.revalidate();
+            parent.repaint();
+          }
+        };
+        // add action listener to the menu items
+        farmerItem.addActionListener(roleListener);
+        ownerItem.addActionListener(roleListener);
+    
+        // setup the position of the elements
+    
+        // add elements to the menu bar
+        roleMenu.add(farmerItem);
+        roleMenu.add(ownerItem);
+        menuBar.add(createBackupMenu());
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(roleMenu);
+        menuBar.add(Box.createHorizontalStrut(5));
+        menuBar.add(roleLabel);
+        menuBar.add(Box.createHorizontalStrut(50));
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(placeLabel);
+        menuBar.add(Box.createHorizontalStrut(50));
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(Box.createHorizontalStrut(5));
+        menuBar.add(calendar);
+        menuBar.add(Box.createHorizontalStrut(15));
+        menuBar.add(new JSeparator(SwingConstants.VERTICAL));
+        menuBar.add(Box.createHorizontalStrut(100));
+        menuBar.add(showInventoryButton);
+        
+        rolePanel.add(menuBar, BorderLayout.NORTH);
+      }
+
+      public void createActionsButtonPanel(String role) throws ActionNotAvailableException {
+        /*
+         * This method creates the panel that contains the buttons for the actions
+         */
+        // define actions button panel
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        // Set the selected role
+        controller.changeRole(role);
+
+        // Set the layout of the button panel
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+    
+        // iterate over the actions and add the buttons
+        for(ActionsManager.Action action : this.model.getSelectedPerson().getActions().getActions()) {
+            JButton button = new JButton(action.toString());   
+            button.setAlignmentX(Component.CENTER_ALIGNMENT);
+            button.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        controller.performAction(action,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());
+                                                                      add(controller.getSelectedItem());}});
+                        controller.setOldPlace(model.getSelectedPerson().getPlace());
+                        switch (model.getSelectedPerson().getPlace().getType()) {
+                            case ANIMAL_LAND:
+                                view.updateActualPanel(view.getWorldPanelView().getWorldPanel(), view.getLandView().createInsideLand());
+                                break;
+                            case PLANT_LAND:
+                                view.updateActualPanel(view.getWorldPanelView().getWorldPanel(), view.getLandView().createInsideLand());
+                                break;
+                            case PLANT_CHUNK:
+                                view.updateActualPanel(view.getWorldPanelView().getWorldPanel(), view.getLandView().createPlantChunkPanel((PlantChunk)model.getSelectedPerson().getPlace()));
+                                break;
+                            case ANIMAL_CHUNK:
+                                view.updateActualPanel(view.getWorldPanelView().getWorldPanel(), view.getLandView().createAnimalChunkPanel((AnimalChunk)model.getSelectedPerson().getPlace()));
+                                break;
+                            case BARN:
+                                view.updateActualPanel(view.getWorldPanelView().getWorldPanel(), view.getBarnView().createBarnPlace(model.getSelectedPerson().getPlace()));
+                                break;
+                            case MARKET:
+                                view.updateActualPanel(view.getWorldPanelView().getWorldPanel(), view.getBarnView().createBarnPlace(model.getSelectedPerson().getPlace())); 
+                                break;
+                            default:
+                                view.exceptionPopup("Place not found");
+                                break;
+                        }
+                    } catch (  IllegalArgumentException 
+                             | SecurityException 
+                             | PlaceNotAvailableException
+                             | ActionNotAvailableException e1) {
+                        view.exceptionPopup(e1.getCause().getMessage());
+                    }
+                }
+            });
+            buttonPanel.add(button);
+        }
+        updateActionButtons();
+    
+        // Update the panel
+        buttonPanel.revalidate();
+        buttonPanel.repaint();
+        rolePanel.add(buttonPanel, BorderLayout.SOUTH);
+    }
+    
+
+      public void updateActionButtons() {
+        /*
+         * Check if the selected person has the action enabled and if the action is valid
+         */
+          Set<ActionsManager.Action> actions = this.model.getSelectedPerson().getActions().getActions();
+          
+          for (Component component : buttonPanel.getComponents()) {
+              if (component instanceof JButton) {
+                  JButton button = (JButton) component;
+                  ActionsManager.Action action = ActionsManager.Action.valueOf((button.getText().replace(" ", "_")).toUpperCase());
+                  
+                  // Controlla se l'azione corrente è presente nel set di azioni del personaggio selezionato
+                  if (actions.contains(action)) {
+                      boolean isEnabled = action.isOptional() || action.isItemValid(null) || (controller.getSelectedItem() != null && action.isItemValid(controller.getSelectedItem().getType()));
+                      button.setEnabled(isEnabled);
+                  } else {
+                      button.setEnabled(false);
+                  }
+              }
+          }
+        }
+
+        
+    private JMenu createBackupMenu() {
+        /*
+        * Backup menu creation
+        */
+        GameBackup backup = controller.getBackup();
+        // panel creation
+        backupMenu = new JMenu("Backup");
+        JMenuItem saveGame = new JMenuItem("Save");
+        JMenu loadGame = new JMenu("Load");
+        JMenu deleteGame = new JMenu("Delete");
+
+        // delete game menu
+        for (String save : backup.getSavesList()) {
+            JMenuItem savedBackupToDelete = new JMenuItem(save.substring(0, save.length() - 4));
+            deleteGame.add(savedBackupToDelete);
+
+            ActionListener deleteCurrentGame = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        controller.deleteSave(save);
+                    } catch (SecurityException e1) {
+                        e1.printStackTrace();
+                    }
+                    deleteGame.remove(savedBackupToDelete); // delete from delete menu
+                    // remove from load save menu
+                    JMenuItem savedBackup = savedGameItems.get(save);
+                    if (savedBackup != null) {
+                        loadGame.remove(savedBackup);
+                        savedGameItems.remove(save);
+                    }
+                    // revalidate and repaint the frame to update the menus
+                    backupMenu.revalidate();
+                    backupMenu.repaint();
+                }
+            };
+            savedBackupToDelete.addActionListener(deleteCurrentGame);
+        }
+
+        // save game menu
+        ActionListener saveCurrentGame = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String[] saveName = new String[1];
+
+            saveName[0] = controller.saveGame();
+            JMenuItem savedBackup = new JMenuItem(saveName[0].substring(0, saveName[0].length() - 4));
+            savedGameItems.put(saveName[0], savedBackup);
+            loadGame.add(savedBackup);
+
+            // Create a new JMenuItem for the delete menu
+            JMenuItem savedBackupToDelete = new JMenuItem(saveName[0].substring(0, saveName[0].length() - 4));
+            savedBackupToDelete.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        controller.deleteSave(saveName[0]);
+                    } catch ( SecurityException e1) {
+                        e1.printStackTrace();
+                    }
+                    deleteGame.remove(savedBackupToDelete); // delete from delete menu
+                    loadGame.remove(savedGameItems.get(saveName[0])); // remove from load save menu
+                    savedGameItems.remove(saveName[0]); // remove from savedGameItems map
+
+                    // revalidate and repaint the frame to update the menus
+                    backupMenu.revalidate();
+                    backupMenu.repaint();
+                }
+            });
+
+            // Add the new JMenuItem to the delete menu
+            deleteGame.add(savedBackupToDelete);
+
+            // revalidate and repaint the frame to update the menus
+            backupMenu.revalidate();
+            backupMenu.repaint();
+        }
+        };
+        saveGame.addActionListener(saveCurrentGame);
+
+        // load game menu
+        for (String save : backup.getSavesList()) {
+            JMenuItem savedBackup = new JMenuItem(save.substring(0, save.length() - 4));
+            savedBackup.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    controller.loadGame(save);
+                    view.getContentPane().removeAll();
+                    try {
+                        // rebuild the frame
+                        view.getContentPane().add(createRolePanel());
+                        view.getContentPane().add(view.getWorldPanelView().createWorldPanel());
+                    } catch (ActionNotAvailableException e1) {
+                        e1.printStackTrace();
+                    }
+                    // revalidate and repaint the frame to update the menus
+                    backupMenu.revalidate();
+                    backupMenu.repaint();
+                }
+            });
+            loadGame.add(savedBackup);
+            savedGameItems.put(save, savedBackup);
+        }
+
+        // add elements to the menu bar
+        backupMenu.add(saveGame);
+        backupMenu.add(loadGame);
+        backupMenu.add(deleteGame);
+        return backupMenu;
+    }
+
+
+    public void updateLabels() throws ActionNotAvailableException{
+        /*
+            * Update the labels with the new values
+            */
+        this.roleLabel.setText(this.model.getSelectedPerson().toString());
+        this.placeLabel.setText((this.model.getSelectedPerson().getPlace() == null)? "World" : this.model.getSelectedPerson().getPlace().getType().toString());
+        this.calendar.setText((this.model.getSelectedPerson().toString() == "Farmer")?("Day: " + this.model.getCalendar().getDay() + 
+                                                                                       "      Season: " + this.model.getCalendar().getSeason().toString().toLowerCase() +
+                                                                                       "      Weather: " + this.model.getCalendar().getWeather().toString().toLowerCase()) : 
+                                                                                       "Day: " + this.model.getCalendar().getDay() +
+                                                                                       "      Balance: " + ((Landlord)(this.model.getSelectedPerson())).getBalance());
+                                                                                
+        // Update the panel
+        rolePanel.revalidate();
+        rolePanel.repaint();
+    }
+
+    public JMenu getRoleMenu() {
+        /*
+         * Return the role menu
+         */
+        return roleMenu;
+    }
+
+    public JToggleButton getShowInventoryButton() {
+        /*
+         * Return the show inventory button
+         */
+        return showInventoryButton;
+    }
+
+    public void updateRolePanelView() throws ActionNotAvailableException{
+        /*
+         * Update the role panel view
+         */
+        // update the action buttons
+        rolePanel.remove(buttonPanel);
+        createActionsButtonPanel(model.getSelectedPerson().toString());
+        //System.out.println((buttonPanel.getComponents()) == null?"none": ((JButton)(buttonPanel.getComponents()[0])).getText());
+
+        // update the labels
+        updateLabels();
+    }
+}

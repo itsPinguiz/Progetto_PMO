@@ -51,21 +51,26 @@ public class AnimalLand extends LandAbstract {
     //update the animals in the land
     @Override
     public void update() {
-        this.animalChunks.forEach(animalChunks -> {animalChunks.update();
-                                                   int count = 0;
-                                                   if (animalChunks.getAnimal().areProductsAvailable()){
-                                                        count++;
-                                                   }
-                                                   if (count == 0){
-                                                    this.getActions().updateActions(new HashSet<>(){{
-                                                        add(Action.GET_ALL_RESOURCES);
-                                                        }}, false);
-                                                   } else {
-                                                    this.getActions().updateActions(new HashSet<>(){{
-                                                        add(Action.GET_ALL_RESOURCES);
-                                                        }}, true);
-                                                   }
-                                                });
+        int count = 0;
+        for (AnimalChunk chunk: this.animalChunks){
+            if (chunk.getAnimal() == null){
+                return;
+            }
+            chunk.getAnimal().update();
+            
+            if (chunk.getAnimal().areProductsAvailable()){
+                count++;
+            }
+        }
+        if (count == 0 || this.getNumElements() == 0){
+            this.getActions().updateActions(new HashSet<>(){{
+                add(Action.GET_ALL_RESOURCES);
+                }}, false);
+            } else {
+            this.getActions().updateActions(new HashSet<>(){{
+                add(Action.GET_ALL_RESOURCES);
+                }}, true);
+            }
     }
 
 }

@@ -21,6 +21,7 @@ public class Main {
             SwingUtilities.invokeLater(() -> {
                 View view = new View(model,tmpController);
                 tmpController.setView(view); // Aggiungi questa linea
+                view.updateMVC(tmpController, model);
                 view.setVisible(true);
         });
         } catch (NoItemFoundException | InventoryIsFullException e) {

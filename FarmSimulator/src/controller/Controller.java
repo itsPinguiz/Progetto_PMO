@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import model.Model;
 import model.actors.actions.ActionsManager.Action;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
+import model.inventory.Inventory;
+import model.item.Item;
 import model.place.Place;
 import model.progress.GameBackup;
 import view.View;
@@ -15,12 +17,19 @@ public class Controller {
     private View view;
     private Model model;
     private GameBackup backup;
+    private Item selectedItem;
+    private Inventory oldInventory;
+    private Place oldPlace;
 
     // constructor
     public Controller(View view,Model model) {
         this.view = view;
         this.model = model;
         this.backup = new GameBackup(model);
+
+        this.oldInventory = null;
+        this.selectedItem = null;
+        this.oldPlace = null;
     }
 
     // get model
@@ -105,6 +114,30 @@ public class Controller {
         Place oldPlace = model.getSelectedPerson().getPlace();
         model.getSelectedPerson().getActions().leave();
         return oldPlace;
+    }
+
+    public Place getOldPlace(){
+        return oldPlace;
+    }
+
+    public Inventory getOldInventory(){
+        return oldInventory;
+    }
+
+    public Item getSelectedItem(){
+        return selectedItem;
+    }
+
+    public void setOldPlace(Place p){
+        oldPlace = p;
+    }
+
+    public void setOldInventory(Inventory i){
+        oldInventory = i;
+    }
+
+    public void setSelectedItem(Item i){
+        selectedItem = i;
     }
 
     public void setView(View view) {
