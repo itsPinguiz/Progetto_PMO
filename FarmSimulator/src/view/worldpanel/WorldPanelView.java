@@ -75,16 +75,15 @@ public class WorldPanelView {
         JButton nextDay = new JButton("Next day");
         nextDay.addActionListener(new ActionListener() {
         @Override
-        public void actionPerformed(ActionEvent e) {
-            controller.updateModel();
-            try {
-            controller.setOldPlace(model.getSelectedPerson().getPlace());
-            view.updateActualPanel(worldPanel, createWorldPanel());
-            } catch (ActionNotAvailableException e1) {
-            e1.printStackTrace();
+            public void actionPerformed(ActionEvent e) {
+                controller.updateModel();
+                try {
+                controller.setOldPlace(model.getSelectedPerson().getPlace());
+                view.updateActualPanel(worldPanel, createWorldPanel());
+                } catch (ActionNotAvailableException e1) {
+                e1.printStackTrace();
+                }
             }
-        }
-    
         });
 
         GridBagConstraints c = new GridBagConstraints();
