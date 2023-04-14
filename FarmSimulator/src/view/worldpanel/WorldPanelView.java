@@ -42,16 +42,19 @@ public class WorldPanelView {
         JPanel barn = new JPanel(new GridBagLayout());
         JPanel landsPanel = new JPanel(new GridLayout(3, 3,40,40));
 
+        int landNumber = 1;
+
         // enable the possibility to change the role
         this.view.getRolePanelView().getRoleMenu().setEnabled(true);
 
         // add the land buttons
         for (Place land : this.model.getMap().get(1)) {
-            JButton button = new JButton(land.getType().toString());
+            JButton button = new JButton(landNumber+". "+land.getType().toString());
             button.addActionListener(changePlaceListener(view.getLandView(),"createInsideLand",land,false,false));
             landsPanel.add(button);
             // disable land button if the role is not the farmer
             button.setEnabled((model.getSelectedPerson().toString() == "Farmer") ? true : false);
+            landNumber++;
         }
         // add the barn button
         JButton barnButton = new JButton(this.model.getMap().get(0).get(0).getType().toString());

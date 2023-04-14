@@ -508,29 +508,18 @@ public class PlayerActions extends ActionsManager{
         Item item;
         LandAbstract land;
         Landlord landlord = (Landlord)this.person;
-        
 
         // check if the item is a land or not
         if (items.get(1) instanceof LandAbstract){
-            ArrayList<ArrayList<Place>> map = (ArrayList<ArrayList<Place>>) items.get(0);
-            ArrayList<Place> places = map.get(1);
-            ArrayList<LandAbstract> lands = new ArrayList<>();
-            Market market = ((Barn)map.get(0).get(0)).getMarket();
+            ArrayList<ArrayList<Place>> map =((ArrayList<ArrayList<Place>>)items.get(2));
+            ArrayList<Place> lands = (ArrayList<Place>)map.get(1);
+            land = (LandAbstract)items.get(1);
 
-            for (Place place : places) {
-                if (place instanceof LandAbstract) {
-                    lands.add((LandAbstract) place);
-                }
-            }
-
-            //TODO:
-            /*
-            if (lands.size()<10){
-                land = market.buyLand(land, landlord.getBalance());
-                lands.add(landlord.buyLand(land, landlord.getBalance()));
+            if (lands.size()<10 && land.getPrice() <= landlord.getBalance()){
+                lands.add(land);
                 landlord.setBalance(- land.getPrice());
             }
-            */
+            
         } else {
             Market market = (Market)items.get(0);
             item = (Item)items.get(1);
@@ -543,36 +532,35 @@ public class PlayerActions extends ActionsManager{
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void sell_item(ArrayList<? extends Object> items) throws NoItemFoundException, 
                                                                     CloneNotSupportedException{
         /*
          * Method to sell item
          * to the market
          */
-        Market market = (Market)items.get(0);
-        Item item = (Item)items.get(1);
-        Landlord landlord = (Landlord)this.person;
 
-        // remove item from the barn
-        market.getBarn().getBarnInventory().removeItem(item,1);
-        // add money to the balance
-        landlord.setBalance(item.getPrice());
-    }
+        // check if the item is a land or not
+         if (items.get(1) instanceof LandAbstract){
+            ArrayList<Place> lands =((ArrayList<ArrayList<Place>>)items.get(2)).get(1);
+            LandAbstract land = (LandAbstract)items.get(1);
+            Landlord landlord = (Landlord)this.person;
 
-    @SuppressWarnings("unchecked")
-    public void sell_land(ArrayList<? extends Object> items) throws NoItemFoundException, 
-                                                                    CloneNotSupportedException{
-        /*
-         * Method to sell land
-         * to the market
-         */
-        ArrayList<LandAbstract> lands = (ArrayList<LandAbstract>)items.get(0);
-        LandAbstract land = (LandAbstract)items.get(1);
-        Landlord landlord = (Landlord)this.person;
+            if(lands.contains(land)){
+                lands.remove(land);
 
-        lands.remove(land);
+                // add money to the balance
+                landlord.setBalance(land.getPrice());
+            }
+        } else {
+            Market market = (Market)items.get(0);
+            Item item = (Item)items.get(1);
+            Landlord landlord = (Landlord)this.person;
 
-        // add money to the balance
-        landlord.setBalance(land.getPrice());
+            // remove item from the barn
+            market.getBarn().getBarnInventory().removeItem(item,1);
+            // add money to the balance
+            landlord.setBalance(item.getPrice());
+        }
     }
 }

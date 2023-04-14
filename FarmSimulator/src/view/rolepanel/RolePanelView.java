@@ -8,6 +8,8 @@ import model.actors.person.Landlord;
 import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
+import model.item.Item;
+import model.place.land.LandAbstract;
 import model.place.land.chunks.AnimalChunk;
 import model.place.land.chunks.PlantChunk;
 import model.progress.GameBackup;
@@ -199,7 +201,8 @@ import java.util.Set;
                 public void actionPerformed(ActionEvent e) {
                     try {
                         controller.performAction(action,new ArrayList<>(){{add(model.getSelectedPerson().getPlace());
-                                                                      add(controller.getSelectedItem());}});
+                                                                           add(controller.getSelectedItem());
+                                                                           add(model.getMap());}});
                         controller.setOldPlace(model.getSelectedPerson().getPlace());
                         switch (model.getSelectedPerson().getPlace().getType()) {
                             case ANIMAL_LAND:
@@ -243,27 +246,40 @@ import java.util.Set;
     }
     
 
-      public void updateActionButtons() {
+    public void updateActionButtons() {
         /*
          * Check if the selected person has the action enabled and if the action is valid
          */
-          Set<ActionsManager.Action> actions = this.model.getSelectedPerson().getActions().getActions();
-          
-          for (Component component : buttonPanel.getComponents()) {
-              if (component instanceof JButton) {
-                  JButton button = (JButton) component;
-                  ActionsManager.Action action = ActionsManager.Action.valueOf((button.getText().replace(" ", "_")).toUpperCase());
-                  
-                  // Controlla se l'azione corrente è presente nel set di azioni del personaggio selezionato
-                  if (actions.contains(action)) {
-                      boolean isEnabled = action.isOptional() || action.isItemValid(null) || (controller.getSelectedItem() != null && action.isItemValid(controller.getSelectedItem().getType()));
-                      button.setEnabled(isEnabled);
-                  } else {
-                      button.setEnabled(false);
-                  }
-              }
-          }
+        Set<ActionsManager.Action> actions = this.model.getSelectedPerson().getActions().getActions();
+    
+        for (Component component : buttonPanel.getComponents()) {
+            if (component instanceof JButton) {
+                JButton button = (JButton) component;
+                ActionsManager.Action action = ActionsManager.Action.valueOf((button.getText().replace(" ", "_")).toUpperCase());
+    
+                // Controlla se l'azione corrente è presente nel set di azioni del personaggio selezionato
+                if (actions.contains(action)) {
+                    boolean isEnabled = action.isOptional();
+    
+                    if (controller.getSelectedItem() != null) {
+                        if (controller.getSelectedItem() instanceof Item) {
+                            isEnabled = isEnabled || action.isItemValid(((Item)(controller.getSelectedItem())).getType(), null);
+                        } else if (controller.getSelectedItem() instanceof LandAbstract) {
+                            isEnabled = isEnabled || action.isItemValid(null, (LandAbstract) controller.getSelectedItem());
+                        }
+                    } else {
+                        isEnabled = isEnabled || action.isItemValid(null, null);
+                    }
+    
+                    button.setEnabled(isEnabled);
+                } else {
+                    button.setEnabled(false);
+                }
+            }
         }
+    }
+    
+    
 
         
     private JMenu createBackupMenu() {

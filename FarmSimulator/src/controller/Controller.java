@@ -17,7 +17,7 @@ public class Controller {
     private View view;
     private Model model;
     private GameBackup backup;
-    private Item selectedItem;
+    private Object selectedItem;
     private Inventory oldInventory;
     private Place oldPlace;
 
@@ -124,7 +124,7 @@ public class Controller {
         return oldInventory;
     }
 
-    public Item getSelectedItem(){
+    public Object getSelectedItem(){
         return selectedItem;
     }
 
@@ -136,7 +136,7 @@ public class Controller {
         oldInventory = i;
     }
 
-    public void setSelectedItem(Item i){
+    public void setSelectedItem(Object i){
         selectedItem = i;
     }
 

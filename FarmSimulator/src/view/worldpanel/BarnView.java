@@ -3,6 +3,7 @@ package view.worldpanel;
 import javax.swing.*;
 
 import controller.Controller;
+import model.Constants;
 import model.Model;
 import model.actors.person.Landlord;
 import model.item.Item;
@@ -10,6 +11,7 @@ import model.item.ItemType;
 import model.place.Place;
 import model.place.barn.Barn;
 import model.place.barn.market.Market;
+import model.place.land.AnimalLand;
 import model.place.land.PlantLand;
 import view.custom.DeselectableButtonGroup;
 import view.View;
@@ -30,6 +32,7 @@ public class BarnView {
     JPanel landMarketPanel;
     JButton exitButton;
     DeselectableButtonGroup buttonGroup;
+    JTabbedPane tabbedPane;
 
     // constructor
     public BarnView(Model model, Controller controller, View view) {
@@ -48,9 +51,8 @@ public class BarnView {
         insideBarnPanel.setPreferredSize(new Dimension((int)view.getSize().getWidth(), 500));
         marketPanel = new JPanel(new GridLayout(4, 3,20,20));
         marketPanel.setPreferredSize(new Dimension(400, 500)); 
-        landMarketPanel = new JPanel(new GridLayout(3, 2,20,20));
-        landMarketPanel.setPreferredSize(new Dimension(370, 500)); 
-        JTabbedPane tabbedPane = new JTabbedPane();
+        
+        tabbedPane = new JTabbedPane();
 
         // Create a deselectable button group for the toggle buttons
         buttonGroup = new DeselectableButtonGroup();
@@ -83,47 +85,30 @@ public class BarnView {
             // create buttons for shop items
             if (marketPlace.getItemShop() != null){
                 for(Item item : marketPlace.getItemShop().getInventory()){
-                JToggleButton toggleButton = new JToggleButton("<html>" + item.getType().toString() 
-                                                                + "<br> $" + item.getPrice() +  "<html>"); 
-                toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
-                // disable the button if the player doesn't have enough money
-                if (item.getPrice() > ((Landlord)(model.getSelectedPerson())).getBalance()) {
-                toggleButton.setEnabled(false);
-                } else{
-                    toggleButton.setEnabled(true);
-                }
-                // add the button to the button group
-                buttonGroup.add(toggleButton);
-                marketPanel.add(toggleButton);
+                    JToggleButton toggleButton = new JToggleButton("<html>" + item.getType().toString() +
+                                                                   "<br> $" + item.getPrice() +  
+                                                                   "<html>"); 
+                    toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
+                    // disable the button if the player doesn't have enough money
+                    if (item.getPrice() > ((Landlord)(model.getSelectedPerson())).getBalance()) {
+                        toggleButton.setEnabled(false);
+                    } else{
+                        toggleButton.setEnabled(true);
+                    }
+                    // add the button to the button group
+                    buttonGroup.add(toggleButton);
+                    marketPanel.add(toggleButton);
                 }
             }   
             // add the exit button
             exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createBarnPlace", model.getMap().get(0).get(0), true, true));
             marketPanel.add(exitButton);
 
-            JToggleButton buyAnimalLandButton = new JToggleButton("Animal Land");
-            buyAnimalLandButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    //controller.setSelectedItem(new PlantLand()); // TODO: Fix this
-                }
-            });
 
-            JToggleButton buyPlantLandButton = new JToggleButton("Plant Land");
-            buyPlantLandButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    //controller.setSelectedItem(new PlantLand()); // TODO: Fix this
-                }
-            });    
-                    buttonGroup.add(buyAnimalLandButton);
-            buttonGroup.add(buyPlantLandButton);
-            landMarketPanel.add(buyAnimalLandButton);
-            landMarketPanel.add(buyPlantLandButton);
-    
             // create the Market tab
             tabbedPane.addTab("Item Market", marketPanel);
-            tabbedPane.addTab("Land Market", landMarketPanel);
+            createLandMarketPanel();
+    
             insideBarnPanel.add(tabbedPane,BorderLayout.EAST);
         }
     
@@ -134,7 +119,7 @@ public class BarnView {
         return insideBarnPanel;
     }
 
-    public void createBarnInventoryPanel(Barn actualPlace) {
+    private void createBarnInventoryPanel(Barn actualPlace) {
         barnInventoryPanel = new JPanel(new GridLayout(4, 3,20,20));
         barnInventoryPanel.setBorder(BorderFactory.createTitledBorder("Barn inventory"));
         barnInventoryPanel.setPreferredSize(new Dimension(380, 500));
@@ -152,4 +137,53 @@ public class BarnView {
             }
         }
     }
+
+    private void createLandMarketPanel() {
+        landMarketPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+    
+        JToggleButton buyAnimalLand = new JToggleButton("Buy Animal Land");
+        JToggleButton buyPlantLand = new JToggleButton("Buy Plant Land");
+        buttonGroup.add(buyPlantLand);
+        buttonGroup.add(buyAnimalLand);
+    
+        // create a new JPanel for the buy buttons
+        JPanel buyLandPanel = new JPanel(new GridLayout(1, 2, 20, 20));
+        buyLandPanel.setBorder(BorderFactory.createTitledBorder("Buy Lands"));
+        buyAnimalLand.setPreferredSize(new Dimension(170,100));
+
+        buyPlantLand.addActionListener(view.toggleButtonListener(buttonGroup, new PlantLand(), buyPlantLand));
+        buyAnimalLand.addActionListener(view.toggleButtonListener(buttonGroup, new AnimalLand(), buyAnimalLand));
+
+        buyAnimalLand.setEnabled(((Landlord)(model.getSelectedPerson())).getBalance()>= Constants.BASE_LAND_PRICE);
+        buyPlantLand.setEnabled(((Landlord)(model.getSelectedPerson())).getBalance()>= Constants.BASE_LAND_PRICE);
+        
+        buyLandPanel.add(buyAnimalLand);
+        buyLandPanel.add(buyPlantLand);
+        landMarketPanel.add(buyLandPanel, gbc);
+    
+        // create the sell land buttons
+        JPanel sellLandMarketPanel = new JPanel(new GridLayout(3, 2, 20, 20));
+        int landNumber = 1;
+        for (Place land : this.model.getMap().get(1)) {
+            JToggleButton toggleButton = new JToggleButton(landNumber+". "+land.getType().toString());
+            toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, land, toggleButton));
+            buttonGroup.add(toggleButton);
+            sellLandMarketPanel.add(toggleButton);
+            landNumber++;
+        }
+        sellLandMarketPanel.setBorder(BorderFactory.createTitledBorder("Sell Lands"));
+        gbc.gridy = 1;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        landMarketPanel.add(sellLandMarketPanel, gbc);
+    
+        tabbedPane.addTab("Land Market", landMarketPanel);
+    }
+    
+    
 }    

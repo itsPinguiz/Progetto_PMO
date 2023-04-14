@@ -109,12 +109,12 @@ public class View extends JFrame{
       if (rolePanelView.getShowInventoryButton().isSelected())
         rolePanelView.getShowInventoryButton().getActionListeners()[0].actionPerformed(null);
       // keep item selected and deselct if the item is not in the inventory anymore
-      if (controller.getSelectedItem() != null && controller.getSelectedItem().getNumber() == 1){
+      if (controller.getSelectedItem() != null && controller.getSelectedItem() instanceof Item && ((Item)controller.getSelectedItem()).getNumber() == 1){
         if (controller.getOldInventory()!= null && !controller.getOldInventory().getInventory().contains(controller.getSelectedItem())){
-          controller.setSelectedItem(null);;
-          controller.setOldInventory(null);;
+          controller.setSelectedItem(null);
+          controller.setOldInventory(null);
         }
-        if (((Farmer)(this.model.getSelectedPerson())).getInventory().getInventory().contains(controller.getSelectedItem())){
+        if (this.model.getSelectedPerson() instanceof Farmer && ((Farmer)(this.model.getSelectedPerson())).getInventory().getInventory().contains(controller.getSelectedItem())){
             controller.setOldInventory(((Farmer)(this.model.getSelectedPerson())).getInventory());
         } else if (this.model.getSelectedPerson().getPlace().getType() == Places.BARN){
           controller.setOldInventory(((Barn)(this.model.getSelectedPerson().getPlace())).getBarnInventory());
@@ -134,7 +134,7 @@ public class View extends JFrame{
     repaint();
   }
 
-  public ActionListener toggleButtonListener(DeselectableButtonGroup buttonGroup ,Item item, JToggleButton toggleButton){
+  public ActionListener toggleButtonListener(DeselectableButtonGroup buttonGroup ,Object item, JToggleButton toggleButton){
     /*
      * Method to create an action listener for the toggle buttons
      */
@@ -142,7 +142,7 @@ public class View extends JFrame{
       @Override
       public void actionPerformed(ActionEvent e) {
         // if the player is in the same place, keep the selected item
-        controller.setSelectedItem(buttonGroup.handleClick(toggleButton,item));
+        controller.setSelectedItem(buttonGroup.handleClick(toggleButton,(Object)item));
         getRolePanelView().updateActionButtons();
       }};
   }
