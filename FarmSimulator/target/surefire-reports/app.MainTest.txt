@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: app.MainTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.062 s <<< FAILURE! - in app.MainTest
+app.MainTest.testMethod  Time elapsed: 0.009 s  <<< FAILURE!
+java.lang.AssertionError: expected:<3> but was:<2>
+	at app.MainTest.testMethod(MainTest.java:15)
+

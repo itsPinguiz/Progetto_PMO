@@ -1,0 +1,2 @@
+Main-Class: app.Main
+Class-Path: lib/Library.jar
