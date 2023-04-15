@@ -111,7 +111,6 @@ public class WorldPanelView {
         */
         Method[] methods = c.getDeclaredMethods();
         for (Method m : methods) {
-            System.out.println();
             if (m.getName().equals(methodName)) {
                 return m;
             }

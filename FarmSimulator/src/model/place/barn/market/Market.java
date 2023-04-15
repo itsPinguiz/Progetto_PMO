@@ -12,7 +12,9 @@ import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoEnoughMoneyException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
+import model.exceptions.CustomExceptions.NoProductFoundException;
 import model.exceptions.CustomExceptions.NoSellableLandException;
+import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.inventory.Inventory;
 import model.item.Item;
 import model.item.ItemCreator;
@@ -37,7 +39,7 @@ public class Market extends Place implements MarketInt{
     private Barn barn;
     
     //constructor
-    public Market() throws NoItemFoundException, InventoryIsFullException{
+    public Market() throws NoItemFoundException, InventoryIsFullException,NoProductFoundException,NoAnimalFoundException{
         super.type = Places.MARKET;
         super.actions = new PlaceActions(this);
         this.itemShop = new Inventory(MAX_SHOP_LENGTH);

@@ -5,7 +5,9 @@ import javax.swing.SwingUtilities;
 import controller.Controller;
 import model.Model;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
+import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
+import model.exceptions.CustomExceptions.NoProductFoundException;
 import view.View;
 
 public class Main {
@@ -24,9 +26,8 @@ public class Main {
                 view.updateMVC(tmpController, model);
                 view.setVisible(true);
         });
-        } catch (NoItemFoundException | InventoryIsFullException e) {
+        } catch (NoItemFoundException | InventoryIsFullException | NoProductFoundException | NoAnimalFoundException e) {
             controller.exceptionPopup(e);
-        }
-        
+        } 
     }
 }

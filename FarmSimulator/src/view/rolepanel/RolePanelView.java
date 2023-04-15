@@ -183,7 +183,6 @@ import java.util.Set;
          */
         // define actions button panel
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
         // Set the selected role
         controller.changeRole(role);
 
@@ -192,7 +191,7 @@ import java.util.Set;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weightx = 1.0;
         constraints.weighty = 1.0;
-    
+
         // iterate over the actions and add the buttons
         for(ActionsManager.Action action : this.model.getSelectedPerson().getActions().getActions()) {
             JButton button = new JButton(action.toString());   
@@ -278,10 +277,7 @@ import java.util.Set;
             }
         }
     }
-    
-    
-
-        
+     
     private JMenu createBackupMenu() {
         /*
         * Backup menu creation
@@ -369,17 +365,6 @@ import java.util.Set;
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     controller.loadGame(save);
-                    view.getContentPane().removeAll();
-                    try {
-                        // rebuild the frame
-                        view.getContentPane().add(createRolePanel());
-                        view.getContentPane().add(view.getWorldPanelView().createWorldPanel());
-                    } catch (ActionNotAvailableException e1) {
-                        e1.printStackTrace();
-                    }
-                    // revalidate and repaint the frame to update the menus
-                    backupMenu.revalidate();
-                    backupMenu.repaint();
                 }
             });
             loadGame.add(savedBackup);
@@ -432,7 +417,6 @@ import java.util.Set;
         // update the action buttons
         rolePanel.remove(buttonPanel);
         createActionsButtonPanel(model.getSelectedPerson().toString());
-        //System.out.println((buttonPanel.getComponents()) == null?"none": ((JButton)(buttonPanel.getComponents()[0])).getText());
 
         // update the labels
         updateLabels();

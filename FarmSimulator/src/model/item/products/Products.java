@@ -14,12 +14,11 @@ import model.item.ItemType;
  ***************/
 public class Products extends Item{
 
-	public Products(ItemType.productsType currentType) {
+	public Products(ItemType.productsType currentType) throws NoProductFoundException {
 		super.status = 0;
 		super.maxNumber = 64;
 		super.type = currentType;
-		
-		try {
+	
 		switch (currentType) {
 			case MEAT:
 				super.price = Constants.MEAT_PRICE;
@@ -41,9 +40,4 @@ public class Products extends Item{
 				throw new NoProductFoundException();	
 			}
 		}
-		
-		catch (NoProductFoundException e) {
-				System.out.println(e);
-			}
-		}	
 }

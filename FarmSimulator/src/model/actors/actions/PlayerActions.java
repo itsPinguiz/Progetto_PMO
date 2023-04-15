@@ -66,7 +66,6 @@ public class PlayerActions extends ActionsManager{
             person.getActions().updateActions(person.getPlace().getActions().getActions(), false);
             method.invoke(this,argument);        
             person.getActions().updateActions(person.getPlace().getActions().getActions(), true);
-            System.out.println("Action executed: " + s.name());
         } else {
             throw new ActionNotAvailableException(s, this.availableActions);
         }

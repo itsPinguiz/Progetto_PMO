@@ -7,6 +7,8 @@ package model.item;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import model.exceptions.CustomExceptions.NoAnimalFoundException;
+import model.exceptions.CustomExceptions.NoProductFoundException;
 import model.item.animal.*;
 import model.item.plants.PlantFactory;
 import model.item.tools.factory.IronFactory;
@@ -16,7 +18,7 @@ import model.item.tools.factory.WoodFactory;
 /*******************
  * ITEMCREATOR CLASS
  ******************/
-public class ItemCreator implements Serializable{
+public class ItemCreator implements Serializable {
     
 
     private final int MAX_INVENTORY_SIZE = 4;
@@ -25,29 +27,32 @@ public class ItemCreator implements Serializable{
     private final PlantFactory plantFactory = new PlantFactory();
     private final AnimalFactory animalFactory = new AnimalFactory();
 
-    private final Item[] randomMethods = {this.ironFactory.createHoe(),
-                                          this.ironFactory.createWateringCan(),
-                                          this.ironFactory.createScissors(),
-                                          this.ironFactory.createSickle(),
-                                          this.woodFactory.createHoe(),
-                                          this.woodFactory.createScissors(),
-                                          this.woodFactory.createSickle(),
-                                          this.woodFactory.createWateringCan(),
-                                          this.plantFactory.createPotato(),
-                                          this.plantFactory.createCarrot(),
-                                          this.plantFactory.createOnion(),
-                                          this.plantFactory.createWeat(),
-                                          this.animalFactory.createCow(),
-                                          this.animalFactory.createChicken(),
-                                          this.animalFactory.createPig(),
-                                          this.animalFactory.createGoat()
-                                                };
+    private final Item[] randomMethods;
     //fields
     private ArrayList<Item> inventory;
 
     //constructor
-    public ItemCreator(){
+    public ItemCreator() throws NoAnimalFoundException, NoProductFoundException{
         this.inventory   = new ArrayList<Item>(MAX_INVENTORY_SIZE);
+        randomMethods = new Item[] {
+            this.ironFactory.createHoe(),
+            this.ironFactory.createWateringCan(),
+            this.ironFactory.createScissors(),
+            this.ironFactory.createSickle(),
+            this.woodFactory.createHoe(),
+            this.woodFactory.createScissors(),
+            this.woodFactory.createSickle(),
+            this.woodFactory.createWateringCan(),
+            this.plantFactory.createPotato(),
+            this.plantFactory.createCarrot(),
+            this.plantFactory.createOnion(),
+            this.plantFactory.createWeat(),
+            this.animalFactory.createCow(),
+            this.animalFactory.createChicken(),
+            this.animalFactory.createPig(),
+            this.animalFactory.createGoat()
+        };
+
     }
 
     private void createStandardInventory(ToolFactory factory){

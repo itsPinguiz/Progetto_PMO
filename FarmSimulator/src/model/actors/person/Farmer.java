@@ -1,10 +1,11 @@
 /************************************************************
  * IMPORT AND PACKAGE
  ************************************************************/
+package model.actors.person;
 
- package model.actors.person;
-
- import model.actors.actions.PlayerActions;
+import model.actors.actions.PlayerActions;
+import model.exceptions.CustomExceptions.NoProductFoundException;
+import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.inventory.Inventory;
 import model.item.ItemCreator;
  
@@ -25,7 +26,7 @@ import model.item.ItemCreator;
       * 
       * Initializes the farmer's actions, place, inventory and item creator.
       */
-     public Farmer(){
+     public Farmer() throws NoAnimalFoundException, NoProductFoundException{
          super.personAction = new PlayerActions(this);
          super.place = null;
          this.inventory = new Inventory(MAX_INVENTORY_SIZE);

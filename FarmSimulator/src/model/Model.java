@@ -8,6 +8,8 @@ import model.actors.person.Person;
 import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
+import model.exceptions.CustomExceptions.NoProductFoundException;
+import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.item.ItemCreator;
 import model.item.ItemType.Plants;
 import model.item.ItemType.productsType;
@@ -44,7 +46,7 @@ public class Model implements Serializable{
     private ArrayList<ArrayList<Place>> map;
 
     // constructor
-    public Model() throws NoItemFoundException, InventoryIsFullException{
+    public Model() throws NoItemFoundException, InventoryIsFullException,NoAnimalFoundException,NoProductFoundException{
         //attributes initialization
         this.farmer = new Farmer();
         this.landlord = new Landlord();

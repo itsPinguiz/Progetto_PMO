@@ -9,6 +9,8 @@ import java.util.Iterator;
 import model.actors.actions.PlaceActions;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
+import model.exceptions.CustomExceptions.NoProductFoundException;
+import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.inventory.Inventory;
 import model.item.Item;
 import model.item.animal.AnimalAbstract;
@@ -27,7 +29,7 @@ public class Barn extends Place{
     private final int MAX_BARN_LENGTH = 40;
 
     //constructor
-    public Barn() throws NoItemFoundException, InventoryIsFullException{
+    public Barn() throws NoItemFoundException, InventoryIsFullException, NoAnimalFoundException, NoProductFoundException{
         super.type = Places.BARN;
         super.actions = new PlaceActions(this);
         this.barnInventory = new Inventory(MAX_BARN_LENGTH);

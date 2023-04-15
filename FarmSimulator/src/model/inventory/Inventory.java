@@ -43,8 +43,6 @@ public class Inventory implements InventoryInterface {
         // If the item is not in the inventory, add it to the inventory
     	else if(this.inventory.size() < maxSize){
                 this.inventory.add(newTool);
-                System.out.println("\n" + newTool.getType() +
-                                   " has been added in your inventory.");
             }
         else{
                 throw new InventoryIsFullException();
@@ -67,7 +65,7 @@ public class Inventory implements InventoryInterface {
             } 
             else {
                 // If the item to remove has a larger quantity than the existing item, print an error message
-                System.out.println("\nYou only have " + itemToRemove.getNumber() + " " + itemToRemove.getType() + " in your inventory.");
+                // TODO: throw an exception
             }
         }
         else{
