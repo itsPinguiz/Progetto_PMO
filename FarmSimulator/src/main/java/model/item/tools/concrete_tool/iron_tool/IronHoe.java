@@ -16,7 +16,7 @@ public class IronHoe extends AbstractTool {
     
     public IronHoe(){
         super.type = ItemType.Tools.HOE;
-        ((ItemType.Tools)(super.type)).setMaterial(Material.IRON);
+        super.material = Material.IRON;
         super.status = 100;
         super.price = Constants.IRON_HOE_PRICE;
         super.number = 1;

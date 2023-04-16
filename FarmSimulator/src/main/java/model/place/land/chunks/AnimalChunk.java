@@ -1,6 +1,9 @@
 package model.place.land.chunks;
 
+import java.util.HashSet;
+
 import model.actors.actions.PlaceActions;
+import model.actors.actions.ActionsManager.Action;
 import model.item.animal.AnimalAbstract;
 import model.place.Places;
 import model.place.land.AnimalLand;
@@ -50,6 +53,10 @@ public class AnimalChunk extends LandAbstract {
             if (animal.getHunger() >= 100 || animal.getStatus() <= 0){
                 this.animal= null;
             }
+            this.getActions().updateActions( new HashSet<>(){{
+                                             add(Action.GET_RESOURCES);
+                                             }}, this.getAnimal().areProductsAvailable()?true:false);
+            
         }
     }
 }

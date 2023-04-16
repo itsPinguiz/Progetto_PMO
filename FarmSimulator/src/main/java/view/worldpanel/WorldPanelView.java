@@ -83,7 +83,7 @@ public class WorldPanelView {
                 controller.setOldPlace(model.getSelectedPerson().getPlace());
                 view.updateActualPanel(worldPanel, createWorldPanel());
                 } catch (ActionNotAvailableException e1) {
-                e1.printStackTrace();
+                    view.exceptionPopup(e1.getCause().getMessage());
                 }
             }
         });
@@ -139,8 +139,8 @@ public class WorldPanelView {
                         IllegalArgumentException | 
                         InvocationTargetException | 
                         ActionNotAvailableException e1) {
-                e1.printStackTrace();
-            }
+                    view.exceptionPopup(e1.getCause().getMessage());
+                }
             }
         };
     }

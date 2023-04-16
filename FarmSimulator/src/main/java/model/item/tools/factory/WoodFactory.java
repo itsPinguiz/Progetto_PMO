@@ -24,4 +24,7 @@ public class WoodFactory implements ToolFactory {
     public AbstractTool createWateringCan(){
         return new WoodWateringCan();
     }
+    public AbstractTool createFertilizer(){
+        return new WoodFertilizer();
+    }
 }

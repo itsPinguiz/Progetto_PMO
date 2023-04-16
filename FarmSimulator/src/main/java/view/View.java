@@ -75,7 +75,7 @@ public class View extends JFrame{
       contentPane.add(rolePanelView.createRolePanel());
       contentPane.add(worldPanelView.createWorldPanel());
     } catch (ActionNotAvailableException e) {
-      e.printStackTrace();
+      exceptionPopup(e.getCause().getMessage());
     }
   }
 

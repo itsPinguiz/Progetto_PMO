@@ -82,8 +82,8 @@ import java.util.Set;
         placeLabel = new JLabel("World");
         roleLabel = new JLabel(model.getSelectedPerson().toString());
         calendar = new JLabel("Day: " + Calendar.getInstance().getDay() +
-                "      Season: " + Calendar.getInstance().getSeason().toString().toLowerCase() +
-                "      Weather: " + Calendar.getInstance().getWeather().toString().toLowerCase());
+                "      Season: " + Calendar.getInstance().getSeason().toString() +
+                "      Weather: " + Calendar.getInstance().getWeather().toString());
 
         // define role menu items
         JMenuItem farmerItem = new JMenuItem(model.getPersons()[0].toString());
@@ -126,7 +126,7 @@ import java.util.Set;
               controller.setOldPlace(model.getSelectedPerson().getPlace());
               createActionsButtonPanel(model.getSelectedPerson().toString());
             } catch (ActionNotAvailableException e1) {
-              e1.printStackTrace();
+                view.exceptionPopup(e1.getCause().getMessage());
             }
             rolePanel.revalidate();
             rolePanel.repaint();
@@ -139,7 +139,7 @@ import java.util.Set;
             try {
                 view.getWorldPanelView().createWorldPanel();
             } catch (ActionNotAvailableException e1) {
-              e1.printStackTrace();
+                view.exceptionPopup(e1.getCause().getMessage());
             }
             parent.add(view.getWorldPanelView().getWorldPanel());
     
@@ -300,7 +300,7 @@ import java.util.Set;
                     try {
                         controller.deleteSave(save);
                     } catch (SecurityException e1) {
-                        e1.printStackTrace();
+                        view.exceptionPopup(e1.getCause().getMessage());
                     }
                     deleteGame.remove(savedBackupToDelete); // delete from delete menu
                     // remove from load save menu
@@ -336,7 +336,7 @@ import java.util.Set;
                     try {
                         controller.deleteSave(saveName[0]);
                     } catch ( SecurityException e1) {
-                        e1.printStackTrace();
+                        view.exceptionPopup(e1.getCause().getMessage());
                     }
                     deleteGame.remove(savedBackupToDelete); // delete from delete menu
                     loadGame.remove(savedGameItems.get(saveName[0])); // remove from load save menu

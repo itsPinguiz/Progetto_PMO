@@ -17,7 +17,7 @@ public class IronScissors extends AbstractTool {
     public IronScissors(){
         
         super.type = ItemType.Tools.SCISSORS;
-        ((ItemType.Tools)(super.type)).setMaterial(Material.IRON);
+        super.material = Material.IRON;
         super.status = 100;
         super.price = Constants.IRON_SCISSORS_PRICE;
         super.number = 1;

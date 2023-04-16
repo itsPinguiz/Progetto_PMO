@@ -6,6 +6,7 @@ package model.item;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.exceptions.CustomExceptions.NoProductFoundException;
@@ -30,19 +31,22 @@ public class ItemCreator implements Serializable {
     private final Item[] randomMethods;
     //fields
     private ArrayList<Item> inventory;
+    private Random random;
 
     //constructor
     public ItemCreator() throws NoAnimalFoundException, NoProductFoundException{
         this.inventory   = new ArrayList<Item>(MAX_INVENTORY_SIZE);
         randomMethods = new Item[] {
-            this.ironFactory.createHoe(),
-            this.ironFactory.createWateringCan(),
-            this.ironFactory.createScissors(),
             this.ironFactory.createSickle(),
             this.woodFactory.createHoe(),
+            this.woodFactory.createFertilizer(),
             this.woodFactory.createScissors(),
             this.woodFactory.createSickle(),
             this.woodFactory.createWateringCan(),
+            this.ironFactory.createHoe(),
+            this.ironFactory.createFertilizer(),
+            this.ironFactory.createWateringCan(),
+            this.ironFactory.createScissors(),
             this.plantFactory.createPotato(),
             this.plantFactory.createCarrot(),
             this.plantFactory.createOnion(),
@@ -52,7 +56,7 @@ public class ItemCreator implements Serializable {
             this.animalFactory.createPig(),
             this.animalFactory.createGoat()
         };
-
+        this.random = new Random();
     }
 
     private void createStandardInventory(ToolFactory factory){
@@ -60,6 +64,7 @@ public class ItemCreator implements Serializable {
         this.inventory.add(factory.createSickle());
         this.inventory.add(factory.createScissors());
         this.inventory.add(factory.createWateringCan());
+        this.inventory.add(factory.createFertilizer());
     }
 
     public ArrayList<Item> getWoodSet(){
@@ -68,7 +73,7 @@ public class ItemCreator implements Serializable {
     }
     
     public Item getRandomItem(){
-        return this.randomMethods[(int)((Math.random() * this.randomMethods.length))];
+        return this.randomMethods[random.nextInt(randomMethods.length - 1)];
     }
 
 }

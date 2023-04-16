@@ -5,6 +5,8 @@ public class Constants {
     public final static int MAX_GROWTH = 100;
     public final static int GROWTH_RATE = 1;
 
+    public final static int HARVEST_MULTIPLIER = 3;
+
     public final static int WHEAT_PRICE = 10;
     public final static int ONION_PRICE = 15;
     public final static int POTATO_PRICE = 20;
@@ -29,19 +31,22 @@ public class Constants {
     public final static int GIVE_WATER_MAX = 10;
 
     // TOOL 
-    public final static int SICKLE_MODIFIER = 5;
+    public final static int IRON_MODIFIER = 7;
+    public final static int WOOD_MODIFIER = 5;
     // TOOL PRICE
     // iron tool
     public final static int IRON_HOE_PRICE = 24;
     public final static int IRON_SCISSORS_PRICE = 20;
     public final static int IRON_SICKLE_PRICE = 30;
     public final static int IRON_WATERINGCAN_PRICE = 10;
+    public final static int IRON_FERTILIZER_PRICE = 8;
 
     // wood tool
     public final static int WOOD_HOE_PRICE = 12;
     public final static int WOOD_SCISSORS_PRICE = 10;
     public final static int WOOD_SICKLE_PRICE = 15;
     public final static int WOOD_WATERINGCAN_PRICE = 5;
+    public final static int WOOD_FERTILIZER_PRICE = 4;
 
     // fertilizer
     public final static int FERTILIZER_PRICE = 10;

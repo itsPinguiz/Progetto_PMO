@@ -13,10 +13,46 @@ import java.util.ArrayList;
 public class Calendar implements CalendarInt {
 
     public enum Seasons{
-        WINTER, SPRING, SUMMER, AUTUMN;
+        WINTER("Winter"),
+        SPRING("Spring"),
+        SUMMER("Summer"),
+        AUTUMN("Autumn");
+
+        private String name;
+
+        Seasons(String name){
+            this.name = name;
+        }
+
+        public String getName(){
+            return this.name;
+        }
+
+        @Override
+        public String toString() {
+            return getName();
+        }
     }
     public enum Weather{
-        SUNNY, CLOUDY, RAINY, SNOWY;
+        SUNNY("Sunny"),
+        CLOUDY("Cloudy"),
+        RAINY("Rainy"),
+        SNOWY("Snowy");
+
+        private String name;
+
+        Weather(String name){
+            this.name = name;
+        }
+
+        public String getName(){
+            return this.name;
+        }
+
+        @Override
+        public String toString() {
+            return getName();
+        }
     }
     
     public static Calendar instance;

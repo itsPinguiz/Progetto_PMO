@@ -17,4 +17,5 @@ public interface ToolFactory extends Serializable {
     AbstractTool createScissors();
     AbstractTool createSickle();
     AbstractTool createWateringCan();
+    AbstractTool createFertilizer();
 }

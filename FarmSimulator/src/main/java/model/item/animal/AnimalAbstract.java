@@ -62,7 +62,14 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
 
     //method for getting the products
     public ArrayList<Products> getProducts() {
-        ArrayList<Products> tmp = this.typeProduct;
+        ArrayList<Products> tmp = new ArrayList<>();
+        for (Item item : typeProduct) {
+            try {
+                tmp.add((Products)item.clone());
+            } catch (CloneNotSupportedException e) {
+                // gestione dell'eccezione
+            }
+        }
         for (int i = 0; i < this.typeProduct.size(); i++){
             this.typeProduct.get(i).setNumber(0);
         }
@@ -73,6 +80,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     public boolean areProductsAvailable(){
         for (int i = 0; i < this.typeProduct.size(); i++){
             if (this.typeProduct.get(i).getNumber() > 0){
+                System.out.println(this.typeProduct.get(i).toString() + this.typeProduct.get(i).getNumber());
                 return true;
             }
         }
@@ -109,6 +117,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
                 this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() - 5);
             }
         }
+
     }
 
     //method for updating the animal

@@ -51,7 +51,7 @@ public class Barn extends Place{
 
     //update market and animals in the barn
     
-    public void updateBarn(){
+    public void updateBarn() throws NoItemFoundException, InventoryIsFullException{
         //update market
         this.market.updateItemShop();
         //update animals

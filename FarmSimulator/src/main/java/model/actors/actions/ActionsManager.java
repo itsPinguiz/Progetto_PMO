@@ -174,7 +174,7 @@ public abstract class ActionsManager implements Actions {
         GET_RESOURCES("Get Resources", new DualItemValidator() {
             @Override
             public boolean validateItemType(ItemType item) {
-                return item instanceof ItemType.Animals;
+                return item == ItemType.Tools.SCISSORS || item == null;
             }
     
             @Override

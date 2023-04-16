@@ -5,9 +5,10 @@ import java.util.ArrayList;
 
 import model.Model;
 import model.actors.actions.ActionsManager.Action;
+import model.exceptions.CustomExceptions.InventoryIsFullException;
+import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
 import model.inventory.Inventory;
-import model.item.Item;
 import model.place.Place;
 import model.progress.GameBackup;
 import view.View;
@@ -76,7 +77,7 @@ public class Controller {
             view.updateMVC(controllerInstance, model);
 
         } catch (Exception e1) {    
-            e1.printStackTrace();
+            view.exceptionPopup(e1.getCause().getMessage());
         }
     }
 
@@ -148,13 +149,16 @@ public class Controller {
 
     // update model 
     public void updateModel(){
-        model.update();
+        try {
+            model.update();
+        } catch (InventoryIsFullException | NoItemFoundException | CloneNotSupportedException e) {
+            this.exceptionPopup(e);
+        }
     }
 
     // exception popup
     public void exceptionPopup(Exception exception){
         view.exceptionPopup(exception.getCause().getMessage());
-        exception.printStackTrace();
     }
 
 }

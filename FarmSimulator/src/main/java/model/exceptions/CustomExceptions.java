@@ -6,9 +6,11 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 import model.actors.actions.ActionsManager.Action;
+import model.item.Item;
 import model.item.ItemType;
 import model.place.Place;
 import model.place.Places;
+import model.place.land.LandAbstract;
 
 public class CustomExceptions {
     public static class ActionNotAvailableException extends Exception {
@@ -75,8 +77,10 @@ public class CustomExceptions {
     }
 
     public static class CannotBuyItemException extends Exception {
-        public CannotBuyItemException(){
-            super("Cannot perform action since the item is not in the market.");
+        public CannotBuyItemException(Object item){
+            super("Cannot perform action since "+ ((item instanceof LandAbstract)? ((LandAbstract)item).getType().toString()
+                                                                                 : ((Item)item).getType().toString() )+ 
+                                                                                 " is not in the market.");
         }   
     }
 
@@ -107,6 +111,20 @@ public class CustomExceptions {
     public static class MinimumHungerException extends Exception {
         public MinimumHungerException(){
             super("Cannot perform action since the hunger level is already at minimum.");
+        }
+    }
+
+    public static class CannotSellItemException extends Exception {
+        public CannotSellItemException(Object item){
+            super("Cannot perform action since "+ ((item instanceof LandAbstract)? ((LandAbstract)item).getType().toString()
+                                                                                   : ((Item)item).getType().toString() )+ 
+                                                                                   " is not in the barn.");
+        }
+    }
+
+    public static class NotEnoughItemsException extends Exception {
+        public NotEnoughItemsException(int amount, int neededAmount){
+            super("Cannot perform action since you don't have enough items. \n You have: " + amount + " \n Needed: " + neededAmount);
         }
     }
 }

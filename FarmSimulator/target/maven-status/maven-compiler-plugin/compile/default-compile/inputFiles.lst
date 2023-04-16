@@ -10,7 +10,6 @@ C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\ac
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\view\View.java
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\item\plants\species\Plant.java
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\inventory\InventoryInterface.java
-C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\item\tools\Fertilizer.java
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\controller\Controller.java
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\actors\person\Landlord.java
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\item\products\Products.java
@@ -60,6 +59,8 @@ C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\ac
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\item\plants\PlantAbstract.java
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\item\animal\AnimalInterface.java
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\item\Item.java
+C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\item\tools\concrete_tool\iron_tool\IronFertilizer.java
+C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\item\tools\concrete_tool\wood_tool\WoodFertilizer.java
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\view\rolepanel\RolePanelView.java
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\item\plants\PlantFactory.java
 C:\Users\pingu\MySoftware\Java\Progetto_PMO\FarmSimulator\src\main\java\model\place\land\LandAbstract.java

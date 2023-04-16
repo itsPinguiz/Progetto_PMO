@@ -59,19 +59,22 @@ public abstract class Item implements Cloneable,Serializable,ItemInterface,Compa
     public int compareTo(Item otherItem) {
         if (this.type.equals(otherItem.getType())) {
             return 0;
-        } else if (this.type instanceof ItemType.Plants) {
+        } else if (this.type instanceof ItemType.Plants && otherItem.getType() instanceof ItemType.Animals) {
             return -1;
-        } else if (this.type instanceof ItemType.Animals && !(otherItem.getType() instanceof ItemType.Plants)) {
+        } else if (this.type instanceof ItemType.Plants && otherItem.getType() instanceof ItemType.Tools) {
             return -1;
-        } else if (this.type instanceof ItemType.Tools && !(otherItem.getType() instanceof ItemType.Plants) && !(otherItem.getType() instanceof ItemType.Animals)) {
+        } else if (this.type instanceof ItemType.Plants && otherItem.getType() instanceof ItemType.productsType) {
             return -1;
-        } else if (this.type instanceof ItemType.productsType && !(otherItem.getType() instanceof ItemType.Plants) && !(otherItem.getType() instanceof ItemType.Animals) && !(otherItem.getType() instanceof ItemType.Tools)) {
+        } else if (this.type instanceof ItemType.Animals && otherItem.getType() instanceof ItemType.Tools) {
+            return -1;
+        } else if (this.type instanceof ItemType.Animals && otherItem.getType() instanceof ItemType.productsType) {
+            return -1;
+        } else if (this.type instanceof ItemType.Tools && otherItem.getType() instanceof ItemType.productsType) {
             return -1;
         } else {
             return 1;
         }
-    }
-    
+    }     
 }
     
 

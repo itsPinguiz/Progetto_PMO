@@ -17,7 +17,6 @@ import model.item.ItemType.productsType;
 import model.item.animal.AnimalFactory;
 import model.item.plants.species.Plant;
 import model.item.products.Products;
-import model.item.tools.Fertilizer;
 import model.place.Place;
 import model.place.barn.Barn;
 import model.place.land.AnimalLand;
@@ -76,7 +75,6 @@ public class Model implements Serializable{
         }});
         
         this.farmer.getInventory().addItem(new AnimalFactory().createChicken());
-        this.farmer.getInventory().addItem(new Fertilizer());
 
         for(int i = 0; i < 70; i++){
             b.getBarnInventory().addItem(new Products(productsType.MEAT));
@@ -86,7 +84,7 @@ public class Model implements Serializable{
         b.getBarnInventory().addItem(new Plant(Plants.CARROT));
     }
 
-    public void update(){
+    public void update() throws InventoryIsFullException,NoItemFoundException, CloneNotSupportedException{
         /*
          * Method to update the world entities
          */

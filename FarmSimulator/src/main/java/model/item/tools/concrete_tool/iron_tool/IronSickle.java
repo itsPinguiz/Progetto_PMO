@@ -17,7 +17,7 @@ public class IronSickle extends AbstractTool{
     public IronSickle(){
         
         super.type = ItemType.Tools.SICKLE;
-        ((ItemType.Tools)(super.type)).setMaterial(Material.IRON);
+        super.material = Material.IRON;
         super.status = 100;
         super.price = Constants.IRON_SICKLE_PRICE;
         super.number = 1;

@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
+import model.exceptions.CustomExceptions.NotEnoughItemsException;
 import model.item.Item;
 
 public class Inventory implements InventoryInterface {
@@ -52,7 +53,7 @@ public class Inventory implements InventoryInterface {
         return check;
     }
 
-    public void removeItem(Item itemToRemove, int numItemReq) throws NoItemFoundException{
+    public void removeItem(Item itemToRemove, int numItemReq) throws NoItemFoundException, NotEnoughItemsException{
 
         if(this.inventory.contains(itemToRemove)){
 
@@ -65,8 +66,7 @@ public class Inventory implements InventoryInterface {
                 itemToRemove.setNumber(itemToRemove.getNumber() - numItemReq);
             } 
             else {
-                // If the item to remove has a larger quantity than the existing item, print an error message
-                // TODO: throw an exception
+                throw new NotEnoughItemsException(itemToRemove.getNumber(), numItemReq);
             }
         }
         else{

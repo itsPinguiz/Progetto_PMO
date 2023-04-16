@@ -17,7 +17,7 @@ public class WoodWateringCan extends AbstractTool {
     public WoodWateringCan(){
         
         super.type = ItemType.Tools.WATERINGCAN;
-        ((ItemType.Tools)(super.type)).setMaterial(Material.WOOD);
+        super.material = Material.WOOD;
         super.status = 100;
         super.price = Constants.WOOD_WATERINGCAN_PRICE;
         super.number = 1;

@@ -5,16 +5,33 @@
 package model.item.tools;
 
 import model.item.Item;
+import model.item.ItemType.Tools.Material;
 
 public abstract class AbstractTool extends Item implements ToolInterface {
     //fields
     private ToolStatus toolStatus;
+    protected Material material;
 
     public enum ToolStatus{
-        BROKEN, 
-        NORMAL, 
-        GOOD, 
-        EXCELLENT
+        BROKEN("Broken"), 
+        NORMAL("Normal"),
+        GOOD("Good"), 
+        EXCELLENT("Excellent");
+
+        private String name;
+
+        ToolStatus(String name){
+            this.name = name;
+        }
+
+        public String getName(){
+            return this.name;
+        }
+
+        @Override
+        public String toString() {
+            return getName();
+        }
     }
 
     //constructor
@@ -45,5 +62,15 @@ public abstract class AbstractTool extends Item implements ToolInterface {
     	super.status--;
         checkToolStatus();
         return(this.toolStatus);
+    }
+
+    public ToolStatus getToolStatus(){
+        //method to get the status of the tool
+        return this.toolStatus;
+    }
+
+    public Material getMaterial(){
+        //method to get the material of the tool
+        return this.material;
     }
 }

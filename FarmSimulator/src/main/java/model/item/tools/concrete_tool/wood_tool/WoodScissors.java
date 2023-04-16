@@ -17,7 +17,7 @@ public class WoodScissors extends AbstractTool {
     public WoodScissors(){
         
         super.type = ItemType.Tools.SCISSORS;
-        ((ItemType.Tools)(super.type)).setMaterial(Material.WOOD);
+        super.material = Material.WOOD;
         super.status = 100;
         super.price = Constants.WOOD_SCISSORS_PRICE;
         super.number = 1;

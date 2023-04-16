@@ -44,8 +44,12 @@ public class Market extends Place implements MarketInt{
         super.actions = new PlaceActions(this);
         this.itemShop = new Inventory(MAX_SHOP_LENGTH);
         this.itemCreator = new ItemCreator();
-        for(int i = 0; i < MAX_SHOP_LENGTH; i++){
-            this.itemShop.addItem(this.itemCreator.getRandomItem());
+        for (int i = 0; i < MAX_SHOP_LENGTH; i++) {
+            Item item = this.itemCreator.getRandomItem();
+            while(this.itemShop.getInventory().contains(item)){
+                 item = this.itemCreator.getRandomItem();
+            }
+            this.itemShop.addItem(item);    
         }
         this.c = Calendar.getInstance();
 
@@ -64,16 +68,23 @@ public class Market extends Place implements MarketInt{
     }
     
     //update the shop
-    public void updateItemShop(){
+    public void updateItemShop() throws NoItemFoundException, InventoryIsFullException{
         if(c.getDay() % 7 == 0){
             replaceItem();
         }
     }
 
     //replace the items in the shop
-    private void replaceItem(){
-        for (int i = 0; i < itemShop.getInventory().size(); i++) {
-            this.itemShop.setItemInventory(i, this.itemCreator.getRandomItem());
+    private void replaceItem() throws NoItemFoundException, InventoryIsFullException{
+        this.itemShop.getInventory().clear();
+        for (int i = 0; i < MAX_SHOP_LENGTH; i++) {
+            Item item = this.itemCreator.getRandomItem();
+            
+            while(this.itemShop.getInventory().contains(item)){
+                 item = this.itemCreator.getRandomItem();
+            }
+
+            this.itemShop.addItem(item);       
         }
     }
     

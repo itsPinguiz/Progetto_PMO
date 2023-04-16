@@ -105,7 +105,6 @@ model\actors\actions\ActionsManager$Action$6.class
 model\actors\actions\PlaceActions$1.class
 model\actors\actions\ActionsManager$Action$20.class
 model\item\ItemType$Tools$Material.class
-model\item\tools\Fertilizer.class
 model\place\land\AnimalLand.class
 model\item\products\Products.class
 model\item\ItemType$Animals.class

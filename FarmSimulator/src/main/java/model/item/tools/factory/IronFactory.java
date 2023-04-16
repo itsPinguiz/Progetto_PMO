@@ -24,4 +24,7 @@ public class IronFactory implements ToolFactory {
     public AbstractTool createWateringCan(){
         return new IronWateringCan();
     }
+    public AbstractTool createFertilizer(){
+        return new IronFertilizer();
+    }
 }

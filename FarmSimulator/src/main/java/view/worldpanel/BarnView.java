@@ -8,16 +8,17 @@ import model.Model;
 import model.actors.person.Landlord;
 import model.item.Item;
 import model.item.ItemType;
+import model.item.tools.AbstractTool;
 import model.place.Place;
 import model.place.barn.Barn;
 import model.place.barn.market.Market;
 import model.place.land.AnimalLand;
+import model.place.land.LandAbstract;
 import model.place.land.PlantLand;
 import view.View;
 import view.custom.DeselectableButtonGroup;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class BarnView {
     // attributes
@@ -85,8 +86,13 @@ public class BarnView {
             // create buttons for shop items
             if (marketPlace.getItemShop() != null){
                 for(Item item : marketPlace.getItemShop().getInventory()){
-                    JToggleButton toggleButton = new JToggleButton("<html>" + item.getType().toString() +
-                                                                   "<br> $" + item.getPrice() +  
+                    JToggleButton toggleButton = new JToggleButton((item instanceof AbstractTool)?
+                                                                   "<html>" + item.getType().toString() +
+                                                                   "<br> " + ((AbstractTool)item).getMaterial().toString()+ 
+                                                                   "<br> $" + item.getPrice()+  
+                                                                   "<html>":
+                                                                   "<html>" + item.getType().toString() +
+                                                                   "<br> $" + item.getPrice()+  
                                                                    "<html>"); 
                     toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
                     // disable the button if the player doesn't have enough money
@@ -127,8 +133,13 @@ public class BarnView {
         // display the items in the barn inventory
         if (actualPlace.getBarnInventory() != null){
         for(Item item : actualPlace.getBarnInventory().getInventory()){
-            JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() + "<br>" + item.getStatus() +  "<html>":
-                                                                                                       "<html>" + item.getType().toString() + "<br>" + item.getNumber() +  "<html>");
+            JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() +
+                                                                                                       "<br> " + ((AbstractTool)item).getMaterial().toString()+
+                                                                                                       "<br>" + item.getStatus() +
+                                                                                                       "<html>":
+                                                                                                       "<html>" + item.getType().toString() +
+                                                                                                       "<br>" + item.getNumber() +
+                                                                                                       "<html>");
             toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
             // add the button to the button group
             buttonGroup.add(toggleButton);
@@ -146,8 +157,12 @@ public class BarnView {
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
     
-        JToggleButton buyAnimalLand = new JToggleButton("Buy Animal Land");
-        JToggleButton buyPlantLand = new JToggleButton("Buy Plant Land");
+        JToggleButton buyAnimalLand = new JToggleButton("<html> Buy Animal Land" + 
+                                                        "<br> $" + Constants.BASE_LAND_PRICE + 
+                                                        "<html>");
+        JToggleButton buyPlantLand = new JToggleButton("<html> Buy Plant Land" + 
+                                                       "<br> $" + Constants.BASE_LAND_PRICE + 
+                                                       "<html>");
         buttonGroup.add(buyPlantLand);
         buttonGroup.add(buyAnimalLand);
     
@@ -170,7 +185,9 @@ public class BarnView {
         JPanel sellLandMarketPanel = new JPanel(new GridLayout(3, 2, 20, 20));
         int landNumber = 1;
         for (Place land : this.model.getMap().get(1)) {
-            JToggleButton toggleButton = new JToggleButton(landNumber+". "+land.getType().toString());
+            JToggleButton toggleButton = new JToggleButton("<html> " + landNumber + ". " + land.getType().toString() +
+                                                           "<br> $" + ((LandAbstract)(land)).getPrice() + 
+                                                           "<html>");
             toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, land, toggleButton));
             buttonGroup.add(toggleButton);
             sellLandMarketPanel.add(toggleButton);
