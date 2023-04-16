@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="FarmSimulator/src"/>
-	<classpathentry kind="lib" path="FarmSimulator/build/App.jar"/>
-	<classpathentry kind="output" path="FarmSimulator/bin"/>
-</classpath>

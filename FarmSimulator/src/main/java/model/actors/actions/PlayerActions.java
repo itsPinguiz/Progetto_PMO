@@ -388,10 +388,9 @@ public class PlayerActions extends ActionsManager{
         farmer.getInventory().removeItem(animal, 1);
         animalCunk.setAnimal(animal);
         animalCunk.getActions().resetActions();
-        animalCunk.getActions().updateActions(new HashSet<Action>(){{add(Action.GET_RESOURCES);
-                                                                        add(Action.REMOVE_ANIMAL);
-                                                                        add(Action.FEED_ANIMAL);
-                                                                        add(Action.GIVE_WATER);}}, true);
+        animalCunk.getActions().updateActions(new HashSet<Action>(){{add(Action.REMOVE_ANIMAL);
+                                                                     add(Action.FEED_ANIMAL);
+                                                                     add(Action.GIVE_WATER);}}, true);
         animalCunk.getLand().getActions().updateActions(new HashSet<Action>(){{add(Action.GET_ALL_RESOURCES);
                                                                                add(Action.FEED_ALL_ANIMALS);
                                                                                add(Action.GIVE_WATER_ALL);}}, true);

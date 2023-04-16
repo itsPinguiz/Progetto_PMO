@@ -12,6 +12,19 @@
     
     <name>Farm Simulator</name>
     <description>Uniurb OOP Project made by Stefano Zizzi and Luis Frasheri</description>
+
+    <url>https://github.com/itsPinguiz/Progetto_PMO</url>
+
+    <developers>
+		<developer>
+			<name>Stefano Zizzi</name>
+			<url>https://github.com/itsPinguiz</url>
+		</developer>
+        <developer>
+			<name>Luis Frasheri</name>
+			<url>https://github.com/luisfrasheri99</url>
+		</developer>
+	</developers>
     
     <dependencies>
         <!-- JUnit 5 -->
@@ -56,8 +69,6 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
-
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
