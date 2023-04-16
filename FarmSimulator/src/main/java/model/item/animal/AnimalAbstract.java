@@ -13,6 +13,7 @@ import model.exceptions.CustomExceptions.MaxWaterLevelReachedException;
 import model.exceptions.CustomExceptions.MinimumHungerException;
 import model.exceptions.CustomExceptions.NoFoodFoundException;
 import model.item.Item;
+import model.item.ItemType;
 import model.item.plants.species.Plant;
 import model.item.products.Products;
 
@@ -28,9 +29,11 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     protected Calendar c;
     protected int creationDay;
     protected int lastUpdatedDay;
+    protected boolean isAlive;
 
     //constructor
     public AnimalAbstract() {
+        this.isAlive = true;
         this.hunger = 0;
         this.thirst = 0;
         this.c = Calendar.getInstance();
@@ -42,12 +45,25 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     private void updateHunger(){
         int dayPassed = c.getDay() - this.creationDay;
         this.hunger = dayPassed * 2;
+        if(this.hunger >= 100){
+            this.hunger = 100;
+            this.isAlive = false;
+        }
     }
 
     //method for changing thirst
     private void updateThirst(){
         int dayPassed = c.getDay() - this.creationDay;
         this.thirst = dayPassed * 2;
+        if(this.thirst >= 100){
+            this.thirst = 100;
+            this.isAlive = false;
+        }
+    }
+
+    //method isAlive
+    public boolean isAlive(){
+        return this.isAlive;
     }
 
     //method for getting thirst
@@ -62,16 +78,30 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
 
     //method for getting the products
     public ArrayList<Products> getProducts() {
+
         ArrayList<Products> tmp = new ArrayList<>();
+
         for (Item item : typeProduct) {
             try {
-                tmp.add((Products)item.clone());
+                if(this.isAlive && !(item.getType() == ItemType.productsType.MEAT) ){
+                    tmp.add((Products)item.clone());
+                }
+                else if(!this.isAlive){
+                    tmp.add((Products)item.clone());
+                }  
             } catch (CloneNotSupportedException e) {
                 // gestione dell'eccezione
             }
         }
+
         for (int i = 0; i < this.typeProduct.size(); i++){
-            this.typeProduct.get(i).setNumber(0);
+            if(this.isAlive && !(this.typeProduct.get(i).getType() == ItemType.productsType.MEAT)){
+                this.typeProduct.get(i).setNumber(0);
+            }
+            else if(!this.isAlive){
+                this.typeProduct.get(i).setNumber(0);
+            }
+            
         }
         return tmp;
     }
@@ -98,25 +128,35 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
 
     //method for updating the products
     private void updateProducts(){
+        if(this.isAlive){
+        //if the hunger is low
+        if(this.hunger >= 0 && this.thirst >= 0){
+            for(int i = 0; i < this.typeProduct.size()- 1; i++){
+                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 3);
+            }
+        }
 
         //if the hunger is less than 30, the animal will produce more products
-        if (this.hunger > 30 || this.thirst > 30){
-            for (int i = 0; i < this.typeProduct.size(); i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 10);
+        if (this.hunger > 30 && this.thirst > 30){
+            for (int i = 0; i < this.typeProduct.size()- 1; i++){
+                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 2);
             }
         }
         //if the hunger is less than 60, the animal will produce less products
-        else if (this.hunger > 60 || this.thirst > 60){
-            for (int i = 0; i < this.typeProduct.size(); i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 5);
+        else if (this.hunger > 60 && this.thirst > 60){
+            for (int i = 0; i < this.typeProduct.size() - 1; i++){
+                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 1);
             }
         }
         //if the hunger is less than 90, the animal will lose some products
-        else if (this.hunger > 90 || this.thirst > 90){
-            for (int i = 0; i < this.typeProduct.size(); i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() - 5);
+        else if (this.hunger > 90 && this.thirst > 90){
+            for (int i = 0; i < this.typeProduct.size()- 1; i++){
+                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() - 2);
             }
         }
+    }else{
+        this.typeProduct.get(this.typeProduct.size() - 1).setNumber(30);
+    }
 
     }
 
@@ -126,6 +166,9 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         this.updateHunger();
         this.updateThirst();
         this.updateProducts();
+        if(!this.isAlive){
+            this.status = 0;
+        }
     }
 
     //method for feeding the animal

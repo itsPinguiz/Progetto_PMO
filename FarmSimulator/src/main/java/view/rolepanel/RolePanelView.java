@@ -87,8 +87,8 @@ import java.util.Set;
                 "      Weather: " + Calendar.getInstance().getWeather().toString());
 
         // define role menu items
-        JMenuItem farmerItem = new JMenuItem(model.getPersons()[0].toString());
-        JMenuItem ownerItem = new JMenuItem(model.getPersons()[1].toString());
+        JMenuItem farmerItem = new JMenuItem(model.getPlayers()[0].toString());
+        JMenuItem ownerItem = new JMenuItem(model.getPlayers()[1].toString());
 
     
         showInventoryButton.setBorderPainted(false);

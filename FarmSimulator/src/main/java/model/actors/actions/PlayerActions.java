@@ -212,7 +212,7 @@ public class PlayerActions extends ActionsManager{
         Item tool = (Item)items.get(1);
         
         //check if the farmer has the hoe
-        if (tool.getType() == ItemType.Tools.HOE && tool.getStatus() > 0 && this.damageTool(tool)){
+        if (tool.getType() == ItemType.Tools.HOE && this.damageTool(tool)){
             if (!c.getDirtStatus()){
             // change land status
             c.setDirtStatus(true);
@@ -263,7 +263,6 @@ public class PlayerActions extends ActionsManager{
         Item product;
 
         if (c.getPlant() == null || c.getPlant().getLifeStage() != PlantLife.HARVESTABLE) return;
-
         product = c.getPlant().getProduct();
         
         // if sickle is equipped double the harvested resources
@@ -290,7 +289,7 @@ public class PlayerActions extends ActionsManager{
                 }}, false);
         }
 
-        if(c.getLand().getElements().stream().filter(chunk -> chunk.getPlant().getLifeStage() == PlantLife.HARVESTABLE).count() == 0){
+        if(c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() != null && chunk.getPlant().getLifeStage() == PlantLife.HARVESTABLE).count() == 0){
             c.getLand().getActions().updateActions(new HashSet<>(){{
                 add(Action.HARVEST_ALL);
                 }}, false);
@@ -391,9 +390,9 @@ public class PlayerActions extends ActionsManager{
         animalCunk.getActions().updateActions(new HashSet<Action>(){{add(Action.REMOVE_ANIMAL);
                                                                      add(Action.FEED_ANIMAL);
                                                                      add(Action.GIVE_WATER);}}, true);
-        animalCunk.getLand().getActions().updateActions(new HashSet<Action>(){{add(Action.GET_ALL_RESOURCES);
-                                                                               add(Action.FEED_ALL_ANIMALS);
+        animalCunk.getLand().getActions().updateActions(new HashSet<Action>(){{add(Action.FEED_ALL_ANIMALS);
                                                                                add(Action.GIVE_WATER_ALL);}}, true);
+                                                                               
 
     }
 
@@ -407,7 +406,7 @@ public class PlayerActions extends ActionsManager{
         Farmer farmer = (Farmer)this.person;
 
         farmer.getInventory().addItem(animalCunk.getAnimal());
-        animalCunk.setAnimal(null);
+        animalCunk.removeAnimal();
         animalCunk.getActions().resetActions();
         
         animalCunk.getActions().updateActions(new HashSet<Action>(){{add(Action.ADD_ANIMAL);}}, true);
@@ -439,6 +438,11 @@ public class PlayerActions extends ActionsManager{
             }
             System.out.println(product.getNumber());
             farmer.getInventory().addItem(product);
+        }
+        if (!chunk.getAnimal().isAlive()){
+           chunk.removeAnimal();
+           chunk.getActions().resetActions();
+            chunk.getActions().updateActions(new HashSet<Action>(){{add(Action.ADD_ANIMAL);}}, true);
         }
     }
 
@@ -503,7 +507,7 @@ public class PlayerActions extends ActionsManager{
          */
         Farmer f = (Farmer)this.person;
 
-        if (tool != null){
+        if (tool != null && tool.getStatus() > 0){
             ((AbstractTool)tool).useTool();
             if (tool.getStatus() == 0){
                 f.getInventory().removeItem(tool, 1);

@@ -17,12 +17,14 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
     private int daysToHarvestInitial; 
     private int growthRate;
     private int maxGrowthLevel;
+    private int daysWithoutWater;
     private PlantChunk chunk;
     protected Calendar calendar;
     private Random random;
 
     public enum PlantLife {
         // plant life cycle state
+        DEAD("Dead"),
         SEED("Seed"),
         SPROUT("Sprout"),
         SMALL_PLANT("Small Plant"),
@@ -56,6 +58,7 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
         this.chunk = c;
         this.calendar = Calendar.getInstance();
         this.maxGrowthLevel = Constants.MAX_GROWTH;
+        this.daysWithoutWater = 0;
     }
 
     public void planted(PlantChunk c){
@@ -133,8 +136,20 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
         if (super.status > this.maxGrowthLevel) {
             super.status = this.maxGrowthLevel;
         }
+
         this.checklifeStage();
-    
+
+        if (this.chunk.getWaterLevel() == 0) {
+            this.daysWithoutWater++;
+            if (this.daysWithoutWater >= Constants.PLANT_DAYS_WITHOUT_WATER) {
+                this.lifeStage = PlantLife.DEAD;
+                super.status = -1;
+                return;
+            }
+        } else {
+            this.daysWithoutWater = 0;
+        }
+
         // decremento giorni alla raccolta solo quando la pianta è pronta
         if (this.lifeStage == PlantLife.HARVESTABLE) {
             this.daysToHarvest--;

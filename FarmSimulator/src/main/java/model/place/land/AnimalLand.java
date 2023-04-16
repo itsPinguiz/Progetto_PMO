@@ -53,13 +53,12 @@ public class AnimalLand extends LandAbstract {
     public void update() {
         int count = 0;
         for (AnimalChunk chunk: this.animalChunks){
-            if (chunk.getAnimal() == null){
-                break;
-            }
-            chunk.update();
-            
-            if (chunk.getAnimal().areProductsAvailable()){
-                count++;
+            if (chunk.getAnimal() != null){
+                chunk.update();
+                
+                if (chunk.getAnimal().areProductsAvailable()){
+                    count++;
+                }
             }
         }
         if (count == 0 || this.getNumElements() == 0){

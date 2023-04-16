@@ -11,6 +11,7 @@ import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.exceptions.CustomExceptions.NoProductFoundException;
+import model.inventory.Inventory;
 import model.item.ItemCreator;
 import model.item.ItemType.Plants;
 import model.item.ItemType.productsType;
@@ -44,6 +45,9 @@ public class Model implements Serializable{
     private Person selectedActor;
     private Calendar calendar;
     private ArrayList<ArrayList<Place>> map;
+    private Object selectedItem;
+    private Inventory oldInventory;
+    private Place oldPlace;
 
     // constructor
     public Model() throws NoItemFoundException, InventoryIsFullException,NoAnimalFoundException,NoProductFoundException{
@@ -51,6 +55,9 @@ public class Model implements Serializable{
         this.farmer = new Farmer();
         this.landlord = new Landlord();
         this.calendar = Calendar.getInstance();
+        this.oldInventory = null;
+        this.selectedItem = null;
+        this.oldPlace = null;
     
         map = new ArrayList<>(){
             {
@@ -132,7 +139,7 @@ public class Model implements Serializable{
         return this.selectedActor;
     }
 
-    public Person[] getPersons(){
+    public Person[] getPlayers(){
         /*
          * Method to get the persons
          */
@@ -144,5 +151,47 @@ public class Model implements Serializable{
          * Method to get the calendar
          */
         return this.calendar;
+    }
+
+    public void setSelectedItem(Object o){
+        /*
+         * Method to set the selected item
+         */
+        this.selectedItem = o;
+    }
+
+    public Object getSelectedItem(){
+        /*
+         * Method to get the selected item
+         */
+        return this.selectedItem;
+    }
+
+    public void setOldInventory(Inventory i){
+        /*
+         * Method to set the old inventory
+         */
+        this.oldInventory = i;
+    }
+
+    public Inventory getOldInventory(){
+        /*
+         * Method to get the old inventory
+         */
+        return this.oldInventory;
+    }
+
+    public void setOldPlace(Place p){
+        /*
+         * Method to set the old place
+         */
+        this.oldPlace = p;
+    }
+
+    public Place getOldPlace(){
+        /*
+         * Method to get the old place
+         */
+        return this.oldPlace;
     }
 }

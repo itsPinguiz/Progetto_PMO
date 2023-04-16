@@ -7,6 +7,7 @@ import model.Constants;
 import model.actors.actions.PlaceActions;
 import model.actors.actions.ActionsManager.Action;
 import model.item.plants.PlantAbstract;
+import model.item.plants.PlantAbstract.PlantLife;
 import model.place.Places;
 import model.place.land.LandAbstract;
 import model.place.land.PlantLand;
@@ -42,12 +43,17 @@ public class PlantChunk extends LandAbstract implements Chunk{
          */
         if (this.plant != null){
             this.plant.grow();
-            this.setWaterLevel(-5);
-            this.setFertilizationLevel(-5);
+            this.setWaterLevel(Constants.PLANT_WATER_DEACRESE);
+            this.setFertilizationLevel(Constants.PLANT_FERTILIZATION_DEACRESE);
+
+            if (this.plant.getLifeStage() == PlantLife.DEAD){
+                this.plant = null;
+                this.resetActions();
+            }
         }
         
-        this.setWaterLevel(-1);
-        this.setFertilizationLevel(-1);
+        this.setWaterLevel(Constants.CHUNK_WATER_DEACRESE);
+        this.setFertilizationLevel(Constants.CHUNK_FERTILIZATION_DEACRESE);
     }
 
     public PlantLand getLand(){
@@ -131,7 +137,7 @@ public class PlantChunk extends LandAbstract implements Chunk{
          */
         this.getActions().resetActions();
         this.getActions().updateActions( new HashSet<>(){{
-                                            add(Action.PLOW);
+                                            add(getDirtStatus()?Action.PLANT:Action.PLOW);
                                             }}, true);
     }
 

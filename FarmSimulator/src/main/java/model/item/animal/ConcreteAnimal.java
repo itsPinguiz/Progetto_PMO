@@ -48,8 +48,8 @@ public class ConcreteAnimal extends AnimalAbstract {
                 this.typeProduct = new ArrayList<Products>(){
                     {
                         add(new Products(ItemType.productsType.MILK));
-                        add(new Products(ItemType.productsType.MEAT));
                         add(new Products(ItemType.productsType.WOOL));
+                        add(new Products(ItemType.productsType.MEAT));
                     }
                 };
                 break;
@@ -61,8 +61,8 @@ public class ConcreteAnimal extends AnimalAbstract {
                 this.maxNumber = 30;
                 this.typeProduct = new ArrayList<Products>(){
                     {
-                        add(new Products(ItemType.productsType.MEAT));
                         add(new Products(ItemType.productsType.EGGS));
+                        add(new Products(ItemType.productsType.MEAT));
                     }
                 };
                 break;

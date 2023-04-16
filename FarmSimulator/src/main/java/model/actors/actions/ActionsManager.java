@@ -141,7 +141,7 @@ public abstract class ActionsManager implements Actions {
         REMOVE_ANIMAL("Remove Animal", new DualItemValidator() {
             @Override
             public boolean validateItemType(ItemType item) {
-                return item instanceof ItemType.Animals;
+                return true;
             }
     
             @Override

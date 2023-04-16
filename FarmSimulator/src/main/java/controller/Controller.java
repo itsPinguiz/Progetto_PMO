@@ -19,19 +19,13 @@ public class Controller {
     private View view;
     private Model model;
     private GameBackup backup;
-    private Object selectedItem;
-    private Inventory oldInventory;
-    private Place oldPlace;
+    
 
     // constructor
     public Controller(View view,Model model) {
         this.view = view;
         this.model = model;
         this.backup = new GameBackup(model);
-
-        this.oldInventory = null;
-        this.selectedItem = null;
-        this.oldPlace = null;
     }
 
     // get model
@@ -85,10 +79,10 @@ public class Controller {
     // ROLE PANEL
     // swap the role and update the role actions panel
     public void changeRole(Role role){
-        if (role == model.getPersons()[0].getRole()) {
-            this.model.setSelectedPerson(this.model.getPersons()[0]);
-          } else if (role == model.getPersons()[1].getRole()) {
-            this.model.setSelectedPerson(this.model.getPersons()[1]);
+        if (role == model.getPlayers()[0].getRole()) {
+            this.model.setSelectedPerson(this.model.getPlayers()[0]);
+          } else if (role == model.getPlayers()[1].getRole()) {
+            this.model.setSelectedPerson(this.model.getPlayers()[1]);
           }	
     }
 
@@ -121,27 +115,27 @@ public class Controller {
     }
 
     public Place getOldPlace(){
-        return oldPlace;
+        return model.getOldPlace();
     }
 
     public Inventory getOldInventory(){
-        return oldInventory;
+        return model.getOldInventory();
     }
 
     public Object getSelectedItem(){
-        return selectedItem;
+        return model.getSelectedItem();
     }
 
     public void setOldPlace(Place p){
-        oldPlace = p;
+        model.setOldPlace(p);;
     }
 
     public void setOldInventory(Inventory i){
-        oldInventory = i;
+        model.setOldInventory(i);
     }
 
     public void setSelectedItem(Object i){
-        selectedItem = i;
+        model.setSelectedItem(i);
     }
 
     public void setView(View view) {

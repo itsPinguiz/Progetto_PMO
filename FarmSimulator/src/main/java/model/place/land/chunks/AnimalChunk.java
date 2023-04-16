@@ -47,16 +47,14 @@ public class AnimalChunk extends LandAbstract {
 
     @Override
     public void update() {
+        if(!animal.isAlive()){
+            getActions().resetActions();
+        }
         if(animal != null){
             this.animal.update();
-            //if the animal is dead, remove it from the land
-            if (animal.getHunger() >= 100 || animal.getStatus() <= 0){
-                this.animal= null;
-            }
             this.getActions().updateActions( new HashSet<>(){{
                                              add(Action.GET_RESOURCES);
-                                             }}, this.getAnimal().areProductsAvailable()?true:false);
-            
-        }
+                                             }}, this.getAnimal().areProductsAvailable()?true:false);            
+        } 
     }
 }

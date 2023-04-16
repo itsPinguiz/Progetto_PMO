@@ -2,6 +2,7 @@ package model.place.land;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -11,7 +12,7 @@ import model.item.plants.PlantAbstract.PlantLife;
 import model.place.Places;
 import model.place.land.chunks.PlantChunk;
 
-public class PlantLand extends LandAbstract{
+public class PlantLand extends LandAbstract implements Iterable<PlantChunk>{
     /* Land that contains chunks of land with plants */
 
     // attributes
@@ -51,13 +52,10 @@ public class PlantLand extends LandAbstract{
          */
         int count = 0;
         for (PlantChunk chunk: this.chunks){
-            if (chunk.getPlant() == null){
-                break;
-            }
             chunk.update();
 
             // check if there are harvestable plants
-            if (chunk.getPlant().getLifeStage()==PlantLife.HARVESTABLE){
+            if (chunk.getPlant() != null && chunk.getPlant().getLifeStage()==PlantLife.HARVESTABLE){
                 count++;
             }  
         }
@@ -78,5 +76,10 @@ public class PlantLand extends LandAbstract{
          * Prints the elements present in the land
          */
         return this.chunks;        
+    }
+
+    @Override
+    public Iterator<PlantChunk> iterator() {
+        return chunks.iterator();
     }
 }

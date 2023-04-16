@@ -5,6 +5,14 @@ public class Constants {
     public final static int MAX_GROWTH = 100;
     public final static int GROWTH_RATE = 1;
 
+    public final static int PLANT_FERTILIZATION_DEACRESE = -5;
+    public final static int PLANT_WATER_DEACRESE = -5;
+
+    public final static int CHUNK_FERTILIZATION_DEACRESE = -1;
+    public final static int CHUNK_WATER_DEACRESE = -1;
+
+    public final static int PLANT_DAYS_WITHOUT_WATER = 7;
+
     public final static int HARVEST_MULTIPLIER = 3;
 
     public final static int WHEAT_PRICE = 10;

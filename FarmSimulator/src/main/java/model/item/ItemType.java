@@ -94,6 +94,7 @@ public interface ItemType {
 
 			Material(String name, int modifier){
 				this.name = name;
+				this.modifier = modifier;
 			}
 	
 			public String getName(){
