@@ -26,25 +26,55 @@ public class Inventory implements InventoryInterface {
         return this.inventory;
     }
 
-    public int addItem(Item newTool) throws NoItemFoundException, InventoryIsFullException{
+    public int addItem(Item item) throws NoItemFoundException, InventoryIsFullException, CloneNotSupportedException{
     	
-    	int check = this.searchItem(newTool, true); 
+    	int check = this.searchItem(item, true); 
     	
         // If the item is already in the inventory, add the number of the new item to the existing item
     	if(check != -1) {
             // If the new item has more quantity than the max number of the existing item, set the new item quantity to the max number of the existing item
-    		if((this.inventory.get(check).getNumber() + newTool.getNumber()) > this.inventory.get(check).getMaxNumber()) {
-    			newTool.setNumber(this.inventory.get(check).getMaxNumber() - this.inventory.get(check).getNumber());
-    			this.inventory.get(check).setNumber(this.inventory.get(check).getMaxNumber());		
+    		if((this.inventory.get(check).getNumber() + item.getNumber()) > this.inventory.get(check).getMaxNumber()) {
+    			int remaining = item.getNumber();
+                while (remaining > 0) {
+                    if (this.inventory.get(check).getNumber() < this.inventory.get(check).getMaxNumber()){
+                        int difference = this.inventory.get(check).getMaxNumber() - this.inventory.get(check).getNumber();
+                        this.inventory.get(check).setNumber(this.inventory.get(check).getMaxNumber());
+                        remaining -= difference;
+                    } else{
+                        Item newStack = (Item)item.clone();
+                        int numToAdd = Math.min(newStack.getMaxNumber(), remaining);
+                        newStack.setNumber(numToAdd);
+                        this.inventory.add(newStack);
+                        remaining -= numToAdd;
+                    }
+                }
     		}
             // Else, add the new item quantity to the existing item quantity
 			else {
-				this.inventory.get(check).setNumber(this.inventory.get(check).getNumber() + newTool.getNumber());	
+				this.inventory.get(check).setNumber(this.inventory.get(check).getNumber() + item.getNumber());	
 			}	
     	}
         // If the item is not in the inventory, add it to the inventory
     	else if(this.inventory.size() < maxSize){
-                this.inventory.add(newTool);
+                if (item.getNumber() > item.getMaxNumber()){
+                    int remaining = item.getNumber();
+                    while (remaining > 0) {
+                        if (remaining > item.getMaxNumber()){
+                            Item newStack = (Item)item.clone();
+                            newStack.setNumber(item.getMaxNumber());
+                            this.inventory.add(newStack);
+                            remaining -= item.getMaxNumber();
+                        } else{
+                            Item newStack = (Item)item.clone();
+                            newStack.setNumber(remaining);
+                            this.inventory.add(newStack);
+                            remaining = 0;
+                        }
+                    }
+                }
+                else{
+                    this.inventory.add(item);
+                }
             }
         else{
                 throw new InventoryIsFullException();

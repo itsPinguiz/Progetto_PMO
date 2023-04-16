@@ -31,7 +31,7 @@ import model.place.land.PlantLand;
 public class Market extends Place implements MarketInt{
     
     //attributes
-    private final int MAX_SHOP_LENGTH = 10;
+
     private Inventory itemShop;
     private ItemCreator itemCreator;
     private ArrayList<LandAbstract> landShop;
@@ -39,12 +39,12 @@ public class Market extends Place implements MarketInt{
     private Barn barn;
     
     //constructor
-    public Market() throws NoItemFoundException, InventoryIsFullException,NoProductFoundException,NoAnimalFoundException{
+    public Market() throws NoItemFoundException, InventoryIsFullException,NoProductFoundException,NoAnimalFoundException, CloneNotSupportedException{
         super.type = Places.MARKET;
         super.actions = new PlaceActions(this);
-        this.itemShop = new Inventory(MAX_SHOP_LENGTH);
+        this.itemShop = new Inventory(Constants.MARKET_SHOP_MAX);
         this.itemCreator = new ItemCreator();
-        for (int i = 0; i < MAX_SHOP_LENGTH; i++) {
+        for (int i = 0; i < Constants.MARKET_SHOP_MAX; i++) {
             Item item = this.itemCreator.getRandomItem();
             while(this.itemShop.getInventory().contains(item)){
                  item = this.itemCreator.getRandomItem();
@@ -68,16 +68,16 @@ public class Market extends Place implements MarketInt{
     }
     
     //update the shop
-    public void updateItemShop() throws NoItemFoundException, InventoryIsFullException{
+    public void updateItemShop() throws NoItemFoundException, InventoryIsFullException, CloneNotSupportedException{
         if(c.getDay() % 7 == 0){
             replaceItem();
         }
     }
 
     //replace the items in the shop
-    private void replaceItem() throws NoItemFoundException, InventoryIsFullException{
+    private void replaceItem() throws NoItemFoundException, InventoryIsFullException, CloneNotSupportedException{
         this.itemShop.getInventory().clear();
-        for (int i = 0; i < MAX_SHOP_LENGTH; i++) {
+        for (int i = 0; i < Constants.MARKET_SHOP_MAX; i++) {
             Item item = this.itemCreator.getRandomItem();
             
             while(this.itemShop.getInventory().contains(item)){
@@ -105,16 +105,6 @@ public class Market extends Place implements MarketInt{
         }
         else{
             throw new NoEnoughMoneyException();
-        }
-    }
-
-    //sell a land to the shop
-    public int sellLand(LandAbstract landToSell) throws NoSellableLandException{
-        if(landToSell.isSellable()){
-            return (Constants.LAND_SELL_PRICE);
-        }
-        else{
-            throw new NoSellableLandException();
         }
     }
 

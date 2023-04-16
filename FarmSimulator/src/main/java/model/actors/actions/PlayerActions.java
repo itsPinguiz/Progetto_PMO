@@ -129,19 +129,19 @@ public class PlayerActions extends ActionsManager{
             // if the item is in the barn, remove it and add it to the farmer's inventory
             try {
                 farmer.getInventory().addItem(barn.getBarnInventory().getItem(1,itemToMove));
-            } catch (NoItemFoundException e) {
+            } catch (InventoryIsFullException e) {
                 // if inventory is full, add the item back to the barn
-                farmer.getInventory().removeItem(itemToMove,1);
-                throw new NoItemFoundException();
+                barn.getBarnInventory().addItem(itemToMove);
+                throw new InventoryIsFullException();
             }
         } else if (farmer.getInventory().getInventory().contains(itemToMove)){
             // if the item is in the inventory, remove it and add it to the barn
             try {
                 barn.getBarnInventory().addItem(farmer.getInventory().getItem(1,itemToMove));
-            } catch (NoItemFoundException e) {
+            } catch (InventoryIsFullException e) {
                 // if the item was not found add the item back to the inventory
-                barn.getBarnInventory().removeItem(itemToMove,1);
-                throw new NoItemFoundException();
+                farmer.getInventory().addItem(itemToMove);
+                throw new InventoryIsFullException();
             }
         }
     }
@@ -253,7 +253,8 @@ public class PlayerActions extends ActionsManager{
 
     public void harvest(ArrayList<? extends Object> items) throws InventoryIsFullException, 
                                                                   NoItemFoundException,
-                                                                  NotEnoughItemsException{
+                                                                  NotEnoughItemsException,
+                                                                  CloneNotSupportedException{
         /*
          * Method to harvest a plant
          */
@@ -398,7 +399,8 @@ public class PlayerActions extends ActionsManager{
 
     public void remove_animal(ArrayList<? extends Object> items) throws NoItemFoundException, 
                                                                         InventoryIsFullException,
-                                                                        NotEnoughItemsException{
+                                                                        NotEnoughItemsException,
+                                                                        CloneNotSupportedException{
         /*
          * Method to remove an animal from the farm
          */
@@ -419,7 +421,8 @@ public class PlayerActions extends ActionsManager{
 
     public void get_resources(ArrayList<? extends Object> items) throws InventoryIsFullException, 
                                                                         NoItemFoundException,
-                                                                        NotEnoughItemsException{
+                                                                        NotEnoughItemsException,
+                                                                        CloneNotSupportedException{
         /*
          * Method to get resources from the farm
          */
@@ -541,7 +544,7 @@ public class PlayerActions extends ActionsManager{
 
             if (lands.size()<10 && land.getPrice() <= landlord.getBalance()){
                 lands.add(land);
-                landlord.setBalance(- land.getPrice());
+                landlord.setBalance(- Constants.BASE_LAND_PRICE);
             }
             
         } else if (items.get(1) instanceof Item && market.getItemShop().getInventory().contains(items.get(1))){
@@ -578,7 +581,7 @@ public class PlayerActions extends ActionsManager{
             lands.remove(land);
 
             // add money to the balance
-            landlord.setBalance(market.sellLand(land));
+            landlord.setBalance(Constants.LAND_SELL_PRICE);
             
         } else if (items.get(1) instanceof Item && market.getBarn().getBarnInventory().getInventory().contains(items.get(1))){
             Item item = (Item)items.get(1);

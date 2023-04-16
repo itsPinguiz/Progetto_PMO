@@ -7,7 +7,6 @@ import model.calendar.Calendar;
 import model.place.Place;
 
 public abstract class LandAbstract extends Place implements LandInteface {
-    protected boolean sellable; // decides whether a land can be sold or not
     protected Calendar calendar = Calendar.getInstance();
 
     public int getPrice() {
@@ -36,12 +35,5 @@ public abstract class LandAbstract extends Place implements LandInteface {
          * Returns the number of elements present in the land
          */
         return 0;
-    }
-
-    public boolean isSellable(){
-        /*
-         * Returns whether the land is sellable or not
-         */
-        return this.sellable;
     }
 }

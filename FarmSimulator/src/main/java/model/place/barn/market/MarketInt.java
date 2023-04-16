@@ -15,7 +15,7 @@ import model.item.Item;
  * MARKET INTERFACE
  *****************/
 public interface MarketInt extends Serializable{
-    public void updateItemShop() throws InventoryIsFullException, NoItemFoundException;
+    public void updateItemShop() throws InventoryIsFullException, NoItemFoundException, CloneNotSupportedException;
     public Item buyItem(Item boughtItem, int balance) throws NoEnoughMoneyException, NoItemFoundException, CloneNotSupportedException;
 
 }

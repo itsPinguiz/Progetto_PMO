@@ -150,7 +150,7 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
             this.daysWithoutWater = 0;
         }
 
-        // decremento giorni alla raccolta solo quando la pianta è pronta
+        // decrement day to harvest when harvestable
         if (this.lifeStage == PlantLife.HARVESTABLE) {
             this.daysToHarvest--;
         }

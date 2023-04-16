@@ -8,7 +8,6 @@ package model.item.animal;
 import java.util.ArrayList;
 
 import model.Constants;
-import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.MaxWaterLevelReachedException;
 import model.exceptions.CustomExceptions.MinimumHungerException;
 import model.exceptions.CustomExceptions.NoFoodFoundException;
@@ -26,9 +25,6 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     protected int hunger;
     protected int thirst;
     protected ArrayList<Products> typeProduct;
-    protected Calendar c;
-    protected int creationDay;
-    protected int lastUpdatedDay;
     protected boolean isAlive;
 
     //constructor
@@ -36,15 +32,11 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         this.isAlive = true;
         this.hunger = 0;
         this.thirst = 0;
-        this.c = Calendar.getInstance();
-        this.creationDay = c.getDay();
-        this.lastUpdatedDay = this.creationDay;
 	}
     
     //method for changing hunger
     private void updateHunger(){
-        int dayPassed = c.getDay() - this.creationDay;
-        this.hunger = dayPassed * 2;
+        this.hunger += Constants.HUNGER_INCREASE;
         if(this.hunger >= 100){
             this.hunger = 100;
             this.isAlive = false;
@@ -53,8 +45,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
 
     //method for changing thirst
     private void updateThirst(){
-        int dayPassed = c.getDay() - this.creationDay;
-        this.thirst = dayPassed * 2;
+        this.thirst += Constants.THIRST_INCREASE;
         if(this.thirst >= 100){
             this.thirst = 100;
             this.isAlive = false;
@@ -117,15 +108,6 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         return false;
     }
 
-    //method for updating the life
-    private void updateLife() {
-        int daysPassed = c.getDay() - lastUpdatedDay; // calcola quanti giorni sono passati dall'ultimo aggiornamento
-        if (daysPassed > 0) { // se sono passati almeno 1 giorno
-            super.status -= 1 * daysPassed; // diminuisci la vita di uno per ogni giorno trascorso
-            this.lastUpdatedDay = c.getDay(); // aggiorna il campo "lastUpdatedDay"
-        }
-    }
-
     //method for updating the products
     private void updateProducts(){
         if(this.isAlive){
@@ -162,7 +144,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
 
     //method for updating the animal
     public void update() {
-        this.updateLife();
+        super.status -= 1;
         this.updateHunger();
         this.updateThirst();
         this.updateProducts();

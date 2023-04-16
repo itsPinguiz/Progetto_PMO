@@ -47,7 +47,12 @@ public abstract class Item implements Cloneable,Serializable,ItemInterface,Compa
     
     public void setNumber(int newNumber) {
         //method to set the number of the item
-    	this.number = newNumber;
+        if(newNumber < 0) {
+            this.number = 0;
+        }
+        else{
+            this.number = newNumber;
+        }	
     }
     
     public Object clone() throws CloneNotSupportedException{

@@ -1,6 +1,11 @@
 package model;
 
 public class Constants {
+    // INVENTORY
+    public final static int INVENTORY_MAX = 10;
+    public final static int BARN_INVENTORY_MAX = 40;
+    public final static int MARKET_SHOP_MAX = 10;
+
     // PLANT 
     public final static int MAX_GROWTH = 100;
     public final static int GROWTH_RATE = 1;
@@ -37,6 +42,9 @@ public class Constants {
 
     public final static int FEED_MAX = 10;
     public final static int GIVE_WATER_MAX = 10;
+
+    public final static int HUNGER_INCREASE = 2;
+    public final static int THIRST_INCREASE = 3;
 
     // TOOL 
     public final static int IRON_MODIFIER = 7;

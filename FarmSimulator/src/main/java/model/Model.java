@@ -50,7 +50,7 @@ public class Model implements Serializable{
     private Place oldPlace;
 
     // constructor
-    public Model() throws NoItemFoundException, InventoryIsFullException,NoAnimalFoundException,NoProductFoundException{
+    public Model() throws NoItemFoundException, InventoryIsFullException,NoAnimalFoundException,NoProductFoundException, CloneNotSupportedException{
         //attributes initialization
         this.farmer = new Farmer();
         this.landlord = new Landlord();
@@ -76,12 +76,13 @@ public class Model implements Serializable{
         b.getMarket().addBarn(b);
 
         this.selectedActor = this.farmer; // default selected actor
-
+        
         this.farmer.getInventory().addItem(new Plant(Plants.CARROT) {{
             setNumber(11);
         }});
         
         this.farmer.getInventory().addItem(new AnimalFactory().createChicken());
+        
 
         for(int i = 0; i < 70; i++){
             b.getBarnInventory().addItem(new Products(productsType.MEAT));
@@ -89,6 +90,7 @@ public class Model implements Serializable{
 
         b.getBarnInventory().addItem(new ItemCreator().getRandomItem());
         b.getBarnInventory().addItem(new Plant(Plants.CARROT));
+        
     }
 
     public void update() throws InventoryIsFullException,NoItemFoundException, CloneNotSupportedException{

@@ -3,6 +3,7 @@
  ************************************************************/
 package model.actors.person;
 
+import model.Constants;
 import model.actors.actions.PlayerActions;
 import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.exceptions.CustomExceptions.NoProductFoundException;
@@ -17,7 +18,6 @@ import model.item.ItemCreator;
      /**
       * Fields
       */
-     private final int MAX_INVENTORY_SIZE = 10;
      private Inventory inventory;
      private ItemCreator creator;
  
@@ -30,7 +30,7 @@ import model.item.ItemCreator;
          super.personAction = new PlayerActions(this);
          super.place = null;
          this.role = Role.FARMER;
-         this.inventory = new Inventory(MAX_INVENTORY_SIZE);
+         this.inventory = new Inventory(Constants.INVENTORY_MAX);
          this.creator = new ItemCreator();
          this.inventory.setInventory(creator.getWoodSet());
      }

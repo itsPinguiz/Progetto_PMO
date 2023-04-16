@@ -6,6 +6,7 @@ package model.place.barn;
 
 import java.util.Iterator;
 
+import model.Constants;
 import model.actors.actions.PlaceActions;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoAnimalFoundException;
@@ -26,13 +27,12 @@ public class Barn extends Place{
     //attributes
     private Inventory barnInventory;
     private Market market;
-    private final int MAX_BARN_LENGTH = 40;
 
     //constructor
-    public Barn() throws NoItemFoundException, InventoryIsFullException, NoAnimalFoundException, NoProductFoundException{
+    public Barn() throws NoItemFoundException, InventoryIsFullException, NoAnimalFoundException, NoProductFoundException, CloneNotSupportedException{
         super.type = Places.BARN;
         super.actions = new PlaceActions(this);
-        this.barnInventory = new Inventory(MAX_BARN_LENGTH);
+        this.barnInventory = new Inventory(Constants.BARN_INVENTORY_MAX);
         this.market = new Market();
     }
     
@@ -45,13 +45,13 @@ public class Barn extends Place{
     }
 
     //setters
-    public void setItemBarnInventory(Item item) throws NoItemFoundException, InventoryIsFullException {
+    public void setItemBarnInventory(Item item) throws NoItemFoundException, InventoryIsFullException, CloneNotSupportedException {
         this.barnInventory.addItem(item);
     }
 
     //update market and animals in the barn
     
-    public void updateBarn() throws NoItemFoundException, InventoryIsFullException{
+    public void updateBarn() throws NoItemFoundException, InventoryIsFullException, CloneNotSupportedException{
         //update market
         this.market.updateItemShop();
         //update animals

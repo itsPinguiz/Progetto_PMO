@@ -118,9 +118,12 @@ public class View extends JFrame{
           controller.setSelectedItem(null);
           controller.setOldInventory(null);
         }
-        if (this.model.getSelectedPerson() instanceof Farmer && ((Farmer)(this.model.getSelectedPerson())).getInventory().getInventory().contains(controller.getSelectedItem())){
+        if (this.model.getSelectedPerson().getPlace() != null && 
+            this.model.getSelectedPerson() instanceof Farmer &&
+            ((Farmer)(this.model.getSelectedPerson())).getInventory().getInventory().contains(controller.getSelectedItem())){
             controller.setOldInventory(((Farmer)(this.model.getSelectedPerson())).getInventory());
-        } else if (this.model.getSelectedPerson().getPlace().getType() == Places.BARN){
+        } else if (this.model.getSelectedPerson().getPlace() != null &&
+                   this.model.getSelectedPerson().getPlace().getType() == Places.BARN){
           controller.setOldInventory(((Barn)(this.model.getSelectedPerson().getPlace())).getBarnInventory());
         } 
       }

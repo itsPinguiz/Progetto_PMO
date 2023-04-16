@@ -13,4 +13,9 @@ import java.util.ArrayList;
 public interface AnimalInterface extends Serializable {
     public int getHunger();
     public ArrayList<model.item.products.Products> getProducts(); //void momentaneo
+    public int getThirst();
+    public boolean isAlive();
+    public void update();
+    public void feed(model.item.Item item) throws model.exceptions.CustomExceptions.NoFoodFoundException, model.exceptions.CustomExceptions.MinimumHungerException;
+    public void waterAnimal() throws model.exceptions.CustomExceptions.MaxWaterLevelReachedException;
 }

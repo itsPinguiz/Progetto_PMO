@@ -26,7 +26,7 @@ public class Main {
                 view.updateMVC(tmpController, model);
                 view.setVisible(true);
         });
-        } catch (NoItemFoundException | InventoryIsFullException | NoProductFoundException | NoAnimalFoundException e) {
+        } catch (NoItemFoundException | InventoryIsFullException | NoProductFoundException | NoAnimalFoundException | CloneNotSupportedException e) {
             controller.exceptionPopup(e);
         } 
     }
