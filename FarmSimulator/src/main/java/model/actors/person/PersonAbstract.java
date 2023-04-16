@@ -14,6 +14,28 @@ public abstract class PersonAbstract implements Person {
     
     protected Place place;
     protected PlayerActions personAction;
+    protected Role role;
+
+    public enum Role{
+        FARMER("Farmer"),
+        LANDLORD("Landlord");
+
+        Role(String name)
+        {
+            this.name = name;
+        }
+
+        String name;
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return getName();
+        }
+    }
 
     public Place getPlace(){
         return this.place;
@@ -26,6 +48,10 @@ public abstract class PersonAbstract implements Person {
     }
     public PlayerActions getActions(){
         return this.personAction;
+    }
+
+    public Role getRole(){
+        return this.role;
     }
 
 }

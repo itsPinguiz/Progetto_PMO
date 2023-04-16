@@ -5,6 +5,7 @@ import javax.swing.*;
 import controller.Controller;
 import model.Model;
 import model.actors.person.Farmer;
+import model.actors.person.PersonAbstract.Role;
 import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
 import model.item.Item;
@@ -126,7 +127,7 @@ public class View extends JFrame{
     }
     
     // enable the inventory button if the player is a farmer
-    rolePanelView.getShowInventoryButton().setEnabled(model.getSelectedPerson().toString().equals("Farmer")? true : false);
+    rolePanelView.getShowInventoryButton().setEnabled(model.getSelectedPerson().getRole().equals(Role.FARMER)? true : false);
     // enable the role button if the player is not in the world
     rolePanelView.getRoleMenu().setEnabled(model.getSelectedPerson().getPlace() == null? true : false);
 

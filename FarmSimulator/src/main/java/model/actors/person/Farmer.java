@@ -29,6 +29,7 @@ import model.item.ItemCreator;
      public Farmer() throws NoAnimalFoundException, NoProductFoundException{
          super.personAction = new PlayerActions(this);
          super.place = null;
+         this.role = Role.FARMER;
          this.inventory = new Inventory(MAX_INVENTORY_SIZE);
          this.creator = new ItemCreator();
          this.inventory.setInventory(creator.getWoodSet());

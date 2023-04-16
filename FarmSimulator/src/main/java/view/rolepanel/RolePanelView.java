@@ -5,6 +5,7 @@ import controller.Controller;
 import model.Model;
 import model.actors.actions.ActionsManager;
 import model.actors.person.Landlord;
+import model.actors.person.PersonAbstract.Role;
 import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
@@ -63,7 +64,7 @@ import java.util.Set;
 
         // set the layout of the role panel
         createMenuBar();
-        createActionsButtonPanel(model.getSelectedPerson().toString());
+        createActionsButtonPanel(model.getSelectedPerson().getRole());
 
         return rolePanel;
     }
@@ -80,7 +81,7 @@ import java.util.Set;
         roleMenu = new JMenu("Ruolo");
         showInventoryButton = new JToggleButton("Inventory");
         placeLabel = new JLabel("World");
-        roleLabel = new JLabel(model.getSelectedPerson().toString());
+        roleLabel = new JLabel(model.getSelectedPerson().getRole().toString());
         calendar = new JLabel("Day: " + Calendar.getInstance().getDay() +
                 "      Season: " + Calendar.getInstance().getSeason().toString() +
                 "      Weather: " + Calendar.getInstance().getWeather().toString());
@@ -110,7 +111,7 @@ import java.util.Set;
         });
     
         // disable inventory button if the role is "Landlord"
-        if(model.getSelectedPerson().toString().equals("Landlord")) {
+        if(model.getSelectedPerson().getRole()==Role.LANDLORD) {
             showInventoryButton.setEnabled(false);
         } else{
           showInventoryButton.setEnabled(true);
@@ -119,12 +120,12 @@ import java.util.Set;
         // action listener for role selection
         ActionListener roleListener = new ActionListener() {
           public void actionPerformed(ActionEvent e) {
-            controller.changeRole(e.getActionCommand());
+            controller.changeRole(e.getActionCommand() == "Farmer" ? Role.FARMER : Role.LANDLORD);
             rolePanel.removeAll();
             createMenuBar();
             try {
               controller.setOldPlace(model.getSelectedPerson().getPlace());
-              createActionsButtonPanel(model.getSelectedPerson().toString());
+              createActionsButtonPanel(model.getSelectedPerson().getRole());
             } catch (ActionNotAvailableException e1) {
                 view.exceptionPopup(e1.getCause().getMessage());
             }
@@ -177,7 +178,7 @@ import java.util.Set;
         rolePanel.add(menuBar, BorderLayout.NORTH);
       }
 
-      public void createActionsButtonPanel(String role) throws ActionNotAvailableException {
+      public void createActionsButtonPanel(Role role) throws ActionNotAvailableException {
         /*
          * This method creates the panel that contains the buttons for the actions
          */
@@ -383,9 +384,9 @@ import java.util.Set;
         /*
             * Update the labels with the new values
             */
-        this.roleLabel.setText(this.model.getSelectedPerson().toString());
+        this.roleLabel.setText(this.model.getSelectedPerson().getRole().toString());
         this.placeLabel.setText((this.model.getSelectedPerson().getPlace() == null)? "World" : this.model.getSelectedPerson().getPlace().getType().toString());
-        this.calendar.setText((this.model.getSelectedPerson().toString() == "Farmer")?("Day: " + this.model.getCalendar().getDay() + 
+        this.calendar.setText((this.model.getSelectedPerson().getRole() == Role.FARMER)?("Day: " + this.model.getCalendar().getDay() + 
                                                                                        "      Season: " + this.model.getCalendar().getSeason().toString().toLowerCase() +
                                                                                        "      Weather: " + this.model.getCalendar().getWeather().toString().toLowerCase()) : 
                                                                                        "Day: " + this.model.getCalendar().getDay() +
@@ -416,7 +417,7 @@ import java.util.Set;
          */
         // update the action buttons
         rolePanel.remove(buttonPanel);
-        createActionsButtonPanel(model.getSelectedPerson().toString());
+        createActionsButtonPanel(model.getSelectedPerson().getRole());
 
         // update the labels
         updateLabels();

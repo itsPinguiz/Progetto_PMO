@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import controller.Controller;
 import model.Model;
+import model.actors.person.PersonAbstract.Role;
 import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.place.Place;
 import view.View;
@@ -52,7 +53,7 @@ public class WorldPanelView {
             button.addActionListener(changePlaceListener(view.getLandView(),"createInsideLand",land,false,false));
             landsPanel.add(button);
             // disable land button if the role is not the farmer
-            button.setEnabled((model.getSelectedPerson().toString() == "Farmer") ? true : false);
+            button.setEnabled((model.getSelectedPerson().getRole() == Role.FARMER) ? true : false);
             landNumber++;
         }
         // add the barn button

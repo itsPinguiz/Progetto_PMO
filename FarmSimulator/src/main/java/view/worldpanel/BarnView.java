@@ -6,6 +6,7 @@ import controller.Controller;
 import model.Constants;
 import model.Model;
 import model.actors.person.Landlord;
+import model.actors.person.PersonAbstract.Role;
 import model.item.Item;
 import model.item.ItemType;
 import model.item.tools.AbstractTool;
@@ -74,7 +75,7 @@ public class BarnView {
             barnInventoryPanel.add(exitButton);
 
             // disable the possibility to enter the market if the player is not a landlord
-            enterMarketButton.setEnabled(model.getSelectedPerson().toString().equals("Landlord")? true : false);
+            enterMarketButton.setEnabled(model.getSelectedPerson().getRole() == Role.LANDLORD? true : false);
 
             tabbedPane.addTab("Market", marketPanel);
             

@@ -22,6 +22,7 @@ public class Landlord extends PersonAbstract{
     public Landlord(){
         super.personAction = new PlayerActions(this);
         super.place = null;
+        this.role = Role.LANDLORD;
         this.balance = 100;
     }
 

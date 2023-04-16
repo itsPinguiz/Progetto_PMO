@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import model.Model;
 import model.actors.actions.ActionsManager.Action;
+import model.actors.person.PersonAbstract.Role;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
@@ -83,10 +84,10 @@ public class Controller {
 
     // ROLE PANEL
     // swap the role and update the role actions panel
-    public void changeRole(String role){
-        if (role == model.getPersons()[0].toString()) {
+    public void changeRole(Role role){
+        if (role == model.getPersons()[0].getRole()) {
             this.model.setSelectedPerson(this.model.getPersons()[0]);
-          } else if (role == model.getPersons()[1].toString()) {
+          } else if (role == model.getPersons()[1].getRole()) {
             this.model.setSelectedPerson(this.model.getPersons()[1]);
           }	
     }
