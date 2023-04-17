@@ -93,8 +93,12 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
                 add(Action.HARVEST);
                 }}, true);
             this.chunk.getLand().getActions().updateActions(new HashSet<>(){{
-                add(Action.HARVEST_ALL);
+                add(Action.WATER);
+                add(Action.FERTILIZE);
                 }}, false);
+            this.chunk.getLand().getActions().updateActions(new HashSet<>(){{
+                add(Action.HARVEST_ALL);
+                }}, true);
             
             this.daysToHarvest = this.daysToHarvestInitial;
         }  else if (super.status > 80){

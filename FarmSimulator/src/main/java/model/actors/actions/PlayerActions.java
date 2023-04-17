@@ -52,6 +52,7 @@ public class PlayerActions extends ActionsManager{
             }};
     }
 
+    @SuppressWarnings("unchecked")
     public void executeAction(Action s,Object argument) throws Exception{
         /*
         * Method to find a method to execute
@@ -70,6 +71,9 @@ public class PlayerActions extends ActionsManager{
             throw new ActionNotAvailableException(s, this.availableActions);
         }
 
+        //update the current player actions that might have been edited
+        ArrayList<Object> args = (ArrayList<Object>)argument;
+        this.updateActions(((Place)(args.get(0))).getActions().getActions(),true);
     }
 
     private  Method getMethodByName(String methodName) {
