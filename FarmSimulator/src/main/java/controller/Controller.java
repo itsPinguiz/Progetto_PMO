@@ -146,7 +146,7 @@ public class Controller {
     public void updateModel(){
         try {
             model.update();
-        } catch (InventoryIsFullException | NoItemFoundException | CloneNotSupportedException e) {
+        } catch (InventoryIsFullException | NoItemFoundException | CloneNotSupportedException  | PlaceNotAvailableException e) {
             this.exceptionPopup(e);
         }
     }

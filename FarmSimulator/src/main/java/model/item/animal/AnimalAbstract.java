@@ -114,26 +114,26 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         //if the hunger is low
         if(this.hunger >= 0 && this.thirst >= 0){
             for(int i = 0; i < this.typeProduct.size()- 1; i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 3);
+                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + Constants.HIGH_PRODUCTIVITY);
             }
         }
 
         //if the hunger is less than 30, the animal will produce more products
         if (this.hunger > 30 && this.thirst > 30){
             for (int i = 0; i < this.typeProduct.size()- 1; i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 2);
+                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + Constants.MEDIUM_PRODUCTIVITY);
             }
         }
         //if the hunger is less than 60, the animal will produce less products
         else if (this.hunger > 60 && this.thirst > 60){
             for (int i = 0; i < this.typeProduct.size() - 1; i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + 1);
+                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + Constants.LOW_PRODUCTIVITY);
             }
         }
         //if the hunger is less than 90, the animal will lose some products
         else if (this.hunger > 90 && this.thirst > 90){
             for (int i = 0; i < this.typeProduct.size()- 1; i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() - 2);
+                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() - Constants.NEGATIVE_PRODUCTIVITY);
             }
         }
     }else{

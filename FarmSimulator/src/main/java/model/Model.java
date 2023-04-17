@@ -11,6 +11,7 @@ import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.exceptions.CustomExceptions.NoProductFoundException;
+import model.exceptions.CustomExceptions.PlaceNotAvailableException;
 import model.inventory.Inventory;
 import model.item.ItemCreator;
 import model.item.ItemType.Plants;
@@ -93,7 +94,7 @@ public class Model implements Serializable{
         
     }
 
-    public void update() throws InventoryIsFullException,NoItemFoundException, CloneNotSupportedException{
+    public void update() throws InventoryIsFullException,NoItemFoundException, CloneNotSupportedException, PlaceNotAvailableException{
         /*
          * Method to update the world entities
          */
@@ -104,6 +105,9 @@ public class Model implements Serializable{
 
         Barn b = (Barn)(this.map.get(0).get(0));
         b.updateBarn();
+
+        if (this.selectedActor.getPlace()!=null)
+            this.selectedActor.getActions().enter(this.selectedActor.getPlace());
     }
 
     public ArrayList<ArrayList<Place>> getMap(){

@@ -14,7 +14,6 @@ import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.exceptions.CustomExceptions.NoEnoughMoneyException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.exceptions.CustomExceptions.NoProductFoundException;
-import model.exceptions.CustomExceptions.NoSellableLandException;
 import model.inventory.Inventory;
 import model.item.Item;
 import model.item.ItemCreator;

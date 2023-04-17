@@ -46,6 +46,11 @@ public class Constants {
     public final static int HUNGER_INCREASE = 2;
     public final static int THIRST_INCREASE = 3;
 
+    public final static int NEGATIVE_PRODUCTIVITY = 2;
+    public final static int LOW_PRODUCTIVITY = 0;
+    public final static int MEDIUM_PRODUCTIVITY = 1;
+    public final static int HIGH_PRODUCTIVITY = 2;
+
     // TOOL 
     public final static int IRON_MODIFIER = 7;
     public final static int WOOD_MODIFIER = 5;

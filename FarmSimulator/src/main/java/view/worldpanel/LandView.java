@@ -126,7 +126,8 @@ public class LandView {
         // set the label's text
         animalLabel.setText("<html><divstyle = 'font-size:16px;'>" + ((animal == null)? "Empty" : animal.getType().toString()) +
                             "</div><div style='font-size:12px;' Status>" + ((animal == null)? "No status" : animal.getStatus()) +
-                            "<br>Hunger Level:<br>" + ((animal == null)? "No hunger" : animal.getHunger()));
+                            "<br>Hunger Level: " + ((animal == null)? "No hunger" : animal.getHunger()) +
+                            "<br>Thirst Level: " + ((animal == null)? "No thirst" : animal.getThirst()));
 
         // add the label to the panel
         chunkPanel.add(animalLabel);
