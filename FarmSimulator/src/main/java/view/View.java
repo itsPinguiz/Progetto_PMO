@@ -28,38 +28,32 @@ public class View extends JFrame{
   final int MAX_WIDTH = 800;
 
   // attributes  
-  private Model model;
   private Controller controller;
 
   private RolePanelView rolePanelView;
   private WorldPanelView worldPanelView;
   private LandView landView;
   private BarnView barnView;
-  
- 
 
   // constructor
-  public View(Model model,Controller controller){
+  public View(Controller controller){
     // setup main frame
     setTitle("Farming Simulator");
     setSize(MAX_WIDTH, MAX_HEIGHT);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setResizable(false);
 
-    
-    this.model = model;
     this.controller = controller;
   }
 
   // update MVC
   public void updateMVC(Controller c, Model m){
     this.controller = c;
-    this.model = m;
     try {
-      this.rolePanelView = new RolePanelView(this.model, this.controller,this);
-      this.worldPanelView = new WorldPanelView(this.model, this.controller,this);
-      this.landView = new LandView(this.model,this);
-      this.barnView = new BarnView(this.model, this.controller,this);
+      this.rolePanelView = new RolePanelView(this.controller,this);
+      this.worldPanelView = new WorldPanelView(this.controller,this);
+      this.landView = new LandView(this.controller,this);
+      this.barnView = new BarnView(this.controller,this);
 
       revalidate();
       repaint();
@@ -107,7 +101,7 @@ public class View extends JFrame{
     mainPanel.repaint();
     
     // keep the selected item if the player is in the same place
-    if (!(controller.getOldPlace() == model.getSelectedPerson().getPlace())){
+    if (!(controller.getOldPlace() == controller.getSelectedPerson().getPlace())){
       controller.setSelectedItem(null);
     } else {
       if (rolePanelView.getShowInventoryButton().isSelected())
@@ -118,21 +112,21 @@ public class View extends JFrame{
           controller.setSelectedItem(null);
           controller.setOldInventory(null);
         }
-        if (this.model.getSelectedPerson().getPlace() != null && 
-            this.model.getSelectedPerson() instanceof Farmer &&
-            ((Farmer)(this.model.getSelectedPerson())).getInventory().getInventory().contains(controller.getSelectedItem())){
-            controller.setOldInventory(((Farmer)(this.model.getSelectedPerson())).getInventory());
-        } else if (this.model.getSelectedPerson().getPlace() != null &&
-                   this.model.getSelectedPerson().getPlace().getType() == Places.BARN){
-          controller.setOldInventory(((Barn)(this.model.getSelectedPerson().getPlace())).getBarnInventory());
+        if (controller.getSelectedPerson().getPlace() != null && 
+            controller.getSelectedPerson() instanceof Farmer &&
+            ((Farmer)(controller.getSelectedPerson())).getInventory().getInventory().contains(controller.getSelectedItem())){
+            controller.setOldInventory(((Farmer)(this.controller.getSelectedPerson())).getInventory());
+        } else if (this.controller.getSelectedPerson().getPlace() != null &&
+                   this.controller.getSelectedPerson().getPlace().getType() == Places.BARN){
+          controller.setOldInventory(((Barn)(this.controller.getSelectedPerson().getPlace())).getBarnInventory());
         } 
       }
     }
     
     // enable the inventory button if the player is a farmer
-    rolePanelView.getShowInventoryButton().setEnabled(model.getSelectedPerson().getRole().equals(Role.FARMER)? true : false);
+    rolePanelView.getShowInventoryButton().setEnabled(controller.getSelectedPerson().getRole().equals(Role.FARMER)? true : false);
     // enable the role button if the player is not in the world
-    rolePanelView.getRoleMenu().setEnabled(model.getSelectedPerson().getPlace() == null? true : false);
+    rolePanelView.getRoleMenu().setEnabled(controller.getSelectedPerson().getPlace() == null? true : false);
 
     rolePanelView.updateRolePanelView();
 
@@ -158,11 +152,11 @@ public class View extends JFrame{
     /*
     * Method to show a popup with the error message
     */
-    Place place = this.model.getSelectedPerson().getPlace();
+    Place place = this.controller.getSelectedPerson().getPlace();
     JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     try {
       // enter back in the place that might have been curropted to the exception
-      this.model.getSelectedPerson().getActions().enter(place);
+      this.controller.getSelectedPerson().getActions().enter(place);
     } catch (PlaceNotAvailableException e) {
       this.exceptionPopup(e.toString());
     }

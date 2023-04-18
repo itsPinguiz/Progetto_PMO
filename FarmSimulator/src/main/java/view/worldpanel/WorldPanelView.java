@@ -3,10 +3,10 @@ package view.worldpanel;
 import javax.swing.*;
 
 import controller.Controller;
-import model.Model;
 import model.actors.person.PersonAbstract.Role;
 import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.place.Place;
+import model.place.Places;
 import view.View;
 
 import java.awt.*;
@@ -14,22 +14,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 public class WorldPanelView {
     private JPanel worldPanel;
-    private Model model;
     private Controller controller;
     private View view;
     
-    public WorldPanelView(Model model, Controller controller, View view) throws ActionNotAvailableException {
-        this.model = model;
+    public WorldPanelView(Controller controller, View view) throws ActionNotAvailableException {
         this.controller = controller;
         this.view = view;
 
         this.worldPanel = createWorldPanel();
     }
 
-    
+    @SuppressWarnings("unchecked")
     public JPanel createWorldPanel() throws ActionNotAvailableException{
         /*
         * This method creates the world panel, which contains the land and barn panels
@@ -48,18 +47,18 @@ public class WorldPanelView {
         this.view.getRolePanelView().getRoleMenu().setEnabled(true);
 
         // add the land buttons
-        for (Place land : this.model.getMap().get(1)) {
+        for (Place land : ((ArrayList<Place>)(this.controller.getMap().get(Places.PLANT_LAND)))) {
             JButton button = new JButton(landNumber+". "+land.getType().toString());
             button.addActionListener(changePlaceListener(view.getLandView(),"createInsideLand",land,false,false));
             landsPanel.add(button);
             // disable land button if the role is not the farmer
-            button.setEnabled((model.getSelectedPerson().getRole() == Role.FARMER) ? true : false);
+            button.setEnabled((controller.getSelectedPerson().getRole() == Role.FARMER) ? true : false);
             landNumber++;
         }
         // add the barn button
-        JButton barnButton = new JButton(this.model.getMap().get(0).get(0).getType().toString());
+        JButton barnButton = new JButton(((Place)(this.controller.getMap().get(Places.BARN))).getType().toString());
         
-        barnButton.addActionListener(changePlaceListener(view.getBarnView(),"createBarnPlace", model.getMap().get(0).get(0),true,false));
+        barnButton.addActionListener(changePlaceListener(view.getBarnView(),"createBarnPlace", (Place)(this.controller.getMap().get(Places.BARN)),true,false));
 
         barnButton.setPreferredSize(new Dimension(200,200));
         GridBagConstraints gbc = new GridBagConstraints();
@@ -81,7 +80,7 @@ public class WorldPanelView {
             public void actionPerformed(ActionEvent e) {
                 controller.updateModel();
                 try {
-                controller.setOldPlace(model.getSelectedPerson().getPlace());
+                controller.setOldPlace(controller.getSelectedPerson().getPlace());
                 view.updateActualPanel(worldPanel, createWorldPanel());
                 } catch (ActionNotAvailableException e1) {
                     view.exceptionPopup(e1.getCause().getMessage());

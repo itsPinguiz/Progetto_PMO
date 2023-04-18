@@ -2,7 +2,7 @@ package view.worldpanel;
 
 import javax.swing.*;
 
-import model.Model;
+import controller.Controller;
 import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
 import model.item.animal.AnimalAbstract;
@@ -18,13 +18,13 @@ import view.View;
 import java.awt.*;
 
 public class LandView {
-    private Model model;
     private View view;
+    private Controller controller;
     GridBagConstraints constraints;
 
-    public LandView(Model model, View view) {
-        this.model = model;
+    public LandView( Controller controller, View view) {
         this.view = view;
+        this.controller = controller;
     }
 
     
@@ -33,7 +33,7 @@ public class LandView {
         * This method creates the panel that will be displayed when the user clicks on a land
         */
         // get the actual place
-        LandAbstract actualPlace = (LandAbstract)this.model.getSelectedPerson().getPlace();
+        LandAbstract actualPlace = (LandAbstract)controller.getSelectedPerson().getPlace();
 
         // create the panel that will contain the elements
         JPanel insideLand = new JPanel(new GridLayout(3, 3,30,30));

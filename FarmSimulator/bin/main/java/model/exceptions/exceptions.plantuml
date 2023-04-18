@@ -1,0 +1,183 @@
+@startuml
+
+title __EXCEPTIONS's Class Diagram__\n
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions {
+          + CustomExceptions()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.ActionNotAvailableException {
+          + ActionNotAvailableException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.CannotBuyItemException {
+          + CannotBuyItemException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.InventoryIsFullException {
+          + InventoryIsFullException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.LandIsAlreadyPlowedException {
+          + LandIsAlreadyPlowedException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.LandIsNotPlowedException {
+          + LandIsNotPlowedException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.MaxWaterLevelReachedException {
+          + MaxWaterLevelReachedException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.MinimumHungerException {
+          + MinimumHungerException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.NoAnimalFoundException {
+          + NoAnimalFoundException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.NoEnoughMoneyException {
+          + NoEnoughMoneyException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.NoFoodFoundException {
+          + NoFoodFoundException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.NoItemFoundException {
+          + NoItemFoundException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.NoProductFoundException {
+          + NoProductFoundException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.NoSeedFoundException {
+          + NoSeedFoundException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.NoSellableLandException {
+          + NoSellableLandException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.NoToolFoundException {
+          + NoToolFoundException()
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions.PlaceNotAvailableException {
+          + PlaceNotAvailableException()
+      }
+    }
+  }
+  
+
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.ActionNotAvailableException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.CannotBuyItemException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.InventoryIsFullException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.LandIsAlreadyPlowedException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.LandIsNotPlowedException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.MaxWaterLevelReachedException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.MinimumHungerException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.NoAnimalFoundException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.NoEnoughMoneyException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.NoFoodFoundException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.NoItemFoundException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.NoProductFoundException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.NoSeedFoundException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.NoSellableLandException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.NoToolFoundException
+  main.java.model.exceptions.CustomExceptions +-down- main.java.model.exceptions.CustomExceptions.PlaceNotAvailableException
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

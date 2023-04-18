@@ -2,10 +2,12 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import model.actors.person.Farmer;
 import model.actors.person.Landlord;
 import model.actors.person.Person;
+import model.actors.person.PersonAbstract.Role;
 import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoAnimalFoundException;
@@ -20,10 +22,10 @@ import model.item.animal.AnimalFactory;
 import model.item.plants.species.Plant;
 import model.item.products.Products;
 import model.place.Place;
+import model.place.Places;
 import model.place.barn.Barn;
-import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
-import model.place.land.PlantLand;
+import model.progress.GameBackup;
 
 /*
 The project consists in the implementation of a farm simulator.
@@ -45,7 +47,8 @@ public class Model implements Serializable{
     private Landlord landlord;
     private Person selectedActor;
     private Calendar calendar;
-    private ArrayList<ArrayList<Place>> map;
+    private HashMap<Places,Object> map;
+    private GameBackup backup;
     private Object selectedItem;
     private Inventory oldInventory;
     private Place oldPlace;
@@ -59,21 +62,17 @@ public class Model implements Serializable{
         this.oldInventory = null;
         this.selectedItem = null;
         this.oldPlace = null;
+        ArrayList<LandAbstract> lands = new ArrayList<>();
     
-        map = new ArrayList<>(){
+        map = new HashMap<>(){
             {
-                add(new ArrayList<>() {{add(new Barn());}}); // barn
-                add(new ArrayList<>(){ // lands
-                    {
-                        add(new PlantLand());
-                        add(new PlantLand());
-                        add(new AnimalLand());
-                        add(new AnimalLand());
-                    }
-                }); 
+                put(Places.BARN, new Barn());
+                put(Places.PLANT_LAND, lands);
+                put(Places.ANIMAL_LAND, lands);
             }
         };
-        Barn b = (Barn)(this.map.get(0).get(0));
+        
+        Barn b = (Barn)(this.map.get(Places.BARN));
         b.getMarket().addBarn(b);
 
         this.selectedActor = this.farmer; // default selected actor
@@ -94,34 +93,36 @@ public class Model implements Serializable{
         
     }
 
+    @SuppressWarnings("unchecked")
     public void update() throws InventoryIsFullException,NoItemFoundException, CloneNotSupportedException, PlaceNotAvailableException{
         /*
          * Method to update the world entities
          */
         this.calendar.inc();
 
-        this.map.get(1).forEach(place -> { LandAbstract land = (LandAbstract) place;
+        ((ArrayList<LandAbstract>)(this.map.get(Places.PLANT_LAND))).forEach(place -> { LandAbstract land = (LandAbstract) place;
                                                       land.update();});
 
-        Barn b = (Barn)(this.map.get(0).get(0));
+        Barn b = (Barn)(this.map.get(Places.BARN));
         b.updateBarn();
 
         if (this.selectedActor.getPlace()!=null)
             this.selectedActor.getActions().enter(this.selectedActor.getPlace());
     }
 
-    public ArrayList<ArrayList<Place>> getMap(){
+    public HashMap<Places,Object> getMap(){
         /*
          * Method to get the map
          */
         return this.map;
     }
 
-    public ArrayList<Place> getLands(){
+    @SuppressWarnings("unchecked")
+    public ArrayList<LandAbstract> getLands(){
         /*
          * Method to get the lands
          */
-        return this.map.get(1);
+        return (ArrayList<LandAbstract>)this.map.get(Places.PLANT_LAND);
     }
 
     public void setSelectedPerson(Person p){
@@ -145,11 +146,14 @@ public class Model implements Serializable{
         return this.selectedActor;
     }
 
-    public Person[] getPlayers(){
+    public HashMap<Role,Person> getPlayer(){
         /*
          * Method to get the persons
          */
-        return new Person[]{this.farmer, this.landlord};
+        return new HashMap<>(){{
+            put(Role.FARMER, farmer);
+            put(Role.LANDLORD, landlord);
+        }};
     }
 
     public Calendar getCalendar(){
@@ -199,5 +203,12 @@ public class Model implements Serializable{
          * Method to get the old place
          */
         return this.oldPlace;
+    }
+
+    public GameBackup getBackup(){
+        /*
+         * Method to get the backup
+         */
+        return this.backup;
     }
 }

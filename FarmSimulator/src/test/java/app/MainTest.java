@@ -31,7 +31,7 @@ public class MainTest {
         model = new Model();
 
 
-        model.setSelectedPerson(model.getPlayers()[0]); // select farmer
+        model.setSelectedPerson(model.getPlayer()[0]); // select farmer
         assertEquals(Role.FARMER, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Farmer
         model.getSelectedPerson().getActions().enter(model.getMap().get(1).get(0)); // enter plant land
         assertEquals(model.getMap().get(1).get(0), model.getSelectedPerson().getPlace()); // ASSERT that the farmer is in land
@@ -99,7 +99,7 @@ public class MainTest {
         Model model = null;
         model = new Model();
 
-        model.setSelectedPerson(model.getPlayers()[0]); // select farmer
+        model.setSelectedPerson(model.getPlayer()[0]); // select farmer
         assertEquals(Role.FARMER, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Farmer
         model.getSelectedPerson().getActions().enter(((AnimalLand)(model.getMap().get(1).get(2))).getElements().get(0)); // enter animal land
         assertEquals(((AnimalLand)(model.getMap().get(1).get(2))).getElements().get(0), model.getSelectedPerson().getPlace()); // ASSERT that the farmer is in land

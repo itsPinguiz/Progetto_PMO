@@ -1,0 +1,1973 @@
+@startuml
+
+title __PROGETTO_PMO's Class Diagram__\n
+
+  namespace app {
+    class app.Main {
+    }
+  }
+  
+
+  namespace app {
+    class app.Main {
+    }
+  }
+  
+
+  namespace app {
+    class app.MainTest {
+    }
+  }
+  
+
+  namespace app {
+    class app.MainTest {
+    }
+  }
+  
+
+  namespace controller {
+    class controller.Controller {
+    }
+  }
+  
+
+  namespace controller {
+    class controller.Controller {
+    }
+  }
+  
+
+  namespace main.java.app {
+    class main.java.app.Main {
+    }
+  }
+  
+
+  namespace main.java.controller {
+    class main.java.controller.Controller {
+    }
+  }
+  
+
+  namespace main.java.model {
+    class main.java.model.Constants {
+    }
+  }
+  
+
+  namespace main.java.model {
+    class main.java.model.Model {
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace actors.actions {
+      interface main.java.model.actors.actions.Actions {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace actors.actions {
+      abstract class main.java.model.actors.actions.ActionsManager {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace actors.actions {
+      class main.java.model.actors.actions.PlaceActions {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace actors.actions {
+      class main.java.model.actors.actions.PlayerActions {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace actors.person {
+      class main.java.model.actors.person.Farmer {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace actors.person {
+      class main.java.model.actors.person.Landlord {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace actors.person {
+      interface main.java.model.actors.person.Person {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace actors.person {
+      abstract class main.java.model.actors.person.PersonAbstract {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace calendar {
+      class main.java.model.calendar.Calendar {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace calendar {
+      interface main.java.model.calendar.CalendarInt {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace exceptions {
+      class main.java.model.exceptions.CustomExceptions {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace inventory {
+      class main.java.model.inventory.Inventory {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace inventory {
+      interface main.java.model.inventory.InventoryInterface {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      abstract class main.java.model.item.Item {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      class main.java.model.item.ItemCreator {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      interface main.java.model.item.ItemInterface {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      interface main.java.model.item.ItemType {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace animal {
+        abstract class main.java.model.item.animal.AnimalAbstract {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace animal {
+        class main.java.model.item.animal.AnimalFactory {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace animal {
+        interface main.java.model.item.animal.AnimalInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace animal {
+        class main.java.model.item.animal.ConcreteAnimal {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace plants {
+        abstract class main.java.model.item.plants.PlantAbstract {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace plants {
+        class main.java.model.item.plants.PlantFactory {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace plants {
+        interface main.java.model.item.plants.PlantInteface {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace plants {
+        namespace species {
+          class main.java.model.item.plants.species.Plant {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace products {
+        class main.java.model.item.products.Products {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        abstract class main.java.model.item.tools.AbstractTool {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        class main.java.model.item.tools.Fertilizer {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        interface main.java.model.item.tools.ToolInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class main.java.model.item.tools.concrete_tool.iron_tool.IronHoe {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class main.java.model.item.tools.concrete_tool.iron_tool.IronScissors {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class main.java.model.item.tools.concrete_tool.iron_tool.IronSickle {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class main.java.model.item.tools.concrete_tool.iron_tool.IronWateringCan {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class main.java.model.item.tools.concrete_tool.wood_tool.WoodHoe {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class main.java.model.item.tools.concrete_tool.wood_tool.WoodScissors {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class main.java.model.item.tools.concrete_tool.wood_tool.WoodSickle {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class main.java.model.item.tools.concrete_tool.wood_tool.WoodWateringCan {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        namespace factory {
+          class main.java.model.item.tools.factory.IronFactory {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        namespace factory {
+          interface main.java.model.item.tools.factory.ToolFactory {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace item {
+      namespace tools {
+        namespace factory {
+          class main.java.model.item.tools.factory.WoodFactory {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      abstract class main.java.model.place.Place {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      enum Places {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      namespace barn {
+        class main.java.model.place.barn.Barn {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      namespace barn {
+        namespace market {
+          class main.java.model.place.barn.market.Market {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      namespace barn {
+        namespace market {
+          interface main.java.model.place.barn.market.MarketInt {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      namespace land {
+        class main.java.model.place.land.AnimalLand {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      namespace land {
+        abstract class main.java.model.place.land.LandAbstract {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      namespace land {
+        interface main.java.model.place.land.LandInteface {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      namespace land {
+        class main.java.model.place.land.PlantLand {
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      namespace land {
+        namespace chunks {
+          class main.java.model.place.land.chunks.AnimalChunk {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      namespace land {
+        namespace chunks {
+          interface main.java.model.place.land.chunks.Chunk {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace place {
+      namespace land {
+        namespace chunks {
+          class main.java.model.place.land.chunks.PlantChunk {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace progress {
+      interface main.java.model.progress.Backup {
+      }
+    }
+  }
+  
+
+  namespace main.java.model {
+    namespace progress {
+      class main.java.model.progress.GameBackup {
+      }
+    }
+  }
+  
+
+  namespace main.java.view {
+    class main.java.view.View {
+    }
+  }
+  
+
+  namespace main.java.view {
+    namespace custom {
+      class main.java.view.custom.DeselectableButtonGroup {
+      }
+    }
+  }
+  
+
+  namespace main.java.view {
+    namespace rolepanel {
+      class main.java.view.rolepanel.InventoryPanelView {
+      }
+    }
+  }
+  
+
+  namespace main.java.view {
+    namespace rolepanel {
+      class main.java.view.rolepanel.RolePanelView {
+      }
+    }
+  }
+  
+
+  namespace main.java.view {
+    namespace worldpanel {
+      class main.java.view.worldpanel.BarnView {
+      }
+    }
+  }
+  
+
+  namespace main.java.view {
+    namespace worldpanel {
+      class main.java.view.worldpanel.LandView {
+      }
+    }
+  }
+  
+
+  namespace main.java.view {
+    namespace worldpanel {
+      class main.java.view.worldpanel.WorldPanelView {
+      }
+    }
+  }
+  
+
+  namespace model {
+    class model.Constants {
+    }
+  }
+  
+
+  namespace model {
+    class model.Constants {
+    }
+  }
+  
+
+  namespace model {
+    class model.Model {
+    }
+  }
+  
+
+  namespace model {
+    class model.Model {
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.actions {
+      interface model.actors.actions.Actions {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.actions {
+      interface model.actors.actions.Actions {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.actions {
+      abstract class model.actors.actions.ActionsManager {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.actions {
+      abstract class model.actors.actions.ActionsManager {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.actions {
+      class model.actors.actions.PlaceActions {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.actions {
+      class model.actors.actions.PlaceActions {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.actions {
+      class model.actors.actions.PlayerActions {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.actions {
+      class model.actors.actions.PlayerActions {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.person {
+      class model.actors.person.Farmer {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.person {
+      class model.actors.person.Farmer {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.person {
+      class model.actors.person.Landlord {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.person {
+      class model.actors.person.Landlord {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.person {
+      class model.actors.person.NoAnimalFoundException {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.person {
+      class model.actors.person.NoAnimalFoundException {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.person {
+      interface model.actors.person.Person {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.person {
+      interface model.actors.person.Person {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.person {
+      abstract class model.actors.person.PersonAbstract {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.person {
+      abstract class model.actors.person.PersonAbstract {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace calendar {
+      class model.calendar.Calendar {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace calendar {
+      class model.calendar.Calendar {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace calendar {
+      interface model.calendar.CalendarInt {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace calendar {
+      interface model.calendar.CalendarInt {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace exceptions {
+      class model.exceptions.CustomExceptions {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace exceptions {
+      class model.exceptions.CustomExceptions {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace inventory {
+      class model.inventory.Inventory {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace inventory {
+      class model.inventory.Inventory {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace inventory {
+      interface model.inventory.InventoryInterface {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace inventory {
+      interface model.inventory.InventoryInterface {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      abstract class model.item.Item {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      abstract class model.item.Item {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      class model.item.ItemCreator {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      class model.item.ItemCreator {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      interface model.item.ItemInterface {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      interface model.item.ItemInterface {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      interface model.item.ItemType {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      interface model.item.ItemType {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace animal {
+        abstract class model.item.animal.AnimalAbstract {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace animal {
+        abstract class model.item.animal.AnimalAbstract {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace animal {
+        class model.item.animal.AnimalFactory {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace animal {
+        class model.item.animal.AnimalFactory {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace animal {
+        interface model.item.animal.AnimalInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace animal {
+        interface model.item.animal.AnimalInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace animal {
+        class model.item.animal.ConcreteAnimal {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace animal {
+        class model.item.animal.ConcreteAnimal {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace plants {
+        abstract class model.item.plants.PlantAbstract {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace plants {
+        abstract class model.item.plants.PlantAbstract {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace plants {
+        class model.item.plants.PlantFactory {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace plants {
+        class model.item.plants.PlantFactory {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace plants {
+        interface model.item.plants.PlantInteface {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace plants {
+        interface model.item.plants.PlantInteface {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace plants {
+        namespace species {
+          class model.item.plants.species.Plant {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace plants {
+        namespace species {
+          class model.item.plants.species.Plant {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace products {
+        class model.item.products.Products {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace products {
+        class model.item.products.Products {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        abstract class model.item.tools.AbstractTool {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        abstract class model.item.tools.AbstractTool {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        interface model.item.tools.ToolInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        interface model.item.tools.ToolInterface {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class model.item.tools.concrete_tool.iron_tool.IronFertilizer {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class model.item.tools.concrete_tool.iron_tool.IronFertilizer {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class model.item.tools.concrete_tool.iron_tool.IronHoe {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class model.item.tools.concrete_tool.iron_tool.IronHoe {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class model.item.tools.concrete_tool.iron_tool.IronScissors {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class model.item.tools.concrete_tool.iron_tool.IronScissors {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class model.item.tools.concrete_tool.iron_tool.IronSickle {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class model.item.tools.concrete_tool.iron_tool.IronSickle {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class model.item.tools.concrete_tool.iron_tool.IronWateringCan {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.iron_tool {
+          class model.item.tools.concrete_tool.iron_tool.IronWateringCan {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class model.item.tools.concrete_tool.wood_tool.WoodFertilizer {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class model.item.tools.concrete_tool.wood_tool.WoodFertilizer {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class model.item.tools.concrete_tool.wood_tool.WoodHoe {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class model.item.tools.concrete_tool.wood_tool.WoodHoe {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class model.item.tools.concrete_tool.wood_tool.WoodScissors {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class model.item.tools.concrete_tool.wood_tool.WoodScissors {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class model.item.tools.concrete_tool.wood_tool.WoodSickle {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class model.item.tools.concrete_tool.wood_tool.WoodSickle {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class model.item.tools.concrete_tool.wood_tool.WoodWateringCan {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace concrete_tool.wood_tool {
+          class model.item.tools.concrete_tool.wood_tool.WoodWateringCan {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace factory {
+          class model.item.tools.factory.IronFactory {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace factory {
+          class model.item.tools.factory.IronFactory {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace factory {
+          interface model.item.tools.factory.ToolFactory {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace factory {
+          interface model.item.tools.factory.ToolFactory {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace factory {
+          class model.item.tools.factory.WoodFactory {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace item {
+      namespace tools {
+        namespace factory {
+          class model.item.tools.factory.WoodFactory {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      abstract class model.place.Place {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      abstract class model.place.Place {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      enum Places {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      enum Places {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace barn {
+        class model.place.barn.Barn {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace barn {
+        class model.place.barn.Barn {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace barn {
+        namespace market {
+          class model.place.barn.market.Market {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace barn {
+        namespace market {
+          class model.place.barn.market.Market {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace barn {
+        namespace market {
+          interface model.place.barn.market.MarketInt {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace barn {
+        namespace market {
+          interface model.place.barn.market.MarketInt {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        class model.place.land.AnimalLand {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        class model.place.land.AnimalLand {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        abstract class model.place.land.LandAbstract {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        abstract class model.place.land.LandAbstract {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        interface model.place.land.LandInteface {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        interface model.place.land.LandInteface {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        class model.place.land.PlantLand {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        class model.place.land.PlantLand {
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        namespace chunks {
+          class model.place.land.chunks.AnimalChunk {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        namespace chunks {
+          class model.place.land.chunks.AnimalChunk {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        namespace chunks {
+          interface model.place.land.chunks.Chunk {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        namespace chunks {
+          interface model.place.land.chunks.Chunk {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        namespace chunks {
+          class model.place.land.chunks.PlantChunk {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace place {
+      namespace land {
+        namespace chunks {
+          class model.place.land.chunks.PlantChunk {
+          }
+        }
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace progress {
+      interface model.progress.Backup {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace progress {
+      interface model.progress.Backup {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace progress {
+      class model.progress.GameBackup {
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace progress {
+      class model.progress.GameBackup {
+      }
+    }
+  }
+  
+
+  namespace view {
+    class view.View {
+    }
+  }
+  
+
+  namespace view {
+    class view.View {
+    }
+  }
+  
+
+  namespace view {
+    namespace custom {
+      class view.custom.DeselectableButtonGroup {
+      }
+    }
+  }
+  
+
+  namespace view {
+    namespace custom {
+      class view.custom.DeselectableButtonGroup {
+      }
+    }
+  }
+  
+
+  namespace view {
+    namespace rolepanel {
+      class view.rolepanel.InventoryPanelView {
+      }
+    }
+  }
+  
+
+  namespace view {
+    namespace rolepanel {
+      class view.rolepanel.InventoryPanelView {
+      }
+    }
+  }
+  
+
+  namespace view {
+    namespace rolepanel {
+      class view.rolepanel.RolePanelView {
+      }
+    }
+  }
+  
+
+  namespace view {
+    namespace rolepanel {
+      class view.rolepanel.RolePanelView {
+      }
+    }
+  }
+  
+
+  namespace view {
+    namespace worldpanel {
+      class view.worldpanel.BarnView {
+      }
+    }
+  }
+  
+
+  namespace view {
+    namespace worldpanel {
+      class view.worldpanel.BarnView {
+      }
+    }
+  }
+  
+
+  namespace view {
+    namespace worldpanel {
+      class view.worldpanel.LandView {
+      }
+    }
+  }
+  
+
+  namespace view {
+    namespace worldpanel {
+      class view.worldpanel.LandView {
+      }
+    }
+  }
+  
+
+  namespace view {
+    namespace worldpanel {
+      class view.worldpanel.WorldPanelView {
+      }
+    }
+  }
+  
+
+  namespace view {
+    namespace worldpanel {
+      class view.worldpanel.WorldPanelView {
+      }
+    }
+  }
+  
+
+  main.java.model.Model .up.|> java.io.Serializable
+  main.java.model.actors.actions.ActionsManager .up.|> main.java.model.actors.actions.Actions
+  main.java.model.actors.person.PersonAbstract .up.|> main.java.model.actors.person.Person
+  main.java.model.calendar.Calendar .up.|> main.java.model.calendar.CalendarInt
+  main.java.model.inventory.Inventory .up.|> main.java.model.inventory.InventoryInterface
+  main.java.model.item.Item .up.|> java.io.Serializable
+  main.java.model.item.Item .up.|> java.lang.Cloneable
+  main.java.model.item.Item .up.|> java.lang.Comparable<main.java.model.item.Item>
+  main.java.model.item.Item .up.|> main.java.model.item.ItemInterface
+  main.java.model.item.ItemCreator .up.|> java.io.Serializable
+  main.java.model.item.animal.AnimalAbstract .up.|> main.java.model.item.animal.AnimalInterface
+  main.java.model.item.animal.AnimalFactory .up.|> java.io.Serializable
+  main.java.model.item.plants.PlantAbstract .up.|> main.java.model.item.plants.PlantInteface
+  main.java.model.item.plants.PlantFactory .up.|> java.io.Serializable
+  main.java.model.item.tools.AbstractTool .up.|> main.java.model.item.tools.ToolInterface
+  main.java.model.item.tools.factory.IronFactory .up.|> main.java.model.item.tools.factory.ToolFactory
+  main.java.model.item.tools.factory.WoodFactory .up.|> main.java.model.item.tools.factory.ToolFactory
+  main.java.model.place.Place .up.|> java.io.Serializable
+  main.java.model.place.barn.market.Market .up.|> main.java.model.place.barn.market.MarketInt
+  main.java.model.place.land.LandAbstract .up.|> main.java.model.place.land.LandInteface
+  main.java.model.place.land.chunks.PlantChunk .up.|> main.java.model.place.land.chunks.Chunk
+  main.java.model.progress.GameBackup .up.|> main.java.model.progress.Backup
+  model.Model .up.|> Serializable
+  model.Model .up.|> java.io.Serializable
+  model.actors.actions.ActionsManager .up.|> Actions
+  model.actors.actions.ActionsManager .up.|> model.actors.actions.Actions
+  model.actors.person.PersonAbstract .up.|> model.actors.person.Person
+  model.actors.person.PersonAbstract .up.|> Person
+  model.actors.person.PersonAbstract o-- model.actors.person.PersonAbstract.Role : role
+  model.calendar.Calendar .up.|> CalendarInt
+  model.calendar.Calendar o-- model.calendar.Calendar.Seasons : seasons
+  model.calendar.Calendar o-- model.calendar.Calendar.Weather : weather
+  model.calendar.Calendar .up.|> model.calendar.CalendarInt
+  model.inventory.Inventory .up.|> InventoryInterface
+  model.inventory.Inventory .up.|> model.inventory.InventoryInterface
+  model.item.Item .up.|> Cloneable
+  model.item.Item .up.|> Comparable
+  model.item.Item .up.|> ItemInterface
+  model.item.Item .up.|> Serializable
+  model.item.Item .up.|> java.io.Serializable
+  model.item.Item .up.|> java.lang.Cloneable
+  model.item.Item .up.|> java.lang.Comparable<model.item.Item>
+  model.item.Item .up.|> model.item.ItemInterface
+  model.item.ItemCreator .up.|> Serializable
+  model.item.ItemCreator .up.|> java.io.Serializable
+  model.item.animal.AnimalAbstract .up.|> AnimalInterface
+  model.item.animal.AnimalAbstract .up.|> model.item.animal.AnimalInterface
+  model.item.animal.AnimalFactory .up.|> java.io.Serializable
+  model.item.animal.AnimalFactory .up.|> Serializable
+  model.item.plants.PlantAbstract .up.|> model.item.plants.PlantInteface
+  model.item.plants.PlantAbstract .up.|> PlantInteface
+  model.item.plants.PlantAbstract o-- model.item.plants.PlantAbstract.PlantLife : lifeStage
+  model.item.plants.PlantFactory .up.|> java.io.Serializable
+  model.item.plants.PlantFactory .up.|> Serializable
+  model.item.tools.AbstractTool .up.|> ToolInterface
+  model.item.tools.AbstractTool o-- model.item.tools.AbstractTool.ToolStatus : toolStatus
+  model.item.tools.AbstractTool .up.|> model.item.tools.ToolInterface
+  model.item.tools.factory.IronFactory .up.|> model.item.tools.factory.ToolFactory
+  model.item.tools.factory.IronFactory .up.|> ToolFactory
+  model.item.tools.factory.WoodFactory .up.|> ToolFactory
+  model.item.tools.factory.WoodFactory .up.|> model.item.tools.factory.ToolFactory
+  model.place.Place .up.|> Serializable
+  model.place.Place .up.|> java.io.Serializable
+  model.place.barn.market.Market .up.|> model.place.barn.market.MarketInt
+  model.place.barn.market.Market .up.|> MarketInt
+  model.place.land.LandAbstract .up.|> model.place.land.LandInteface
+  model.place.land.LandAbstract .up.|> LandInteface
+  model.place.land.PlantLand .up.|> Iterable
+  model.place.land.PlantLand .up.|> java.lang.Iterable<model.place.land.chunks.PlantChunk>
+  model.place.land.chunks.PlantChunk .up.|> model.place.land.chunks.Chunk
+  model.place.land.chunks.PlantChunk .up.|> Chunk
+  model.progress.GameBackup .up.|> Backup
+  model.progress.GameBackup .up.|> model.progress.Backup
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

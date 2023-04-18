@@ -21,7 +21,7 @@ public class Main {
             controller = new Controller(null, model);
             final Controller tmpController = controller;
             SwingUtilities.invokeLater(() -> {
-                View view = new View(model,tmpController);
+                View view = new View(tmpController);
                 tmpController.setView(view); // Aggiungi questa linea
                 view.updateMVC(tmpController, model);
                 view.setVisible(true);

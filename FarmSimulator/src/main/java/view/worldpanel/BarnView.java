@@ -4,13 +4,13 @@ import javax.swing.*;
 
 import controller.Controller;
 import model.Constants;
-import model.Model;
 import model.actors.person.Landlord;
 import model.actors.person.PersonAbstract.Role;
 import model.item.Item;
 import model.item.ItemType;
 import model.item.tools.AbstractTool;
 import model.place.Place;
+import model.place.Places;
 import model.place.barn.Barn;
 import model.place.barn.market.Market;
 import model.place.land.AnimalLand;
@@ -20,10 +20,10 @@ import view.View;
 import view.custom.DeselectableButtonGroup;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class BarnView {
     // attributes
-    Model model;
     Controller controller;
     View view;
 
@@ -37,8 +37,7 @@ public class BarnView {
     JTabbedPane tabbedPane;
 
     // constructor
-    public BarnView(Model model, Controller controller, View view) {
-        this.model = model;
+    public BarnView(Controller controller, View view) {
         this.controller = controller;
         this.view = view;
     }
@@ -46,7 +45,7 @@ public class BarnView {
     
     public JPanel createBarnPlace(Place p){
         // get the actual place
-        Barn actualPlace = (Barn)this.model.getMap().get(0).get(0);
+        Barn actualPlace = (Barn)this.controller.getMap().get(Places.BARN);
 
         // create the panel that will contain the elements
         insideBarnPanel = new JPanel(new BorderLayout());
@@ -75,7 +74,7 @@ public class BarnView {
             barnInventoryPanel.add(exitButton);
 
             // disable the possibility to enter the market if the player is not a landlord
-            enterMarketButton.setEnabled(model.getSelectedPerson().getRole() == Role.LANDLORD? true : false);
+            enterMarketButton.setEnabled(controller.getSelectedPerson().getRole() == Role.LANDLORD? true : false);
 
             tabbedPane.addTab("Market", marketPanel);
             
@@ -97,7 +96,7 @@ public class BarnView {
                                                                    "<html>"); 
                     toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
                     // disable the button if the player doesn't have enough money
-                    if (item.getPrice() > ((Landlord)(model.getSelectedPerson())).getBalance()) {
+                    if (item.getPrice() > ((Landlord)(controller.getSelectedPerson())).getBalance()) {
                         toggleButton.setEnabled(false);
                     } else{
                         toggleButton.setEnabled(true);
@@ -108,7 +107,7 @@ public class BarnView {
                 }
             }   
             // add the exit button
-            exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createBarnPlace", model.getMap().get(0).get(0), true, true));
+            exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createBarnPlace", (Place)controller.getMap().get(Places.BARN), true, true));
             marketPanel.add(exitButton);
 
 
@@ -150,6 +149,7 @@ public class BarnView {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void createLandMarketPanel() {
         landMarketPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -175,8 +175,8 @@ public class BarnView {
         buyPlantLand.addActionListener(view.toggleButtonListener(buttonGroup, new PlantLand(), buyPlantLand));
         buyAnimalLand.addActionListener(view.toggleButtonListener(buttonGroup, new AnimalLand(), buyAnimalLand));
 
-        buyAnimalLand.setEnabled(((Landlord)(model.getSelectedPerson())).getBalance()>= Constants.BASE_LAND_PRICE);
-        buyPlantLand.setEnabled(((Landlord)(model.getSelectedPerson())).getBalance()>= Constants.BASE_LAND_PRICE);
+        buyAnimalLand.setEnabled(((Landlord)(controller.getSelectedPerson())).getBalance()>= Constants.BASE_LAND_PRICE);
+        buyPlantLand.setEnabled(((Landlord)(controller.getSelectedPerson())).getBalance()>= Constants.BASE_LAND_PRICE);
         
         buyLandPanel.add(buyAnimalLand);
         buyLandPanel.add(buyPlantLand);
@@ -185,7 +185,8 @@ public class BarnView {
         // create the sell land buttons
         JPanel sellLandMarketPanel = new JPanel(new GridLayout(3, 2, 20, 20));
         int landNumber = 1;
-        for (Place land : this.model.getMap().get(1)) {
+
+        for (Place land : ((ArrayList<Place>)(this.controller.getMap().get(Places.PLANT_LAND)))) {
             JToggleButton toggleButton = new JToggleButton("<html> " + landNumber + ". " + land.getType().toString() +
                                                            "<br> $" + ((LandAbstract)(land)).getPrice() + 
                                                            "<html>");

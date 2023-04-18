@@ -2,15 +2,19 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import model.Model;
 import model.actors.actions.ActionsManager.Action;
+import model.actors.person.Person;
 import model.actors.person.PersonAbstract.Role;
+import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
 import model.inventory.Inventory;
 import model.place.Place;
+import model.place.Places;
 import model.progress.GameBackup;
 import view.View;
 
@@ -18,14 +22,11 @@ public class Controller {
     // attributes
     private View view;
     private Model model;
-    private GameBackup backup;
     
-
     // constructor
     public Controller(View view,Model model) {
         this.view = view;
         this.model = model;
-        this.backup = new GameBackup(model);
     }
 
     // get model
@@ -36,13 +37,13 @@ public class Controller {
     // BACKUP PANEL
     // get backup
     public GameBackup getBackup() {
-        return backup;
+        return model.getBackup();
     }
 
     // delete save 
     public void deleteSave(String save) {
         try {
-            backup.deleteSave(save);
+            model.getBackup().deleteSave(save);
         } catch (IOException e) {
             this.exceptionPopup(e);
         }
@@ -53,7 +54,7 @@ public class Controller {
         String saveName = null;
 
         try {
-            saveName = backup.saveCurrent();
+            saveName = model.getBackup().saveCurrent();
         } catch (IOException e) {
             this.exceptionPopup(e);
         }
@@ -66,7 +67,7 @@ public class Controller {
         Controller controllerInstance = this; // riferimento all'istanza corrente di Controller
         try {
             // load chosen save
-            model = backup.loadSave(save);
+            model = model.getBackup().loadSave(save);
             model.getSelectedPerson().getActions().leave();
             view.getContentPane().removeAll();
             view.updateMVC(controllerInstance, model);
@@ -79,11 +80,7 @@ public class Controller {
     // ROLE PANEL
     // swap the role and update the role actions panel
     public void changeRole(Role role){
-        if (role == model.getPlayers()[0].getRole()) {
-            this.model.setSelectedPerson(this.model.getPlayers()[0]);
-          } else if (role == model.getPlayers()[1].getRole()) {
-            this.model.setSelectedPerson(this.model.getPlayers()[1]);
-          }	
+        this.model.setSelectedPerson(this.model.getPlayer().get(role));
     }
 
     // execute the action
@@ -149,6 +146,22 @@ public class Controller {
         } catch (InventoryIsFullException | NoItemFoundException | CloneNotSupportedException  | PlaceNotAvailableException e) {
             this.exceptionPopup(e);
         }
+    }
+
+    public Person getSelectedPerson(){
+        return model.getSelectedPerson();
+    }
+
+    public HashMap<Places,Object> getMap(){
+        return model.getMap();
+    }
+
+    public Person getPlayer(Role role){
+        return model.getPlayer().get(role);
+    }
+
+    public Calendar getCalendar(){
+        return model.getCalendar();
     }
 
     // exception popup

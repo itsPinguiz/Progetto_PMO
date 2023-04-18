@@ -3,7 +3,6 @@ package view.rolepanel;
 import javax.swing.*;
 
 import controller.Controller;
-import model.Model;
 import model.actors.person.Farmer;
 import model.inventory.Inventory;
 import model.item.Item;
@@ -17,14 +16,12 @@ import java.awt.*;
 
 public class InventoryPanelView {
     Controller controller;
-    Model model;
     View view;
     JPanel inventoryPanel;
     JScrollPane scrollableInventoryPanel;
     
-    public InventoryPanelView(Model model, Controller controller, View view) {
+    public InventoryPanelView(Controller controller, View view) {
         this.controller = controller;
-        this.model = model;
         this.view = view;
     }
 
@@ -37,7 +34,7 @@ public class InventoryPanelView {
 
         inventoryPanel.setBorder(BorderFactory.createTitledBorder("Inventory"));
 
-        Inventory inventory = ((Farmer) (model.getSelectedPerson())).getInventory();
+        Inventory inventory = ((Farmer) (controller.getSelectedPerson())).getInventory();
 
         // Create a deselectable button group for the toggle buttons
         DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
