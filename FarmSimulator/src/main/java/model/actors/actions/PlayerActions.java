@@ -444,7 +444,6 @@ public class PlayerActions extends ActionsManager{
 
                 product.setNumber(product.getNumber()*(((AbstractTool)(item)).getMaterial().getModifier()));
             }
-            System.out.println(product.getNumber());
             farmer.getInventory().addItem(product);
         }
         if (!chunk.getAnimal().isAlive()){

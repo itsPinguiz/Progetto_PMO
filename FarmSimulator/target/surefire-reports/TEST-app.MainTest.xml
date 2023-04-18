@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="app.MainTest" time="0.374" tests="2" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="app.MainTest" time="0.251" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IT"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Eclipse Adoptium\jdk-17.0.6.10-hotspot\bin"/>
-    <property name="sun.java.command" value="C:\Users\Luis Frasheri\AppData\Local\Temp\surefire18315971398190420564\surefirebooter-20230417182247548_3.jar C:\Users\Luis Frasheri\AppData\Local\Temp\surefire18315971398190420564 2023-04-17T18-22-46_924-jvmRun1 surefire-20230417182247548_1tmp surefire_0-20230417182247548_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Luis Frasheri\AppData\Local\Temp\surefire11282387690163392485\surefirebooter-20230418152447339_3.jar C:\Users\Luis Frasheri\AppData\Local\Temp\surefire11282387690163392485 2023-04-18T15-24-46_641-jvmRun1 surefire-20230418152447339_1tmp surefire_0-20230418152447339_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\Luis Frasheri\Desktop\Luis\Università\Progetto_PMO\FarmSimulator\target\test-classes;C:\Users\Luis Frasheri\Desktop\Luis\Università\Progetto_PMO\FarmSimulator\target\classes;C:\Users\Luis Frasheri\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\Luis Frasheri\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Luis Frasheri\AppData\Local\Temp\surefire18315971398190420564\surefirebooter-20230417182247548_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Luis Frasheri\AppData\Local\Temp\surefire11282387690163392485\surefirebooter-20230418152447339_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.6+10"/>
@@ -57,87 +57,8 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="addedAnimalToTheChunk" classname="app.MainTest" time="0.271">
-    <system-out><![CDATA[model.item.products.Products@805033
-model.item.products.Products@805033
-model.item.products.Products@805035
-model.item.products.Products@805035
-model.item.products.Products@805037
-model.item.products.Products@805037
-model.item.products.Products@805039
-model.item.products.Products@805039
-model.item.products.Products@8050311
-model.item.products.Products@8050311
-model.item.products.Products@8050313
-model.item.products.Products@8050313
-model.item.products.Products@8050315
-model.item.products.Products@8050315
-model.item.products.Products@8050317
-model.item.products.Products@8050317
-model.item.products.Products@8050319
-model.item.products.Products@8050319
-model.item.products.Products@8050321
-model.item.products.Products@8050321
-model.item.products.Products@8050323
-model.item.products.Products@8050323
-model.item.products.Products@8050325
-model.item.products.Products@8050325
-model.item.products.Products@8050327
-model.item.products.Products@8050327
-model.item.products.Products@8050329
-model.item.products.Products@8050329
-model.item.products.Products@8050331
-model.item.products.Products@8050331
-model.item.products.Products@8050334
-model.item.products.Products@8050334
-model.item.products.Products@8050337
-model.item.products.Products@8050337
-model.item.products.Products@8050340
-model.item.products.Products@8050340
-model.item.products.Products@8050343
-model.item.products.Products@8050343
-model.item.products.Products@8050346
-model.item.products.Products@8050346
-model.item.products.Products@8050349
-model.item.products.Products@8050349
-model.item.products.Products@8050352
-model.item.products.Products@8050352
-model.item.products.Products@8050355
-model.item.products.Products@8050355
-model.item.products.Products@8050358
-model.item.products.Products@8050358
-model.item.products.Products@8050361
-model.item.products.Products@8050361
-model.item.products.Products@8050364
-model.item.products.Products@8050364
-model.item.products.Products@8050367
-model.item.products.Products@8050367
-model.item.products.Products@8050370
-model.item.products.Products@8050370
-model.item.products.Products@8050373
-model.item.products.Products@8050373
-model.item.products.Products@8050376
-model.item.products.Products@8050376
-model.item.products.Products@8050379
-model.item.products.Products@8050379
-model.item.products.Products@8050382
-model.item.products.Products@8050382
-model.item.products.Products@8050385
-model.item.products.Products@8050385
-85
-model.item.products.Products@805033
-model.item.products.Products@805033
-model.item.products.Products@805036
-model.item.products.Products@805036
-model.item.products.Products@805039
-model.item.products.Products@805039
-model.item.products.Products@805039
-model.item.products.Products@805039
-model.item.products.Products@805039
-model.item.products.Products@805039
-9
-30
-]]></system-out>
-  </testcase>
-  <testcase name="plantedToHarvestCarrot" classname="app.MainTest" time="0"/>
+  <testcase name="boughtItemShouldBeAddedToTheBarn" classname="app.MainTest" time="0.08"/>
+  <testcase name="theProductsShouldBeStacked" classname="app.MainTest" time="0"/>
+  <testcase name="addedAnimalToTheChunk" classname="app.MainTest" time="0.016"/>
+  <testcase name="plantedToHarvestCarrot" classname="app.MainTest" time="0.021"/>
 </testsuite>

@@ -4,14 +4,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 import model.Constants;
 import model.Model;
 import model.actors.actions.ActionsManager.Action;
 import model.actors.person.Farmer;
 import model.actors.person.PersonAbstract.Role;
-import model.inventory.Inventory;
 import model.item.Item;
 import model.item.ItemType;
 import model.item.plants.PlantAbstract.PlantLife;
@@ -20,6 +21,7 @@ import model.place.land.PlantLand;
 import model.place.land.AnimalLand;
 import model.place.land.chunks.AnimalChunk;
 import model.place.land.chunks.PlantChunk;
+import model.place.Places;
 
 public class MainTest {
 
@@ -31,10 +33,10 @@ public class MainTest {
         model = new Model();
 
 
-        model.setSelectedPerson(model.getPlayer()[0]); // select farmer
+        model.setSelectedPerson(model.getPlayer().get(Role.FARMER)); // select farmer
         assertEquals(Role.FARMER, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Farmer
-        model.getSelectedPerson().getActions().enter(model.getMap().get(1).get(0)); // enter plant land
-        assertEquals(model.getMap().get(1).get(0), model.getSelectedPerson().getPlace()); // ASSERT that the farmer is in land
+        model.getSelectedPerson().getActions().enter(model.getLands().get(0)); // enter plant land
+        assertEquals(model.getLands().get(0), model.getSelectedPerson().getPlace()); // ASSERT that the farmer is in land
 
 
         final Model tmpModel = model;
@@ -44,8 +46,7 @@ public class MainTest {
                                                                                                 add(tmpModel.getSelectedItem());
                                                                                                 add(tmpModel.getMap());}});
 
-
-        PlantLand land = (PlantLand) model.getMap().get(1).get(0);
+        PlantLand land = (PlantLand) model.getLands().get(0);
         Iterator<PlantChunk> iterator = land.iterator();
 
         
@@ -99,10 +100,10 @@ public class MainTest {
         Model model = null;
         model = new Model();
 
-        model.setSelectedPerson(model.getPlayer()[0]); // select farmer
+        model.setSelectedPerson(model.getPlayer().get(Role.FARMER)); // select farmer
         assertEquals(Role.FARMER, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Farmer
-        model.getSelectedPerson().getActions().enter(((AnimalLand)(model.getMap().get(1).get(2))).getElements().get(0)); // enter animal land
-        assertEquals(((AnimalLand)(model.getMap().get(1).get(2))).getElements().get(0), model.getSelectedPerson().getPlace()); // ASSERT that the farmer is in land
+        model.getSelectedPerson().getActions().enter(((AnimalLand)(model.getLands().get(2))).getElements().get(0)); // enter animal land
+        assertEquals(((AnimalLand)(model.getLands().get(2))).getElements().get(0), model.getSelectedPerson().getPlace()); // ASSERT that the farmer is in land
 
         final Model tmpModel = model;
         Farmer f = (Farmer)model.getSelectedPerson();
@@ -161,7 +162,83 @@ public class MainTest {
                                                                                                      add(tmpModel.getMap());}});
         // ASSERT that after the animal is dead, it will give meat
         assertNotEquals(-1, f.getInventory().searchItem(new Products(ItemType.productsType.MEAT) , false)); 
+        
+        // ASSERT that the animal is not present in the chunk
+        assertEquals(null, ((AnimalChunk)(f.getPlace())).getAnimal());
+    }
 
-        //TODO : add test for eggs stack and meat
-    }   
+    @Test
+    public void theProductsShouldBeStacked() throws Exception{
+        Model model = null;
+        model = new Model();
+
+        Random rand = new Random();
+        int randomNumber = (rand.nextInt(3) + 1) * 63;
+        int expectedStacks = randomNumber / Constants.STACK_MAX;
+        int eggStack = 0;
+
+        // if the number of eggs is not divisible by 64, then there will be one more stack
+        if ((randomNumber) % Constants.STACK_MAX > 0) {
+            expectedStacks++;
+        }
+
+        // add eggs to the inventory
+        for(int i = 0; i < randomNumber; i++){
+            ((Farmer)(model.getPlayer().get(Role.FARMER))).getInventory().addItem(new Products(ItemType.productsType.EGGS));
+        }
+
+        // count the number of stacks
+        for(int i = 0; i < ((Farmer)(model.getPlayer().get(Role.FARMER))).getInventory().getInventory().size(); i++){
+            if(((Farmer)(model.getPlayer().get(Role.FARMER))).getInventory().getInventory().get(i).getType() == ItemType.productsType.EGGS){
+                eggStack ++;
+            }
+        }
+        // ASSERT that the number of stacks is correct
+        assertEquals(expectedStacks, eggStack);
+    }
+
+    @Test
+    public void boughtItemShouldBeAddedToTheBarn() throws Exception{
+        Model model = null;
+        model = new Model();
+
+        model.setSelectedPerson(model.getPlayer().get(Role.LANDLORD)); // select landlord
+        assertEquals(Role.LANDLORD, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Landlord
+
+        model.getSelectedPerson().getActions().enter(model.getBarn()); // enter barn
+        assertEquals(Places.BARN, model.getSelectedPerson().getPlace().getType()); // ASSERT that the landlord is in barn
+
+        model.getSelectedPerson().getActions().enter(model.getBarn().getMarket()); // enter market
+        assertEquals(Places.MARKET, model.getSelectedPerson().getPlace().getType()); // ASSERT that the landlord is in market
+
+        model.setSelectedItem(model.getBarn().getMarket().getItemShop().getInventory().get(0)); // select the first item in the market
+
+        Item item = (Item)model.getSelectedItem(); // get the item
+
+        HashMap<Integer, Integer> barnBeforeBuy = new HashMap<>();
+        HashMap<Integer, Integer> barnAfterBuy = new HashMap<>();
+
+        for(int i = 0; i < (model.getBarn().getBarnInventory().getInventory().size()); i++){
+            if(model.getBarn().getBarnInventory().getInventory().get(i).getType() == item.getType()){
+                barnBeforeBuy.put(i, model.getBarn().getBarnInventory().getInventory().get(i).getNumber());
+            }
+        }
+
+        final Model tmpModel = model;
+        model.getSelectedPerson().getActions().executeAction(Action.BUY_ITEM, new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
+                                                                                                 add(tmpModel.getSelectedItem());
+                                                                                                 add(tmpModel.getMap());}}); // buy the item
+
+        // ASSERT that the item is added to the barn
+        for(int i = 0; i < model.getBarn().getBarnInventory().getInventory().size(); i++){
+            if(model.getBarn().getBarnInventory().getInventory().get(i).getType() == item.getType()){
+                barnAfterBuy.put(i, model.getBarn().getBarnInventory().getInventory().get(i).getNumber());
+            }
+        }
+        assertFalse("The item was not added to the barn", barnBeforeBuy.equals(barnAfterBuy));
+    }
+
+    
 }
+
+

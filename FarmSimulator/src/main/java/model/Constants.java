@@ -81,4 +81,7 @@ public class Constants {
     // land price
     public final static int BASE_LAND_PRICE = 50;
     public final static int LAND_SELL_PRICE = 25;
+
+    // stack
+    public final static int STACK_MAX = 64;
 }

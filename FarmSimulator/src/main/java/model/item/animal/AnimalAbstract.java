@@ -101,7 +101,6 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     public boolean areProductsAvailable(){
         for (int i = 0; i < this.typeProduct.size(); i++){
             if (this.typeProduct.get(i).getNumber() > 0){
-                System.out.println(this.typeProduct.get(i).toString() + this.typeProduct.get(i).getNumber());
                 return true;
             }
         }

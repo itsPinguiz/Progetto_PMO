@@ -20,7 +20,6 @@ public abstract class LandAbstract extends Place implements LandInteface {
         /*
          *  Updates the entities inside the land
          */
-        System.out.println("Land was not updated");
     }
 
     public ArrayList<? extends Object> getElements(){

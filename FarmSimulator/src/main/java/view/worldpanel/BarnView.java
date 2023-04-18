@@ -10,7 +10,6 @@ import model.item.Item;
 import model.item.ItemType;
 import model.item.tools.AbstractTool;
 import model.place.Place;
-import model.place.Places;
 import model.place.barn.Barn;
 import model.place.barn.market.Market;
 import model.place.land.AnimalLand;
@@ -20,7 +19,6 @@ import view.View;
 import view.custom.DeselectableButtonGroup;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class BarnView {
     // attributes
@@ -149,7 +147,6 @@ public class BarnView {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void createLandMarketPanel() {
         landMarketPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
