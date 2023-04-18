@@ -7,6 +7,7 @@ import model.actors.person.PersonAbstract.Role;
 import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.place.Place;
 import model.place.Places;
+import model.place.land.LandAbstract;
 import view.View;
 
 import java.awt.*;
@@ -47,7 +48,7 @@ public class WorldPanelView {
         this.view.getRolePanelView().getRoleMenu().setEnabled(true);
 
         // add the land buttons
-        for (Place land : ((ArrayList<Place>)(this.controller.getMap().get(Places.PLANT_LAND)))) {
+        for (LandAbstract land : this.controller.getLands()) {
             JButton button = new JButton(landNumber+". "+land.getType().toString());
             button.addActionListener(changePlaceListener(view.getLandView(),"createInsideLand",land,false,false));
             landsPanel.add(button);
@@ -56,9 +57,9 @@ public class WorldPanelView {
             landNumber++;
         }
         // add the barn button
-        JButton barnButton = new JButton(((Place)(this.controller.getMap().get(Places.BARN))).getType().toString());
+        JButton barnButton = new JButton((this.controller.getBarn()).getType().toString());
         
-        barnButton.addActionListener(changePlaceListener(view.getBarnView(),"createBarnPlace", (Place)(this.controller.getMap().get(Places.BARN)),true,false));
+        barnButton.addActionListener(changePlaceListener(view.getBarnView(),"createBarnPlace", (Place)(this.controller.getBarn()),true,false));
 
         barnButton.setPreferredSize(new Dimension(200,200));
         GridBagConstraints gbc = new GridBagConstraints();

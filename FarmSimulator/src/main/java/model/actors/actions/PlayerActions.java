@@ -3,6 +3,7 @@ package model.actors.actions;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import model.Constants;
@@ -539,7 +540,7 @@ public class PlayerActions extends ActionsManager{
         LandAbstract land;
         Landlord landlord = (Landlord)this.person;
         Market market = (Market)items.get(0);
-        ArrayList<Place> lands =((ArrayList<ArrayList<Place>>)items.get(2)).get(1);
+        ArrayList<LandAbstract> lands =(ArrayList<LandAbstract>)(((HashMap<Places,Object>)items.get(2)).get(Places.PLANT_LAND));
         
 
         // check if the item is a land or not
@@ -575,7 +576,7 @@ public class PlayerActions extends ActionsManager{
          * to the market
          */
         Market market = (Market)items.get(0);
-        ArrayList<Place> lands =((ArrayList<ArrayList<Place>>)items.get(2)).get(1);
+        ArrayList<LandAbstract> lands =(ArrayList<LandAbstract>)(((HashMap<Places,Object>)items.get(2)).get(Places.PLANT_LAND));
 
         // check if the item is a land or not
          if (items.get(1) instanceof LandAbstract && lands.contains(items.get(1))){

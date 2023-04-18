@@ -45,7 +45,7 @@ public class BarnView {
     
     public JPanel createBarnPlace(Place p){
         // get the actual place
-        Barn actualPlace = (Barn)this.controller.getMap().get(Places.BARN);
+        Barn actualPlace = this.controller.getBarn();
 
         // create the panel that will contain the elements
         insideBarnPanel = new JPanel(new BorderLayout());
@@ -107,7 +107,7 @@ public class BarnView {
                 }
             }   
             // add the exit button
-            exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createBarnPlace", (Place)controller.getMap().get(Places.BARN), true, true));
+            exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createBarnPlace", controller.getBarn(), true, true));
             marketPanel.add(exitButton);
 
 
@@ -186,9 +186,9 @@ public class BarnView {
         JPanel sellLandMarketPanel = new JPanel(new GridLayout(3, 2, 20, 20));
         int landNumber = 1;
 
-        for (Place land : ((ArrayList<Place>)(this.controller.getMap().get(Places.PLANT_LAND)))) {
+        for (LandAbstract land : (this.controller.getLands())) {
             JToggleButton toggleButton = new JToggleButton("<html> " + landNumber + ". " + land.getType().toString() +
-                                                           "<br> $" + ((LandAbstract)(land)).getPrice() + 
+                                                           "<br> $" + (land).getPrice() + 
                                                            "<html>");
             toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, land, toggleButton));
             buttonGroup.add(toggleButton);

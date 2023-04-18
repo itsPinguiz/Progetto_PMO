@@ -103,11 +103,17 @@ public class Model implements Serializable{
         ((ArrayList<LandAbstract>)(this.map.get(Places.PLANT_LAND))).forEach(place -> { LandAbstract land = (LandAbstract) place;
                                                       land.update();});
 
-        Barn b = (Barn)(this.map.get(Places.BARN));
-        b.updateBarn();
+        this.getBarn().updateBarn();
 
         if (this.selectedActor.getPlace()!=null)
             this.selectedActor.getActions().enter(this.selectedActor.getPlace());
+    }
+
+    public Barn getBarn(){
+        /*
+         * Method to get the barn
+         */
+        return (Barn)this.map.get(Places.BARN);
     }
 
     public HashMap<Places,Object> getMap(){

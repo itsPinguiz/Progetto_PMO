@@ -15,6 +15,8 @@ import model.exceptions.CustomExceptions.PlaceNotAvailableException;
 import model.inventory.Inventory;
 import model.place.Place;
 import model.place.Places;
+import model.place.barn.Barn;
+import model.place.land.LandAbstract;
 import model.progress.GameBackup;
 import view.View;
 
@@ -162,6 +164,14 @@ public class Controller {
 
     public Calendar getCalendar(){
         return model.getCalendar();
+    }
+
+    public Barn getBarn(){
+        return model.getBarn();
+    }
+
+    public ArrayList<LandAbstract> getLands(){
+        return model.getLands();
     }
 
     // exception popup
