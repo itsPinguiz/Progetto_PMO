@@ -65,16 +65,16 @@ public class PlayerActions extends ActionsManager{
 
         // execute the method if it exists and is available
         if (method != null && this.availableActions.contains(s)) {
-            person.getActions().updateActions(person.getPlace().getActions().getActions(), false);
+            person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), false);
             method.invoke(this,argument);        
-            person.getActions().updateActions(person.getPlace().getActions().getActions(), true);
+            person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), true);
         } else {
             throw new ActionNotAvailableException(s, this.availableActions);
         }
 
         //update the current player actions that might have been edited
         ArrayList<Object> args = (ArrayList<Object>)argument;
-        this.updateActions(((Place)(args.get(0))).getActions().getActions(),true);
+        this.updateActions(((Place)(args.get(0))).getActions().getAvailableActions(),true);
     }
 
     private  Method getMethodByName(String methodName) {
@@ -101,7 +101,7 @@ public class PlayerActions extends ActionsManager{
             this.person.setPlace(p);
             // the landlord cannot move items
             if (!(person instanceof Landlord && p.getType() == Places.BARN)){
-                this.person.getActions().updateActions(person.getPlace().getActions().getActions(), true);
+                this.person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), true);
             }
         } else throw new PlaceNotAvailableException(p, this.accessiblePlaces);
     }
@@ -112,7 +112,7 @@ public class PlayerActions extends ActionsManager{
          * an actors leaves from somewhere
          */
         if (person.getPlace()!= null){
-            person.getActions().updateActions(person.getPlace().getActions().getActions(), false);
+            person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), false);
         }
         person.setPlace(null);
     }
@@ -168,7 +168,7 @@ public class PlayerActions extends ActionsManager{
 
         // check if the farmer has a seed and the chunk is plowed
         if (seed instanceof PlantAbstract){ 
-            if(c.getDirtStatus() && f.getInventory().searchItem(seed, false) != -1 && c.getPlant() == null){
+            if(c.isPlowed() && f.getInventory().searchItem(seed, false) != -1 && c.getPlant() == null){
                 // add plant to the land 
                 c.setPlant((PlantAbstract)(f.getInventory().getItem(1,seed)));
                 c.getPlant().planted(c);
@@ -206,7 +206,7 @@ public class PlayerActions extends ActionsManager{
         //check if the farmer has the watering can
         if (tool.getType() == ItemType.Tools.WATERINGCAN && this.damageTool(tool)){
             // increase water level
-            c.setWaterLevel(Constants.WATERING_INDEX*(((AbstractTool)(tool)).getMaterial().getModifier()));
+            c.increaseWaterLevel(Constants.WATERING_INDEX*(((AbstractTool)(tool)).getMaterial().getModifier()));
         } else throw new NoToolFoundException(tool.getType(),ItemType.Tools.WATERINGCAN);
     }
 
@@ -222,24 +222,24 @@ public class PlayerActions extends ActionsManager{
         
         //check if the farmer has the hoe
         if (tool.getType() == ItemType.Tools.HOE && this.damageTool(tool)){
-            if (!c.getDirtStatus()){
-            // change land status
-            c.setDirtStatus(true);
-            // add new possible actions
-            c.getActions().resetActions();
-            c.getActions().updateActions(new HashSet<>(){{
-                add(Action.PLANT);
-                }}, true);
-            c.getLand().getActions().updateActions(new HashSet<>(){{
-                add(Action.PLANT_ALL);
-                }}, true);
-
-            // if all the chunks are plowed, remove the plow all action
-            if (c.getLand().getElements().stream().filter(chunk -> chunk.getDirtStatus() == false).count() == 0){
+            if (!c.isPlowed()){
+                // change land status
+                c.setDirtStatus(true);
+                // add new possible actions
+                c.getActions().resetActions();
+                c.getActions().updateActions(new HashSet<>(){{
+                    add(Action.PLANT);
+                    }}, true);
                 c.getLand().getActions().updateActions(new HashSet<>(){{
-                    add(Action.PLOW_ALL);
-                    }}, false);
-            }
+                    add(Action.PLANT_ALL);
+                    }}, true);
+
+                // if all the chunks are plowed, remove the plow all action
+                if (c.getLand().getElements().stream().filter(chunk -> chunk.isPlowed() == false).count() == 0){
+                    c.getLand().getActions().updateActions(new HashSet<>(){{
+                        add(Action.PLOW_ALL);
+                        }}, false);
+                }
             } else throw new LandIsAlreadyPlowedException();
         }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.HOE);
     }
@@ -256,7 +256,7 @@ public class PlayerActions extends ActionsManager{
         //check if the farmer has the fertilizer
         if (tool.getType() == ItemType.Tools.FERTILIZER && this.damageTool(tool)){ 
             // increase water level
-            c.setFertilizationLevel(Constants.FERTILIZATION_INDEX*(((AbstractTool)(tool)).getMaterial().getModifier()));
+            c.increaseFertilizationLevel(Constants.FERTILIZATION_INDEX*(((AbstractTool)(tool)).getMaterial().getModifier()));
         }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.FERTILIZER);
     }
 
@@ -368,7 +368,7 @@ public class PlayerActions extends ActionsManager{
         if (items.get(0) instanceof PlantLand){
             PlantLand p = (PlantLand)items.get(0);
             for (PlantChunk chunk : p.getElements()){
-                if (chunk.getActions().getActions().contains(action)){
+                if (chunk.getActions().getAvailableActions().contains(action)){
                     this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
                 } 
             }
@@ -376,7 +376,7 @@ public class PlayerActions extends ActionsManager{
             AnimalLand a = (AnimalLand)items.get(0);
             for (AnimalChunk chunk : a.getElements()){
                 if (chunk.getAnimal()!=null){
-                    if (chunk.getActions().getActions().contains(action)){
+                    if (chunk.getActions().getAvailableActions().contains(action)){
                         this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
                     } 
                 } 

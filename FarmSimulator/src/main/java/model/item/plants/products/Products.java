@@ -2,7 +2,7 @@
  * IMPORT AND PACKAGE
  *******************/
 
-package model.item.products;
+package model.item.plants.products;
 
 import model.Constants;
 import model.exceptions.CustomExceptions.*;

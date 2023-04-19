@@ -5,12 +5,11 @@ import java.util.HashSet;
 import model.place.Place;
 
 public class PlaceActions extends ActionsManager{
+    // attributes
     protected Place place; // place where the action take place
 
+    // constructor
     public PlaceActions(Place place){
-        /*
-         * Constructor for the plant land
-         */
         super();
         this.place = place;
 
@@ -53,6 +52,5 @@ public class PlaceActions extends ActionsManager{
             default:
                 throw new IllegalArgumentException("This type of land does not exist.");
         }
-        
     }
 }

@@ -43,17 +43,30 @@ public class PlantChunk extends LandAbstract implements Chunk{
          */
         if (this.plant != null){
             this.plant.grow();
-            this.setWaterLevel(Constants.PLANT_WATER_DEACRESE);
-            this.setFertilizationLevel(Constants.PLANT_FERTILIZATION_DEACRESE);
+            this.increaseWaterLevel(Constants.PLANT_WATER_DEACRESE);
+            this.increaseFertilizationLevel(Constants.PLANT_FERTILIZATION_DEACRESE);
 
             if (this.plant.getLifeStage() == PlantLife.DEAD){
                 this.plant = null;
                 this.resetActions();
+            } else if (this.waterLevel <= 100){
+                this.getActions().updateActions(new HashSet<>(){{
+                    add(Action.WATER);
+                }},false);
+            } else if (this.fertilizationLevel <= 100){
+                this.getActions().updateActions(new HashSet<>(){{
+                    add(Action.FERTILIZE);
+                }},false);
+            } else {
+                this.getActions().updateActions(new HashSet<>(){{
+                    add(Action.WATER);
+                    add(Action.FERTILIZE);
+                }},true);
             }
         }
         
-        this.setWaterLevel(Constants.CHUNK_WATER_DEACRESE);
-        this.setFertilizationLevel(Constants.CHUNK_FERTILIZATION_DEACRESE);
+        this.increaseWaterLevel(Constants.CHUNK_WATER_DEACRESE);
+        this.increaseFertilizationLevel(Constants.CHUNK_FERTILIZATION_DEACRESE);
     }
 
     public PlantLand getLand(){
@@ -70,7 +83,7 @@ public class PlantChunk extends LandAbstract implements Chunk{
         this.plant = plant;
     }
 
-    public void setWaterLevel(int value){
+    public void increaseWaterLevel(int value){
         /*
          * Increases water value
          */
@@ -83,7 +96,7 @@ public class PlantChunk extends LandAbstract implements Chunk{
         }
     }
 
-    public void setFertilizationLevel(int value){
+    public void increaseFertilizationLevel(int value){
         /*
          * Increases fertilization value
          */
@@ -117,7 +130,7 @@ public class PlantChunk extends LandAbstract implements Chunk{
         return this.fertilizationLevel;
     }
 
-    public boolean getDirtStatus(){
+    public boolean isPlowed(){
         /*
          * Returns if chunk is plowed or not
          */
@@ -137,7 +150,7 @@ public class PlantChunk extends LandAbstract implements Chunk{
          */
         this.getActions().resetActions();
         this.getActions().updateActions( new HashSet<>(){{
-                                            add(getDirtStatus()?Action.PLANT:Action.PLOW);
+                                            add(isPlowed()?Action.PLANT:Action.PLOW);
                                             }}, true);
     }
 

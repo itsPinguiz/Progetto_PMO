@@ -13,8 +13,8 @@ import model.exceptions.CustomExceptions.MinimumHungerException;
 import model.exceptions.CustomExceptions.NoFoodFoundException;
 import model.item.Item;
 import model.item.ItemType;
+import model.item.plants.products.Products;
 import model.item.plants.species.Plant;
-import model.item.products.Products;
 
 /*****************
  * ANIMAL ABSTRACT
@@ -94,7 +94,6 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     public boolean areProductsAvailable(){
         for (int i = 0; i < this.typeProduct.size(); i++){
             if (this.typeProduct.get(i).getNumber() > 0){
-                System.out.println(this.typeProduct.get(i).getType().toString() + this.typeProduct.get(i).getNumber());
                 return true;
             }
         }

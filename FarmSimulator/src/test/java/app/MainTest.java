@@ -17,7 +17,7 @@ import model.actors.person.PersonAbstract.Role;
 import model.item.Item;
 import model.item.ItemType;
 import model.item.plants.PlantAbstract.PlantLife;
-import model.item.products.Products;
+import model.item.plants.products.Products;
 import model.place.land.PlantLand;
 import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
@@ -31,8 +31,7 @@ public class MainTest {
     @Test
     public void plantedToHarvestCarrot() throws Exception{
 
-        Model model = null;
-        model = new Model();
+        Model model = new Model();
 
 
         model.setSelectedPerson(model.getPlayer().get(Role.FARMER)); // select farmer
@@ -56,7 +55,7 @@ public class MainTest {
             PlantChunk p = iterator.next();
 
             model.getSelectedPerson().getActions().enter(p);
-            assertEquals(true, p.getDirtStatus()); // ASSERT that all the chunks are plowed
+            assertEquals(true, p.isPlowed()); // ASSERT that all the chunks are plowed
         }
 
         f = (Farmer)model.getSelectedPerson();

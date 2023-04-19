@@ -7,5 +7,5 @@ import model.actors.actions.ActionsManager.Action;
 
 interface Actions extends Serializable{ 
     void updateActions(Set<Action> actions, boolean add);
-    Set<Action> getActions();
+    Set<Action> getAvailableActions();
 }

@@ -191,7 +191,7 @@ import java.util.Set;
         constraints.weighty = 1.0;
 
         // iterate over the actions and add the buttons
-        for(ActionsManager.Action action : this.controller.getSelectedPerson().getActions().getActions()) {
+        for(ActionsManager.Action action : this.controller.getSelectedPerson().getActions().getAvailableActions()) {
             JButton button = new JButton(action.toString());   
             button.setAlignmentX(Component.CENTER_ALIGNMENT);
             button.addActionListener(new ActionListener() {
@@ -247,7 +247,7 @@ import java.util.Set;
         /*
          * Check if the selected person has the action enabled and if the action is valid
          */
-        Set<ActionsManager.Action> actions = this.controller.getSelectedPerson().getActions().getActions();
+        Set<ActionsManager.Action> actions = this.controller.getSelectedPerson().getActions().getAvailableActions();
     
         for (Component component : buttonPanel.getComponents()) {
             if (component instanceof JButton) {

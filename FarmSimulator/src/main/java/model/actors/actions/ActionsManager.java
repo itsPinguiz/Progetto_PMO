@@ -17,272 +17,101 @@ public abstract class ActionsManager implements Actions {
 
     public enum Action {
         // All possible actions
-        PLANT("Plant", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item instanceof ItemType.Plants;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        WATER("Water", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item == ItemType.Tools.WATERINGCAN;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        FERTILIZE("Fertilize", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item == ItemType.Tools.FERTILIZER;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        HARVEST("Harvest", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item == ItemType.Tools.SICKLE || item == null;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }, true),
-        PLOW("Plow", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item == ItemType.Tools.HOE;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        PLANT_ALL("Plant All", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item instanceof ItemType.Plants;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        WATER_ALL("Water All", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item == ItemType.Tools.WATERINGCAN;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        FERTILIZE_ALL("Fertilize All", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item == ItemType.Tools.FERTILIZER;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        HARVEST_ALL("Harvest All", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item == ItemType.Tools.SICKLE || item == null;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }, true),
-        PLOW_ALL("Plow All", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item == ItemType.Tools.HOE;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        ADD_ANIMAL("Add Animal", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item instanceof ItemType.Animals;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        REMOVE_ANIMAL("Remove Animal", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return true;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        FEED_ANIMAL("Feed Animal", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item instanceof ItemType.Plants;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        GIVE_WATER("Give Water", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return true;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        GET_RESOURCES("Get Resources", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item == ItemType.Tools.SCISSORS || item == null;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        FEED_ALL_ANIMALS("Feed All Animals", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item instanceof ItemType.Plants;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        GIVE_WATER_ALL("Give Water All", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return true;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        GET_ALL_RESOURCES("Get All Resources", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return true;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        MOVE_ITEM("Move Item", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item instanceof ItemType;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return false;
-            }
-        }),
-        BUY_ITEM("Buy Item", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item instanceof ItemType;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return land instanceof LandAbstract;
-            }
-        }),
-        SELL_ITEM("Sell Item", new DualItemValidator() {
-            @Override
-            public boolean validateItemType(ItemType item) {
-                return item instanceof ItemType;
-            }
-    
-            @Override
-            public boolean validateLandAbstract(LandAbstract land) {
-                return land instanceof LandAbstract;
-            }
-        });
+        PLANT("Plant", item -> item instanceof ItemType.Plants,
+                            land -> false),
+        WATER("Water", item -> item == ItemType.Tools.WATERINGCAN,
+                            land -> false),
+        FERTILIZE("Fertilize", item -> item == ItemType.Tools.FERTILIZER,
+                            land -> false),
+        HARVEST("Harvest", item -> item == ItemType.Tools.SICKLE || item == null,
+                                land -> false, true),
+        PLOW("Plow", item -> item == ItemType.Tools.HOE,
+                          land -> false),
+        PLANT_ALL("Plant All", item -> item instanceof ItemType.Plants,
+                                    land -> false),
+        WATER_ALL("Water All", item -> item == ItemType.Tools.WATERINGCAN,
+                                    land -> false),
+        FERTILIZE_ALL("Fertilize All", item -> item == ItemType.Tools.FERTILIZER,
+                                            land -> false),
+        HARVEST_ALL("Harvest All", item -> item == ItemType.Tools.SICKLE || item == null,
+                                        land -> false, true),
+        PLOW_ALL("Plow All", item -> item == ItemType.Tools.HOE,
+                                  land -> false),
+        ADD_ANIMAL("Add Animal", item -> item instanceof ItemType.Animals,
+                                      land -> false),
+        REMOVE_ANIMAL("Remove Animal", item -> true,
+                                            land -> false),
+        FEED_ANIMAL("Feed Animal", item -> item instanceof ItemType.Plants,
+                                        land -> false),
+        GIVE_WATER("Give Water", item -> true,
+                                      land -> false),
+        GET_RESOURCES("Get Resources", item -> item == ItemType.Tools.SCISSORS || item == null,
+                                            land -> false),
+        FEED_ALL_ANIMALS("Feed All Animals", item -> item instanceof ItemType.Plants,
+                                                  land -> false),
+        GIVE_WATER_ALL("Give Water All", item -> true, 
+                                              land -> false),
+        GET_ALL_RESOURCES("Get All Resources", item -> true, 
+                                                    land -> false),
+        MOVE_ITEM("Move Item", item -> item instanceof ItemType,
+                                            land -> false),
+        BUY_ITEM("Buy Item", item -> item instanceof ItemType, 
+                                  land -> land instanceof LandAbstract),
+        SELL_ITEM("Sell Item", item -> item instanceof ItemType,
+                                    land -> land instanceof LandAbstract);
 
+        // attributes
         private final String name;
-        private final DualItemValidator itemValidator;
+        private final ItemTypeValidator itemValidator;
+        private final LandAbstractValidator landValidator;
         private final boolean optional;
 
-        Action(String name, DualItemValidator itemValidator, boolean optional) {
+        //constructor
+        Action(String name, ItemTypeValidator itemValidator, LandAbstractValidator landValidator, boolean optional) {
             this.name = name;
             this.itemValidator = itemValidator;
+            this.landValidator = landValidator;
             this.optional = optional;
         }
 
-        Action(String name, DualItemValidator itemValidator) {
-            this(name, itemValidator, false);
+        Action(String name, ItemTypeValidator itemValidator, LandAbstractValidator landValidator) {
+            this(name, itemValidator, landValidator, false);
         }
 
         public String getName() {
+            /*
+             * Method that returns the name of the action 
+             */
             return name;
         }
 
         public boolean isItemValid(ItemType item, LandAbstract land) {
-            return itemValidator.validateItemType(item) || itemValidator.validateLandAbstract(land);
+            /*
+             * Method that returns true if the item is valid for the action 
+             */
+            return itemValidator.validateItemType(item) || landValidator.validateLandAbstract(land);
         }
 
         public boolean isOptional() {
+            /*
+             * Method that returns true if having an item is optional for the action
+             */
             return optional;
         }
 
         @Override
         public String toString() {
+            /*
+             * Method that returns the name of the action
+             */
             return getName();
         }
     }
 
     public void updateActions(Set<Action> actions, boolean add) {
-        // Adds or removes actions from available actions
+        /*
+         * Method that updates the available actions
+         */
         if (add) {
             this.availableActions.addAll(actions);
         } else {
@@ -290,24 +119,37 @@ public abstract class ActionsManager implements Actions {
         }
     }
 
-    public Set<Action> getActions() {
-        // Method that returns all the possible actions
+    public Set<Action> getAvailableActions() {
+        /*
+         * Method that returns the available actions
+         */
         return this.availableActions;
     }
 
     public void resetActions() {
-        // Resets the available actions
+        /*
+         * Method that resets the available actions
+         */
         this.availableActions.clear();
     }
 
     public interface ItemTypeValidator {
+        /*
+         * Method that returns true if the item is valid for the action
+         */
         boolean validateItemType(ItemType item);
     }
 
     public interface LandAbstractValidator {
+        /*
+         * Method that returns true if the land is valid for the action
+         */
         boolean validateLandAbstract(LandAbstract land);
     }
     
     public interface DualItemValidator extends ItemTypeValidator, LandAbstractValidator {
+        /*
+         * Method that returns true if the item is valid for the action
+         */
     }
 }    

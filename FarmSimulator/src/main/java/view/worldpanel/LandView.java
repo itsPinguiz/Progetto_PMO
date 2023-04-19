@@ -83,7 +83,7 @@ public class LandView {
                             "</div><div style='font-size:12px;'>Life Stage: " + ((plant == null)?"No Plant": plant.getLifeStage().toString()) +
                             "<br>Water Level: </br>" + chunk.getWaterLevel() +
                             "<br>Fertilization Level: </br>" + chunk.getFertilizationLevel() +
-                            "<br>Plowed :</br> " + ((chunk.getDirtStatus()== true)?"Yes":"No") +
+                            "<br>Plowed :</br> " + ((chunk.isPlowed()== true)?"Yes":"No") +
                             "</div></html>");
             c.gridx = 0;
             c.gridy = 0;
