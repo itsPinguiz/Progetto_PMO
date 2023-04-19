@@ -156,7 +156,8 @@ public class View extends JFrame{
     JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     try {
       // enter back in the place that might have been curropted to the exception
-      this.controller.getSelectedPerson().getActions().enter(place);
+      if (place != null)
+        this.controller.getSelectedPerson().getActions().enter(place);
     } catch (PlaceNotAvailableException e) {
       this.exceptionPopup(e.toString());
     }

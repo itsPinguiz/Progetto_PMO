@@ -73,7 +73,7 @@ public class ItemCreator implements Serializable {
     }
     
     public Item getRandomItem(){
-        return this.randomMethods[random.nextInt(randomMethods.length - 1)];
+        return this.randomMethods[random.nextInt(randomMethods.length)];
     }
 
 }

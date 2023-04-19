@@ -16,6 +16,7 @@ public class Products extends Item{
 
 	public Products(ItemType.productsType currentType) throws NoProductFoundException {
 		super.status = 0;
+		super.number = 0;
 		super.maxNumber = 64;
 		super.type = currentType;
 	

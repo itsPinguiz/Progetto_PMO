@@ -136,7 +136,9 @@ public class PlayerActions extends ActionsManager{
                 farmer.getInventory().addItem(barn.getBarnInventory().getItem(1,itemToMove));
             } catch (InventoryIsFullException e) {
                 // if inventory is full, add the item back to the barn
-                barn.getBarnInventory().addItem(itemToMove);
+                Item oneItemToMove = (Item)itemToMove.clone();
+                oneItemToMove.setNumber(1);
+                barn.getBarnInventory().addItem(oneItemToMove);
                 throw new InventoryIsFullException();
             }
         } else if (farmer.getInventory().getInventory().contains(itemToMove)){
@@ -145,7 +147,9 @@ public class PlayerActions extends ActionsManager{
                 barn.getBarnInventory().addItem(farmer.getInventory().getItem(1,itemToMove));
             } catch (InventoryIsFullException e) {
                 // if the item was not found add the item back to the inventory
-                farmer.getInventory().addItem(itemToMove);
+                Item oneItemToMove = (Item)itemToMove.clone();
+                oneItemToMove.setNumber(1);
+                farmer.getInventory().addItem(oneItemToMove);
                 throw new InventoryIsFullException();
             }
         }
@@ -436,6 +440,7 @@ public class PlayerActions extends ActionsManager{
         Item item = (Item)items.get(1);
 
         for (Item product : chunk.getAnimal().getProducts()){
+            // if the animal is a goat and the farmer has scissors, the wool will be cut
             if (chunk.getAnimal().getType() == ItemType.Animals.GOAT &&
                 item != null &&
                 item.getType() == ItemType.Tools.SCISSORS &&
@@ -446,6 +451,13 @@ public class PlayerActions extends ActionsManager{
             }
             farmer.getInventory().addItem(product);
         }
+        // if the animal has no products, remove the get resources action
+        if (chunk.getAnimal().areProductsAvailable()){
+            chunk.getActions().updateActions(new HashSet<Action>(){{add(Action.GET_RESOURCES);}}, true);
+        } else {
+            chunk.getActions().updateActions(new HashSet<Action>(){{add(Action.GET_RESOURCES);}}, false);
+        }
+        // if the animal is dead, remove it from the farm
         if (!chunk.getAnimal().isAlive()){
            chunk.removeAnimal();
            chunk.getActions().resetActions();

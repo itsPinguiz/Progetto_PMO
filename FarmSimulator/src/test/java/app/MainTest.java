@@ -12,6 +12,7 @@ import model.Constants;
 import model.Model;
 import model.actors.actions.ActionsManager.Action;
 import model.actors.person.Farmer;
+import model.actors.person.Landlord;
 import model.actors.person.PersonAbstract.Role;
 import model.item.Item;
 import model.item.ItemType;
@@ -19,6 +20,7 @@ import model.item.plants.PlantAbstract.PlantLife;
 import model.item.products.Products;
 import model.place.land.PlantLand;
 import model.place.land.AnimalLand;
+import model.place.land.LandAbstract;
 import model.place.land.chunks.AnimalChunk;
 import model.place.land.chunks.PlantChunk;
 import model.place.Places;
@@ -181,10 +183,10 @@ public class MainTest {
         if ((randomNumber) % Constants.STACK_MAX > 0) {
             expectedStacks++;
         }
-
+        
         // add eggs to the inventory
         for(int i = 0; i < randomNumber; i++){
-            ((Farmer)(model.getPlayer().get(Role.FARMER))).getInventory().addItem(new Products(ItemType.productsType.EGGS));
+            ((Farmer)(model.getPlayer().get(Role.FARMER))).getInventory().addItem(new Products(ItemType.productsType.EGGS){{setNumber(1);}});
         }
 
         // count the number of stacks
@@ -238,6 +240,69 @@ public class MainTest {
         assertFalse("The item was not added to the barn", barnBeforeBuy.equals(barnAfterBuy));
     }
 
+    @Test
+    public void balanceShouldBeGreaterAfterSell() throws Exception{
+        Model model = null;
+        model = new Model();
+
+        model.setSelectedPerson(model.getPlayer().get(Role.LANDLORD)); // select landlord
+        assertEquals(Role.LANDLORD, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Landlord
+
+        model.getSelectedPerson().getActions().enter(model.getBarn()); // enter barn
+        assertEquals(Places.BARN, model.getSelectedPerson().getPlace().getType()); // ASSERT that the landlord is in barn
+
+        model.getSelectedPerson().getActions().enter(model.getBarn().getMarket()); // enter market
+        assertEquals(Places.MARKET, model.getSelectedPerson().getPlace().getType()); // ASSERT that the landlord is in market
+
+        model.setSelectedItem(model.getBarn().getBarnInventory().getInventory().get(0));
+        
+        int balanceBeforeSell = ((Landlord)(model.getSelectedPerson())).getBalance();
+
+        final Model tmpModel = model;
+        model.getSelectedPerson().getActions().executeAction(Action.SELL_ITEM, new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
+                                                                                                 add(tmpModel.getSelectedItem());
+                                                                                                 add(tmpModel.getMap());}}); // buy the item
+
+        int balanceAfterSell = ((Landlord)(model.getSelectedPerson())).getBalance();
+
+        assertTrue("The balance hasn't increased", balanceAfterSell > balanceBeforeSell);
+    }
+
+    @Test
+    public void landShouldBeAddedAfterBoughtIt() throws Exception{
+        
+        Model model = null;
+        model = new Model();
+
+        model.setSelectedPerson(model.getPlayer().get(Role.LANDLORD)); // select landlord
+        assertEquals(Role.LANDLORD, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Landlord
+
+        model.getSelectedPerson().getActions().enter(model.getBarn()); // enter barn
+        assertEquals(Places.BARN, model.getSelectedPerson().getPlace().getType()); // ASSERT that the landlord is in barn
+
+        model.getSelectedPerson().getActions().enter(model.getBarn().getMarket()); // enter market
+        assertEquals(Places.MARKET, model.getSelectedPerson().getPlace().getType()); // ASSERT that the landlord is in market
+
+        model.setSelectedItem(model.getBarn().getMarket().getLandShop().get(0));
+        assertTrue("Land not selected correctly", model.getSelectedItem() instanceof LandAbstract);
+
+        int numberOfLandsBeforeBuy = 0;
+        int numberOfLandsAfterBuy = 0;
+
+        for (LandAbstract land : model.getLands()) {
+            numberOfLandsBeforeBuy++;
+        }
+
+        final Model tmpModel = model;
+        model.getSelectedPerson().getActions().executeAction(Action.BUY_ITEM, new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
+                                                                                                  add(tmpModel.getSelectedItem());
+                                                                                                  add(tmpModel.getMap());}});
+        for (LandAbstract land : model.getLands()) {
+            numberOfLandsAfterBuy++;
+        }
+        
+        assertTrue("The land bought as not been added to the lands", numberOfLandsAfterBuy > numberOfLandsBeforeBuy);
+    }
     
 }
 

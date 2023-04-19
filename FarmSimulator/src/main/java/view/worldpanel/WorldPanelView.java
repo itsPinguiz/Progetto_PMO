@@ -6,7 +6,6 @@ import controller.Controller;
 import model.actors.person.PersonAbstract.Role;
 import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.place.Place;
-import model.place.Places;
 import model.place.land.LandAbstract;
 import view.View;
 
@@ -15,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 public class WorldPanelView {
     private JPanel worldPanel;
@@ -29,7 +27,6 @@ public class WorldPanelView {
         this.worldPanel = createWorldPanel();
     }
 
-    @SuppressWarnings("unchecked")
     public JPanel createWorldPanel() throws ActionNotAvailableException{
         /*
         * This method creates the world panel, which contains the land and barn panels

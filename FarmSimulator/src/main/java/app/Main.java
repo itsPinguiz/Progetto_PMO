@@ -18,6 +18,7 @@ public class Main {
         Controller controller = null;
         try {
             model = new Model();
+            model.initializeGameBackup();
             controller = new Controller(null, model);
             final Controller tmpController = controller;
             SwingUtilities.invokeLater(() -> {

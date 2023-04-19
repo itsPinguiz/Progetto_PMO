@@ -176,7 +176,10 @@ public class Controller {
 
     // exception popup
     public void exceptionPopup(Exception exception){
-        view.exceptionPopup(exception.getCause().getMessage());
+        if (exception.getCause() == null)
+            exception.printStackTrace();
+        else
+            view.exceptionPopup(exception.getCause().getMessage());
     }
 
 }

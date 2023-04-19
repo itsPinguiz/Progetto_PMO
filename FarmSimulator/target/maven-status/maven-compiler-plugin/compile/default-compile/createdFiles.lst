@@ -23,9 +23,7 @@ model\item\tools\ToolInterface.class
 model\exceptions\CustomExceptions$MinimumHungerException.class
 model\exceptions\CustomExceptions$NotEnoughItemsException.class
 model\item\animal\AnimalInterface.class
-model\Model$1$2.class
 model\actors\actions\PlayerActions$15.class
-model\actors\person\NoAnimalFoundException.class
 model\exceptions\CustomExceptions$ActionNotAvailableException.class
 model\actors\actions\Actions.class
 model\item\plants\species\Plant$1.class
@@ -37,6 +35,7 @@ model\item\ItemType$Tools.class
 model\exceptions\CustomExceptions$NoItemFoundException.class
 model\actors\actions\ActionsManager$Action$15.class
 model\progress\Backup.class
+model\item\plants\PlantAbstract$4.class
 model\item\tools\AbstractTool$ToolStatus.class
 model\actors\actions\ActionsManager$Action$12.class
 model\actors\actions\ActionsManager$Action$2.class
@@ -140,7 +139,6 @@ model\calendar\Calendar$Seasons.class
 model\actors\actions\ActionsManager$Action$5.class
 model\actors\actions\ActionsManager$Action$18.class
 model\calendar\CalendarInt.class
-model\Model$1$1.class
 model\item\products\Products$1.class
 model\place\Place.class
 model\actors\actions\PlayerActions$10.class

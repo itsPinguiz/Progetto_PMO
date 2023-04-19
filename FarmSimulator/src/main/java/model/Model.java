@@ -94,12 +94,18 @@ public class Model implements Serializable{
         
 
         for(int i = 0; i < 70; i++){
-            b.getBarnInventory().addItem(new Products(productsType.MEAT));
+            b.getBarnInventory().addItem(new Products(productsType.MEAT){{setNumber(1);}});
         }
 
         b.getBarnInventory().addItem(new ItemCreator().getRandomItem());
         b.getBarnInventory().addItem(new Plant(Plants.CARROT));
-        
+    }
+
+    public void initializeGameBackup(){
+        /*
+         * Method to initialize the game backup
+         */
+        this.backup = new GameBackup(this);
     }
 
     @SuppressWarnings("unchecked")

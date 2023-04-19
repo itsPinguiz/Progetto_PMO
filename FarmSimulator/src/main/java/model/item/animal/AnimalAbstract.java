@@ -76,23 +76,16 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
             try {
                 if(this.isAlive && !(item.getType() == ItemType.productsType.MEAT) ){
                     tmp.add((Products)item.clone());
+                    item.setNumber(0);
                 }
                 else if(!this.isAlive){
                     tmp.add((Products)item.clone());
+                    item.setNumber(0);
                 }  
             } catch (CloneNotSupportedException e) {
                 // gestione dell'eccezione
+                e.printStackTrace();
             }
-        }
-
-        for (int i = 0; i < this.typeProduct.size(); i++){
-            if(this.isAlive && !(this.typeProduct.get(i).getType() == ItemType.productsType.MEAT)){
-                this.typeProduct.get(i).setNumber(0);
-            }
-            else if(!this.isAlive){
-                this.typeProduct.get(i).setNumber(0);
-            }
-            
         }
         return tmp;
     }
@@ -101,6 +94,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     public boolean areProductsAvailable(){
         for (int i = 0; i < this.typeProduct.size(); i++){
             if (this.typeProduct.get(i).getNumber() > 0){
+                System.out.println(this.typeProduct.get(i).getType().toString() + this.typeProduct.get(i).getNumber());
                 return true;
             }
         }
@@ -143,13 +137,16 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
 
     //method for updating the animal
     public void update() {
-        super.status -= 1;
-        this.updateHunger();
-        this.updateThirst();
-        this.updateProducts();
+
         if(!this.isAlive){
             this.status = 0;
         }
+        else{
+            super.status -= 1;
+            this.updateHunger();
+            this.updateThirst();
+        }
+        this.updateProducts();
     }
 
     //method for feeding the animal
