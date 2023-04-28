@@ -81,7 +81,7 @@ public class WorldPanelView {
                 controller.setOldPlace(controller.getSelectedPerson().getPlace());
                 view.updateActualPanel(worldPanel, createWorldPanel());
                 } catch (ActionNotAvailableException e1) {
-                    view.exceptionPopup(e1.getCause().getMessage());
+                    controller.exceptionPopup(e1);
                 }
             }
         });
@@ -131,13 +131,14 @@ public class WorldPanelView {
                     }
                     if (view.getRolePanelView().getShowInventoryButton().isSelected())
                     view.getRolePanelView().getShowInventoryButton().doClick();
+                    view.getBarnView().setDisplayMarket(true);
                     view.updateActualPanel(worldPanel, reqArgs ? (JPanel) (getMethodByName(methodName,classInstance.getClass()).invoke(classInstance, place))
                                                                : (JPanel) (getMethodByName(methodName,classInstance.getClass()).invoke(classInstance)));
                 } catch (IllegalAccessException |
-                        IllegalArgumentException | 
-                        InvocationTargetException | 
-                        ActionNotAvailableException e1) {
-                    view.exceptionPopup(e1.getCause().getMessage());
+                         IllegalArgumentException | 
+                         InvocationTargetException | 
+                         ActionNotAvailableException e1) {
+                    controller.exceptionPopup(e1);
                 }
             }
         };

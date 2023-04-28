@@ -12,6 +12,7 @@ import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
+import model.exceptions.CustomExceptions.SaveIsCorruptedException;
 import model.inventory.Inventory;
 import model.place.Place;
 import model.place.Places;
@@ -67,16 +68,15 @@ public class Controller {
     // load game
     public void loadGame(String save){
         Controller controllerInstance = this; // riferimento all'istanza corrente di Controller
+        // load chosen save
         try {
-            // load chosen save
             model = model.getBackup().loadSave(save);
-            model.getSelectedPerson().getActions().leave();
-            view.getContentPane().removeAll();
-            view.updateMVC(controllerInstance, model);
-
-        } catch (Exception e1) {    
-            view.exceptionPopup(e1.getCause().getMessage());
+        } catch (ClassNotFoundException | IOException  | SaveIsCorruptedException e) {
+            exceptionPopup(e);
         }
+        model.getSelectedPerson().getActions().leave();
+        view.getContentPane().removeAll();
+        view.updateMVC(controllerInstance, model);
     }
 
     // ROLE PANEL
@@ -176,7 +176,9 @@ public class Controller {
 
     // exception popup
     public void exceptionPopup(Exception exception){
-        if (exception.getCause() == null)
+        if (exception.getCause() == null && exception.getMessage() != null)
+            view.exceptionPopup(exception.getMessage());
+        else if (exception.getCause() == null && exception.getMessage() == null)
             exception.printStackTrace();
         else
             view.exceptionPopup(exception.getCause().getMessage());

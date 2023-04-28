@@ -107,15 +107,18 @@ public class View extends JFrame{
       if (rolePanelView.getShowInventoryButton().isSelected())
         rolePanelView.getShowInventoryButton().getActionListeners()[0].actionPerformed(null);
       // keep item selected and deselct if the item is not in the inventory anymore
-      if (controller.getSelectedItem() != null && controller.getSelectedItem() instanceof Item && ((Item)controller.getSelectedItem()).getNumber() == 1){
-        if (controller.getOldInventory()!= null && !controller.getOldInventory().getInventory().contains(controller.getSelectedItem())){
-          controller.setSelectedItem(null);
-          controller.setOldInventory(null);
-        }
+      if (controller.getSelectedItem() != null && 
+          controller.getSelectedItem() instanceof Item &&
+          ((Item)controller.getSelectedItem()).getNumber() == 1){
+        if (controller.getOldInventory()!= null && 
+            !controller.getOldInventory().getInventory().contains(controller.getSelectedItem())){
+            controller.setSelectedItem(null);
+            controller.setOldInventory(null);
+          }
         if (controller.getSelectedPerson().getPlace() != null && 
             controller.getSelectedPerson() instanceof Farmer &&
             ((Farmer)(controller.getSelectedPerson())).getInventory().getInventory().contains(controller.getSelectedItem())){
-            controller.setOldInventory(((Farmer)(this.controller.getSelectedPerson())).getInventory());
+          controller.setOldInventory(((Farmer)(this.controller.getSelectedPerson())).getInventory());
         } else if (this.controller.getSelectedPerson().getPlace() != null &&
                    this.controller.getSelectedPerson().getPlace().getType() == Places.BARN){
           controller.setOldInventory(((Barn)(this.controller.getSelectedPerson().getPlace())).getBarnInventory());

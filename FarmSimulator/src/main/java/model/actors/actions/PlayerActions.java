@@ -3,8 +3,13 @@ package model.actors.actions;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import model.Constants;
 import model.actors.person.Farmer;
@@ -25,6 +30,7 @@ import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
 import model.place.land.PlantLand;
 import model.place.land.chunks.AnimalChunk;
+import model.place.land.chunks.Chunk;
 import model.place.land.chunks.PlantChunk;
 
 public class PlayerActions extends ActionsManager{
@@ -53,7 +59,6 @@ public class PlayerActions extends ActionsManager{
             }};
     }
 
-    @SuppressWarnings("unchecked")
     public void executeAction(Action s,Object argument) throws Exception{
         /*
         * Method to find a method to execute
@@ -61,7 +66,6 @@ public class PlayerActions extends ActionsManager{
 
         // find the desired method
         Method method = getMethodByName(s.name().toLowerCase());
-
 
         // execute the method if it exists and is available
         if (method != null && this.availableActions.contains(s)) {
@@ -71,23 +75,16 @@ public class PlayerActions extends ActionsManager{
         } else {
             throw new ActionNotAvailableException(s, this.availableActions);
         }
-
-        //update the current player actions that might have been edited
-        ArrayList<Object> args = (ArrayList<Object>)argument;
-        this.updateActions(((Place)(args.get(0))).getActions().getAvailableActions(),true);
     }
 
     private  Method getMethodByName(String methodName) {
         /*
          * Method to get a method by its name
          */
-        Method[] methods = this.getClass().getDeclaredMethods();
-        for (Method m : methods) {
-            if (m.getName().equals(methodName.toLowerCase())) {
-                return m;
-            }
-        }
-        return null;
+        return Arrays.stream(this.getClass().getDeclaredMethods())
+                     .filter(m -> m.getName().equals(methodName.toLowerCase()))
+                     .findFirst()
+                     .orElse(null);
     }
 
     public void enter(Place p) throws PlaceNotAvailableException {
@@ -155,44 +152,41 @@ public class PlayerActions extends ActionsManager{
         }
     }
     
-    public void plant(ArrayList<? extends Object> items) throws LandIsNotPlowedException,
-                                                                NoSeedFoundException, 
+    public void plant(ArrayList<? extends Object> items) throws NoSeedFoundException,
                                                                 CloneNotSupportedException,
-                                                                NoItemFoundException{
-        /*
-         * Method to plant a plant
-         */
-        Farmer f = (Farmer)this.person;
-        PlantChunk c = (PlantChunk)items.get(0);
-        Item seed = (Item)items.get(1);
+                                                                LandIsNotPlowedException,
+                                                                NoItemFoundException {
+        Farmer f = (Farmer) this.person;
+        PlantChunk c = (PlantChunk) items.get(0);
+        Item seed = (Item) items.get(1);
 
         // check if the farmer has a seed and the chunk is plowed
-        if (seed instanceof PlantAbstract){ 
-            if(c.isPlowed() && f.getInventory().searchItem(seed, false) != -1 && c.getPlant() == null){
-                // add plant to the land 
-                c.setPlant((PlantAbstract)(f.getInventory().getItem(1,seed)));
+        if (seed instanceof PlantAbstract) {
+            if (c.isPlowed() && f.getInventory().searchItem(seed, false) != -1 && c.getPlant() == null) {
+                // add plant to the land
+                c.setPlant((PlantAbstract) (f.getInventory().getItem(1, seed)));
                 c.getPlant().planted(c);
 
                 // add new possible actions
+                Set<Action> chunkActions = Stream.of(Action.WATER, Action.FERTILIZE)
+                                           .collect(Collectors.toCollection(HashSet::new));
                 c.getActions().resetActions();
-                c.getActions().updateActions(new HashSet<>(){{
-                    add(Action.WATER);
-                    add(Action.FERTILIZE);
-                    }}, true);
-                c.getLand().getActions().updateActions(new HashSet<>(){{
-                    add(Action.FERTILIZE_ALL);
-                    add(Action.WATER_ALL);
-                    }}, true);
-                
+                c.getActions().updateActions(chunkActions, true);
+
+                Set<Action> landActions = Stream.of(Action.FERTILIZE_ALL, Action.WATER_ALL)
+                                          .collect(Collectors.toCollection(HashSet::new));
+                c.getLand().getActions().updateActions(landActions, true);
+
                 // if all lands are planted remove the plant all action
-                if (c.getLand().getNumElements() == 10){
-                    c.getLand().getActions().updateActions(new HashSet<>(){{
-                        add(Action.PLANT_ALL);
-                        }}, false);
+                if (c.getLand().getNumElements() == 10) {
+                    c.getLand().getActions().updateActions(Collections.singleton(Action.PLANT_ALL), false);
                 }
-            } 
-        } else throw new NoSeedFoundException();                                       
+            }
+        } else {
+            throw new NoSeedFoundException();
+        }
     }
+
 
     public void water(ArrayList<? extends Object> items) throws NoToolFoundException, 
                                                                 NoItemFoundException,
@@ -236,9 +230,9 @@ public class PlayerActions extends ActionsManager{
 
                 // if all the chunks are plowed, remove the plow all action
                 if (c.getLand().getElements().stream().filter(chunk -> chunk.isPlowed() == false).count() == 0){
-                    c.getLand().getActions().updateActions(new HashSet<>(){{
-                        add(Action.PLOW_ALL);
-                        }}, false);
+                    Set<Action> landActions = Stream.of(Action.PLOW_ALL)
+                                                    .collect(Collectors.toCollection(HashSet::new));
+                    c.getLand().getActions().updateActions(landActions, false);
                 }
             } else throw new LandIsAlreadyPlowedException();
         }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.HOE);
@@ -272,7 +266,10 @@ public class PlayerActions extends ActionsManager{
         Farmer f = (Farmer)this.person;
         Item product;
 
+        // check if the plant is harvestable 
         if (c.getPlant() == null || c.getPlant().getLifeStage() != PlantLife.HARVESTABLE) return;
+
+        // get the product
         product = c.getPlant().getProduct();
         
         // if sickle is equipped double the harvested resources
@@ -290,19 +287,17 @@ public class PlayerActions extends ActionsManager{
         c.setPlant(null);
         c.resetActions();
 
-        // if all the chunks do not have plants, remove the harvest all action
+        // if all the chunks do not have plants, remove the doAllall action
         if (c.getLand().getNumElements() == 0){
-            c.getLand().getActions().updateActions(new HashSet<>(){{
-                add(Action.FERTILIZE_ALL);
-                add(Action.WATER_ALL);
-                add(Action.HARVEST_ALL);
-                }}, false);
+            Set<Action> landActions = Stream.of(Action.FERTILIZE_ALL, Action.WATER_ALL,Action.HARVEST_ALL)
+                                            .collect(Collectors.toCollection(HashSet::new));
+            c.getLand().getActions().updateActions(landActions, false);
         }
 
         if(c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() != null && chunk.getPlant().getLifeStage() == PlantLife.HARVESTABLE).count() == 0){
-            c.getLand().getActions().updateActions(new HashSet<>(){{
-                add(Action.HARVEST_ALL);
-                }}, false);
+            Set<Action> landActions = Stream.of(Action.HARVEST_ALL)
+                                            .collect(Collectors.toCollection(HashSet::new));
+            c.getLand().getActions().updateActions(landActions, false);
         }
     }
 
@@ -364,24 +359,14 @@ public class PlayerActions extends ActionsManager{
         /*
          * Method to repeat the same action on all chunks in a land
          */
-
-        if (items.get(0) instanceof PlantLand){
-            PlantLand p = (PlantLand)items.get(0);
-            for (PlantChunk chunk : p.getElements()){
+        LandAbstract land = (LandAbstract) items.get(0);                                                                                
+        if (items.get(0) instanceof PlantLand || items.get(0) instanceof AnimalLand){
+            for (Chunk chunk : land.getElements()){
                 if (chunk.getActions().getAvailableActions().contains(action)){
                     this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
                 } 
             }
-        } else if (items.get(0) instanceof AnimalLand){
-            AnimalLand a = (AnimalLand)items.get(0);
-            for (AnimalChunk chunk : a.getElements()){
-                if (chunk.getAnimal()!=null){
-                    if (chunk.getActions().getAvailableActions().contains(action)){
-                        this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
-                    } 
-                } 
-            }
-        }
+        } 
     }
 
     public void add_animal(ArrayList<? extends Object> items) throws NoItemFoundException,
@@ -465,7 +450,10 @@ public class PlayerActions extends ActionsManager{
         }
     }
 
-    public void feed_animal(ArrayList<? extends Object> items) throws NoFoodFoundException, MinimumHungerException, NoItemFoundException, NotEnoughItemsException{
+    public void feed_animal(ArrayList<? extends Object> items) throws NoFoodFoundException, 
+                                                                      MinimumHungerException, 
+                                                                      NoItemFoundException, 
+                                                                      NotEnoughItemsException{
         /*
          * Method to feed an animal
          */
@@ -488,9 +476,9 @@ public class PlayerActions extends ActionsManager{
     }
 
     public void feed_all_animals(ArrayList<? extends Object> items) throws NoSuchMethodException, 
-                                                                   IllegalAccessException, 
-                                                                   InvocationTargetException, 
-                                                                   ActionNotAvailableException{
+                                                                           IllegalAccessException, 
+                                                                           InvocationTargetException, 
+                                                                           ActionNotAvailableException{
         /*
          * Method to feed all animals
          */
@@ -498,9 +486,9 @@ public class PlayerActions extends ActionsManager{
     }
 
     public void give_water_all(ArrayList<? extends Object> items) throws NoSuchMethodException, 
-                                                                        IllegalAccessException, 
-                                                                        InvocationTargetException, 
-                                                                        ActionNotAvailableException{
+                                                                         IllegalAccessException, 
+                                                                         InvocationTargetException, 
+                                                                         ActionNotAvailableException{
         /*
          * Method to give water to all animals
          */

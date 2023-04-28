@@ -89,13 +89,14 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
          */
         if (super.status == 100){
             this.lifeStage = PlantLife.HARVESTABLE;
+            this.daysToHarvest--;
+
+            // update actions
+            this.chunk.getLand().getActions().resetActions();
             this.chunk.getActions().updateActions(new HashSet<>(){{
                 add(Action.HARVEST);
                 }}, true);
-            this.chunk.getLand().getActions().updateActions(new HashSet<>(){{
-                add(Action.WATER);
-                add(Action.FERTILIZE);
-                }}, false);
+            
             this.chunk.getLand().getActions().updateActions(new HashSet<>(){{
                 add(Action.HARVEST_ALL);
                 }}, true);
@@ -130,19 +131,14 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
                 break;
         }
 
-         // percentuale di crescita in base ai giorni rimanenti alla raccolta
-        double growthPercentage = (double)(this.daysToHarvest / this.daysToHarvestInitial)/50;
-        
-        // calcolo della crescita effettiva
-        super.status += growthPercentage * growthFactor * this.growthRate;
+         // growth update
+        super.status = Math.min(this.maxGrowthLevel, 
+                                super.status + ((double)(this.daysToHarvest / this.daysToHarvestInitial)/50) * growthFactor * this.growthRate);
 
-        // controllo del massimo livello di crescita
-        if (super.status > this.maxGrowthLevel) {
-            super.status = this.maxGrowthLevel;
-        }
 
         this.checklifeStage();
 
+        // the plant dies if it doesn't have water for a certain amount of days
         if (this.chunk.getWaterLevel() == 0) {
             this.daysWithoutWater++;
             if (this.daysWithoutWater >= Constants.PLANT_DAYS_WITHOUT_WATER) {
@@ -152,11 +148,6 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
             }
         } else {
             this.daysWithoutWater = 0;
-        }
-
-        // decrement day to harvest when harvestable
-        if (this.lifeStage == PlantLife.HARVESTABLE) {
-            this.daysToHarvest--;
         }
       }
     

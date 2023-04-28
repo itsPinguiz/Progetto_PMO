@@ -9,7 +9,7 @@ import model.place.Places;
 import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
 
-public class AnimalChunk extends LandAbstract {
+public class AnimalChunk extends LandAbstract implements Chunk  {
     // small part of an animal land that contains one animal
 
     // attributes
@@ -56,5 +56,12 @@ public class AnimalChunk extends LandAbstract {
                                              add(Action.GET_RESOURCES);
                                              }}, this.getAnimal().areProductsAvailable()?true:false);            
         } 
+    }
+
+    public void resetActions(){
+        this.getActions().resetActions();
+        this.getActions().updateActions( new HashSet<>(){{
+                                            add(Action.ADD_ANIMAL);
+                                            }}, true);
     }
 }

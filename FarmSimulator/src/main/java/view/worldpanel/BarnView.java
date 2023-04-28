@@ -24,6 +24,7 @@ public class BarnView {
     // attributes
     Controller controller;
     View view;
+    boolean displayMarket;
 
     JButton enterMarketButton;
     JPanel insideBarnPanel;
@@ -38,12 +39,13 @@ public class BarnView {
     public BarnView(Controller controller, View view) {
         this.controller = controller;
         this.view = view;
+        this.displayMarket = true;
     }
 
     
     public JPanel createBarnPlace(Place p){
         // get the actual place
-        Barn actualPlace = this.controller.getBarn();
+        Barn barnPlace = this.controller.getBarn();
 
         // create the panel that will contain the elements
         insideBarnPanel = new JPanel(new BorderLayout());
@@ -59,12 +61,12 @@ public class BarnView {
         exitButton = new JButton("Exit");
         
         // display the items in the market or the market button
-        if (actualPlace == p){ // if the player is in the barn
+        if (barnPlace.getType() == p.getType()){ // if the player is in the barn
             enterMarketButton = new JButton("Enter");
         
-            createBarnInventoryPanel(actualPlace);
+            createBarnInventoryPanel(barnPlace);
             // add the button to enter the market
-            enterMarketButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createBarnPlace", actualPlace.getMarket(),true,false));
+            enterMarketButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createBarnPlace", barnPlace.getMarket(),true,false));
             
             // add the exit button
             exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(view.getWorldPanelView(),"createWorldPanel", null, false, true));
@@ -74,12 +76,13 @@ public class BarnView {
             // disable the possibility to enter the market if the player is not a landlord
             enterMarketButton.setEnabled(controller.getSelectedPerson().getRole() == Role.LANDLORD? true : false);
 
-            tabbedPane.addTab("Market", marketPanel);
-            
+            if (displayMarket){
+                tabbedPane.addTab("Market",marketPanel);
+            }
             insideBarnPanel.add(tabbedPane,BorderLayout.EAST);
         } else{  // if the player is in the market
-            Market marketPlace = actualPlace.getMarket();
-            createBarnInventoryPanel(actualPlace);
+            Market marketPlace = barnPlace.getMarket();
+            createBarnInventoryPanel(barnPlace);
 
             // create buttons for shop items
             if (marketPlace.getItemShop() != null){
@@ -130,21 +133,25 @@ public class BarnView {
 
         // display the items in the barn inventory
         if (actualPlace.getBarnInventory() != null){
-        for(Item item : actualPlace.getBarnInventory().getInventory()){
-            JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() +
-                                                                                                       "<br> " + ((AbstractTool)item).getMaterial().toString()+
-                                                                                                       "<br>" + item.getStatus() +
-                                                                                                       "<html>":
-                                                                                                       "<html>" + item.getType().toString() +
-                                                                                                       "<br>" + item.getNumber() +
-                                                                                                       "<html>");
-            toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
-            // add the button to the button group
-            buttonGroup.add(toggleButton);
-            toggleButton.setSelected(controller.getSelectedItem() != null && item == controller.getSelectedItem()? true : false);
-            barnInventoryPanel.add(toggleButton);
+            for(Item item : actualPlace.getBarnInventory().getInventory()){
+                JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() +
+                                                                                                        "<br> " + ((AbstractTool)item).getMaterial().toString()+
+                                                                                                        "<br>" + item.getStatus() +
+                                                                                                        "<html>":
+                                                                                                        "<html>" + item.getType().toString() +
+                                                                                                        "<br>" + item.getNumber() +
+                                                                                                        "<html>");
+                toggleButton.addActionListener(view.toggleButtonListener(buttonGroup, item, toggleButton));
+                // add the button to the button group
+                buttonGroup.add(toggleButton);
+                toggleButton.setSelected(controller.getSelectedItem() != null && item == controller.getSelectedItem()? true : false);
+                barnInventoryPanel.add(toggleButton);
             }
         }
+    }
+
+    public void setDisplayMarket(boolean set){
+        this.displayMarket = set;
     }
 
     private void createLandMarketPanel() {
@@ -201,5 +208,15 @@ public class BarnView {
         tabbedPane.addTab("Land Market", landMarketPanel);
     }
     
-    
+    public JPanel[] getMarketPanels(){
+        return new JPanel[] {this.landMarketPanel,this.marketPanel};
+    }
+
+    public JPanel getBarnPanel(){
+        return createBarnPlace(controller.getSelectedPerson().getPlace());
+    }
+
+    public JPanel getBarnInventoryPanel(){
+        return this.barnInventoryPanel;
+    }
 }    

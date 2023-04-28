@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
+import model.exceptions.CustomExceptions.SaveIsCorruptedException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -74,13 +76,21 @@ public class GameBackup implements Backup{
         this.updateSavesList();
     }
 
-    public Model loadSave(String saveName) throws IOException, ClassNotFoundException{
+    public Model loadSave(String saveName) throws IOException, 
+                                                  ClassNotFoundException,
+                                                  SaveIsCorruptedException {
         /*
          * Returns a specific saved game session
          */
         this.updateSavesList();
-        return this.readFromFile(new File(this.savePath,saveName));
+        try {
+            Model loadedClasses = readFromFile(new File(this.savePath, saveName)); // load the saved classes from the file
+            return loadedClasses;
+        } catch (StreamCorruptedException e) {
+            throw new SaveIsCorruptedException(saveName);
+        }
     }
+    
 
     private void updateSavesList(){
         /*
@@ -98,4 +108,3 @@ public class GameBackup implements Backup{
         return classesBackup;
     }   
 }
-

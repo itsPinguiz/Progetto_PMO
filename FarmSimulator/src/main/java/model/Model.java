@@ -56,7 +56,12 @@ public class Model implements Serializable{
     private Place oldPlace;
 
     // constructor
-    public Model() throws NoItemFoundException, InventoryIsFullException,NoAnimalFoundException,NoProductFoundException, CloneNotSupportedException{
+    public Model() throws NoItemFoundException, 
+                          InventoryIsFullException,
+                          NoAnimalFoundException,
+                          NoProductFoundException, 
+                          CloneNotSupportedException{
+
         //attributes initialization
         this.farmer = new Farmer();
         this.landlord = new Landlord();
@@ -73,13 +78,11 @@ public class Model implements Serializable{
             }
         };
     
-        map = new HashMap<>(){
-            {
+        map = new HashMap<>(){{
                 put(Places.BARN, new Barn());
                 put(Places.PLANT_LAND, lands);
                 put(Places.ANIMAL_LAND, lands);
-            }
-        };
+        }};
         
         Barn b = (Barn)(this.map.get(Places.BARN));
         b.getMarket().addBarn(b);
@@ -109,7 +112,10 @@ public class Model implements Serializable{
     }
 
     @SuppressWarnings("unchecked")
-    public void update() throws InventoryIsFullException,NoItemFoundException, CloneNotSupportedException, PlaceNotAvailableException{
+    public void update() throws InventoryIsFullException,
+                                NoItemFoundException, 
+                                CloneNotSupportedException, 
+                                PlaceNotAvailableException {
         /*
          * Method to update the world entities
          */

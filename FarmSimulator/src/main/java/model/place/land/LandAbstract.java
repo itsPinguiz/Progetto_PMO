@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.Constants;
 import model.calendar.Calendar;
 import model.place.Place;
+import model.place.land.chunks.Chunk;
 
 public abstract class LandAbstract extends Place implements LandInteface {
     protected Calendar calendar = Calendar.getInstance();
@@ -22,7 +23,7 @@ public abstract class LandAbstract extends Place implements LandInteface {
          */
     }
 
-    public ArrayList<? extends Object> getElements(){
+    public ArrayList<? extends Chunk> getElements(){
         /*
          * Returns the elements present in the land
          */

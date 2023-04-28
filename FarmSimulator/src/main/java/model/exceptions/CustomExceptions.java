@@ -127,4 +127,10 @@ public class CustomExceptions {
             super("Cannot perform action since you don't have enough items. \n You have: " + amount + " \n Needed: " + neededAmount);
         }
     }
+
+    public static class SaveIsCorruptedException extends Exception {
+        public SaveIsCorruptedException(String saveName){
+            super("Cannot load save " + saveName + " since it is corrupted.");
+        }
+    }
 }

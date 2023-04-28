@@ -80,11 +80,11 @@ public class LandView {
         
             // set the label's text
             JLabel plantLabel = new JLabel("<html><div style='font-size:16px;'>" + ((plant == null)?"Empty": plant.getType().toString())+
-                            "</div><div style='font-size:12px;'>Life Stage: " + ((plant == null)?"No Plant": plant.getLifeStage().toString()) +
-                            "<br>Water Level: </br>" + chunk.getWaterLevel() +
-                            "<br>Fertilization Level: </br>" + chunk.getFertilizationLevel() +
-                            "<br>Plowed :</br> " + ((chunk.isPlowed()== true)?"Yes":"No") +
-                            "</div></html>");
+                                           "</div><div style='font-size:12px;'>Life Stage: " + ((plant == null)?"No Plant": plant.getLifeStage().toString()) +
+                                           "<br>Water Level: </br>" + chunk.getWaterLevel() +
+                                           "<br>Fertilization Level: </br>" + chunk.getFertilizationLevel() +
+                                           "<br>Plowed :</br> " + ((chunk.isPlowed()== true)?"Yes":"No") +
+                                           "</div></html>");
             c.gridx = 0;
             c.gridy = 0;
             c.insets = new Insets(10, 10, 10, 10);
@@ -117,8 +117,9 @@ public class LandView {
         AnimalAbstract animal = chunk.getAnimal();
         
         // create the panel that will contain the elements
-        JPanel chunkPanel = new JPanel(new GridLayout(1, 2));
+        JPanel chunkPanel = new JPanel(new GridBagLayout());
         JLabel animalLabel = new JLabel();
+        GridBagConstraints c = new GridBagConstraints();
         
         // set the panel's size 
         chunkPanel.setPreferredSize(new Dimension(800, 500));
@@ -129,14 +130,23 @@ public class LandView {
                             "<br>Hunger Level: " + ((animal == null)? "No hunger" : animal.getHunger()) +
                             "<br>Thirst Level: " + ((animal == null)? "No thirst" : animal.getThirst()));
 
+
         // add the label to the panel
-        chunkPanel.add(animalLabel);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(10, 10, 10, 10);
+        c.anchor = GridBagConstraints.CENTER;
+        chunkPanel.add(animalLabel, c);
         
         // add the exit button
         JButton exitButton = new JButton("Exit");
         exitButton.addActionListener(view.getWorldPanelView().changePlaceListener(this,"createInsideLand", chunk.getLand(),false,false));
         // add the exit button to the panel
-        chunkPanel.add(exitButton);
+        c.gridx = 1;
+        c.gridy = 3;
+        c.insets = new Insets(0, 0, 30,0 );
+        c.anchor = GridBagConstraints.WEST;
+        chunkPanel.add(exitButton, c);
 
         // Update the panel
         view.getWorldPanelView().getWorldPanel().revalidate();
