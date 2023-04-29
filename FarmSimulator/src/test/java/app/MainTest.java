@@ -66,6 +66,10 @@ public class MainTest {
 
         assertEquals(ItemType.Plants.CARROT,((PlantChunk)(f.getPlace())).getPlant().getType()); // ASSERT that the carrot is planted
 
+        boolean checkSprout = false;
+        boolean checkSmallPlant = false;
+        boolean checkAdultPlant = false;
+
         for(int i = 0; i < 3; i++){
             assertTrue("Water and fertilize aren't min", ((PlantChunk)(f.getPlace())).getFertilizationLevel() < 20 && ((PlantChunk)(f.getPlace())).getWaterLevel() < 20); 
             model.setSelectedItem(f.getInventory().getInventory().get(5)); // get the wateringcan
@@ -81,9 +85,17 @@ public class MainTest {
             assertTrue("Water and fertilize aren't max", ((PlantChunk)(f.getPlace())).getFertilizationLevel() == Constants.FERTILIZATION_MAX && ((PlantChunk)(f.getPlace())).getWaterLevel() == Constants.WATERING_MAX);
             for(int z = 0; z < 15; z++){
                 model.update();
+                // check if the plant passed all the stages
+                if(((PlantChunk)(f.getPlace())).getPlant().getLifeStage() == PlantLife.SPROUT)
+                    checkSprout = true; 
+                else if(((PlantChunk)(f.getPlace())).getPlant().getLifeStage() == PlantLife.SMALL_PLANT)
+                    checkSmallPlant = true;
+                else if(((PlantChunk)(f.getPlace())).getPlant().getLifeStage() == PlantLife.ADULT_PLANT)
+                    checkAdultPlant = true;
             }
             
         }
+        assertTrue("The plant didn't pass all the stages", checkAdultPlant && checkSmallPlant && checkSprout);
         assertEquals(PlantLife.HARVESTABLE, ((PlantChunk)(f.getPlace())).getPlant().getLifeStage()); // ASSERT that the carrot is harvestable
 
         
@@ -151,6 +163,7 @@ public class MainTest {
         assertTrue("Hunger and thirst aren't decreased", ((AnimalChunk)(f.getPlace())).getAnimal().getHunger() < tmpFood && ((AnimalChunk)(f.getPlace())).getAnimal().getThirst() < tmpWater);
 
         // make time pass
+
         for(int i = 0; i < 5; i++){
             model.update();
         }

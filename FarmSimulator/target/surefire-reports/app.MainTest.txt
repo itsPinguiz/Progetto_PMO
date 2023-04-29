@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: app.MainTest
 -------------------------------------------------------------------------------
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.397 s - in app.MainTest
+=======
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.311 s - in app.MainTest
+>>>>>>> Stashed changes
+=======
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.311 s - in app.MainTest
+>>>>>>> Stashed changes
