@@ -2,8 +2,6 @@ package app;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
@@ -39,13 +37,9 @@ public class MainTest {
         model.getSelectedPerson().getActions().enter(model.getLands().get(0)); // enter plant land
         assertEquals(model.getLands().get(0), model.getSelectedPerson().getPlace()); // ASSERT that the farmer is in land
 
-
-        final Model tmpModel = model;
         Farmer f = (Farmer)model.getSelectedPerson();
         model.setSelectedItem(f.getInventory().getInventory().get(2)); // get the hoe
-        model.getSelectedPerson().getActions().executeAction(Action.PLOW_ALL,new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                                add(tmpModel.getSelectedItem());
-                                                                                                add(tmpModel.getMap());}});
+        model.sendAction(Action.PLOW_ALL);
 
         PlantLand land = (PlantLand) model.getLands().get(0);
         Iterator<PlantChunk> iterator = land.iterator();
@@ -60,9 +54,7 @@ public class MainTest {
 
         f = (Farmer)model.getSelectedPerson();
         model.setSelectedItem(f.getInventory().getInventory().get(0)); // get the carrot
-        model.getSelectedPerson().getActions().executeAction(Action.PLANT,new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                             add(tmpModel.getSelectedItem());
-                                                                                             add(tmpModel.getMap());}});
+        model.sendAction(Action.PLANT);
 
         assertEquals(ItemType.Plants.CARROT,((PlantChunk)(f.getPlace())).getPlant().getType()); // ASSERT that the carrot is planted
 
@@ -73,14 +65,10 @@ public class MainTest {
         for(int i = 0; i < 3; i++){
             assertTrue("Water and fertilize aren't min", ((PlantChunk)(f.getPlace())).getFertilizationLevel() < 20 && ((PlantChunk)(f.getPlace())).getWaterLevel() < 20); 
             model.setSelectedItem(f.getInventory().getInventory().get(5)); // get the wateringcan
-            model.getSelectedPerson().getActions().executeAction(Action.WATER,new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                                 add(tmpModel.getSelectedItem());
-                                                                                                 add(tmpModel.getMap());}});
+            model.sendAction(Action.WATER);
             model.setSelectedItem(f.getInventory().getInventory().get(6)); // get the fertilizer
             for(int j = 0; j < 2; j++){
-                model.getSelectedPerson().getActions().executeAction(Action.FERTILIZE,new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                                     add(tmpModel.getSelectedItem());
-                                                                                                     add(tmpModel.getMap());}});
+                model.sendAction(Action.FERTILIZE);
             }
             assertTrue("Water and fertilize aren't max", ((PlantChunk)(f.getPlace())).getFertilizationLevel() == Constants.FERTILIZATION_MAX && ((PlantChunk)(f.getPlace())).getWaterLevel() == Constants.WATERING_MAX);
             for(int z = 0; z < 15; z++){
@@ -102,9 +90,7 @@ public class MainTest {
 
         int tmpCarrot = f.getInventory().getInventory().get(0).getNumber(); // temporary carrot to save actual number of carrots
 
-        model.getSelectedPerson().getActions().executeAction(Action.HARVEST,new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                               add(tmpModel.getSelectedItem());
-                                                                                               add(tmpModel.getMap());}});
+        model.sendAction(Action.HARVEST);
         assertEquals(tmpCarrot + Constants.HARVEST_MULTIPLIER, f.getInventory().getInventory().get(0).getNumber()); // ASSERT that there are 2 more carrots in inventory after harvesting
     }
 
@@ -118,13 +104,10 @@ public class MainTest {
         model.getSelectedPerson().getActions().enter(((AnimalLand)(model.getLands().get(2))).getElements().get(0)); // enter animal land
         assertEquals(((AnimalLand)(model.getLands().get(2))).getElements().get(0), model.getSelectedPerson().getPlace()); // ASSERT that the farmer is in land
 
-        final Model tmpModel = model;
         Farmer f = (Farmer)model.getSelectedPerson();
 
         model.setSelectedItem(f.getInventory().getInventory().get(1)); // get the chicken
-        model.getSelectedPerson().getActions().executeAction(Action.ADD_ANIMAL,new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                                  add(tmpModel.getSelectedItem());
-                                                                                                  add(tmpModel.getMap());}});
+        model.sendAction(Action.ADD_ANIMAL);
         assertEquals(ItemType.Animals.CHICKEN, ((AnimalChunk)(f.getPlace())).getAnimal().getType()); // ASSERT that the animal has been added in the chunk
         
         // make time pass
@@ -138,9 +121,7 @@ public class MainTest {
         assertEquals(-1, f.getInventory().searchItem(new Products(ItemType.productsType.EGGS) , false));
 
         // get resources after 33 days
-        model.getSelectedPerson().getActions().executeAction(Action.GET_RESOURCES,new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                                     add(tmpModel.getSelectedItem());
-                                                                                                     add(tmpModel.getMap());}});
+        model.sendAction(Action.GET_RESOURCES);
 
         // ASSERT that eggs are added to the inventory
         assertNotEquals(-1, f.getInventory().searchItem(new Products(ItemType.productsType.EGGS) , false));
@@ -149,16 +130,12 @@ public class MainTest {
         int tmpFood = ((AnimalChunk)(f.getPlace())).getAnimal().getHunger();
 
         // give water to the animal
-        model.getSelectedPerson().getActions().executeAction(Action.GIVE_WATER,new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                                  add(tmpModel.getSelectedItem());
-                                                                                                  add(tmpModel.getMap());}});
+        model.sendAction(Action.GIVE_WATER);
         // select carrot                                 
         model.setSelectedItem(f.getInventory().getInventory().get(0));
         
         // feed the animal
-        model.getSelectedPerson().getActions().executeAction(Action.FEED_ANIMAL,new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                                   add(tmpModel.getSelectedItem());
-                                                                                                   add(tmpModel.getMap());}});
+        model.sendAction(Action.FEED_ANIMAL);
         // ASSERT that hunger and thirst are decreased
         assertTrue("Hunger and thirst aren't decreased", ((AnimalChunk)(f.getPlace())).getAnimal().getHunger() < tmpFood && ((AnimalChunk)(f.getPlace())).getAnimal().getThirst() < tmpWater);
 
@@ -171,9 +148,7 @@ public class MainTest {
         assertFalse("The animal isn't dead", ((AnimalChunk)(f.getPlace())).getAnimal().isAlive());
 
         // get resources after 5 days
-        model.getSelectedPerson().getActions().executeAction(Action.GET_RESOURCES,new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                                     add(tmpModel.getSelectedItem());
-                                                                                                     add(tmpModel.getMap());}});
+        model.sendAction(Action.GET_RESOURCES);
         // ASSERT that after the animal is dead, it will give meat
         assertNotEquals(-1, f.getInventory().searchItem(new Products(ItemType.productsType.MEAT) , false)); 
         
@@ -238,10 +213,7 @@ public class MainTest {
             }
         }
 
-        final Model tmpModel = model;
-        model.getSelectedPerson().getActions().executeAction(Action.BUY_ITEM, new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                                 add(tmpModel.getSelectedItem());
-                                                                                                 add(tmpModel.getMap());}}); // buy the item
+        model.sendAction(Action.BUY_ITEM); // buy the item
 
         // ASSERT that the item is added to the barn
         for(int i = 0; i < model.getBarn().getBarnInventory().getInventory().size(); i++){
@@ -270,10 +242,7 @@ public class MainTest {
         
         int balanceBeforeSell = ((Landlord)(model.getSelectedPerson())).getBalance();
 
-        final Model tmpModel = model;
-        model.getSelectedPerson().getActions().executeAction(Action.SELL_ITEM, new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                                 add(tmpModel.getSelectedItem());
-                                                                                                 add(tmpModel.getMap());}}); // buy the item
+        model.sendAction(Action.SELL_ITEM);// sell the item
 
         int balanceAfterSell = ((Landlord)(model.getSelectedPerson())).getBalance();
 
@@ -298,20 +267,11 @@ public class MainTest {
         model.setSelectedItem(model.getBarn().getMarket().getLandShop().get(0));
         assertTrue("Land not selected correctly", model.getSelectedItem() instanceof LandAbstract);
 
-        int numberOfLandsBeforeBuy = 0;
-        int numberOfLandsAfterBuy = 0;
-
-        for (LandAbstract land : model.getLands()) {
-            numberOfLandsBeforeBuy++;
-        }
-
-        final Model tmpModel = model;
-        model.getSelectedPerson().getActions().executeAction(Action.BUY_ITEM, new ArrayList<>(){{add(tmpModel.getSelectedPerson().getPlace());
-                                                                                                  add(tmpModel.getSelectedItem());
-                                                                                                  add(tmpModel.getMap());}});
-        for (LandAbstract land : model.getLands()) {
-            numberOfLandsAfterBuy++;
-        }
+        int numberOfLandsBeforeBuy = model.getLands().size();
+        
+        model.sendAction(Action.BUY_ITEM);
+        
+        int numberOfLandsAfterBuy = model.getLands().size();
         
         assertTrue("The land bought as not been added to the lands", numberOfLandsAfterBuy > numberOfLandsBeforeBuy);
     }

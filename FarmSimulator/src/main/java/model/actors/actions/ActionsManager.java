@@ -1,5 +1,6 @@
 package model.actors.actions;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -112,11 +113,11 @@ public abstract class ActionsManager implements Actions {
         /*
          * Method that updates the available actions
          */
-        if (add) {
-            this.availableActions.addAll(actions);
-        } else {
-            this.availableActions.removeAll(actions);
-        }
+        Set<Action> toUpdate = add ? actions : Collections.emptySet();
+        Set<Action> toRemove = add ? Collections.emptySet() : actions;
+    
+        this.availableActions.addAll(toUpdate);
+        this.availableActions.removeAll(toRemove);
     }
 
     public Set<Action> getAvailableActions() {

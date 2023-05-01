@@ -7,9 +7,8 @@ import model.actors.actions.ActionsManager.Action;
 import model.item.animal.AnimalAbstract;
 import model.place.Places;
 import model.place.land.AnimalLand;
-import model.place.land.LandAbstract;
 
-public class AnimalChunk extends LandAbstract implements Chunk  {
+public class AnimalChunk extends Chunk {
     // small part of an animal land that contains one animal
 
     // attributes
@@ -58,6 +57,7 @@ public class AnimalChunk extends LandAbstract implements Chunk  {
         } 
     }
 
+    @Override
     public void resetActions(){
         this.getActions().resetActions();
         this.getActions().updateActions( new HashSet<>(){{

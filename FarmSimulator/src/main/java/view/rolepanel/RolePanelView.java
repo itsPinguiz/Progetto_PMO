@@ -18,7 +18,6 @@ import view.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -74,7 +73,7 @@ import java.util.Set;
         menuBar = new JMenuBar();
         menuBar.setLayout(new BoxLayout(menuBar, BoxLayout.X_AXIS));
     
-        // define menu bar elements
+         // define menu bar elements
         roleMenu = new JMenu("Ruolo");
         showInventoryButton = new JToggleButton("Inventory");
         placeLabel = new JLabel("World");
@@ -197,9 +196,7 @@ import java.util.Set;
             button.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        controller.performAction(action,new ArrayList<>(){{add(controller.getSelectedPerson().getPlace());
-                                                                           add(controller.getSelectedItem());
-                                                                           add(controller.getMap());}});
+                        controller.performAction(action);
                         controller.setOldPlace(controller.getSelectedPerson().getPlace());
                         switch (controller.getSelectedPerson().getPlace().getType()) {
                             case ANIMAL_LAND:

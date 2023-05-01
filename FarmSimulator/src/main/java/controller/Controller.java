@@ -2,7 +2,6 @@ package controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import model.Model;
 import model.actors.actions.ActionsManager.Action;
@@ -15,7 +14,6 @@ import model.exceptions.CustomExceptions.PlaceNotAvailableException;
 import model.exceptions.CustomExceptions.SaveIsCorruptedException;
 import model.inventory.Inventory;
 import model.place.Place;
-import model.place.Places;
 import model.place.barn.Barn;
 import model.place.land.LandAbstract;
 import model.progress.GameBackup;
@@ -35,6 +33,25 @@ public class Controller {
     // get model
     public Model getModel() {
         return model;
+    }
+
+    // update model 
+    public void updateModel(){
+        try {
+            model.update();
+        } catch (InventoryIsFullException | NoItemFoundException | CloneNotSupportedException  | PlaceNotAvailableException e) {
+            this.exceptionPopup(e);
+        }
+    }
+
+    // exception popup
+    public void exceptionPopup(Exception exception){
+        if (exception.getCause() == null && exception.getMessage() != null)
+            view.exceptionPopup(exception.getMessage());
+        else if (exception.getCause() == null && exception.getMessage() == null)
+            exception.printStackTrace();
+        else
+            view.exceptionPopup(exception.getCause().getMessage());
     }
 
     // BACKUP PANEL
@@ -86,13 +103,15 @@ public class Controller {
     }
 
     // execute the action
-    public void performAction(Action a,ArrayList<? extends Object> items){ 
+    public <V extends Person> void performAction(Action a) {
         try {
-            model.getSelectedPerson().getActions().executeAction(a,items);
+            model.sendAction(a);
         } catch (Exception e) {
             this.exceptionPopup(e);
         }
     }
+    
+    
 
     // MAP PANEL
     // enter a new place
@@ -141,21 +160,10 @@ public class Controller {
         this.view = view;
     }    
 
-    // update model 
-    public void updateModel(){
-        try {
-            model.update();
-        } catch (InventoryIsFullException | NoItemFoundException | CloneNotSupportedException  | PlaceNotAvailableException e) {
-            this.exceptionPopup(e);
-        }
-    }
+    
 
     public Person getSelectedPerson(){
         return model.getSelectedPerson();
-    }
-
-    public HashMap<Places,Object> getMap(){
-        return model.getMap();
     }
 
     public Person getPlayer(Role role){
@@ -173,15 +181,4 @@ public class Controller {
     public ArrayList<LandAbstract> getLands(){
         return model.getLands();
     }
-
-    // exception popup
-    public void exceptionPopup(Exception exception){
-        if (exception.getCause() == null && exception.getMessage() != null)
-            view.exceptionPopup(exception.getMessage());
-        else if (exception.getCause() == null && exception.getMessage() == null)
-            exception.printStackTrace();
-        else
-            view.exceptionPopup(exception.getCause().getMessage());
-    }
-
 }

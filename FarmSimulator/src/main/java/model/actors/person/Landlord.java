@@ -4,7 +4,10 @@
 
 package model.actors.person;
 
+import java.util.HashSet;
+
 import model.actors.actions.PlayerActions;
+import model.place.Places;
 
 /********************************
  * LANDLORD PERSON IMPLEMENTATION
@@ -20,9 +23,13 @@ public class Landlord extends PersonAbstract{
      * Methods
      */
     public Landlord(){
-        super.personAction = new PlayerActions(this);
+        super.personAction = new PlayerActions<Landlord>(this);
         super.place = null;
         this.role = Role.LANDLORD;
+        this.accessiblePlaces = new HashSet<>(){{
+            add(Places.BARN);
+            add(Places.MARKET);
+            }};
         this.balance = 100;
     }
 

@@ -9,11 +9,10 @@ import model.actors.actions.ActionsManager.Action;
 import model.item.plants.PlantAbstract;
 import model.item.plants.PlantAbstract.PlantLife;
 import model.place.Places;
-import model.place.land.LandAbstract;
 import model.place.land.PlantLand;
 
 
-public class PlantChunk extends LandAbstract implements Chunk{
+public class PlantChunk extends Chunk{
     /* Small part of a land that contains one plant */
     
     // attributes
@@ -144,6 +143,7 @@ public class PlantChunk extends LandAbstract implements Chunk{
         return this.plant;
     }
 
+    @Override
     public void resetActions(){
         /*
          * Resets plantChunk's actions

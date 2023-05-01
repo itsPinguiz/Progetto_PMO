@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,59 +21,43 @@ import model.item.animal.AnimalAbstract;
 import model.item.plants.PlantAbstract;
 import model.item.plants.PlantAbstract.PlantLife;
 import model.item.tools.AbstractTool;
+import model.place.GameMap;
 import model.place.Place;
 import model.place.Places;
 import model.place.barn.Barn;
 import model.place.barn.market.Market;
-import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
-import model.place.land.PlantLand;
 import model.place.land.chunks.AnimalChunk;
-import model.place.land.chunks.Chunk;
 import model.place.land.chunks.PlantChunk;
 
-public class PlayerActions extends ActionsManager{
+public class PlayerActions<T extends Person> extends ActionsManager{
     // attributes
-    private Person person;
-    private HashSet<Places> accessiblePlaces;
+    private T person;
+    private ActionArguments<Place,?,GameMap> argument;
 
-    // constructor for Landlord    
-    public PlayerActions(Landlord p){
-        this.person = p;
-        this.accessiblePlaces = new HashSet<>(){{
-            add(Places.BARN);
-            add(Places.MARKET);
-            }};
-    }
-    
-    // constructor for Farmer
-    public PlayerActions(Farmer p){
-        this.person = p;
-        this.accessiblePlaces = new HashSet<>(){{
-            add(Places.BARN);
-            add(Places.ANIMAL_LAND);
-            add(Places.PLANT_LAND);
-            add(Places.PLANT_CHUNK);
-            add(Places.ANIMAL_CHUNK);
-            }};
+    // constructor    
+    public PlayerActions(T person){
+        this.person = person;
     }
 
-    public void executeAction(Action s,Object argument) throws Exception{
+    public <V> void executeAction(Action s,ActionArguments<Place,V,GameMap> argument) throws Exception{
         /*
         * Method to find a method to execute
         */
 
         // find the desired method
         Method method = getMethodByName(s.name().toLowerCase());
+        this.argument = argument;
 
         // execute the method if it exists and is available
         if (method != null && this.availableActions.contains(s)) {
             person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), false);
-            method.invoke(this,argument);        
+            method.invoke(this);        
             person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), true);
         } else {
             throw new ActionNotAvailableException(s, this.availableActions);
         }
+        argument = null;
     }
 
     private  Method getMethodByName(String methodName) {
@@ -92,7 +75,7 @@ public class PlayerActions extends ActionsManager{
          * Method to change actions when
          * an actors enters somewhere
          */
-        if (this.accessiblePlaces.contains(p.getType())){
+        if (this.person.getAccessiblePlaces().contains(p.getType())){
             if (person.getPlace() != null)
                 leave();
             this.person.setPlace(p);
@@ -100,7 +83,7 @@ public class PlayerActions extends ActionsManager{
             if (!(person instanceof Landlord && p.getType() == Places.BARN)){
                 this.person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), true);
             }
-        } else throw new PlaceNotAvailableException(p, this.accessiblePlaces);
+        } else throw new PlaceNotAvailableException(p, this.person.getAccessiblePlaces());
     }
 
     public void leave() {
@@ -115,15 +98,15 @@ public class PlayerActions extends ActionsManager{
     }
 
     // METHODS FOR THE FARMER
-    public void move_item(ArrayList<? extends Object> items) throws CloneNotSupportedException,
-                                                                    InventoryIsFullException,
-                                                                    NoItemFoundException,
-                                                                    NotEnoughItemsException{
+    public void move_item() throws CloneNotSupportedException,
+                                   InventoryIsFullException,
+                                   NoItemFoundException,
+                                   NotEnoughItemsException{
         /*
          * Method to move the item
          * to the barn from the farmer's inventory
          */
-        Item itemToMove = (Item)items.get(1);
+        Item itemToMove = (Item)argument.getArg2();
         Farmer farmer = (Farmer)this.person;
         Barn barn = (Barn)farmer.getPlace();
 
@@ -152,13 +135,13 @@ public class PlayerActions extends ActionsManager{
         }
     }
     
-    public void plant(ArrayList<? extends Object> items) throws NoSeedFoundException,
-                                                                CloneNotSupportedException,
-                                                                LandIsNotPlowedException,
-                                                                NoItemFoundException {
+    public void plant() throws NoSeedFoundException,
+                               CloneNotSupportedException,
+                               LandIsNotPlowedException,
+                               NoItemFoundException {
         Farmer f = (Farmer) this.person;
-        PlantChunk c = (PlantChunk) items.get(0);
-        Item seed = (Item) items.get(1);
+        PlantChunk c = (PlantChunk) argument.getArg1();
+        Item seed = (Item) argument.getArg2();
 
         // check if the farmer has a seed and the chunk is plowed
         if (seed instanceof PlantAbstract) {
@@ -169,12 +152,12 @@ public class PlayerActions extends ActionsManager{
 
                 // add new possible actions
                 Set<Action> chunkActions = Stream.of(Action.WATER, Action.FERTILIZE)
-                                           .collect(Collectors.toCollection(HashSet::new));
+                                                 .collect(Collectors.toCollection(HashSet::new));
                 c.getActions().resetActions();
                 c.getActions().updateActions(chunkActions, true);
 
                 Set<Action> landActions = Stream.of(Action.FERTILIZE_ALL, Action.WATER_ALL)
-                                          .collect(Collectors.toCollection(HashSet::new));
+                                                .collect(Collectors.toCollection(HashSet::new));
                 c.getLand().getActions().updateActions(landActions, true);
 
                 // if all lands are planted remove the plant all action
@@ -188,14 +171,14 @@ public class PlayerActions extends ActionsManager{
     }
 
 
-    public void water(ArrayList<? extends Object> items) throws NoToolFoundException, 
-                                                                NoItemFoundException,
-                                                                NotEnoughItemsException{
+    public void water() throws NoToolFoundException, 
+                               NoItemFoundException,
+                               NotEnoughItemsException{
         /*
          * Method to water a plant
          */
-        PlantChunk c = (PlantChunk)items.get(0);
-        Item tool = (Item)items.get(1);
+        PlantChunk c = (PlantChunk)argument.getArg1();
+        Item tool = (Item)argument.getArg2();
 
         //check if the farmer has the watering can
         if (tool.getType() == ItemType.Tools.WATERINGCAN && this.damageTool(tool)){
@@ -204,15 +187,15 @@ public class PlayerActions extends ActionsManager{
         } else throw new NoToolFoundException(tool.getType(),ItemType.Tools.WATERINGCAN);
     }
 
-    public void plow(ArrayList<? extends Object> items) throws NoToolFoundException, 
-                                                               LandIsAlreadyPlowedException, 
-                                                               NoItemFoundException,
-                                                               NotEnoughItemsException{
+    public void plow() throws NoToolFoundException, 
+                              LandIsAlreadyPlowedException, 
+                              NoItemFoundException,
+                              NotEnoughItemsException{
         /*
          * Method to plow dirt
          */
-        PlantChunk c = (PlantChunk)items.get(0);
-        Item tool = (Item)items.get(1);
+        PlantChunk c = (PlantChunk)argument.getArg1();
+        Item tool = (Item)argument.getArg2();
         
         //check if the farmer has the hoe
         if (tool.getType() == ItemType.Tools.HOE && this.damageTool(tool)){
@@ -238,14 +221,14 @@ public class PlayerActions extends ActionsManager{
         }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.HOE);
     }
 
-    public void fertilize(ArrayList<? extends Object> items) throws NoToolFoundException, 
-                                                                    NoItemFoundException,
-                                                                    NotEnoughItemsException{
+    public void fertilize() throws NoToolFoundException, 
+                                   NoItemFoundException,
+                                   NotEnoughItemsException{
         /*
          * Method to fertilize a plant
          */
-        PlantChunk c = (PlantChunk)items.get(0);
-        Item tool = (Item)items.get(1);
+        PlantChunk c = (PlantChunk)argument.getArg1();
+        Item tool = (Item)argument.getArg2();
 
         //check if the farmer has the fertilizer
         if (tool.getType() == ItemType.Tools.FERTILIZER && this.damageTool(tool)){ 
@@ -254,15 +237,15 @@ public class PlayerActions extends ActionsManager{
         }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.FERTILIZER);
     }
 
-    public void harvest(ArrayList<? extends Object> items) throws InventoryIsFullException, 
-                                                                  NoItemFoundException,
-                                                                  NotEnoughItemsException,
-                                                                  CloneNotSupportedException{
+    public void harvest() throws InventoryIsFullException, 
+                                 NoItemFoundException,
+                                 NotEnoughItemsException,
+                                 CloneNotSupportedException{
         /*
          * Method to harvest a plant
          */
-        PlantChunk c = (PlantChunk)items.get(0);
-        Item tool = (Item)items.get(1);
+        PlantChunk c = (PlantChunk)argument.getArg1();
+        Item tool = (Item)argument.getArg2();
         Farmer f = (Farmer)this.person;
         Item product;
 
@@ -294,88 +277,95 @@ public class PlayerActions extends ActionsManager{
             c.getLand().getActions().updateActions(landActions, false);
         }
 
-        if(c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() != null && chunk.getPlant().getLifeStage() == PlantLife.HARVESTABLE).count() == 0){
+        if(c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() != null &&
+           chunk.getPlant().getLifeStage() == PlantLife.HARVESTABLE).count() == 0){
             Set<Action> landActions = Stream.of(Action.HARVEST_ALL)
                                             .collect(Collectors.toCollection(HashSet::new));
             c.getLand().getActions().updateActions(landActions, false);
         }
     }
 
-    public void plant_all(ArrayList<? extends Object> items) throws NoSuchMethodException,
-                                                                    IllegalAccessException,
-                                                                    InvocationTargetException,
-                                                                    ActionNotAvailableException{
+    public void plant_all() throws NoSuchMethodException,
+                                   IllegalAccessException,
+                                   InvocationTargetException,
+                                   ActionNotAvailableException{
         /*
          * Method to plant all plants
          */
-        this.doAll(items,Action.PLANT);
+        this.doAll(Action.PLANT);
     }
 
-    public void water_all(ArrayList<? extends Object> items) throws NoSuchMethodException,
-                                                                    IllegalAccessException,
-                                                                    InvocationTargetException,
-                                                                    ActionNotAvailableException{
+    public void water_all() throws NoSuchMethodException,
+                                   IllegalAccessException,
+                                   InvocationTargetException,
+                                   ActionNotAvailableException{
         /*
          * Method to water all plants
          */
-        this.doAll(items,Action.WATER);
+        this.doAll(Action.WATER);
     }
 
-    public void fertilize_all(ArrayList<? extends Object> items)throws NoSuchMethodException,
-                                                                       IllegalAccessException,
-                                                                       InvocationTargetException,
-                                                                       ActionNotAvailableException{
+    public void fertilize_all()throws NoSuchMethodException,
+                                      IllegalAccessException,
+                                      InvocationTargetException,
+                                      ActionNotAvailableException{
         /*
          * Method to fertilize all plants
          */
-        this.doAll(items,Action.FERTILIZE);
+        this.doAll(Action.FERTILIZE);
     }
 
-    public void harvest_all(ArrayList<? extends Object> items) throws NoSuchMethodException,
-                                                                      IllegalAccessException,
-                                                                      InvocationTargetException,
-                                                                      ActionNotAvailableException{
+    public void harvest_all() throws NoSuchMethodException,
+                                     IllegalAccessException,
+                                     InvocationTargetException,
+                                     ActionNotAvailableException{
         /*
          * Method to harvest all plants
          */
-        this.doAll(items,Action.HARVEST);
+        this.doAll(Action.HARVEST);
     }
 
-    public void plow_all(ArrayList<? extends Object> items) throws NoSuchMethodException,
-                                                                   IllegalAccessException,
-                                                                   InvocationTargetException,
-                                                                   ActionNotAvailableException{
+    public void plow_all() throws NoSuchMethodException,
+                                  IllegalAccessException,
+                                  InvocationTargetException,
+                                  ActionNotAvailableException{
         /*
          * Method to plow dirt
          */
-        this.doAll(items,Action.PLOW);
+        this.doAll(Action.PLOW);
     }
 
-    private void doAll(ArrayList<? extends Object> items, Action action) throws IllegalAccessException,
-                                                                                IllegalArgumentException,
-                                                                                InvocationTargetException,
-                                                                                SecurityException,
-                                                                                ActionNotAvailableException {
+    private void doAll(Action action) throws IllegalAccessException,
+                                             IllegalArgumentException,
+                                             InvocationTargetException,
+                                             SecurityException,
+                                             ActionNotAvailableException{
         /*
-         * Method to repeat the same action on all chunks in a land
-         */
-        LandAbstract land = (LandAbstract) items.get(0);                                                                                
-        if (items.get(0) instanceof PlantLand || items.get(0) instanceof AnimalLand){
-            for (Chunk chunk : land.getElements()){
-                if (chunk.getActions().getAvailableActions().contains(action)){
-                    this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this,new ArrayList<>() {{add(chunk); add(items.get(1));}});
-                } 
-            }
-        } 
+        * Method to repeat the same action on all chunks in a land
+        */                                                                            
+        ((LandAbstract)argument.getArg1()).getElements().stream()
+            .filter(chunk -> chunk.getActions().getAvailableActions().contains(action))
+            .forEach(chunk -> {
+                try {
+                    this.argument.setArg1(chunk);
+                    this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this);
+                } catch (IllegalAccessException | 
+                            IllegalArgumentException | 
+                            InvocationTargetException | 
+                            SecurityException  e) {
+                    e.printStackTrace();
+                }
+        });
     }
 
-    public void add_animal(ArrayList<? extends Object> items) throws NoItemFoundException,
-                                                                     NotEnoughItemsException{
+
+    public void add_animal() throws NoItemFoundException,
+                                    NotEnoughItemsException{
         /*
          * Method to add an animal to the farm
          */
-        AnimalChunk animalCunk = (AnimalChunk)items.get(0);
-        AnimalAbstract animal = (AnimalAbstract)items.get(1);
+        AnimalChunk animalCunk = (AnimalChunk)argument.getArg1();
+        AnimalAbstract animal = (AnimalAbstract)argument.getArg2();
         Farmer farmer = (Farmer)this.person;
 
 
@@ -386,19 +376,17 @@ public class PlayerActions extends ActionsManager{
                                                                      add(Action.FEED_ANIMAL);
                                                                      add(Action.GIVE_WATER);}}, true);
         animalCunk.getLand().getActions().updateActions(new HashSet<Action>(){{add(Action.FEED_ALL_ANIMALS);
-                                                                               add(Action.GIVE_WATER_ALL);}}, true);
-                                                                               
-
+                                                                               add(Action.GIVE_WATER_ALL);}}, true);                                                              
     }
 
-    public void remove_animal(ArrayList<? extends Object> items) throws NoItemFoundException, 
-                                                                        InventoryIsFullException,
-                                                                        NotEnoughItemsException,
-                                                                        CloneNotSupportedException{
+    public void remove_animal() throws NoItemFoundException, 
+                                       InventoryIsFullException,
+                                       NotEnoughItemsException,
+                                       CloneNotSupportedException{
         /*
          * Method to remove an animal from the farm
          */
-        AnimalChunk animalCunk = (AnimalChunk)items.get(0);
+        AnimalChunk animalCunk = (AnimalChunk)argument.getArg1();
         Farmer farmer = (Farmer)this.person;
 
         farmer.getInventory().addItem(animalCunk.getAnimal());
@@ -413,16 +401,16 @@ public class PlayerActions extends ActionsManager{
         } 
     }
 
-    public void get_resources(ArrayList<? extends Object> items) throws InventoryIsFullException, 
-                                                                        NoItemFoundException,
-                                                                        NotEnoughItemsException,
-                                                                        CloneNotSupportedException{
+    public void get_resources() throws InventoryIsFullException, 
+                                       NoItemFoundException,
+                                       NotEnoughItemsException,
+                                       CloneNotSupportedException{
         /*
          * Method to get resources from the farm
          */
-        AnimalChunk chunk = (AnimalChunk)items.get(0);
+        AnimalChunk chunk = (AnimalChunk)argument.getArg1();
         Farmer farmer = (Farmer)this.person;
-        Item item = (Item)items.get(1);
+        Item item = (Item)argument.getArg2();
 
         for (Item product : chunk.getAnimal().getProducts()){
             // if the animal is a goat and the farmer has scissors, the wool will be cut
@@ -450,60 +438,60 @@ public class PlayerActions extends ActionsManager{
         }
     }
 
-    public void feed_animal(ArrayList<? extends Object> items) throws NoFoodFoundException, 
-                                                                      MinimumHungerException, 
-                                                                      NoItemFoundException, 
-                                                                      NotEnoughItemsException{
+    public void feed_animal() throws NoFoodFoundException, 
+                                     MinimumHungerException, 
+                                     NoItemFoundException, 
+                                     NotEnoughItemsException{
         /*
          * Method to feed an animal
          */
-        AnimalChunk chunk = (AnimalChunk)items.get(0);
-        Item food = (Item)items.get(1);
+        AnimalChunk chunk = (AnimalChunk)argument.getArg1();
+        Item food = (Item)argument.getArg2();
         Farmer farmer = (Farmer)this.person;
 
         chunk.getAnimal().feed(food);
         farmer.getInventory().removeItem(food, 1);
     }
 
-    public void give_water(ArrayList<? extends Object> items) throws MaxWaterLevelReachedException, 
-                                                                     IllegalAccessException{
+    public void give_water() throws MaxWaterLevelReachedException, 
+                                    IllegalAccessException{
         /*
          * Method to give water to an animal
          */
-        AnimalChunk chunk = (AnimalChunk)items.get(0);
+        AnimalChunk chunk = (AnimalChunk)argument.getArg1();
 
         chunk.getAnimal().waterAnimal();
     }
 
-    public void feed_all_animals(ArrayList<? extends Object> items) throws NoSuchMethodException, 
-                                                                           IllegalAccessException, 
-                                                                           InvocationTargetException, 
-                                                                           ActionNotAvailableException{
+    public void feed_all_animals() throws NoSuchMethodException, 
+                                          IllegalAccessException, 
+                                          InvocationTargetException, 
+                                          ActionNotAvailableException{
         /*
          * Method to feed all animals
          */
-        this.doAll(items,Action.FEED_ANIMAL);
+        this.doAll(Action.FEED_ANIMAL);
     }
 
-    public void give_water_all(ArrayList<? extends Object> items) throws NoSuchMethodException, 
-                                                                         IllegalAccessException, 
-                                                                         InvocationTargetException, 
-                                                                         ActionNotAvailableException{
+    public void give_water_all() throws NoSuchMethodException, 
+                                        IllegalAccessException, 
+                                        InvocationTargetException, 
+                                        ActionNotAvailableException{
         /*
          * Method to give water to all animals
          */
-        this.doAll(items,Action.GIVE_WATER);
+        this.doAll(Action.GIVE_WATER);
     }
 
-    public void get_all_resources(ArrayList<? extends Object> items) throws IllegalAccessException, 
-                                                                            IllegalArgumentException, 
-                                                                            InvocationTargetException, 
-                                                                            SecurityException, 
-                                                                            ActionNotAvailableException{
+    public void get_all_resources() throws IllegalAccessException, 
+                                           IllegalArgumentException, 
+                                           InvocationTargetException, 
+                                           SecurityException, 
+                                           ActionNotAvailableException{
         /*
          * Method to get all resources from the farm
          */
-        doAll(items, Action.GET_RESOURCES);
+        doAll(Action.GET_RESOURCES);
     }
 
 
@@ -525,12 +513,11 @@ public class PlayerActions extends ActionsManager{
     }
 
     // METHODS FOR THE LANDLORD
-    @SuppressWarnings("unchecked")
-    public void buy_item(ArrayList<? extends Object> items) throws NoItemFoundException, 
-                                                                   InventoryIsFullException, 
-                                                                   CloneNotSupportedException,
-                                                                   NoEnoughMoneyException,
-                                                                   CannotBuyItemException {
+    public void buy_item() throws NoItemFoundException, 
+                                  InventoryIsFullException, 
+                                  CloneNotSupportedException,
+                                  NoEnoughMoneyException,
+                                  CannotBuyItemException {
         /*
          * Method to buy item
          * from the market
@@ -538,21 +525,21 @@ public class PlayerActions extends ActionsManager{
         Item item;
         LandAbstract land;
         Landlord landlord = (Landlord)this.person;
-        Market market = (Market)items.get(0);
-        ArrayList<LandAbstract> lands =(ArrayList<LandAbstract>)(((HashMap<Places,Object>)items.get(2)).get(Places.PLANT_LAND));
+        Market market = (Market)argument.getArg1();
+        ArrayList<LandAbstract> lands =(ArrayList<LandAbstract>)(argument.getArg3().getLands());
         
 
         // check if the item is a land or not
-        if (items.get(1) instanceof LandAbstract && !lands.contains(items.get(1))){
-            land = (LandAbstract)items.get(1);
+        if (argument.getArg2() instanceof LandAbstract && !lands.contains(argument.getArg2())){
+            land = (LandAbstract)argument.getArg2();
 
             if (lands.size()<10 && land.getPrice() <= landlord.getBalance()){
                 lands.add(land);
                 landlord.setBalance(- Constants.BASE_LAND_PRICE);
             }
             
-        } else if (items.get(1) instanceof Item && market.getItemShop().getInventory().contains(items.get(1))){
-            item = (Item)items.get(1);
+        } else if (argument.getArg2() instanceof Item && market.getItemShop().getInventory().contains(argument.getArg2())){
+            item = (Item)argument.getArg2();
 
             // add it to the barn
             market.getBarn().getBarnInventory().addItem(market.buyItem(item, landlord.getBalance()));
@@ -560,26 +547,25 @@ public class PlayerActions extends ActionsManager{
             // remove the money from the balance
             landlord.setBalance(- item.getPrice());
         } else {
-            throw new CannotBuyItemException(items.get(1));
+            throw new CannotBuyItemException(argument.getArg2());
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void sell_item(ArrayList<? extends Object> items) throws NoItemFoundException, 
-                                                                    CloneNotSupportedException,
-                                                                    NoSellableLandException,
-                                                                    CannotSellItemException,
-                                                                    NotEnoughItemsException{
+    public void sell_item() throws NoItemFoundException, 
+                                   CloneNotSupportedException,
+                                   NoSellableLandException,
+                                   CannotSellItemException,
+                                   NotEnoughItemsException{
         /*
          * Method to sell item
          * to the market
          */
-        Market market = (Market)items.get(0);
-        ArrayList<LandAbstract> lands =(ArrayList<LandAbstract>)(((HashMap<Places,Object>)items.get(2)).get(Places.PLANT_LAND));
+        Market market = (Market)argument.getArg1();
+        ArrayList<LandAbstract> lands =(ArrayList<LandAbstract>)(argument.getArg3().getLands());
 
         // check if the item is a land or not
-         if (items.get(1) instanceof LandAbstract && lands.contains(items.get(1))){
-            LandAbstract land = (LandAbstract)items.get(1);
+         if (argument.getArg2() instanceof LandAbstract && lands.contains(argument.getArg2())){
+            LandAbstract land = (LandAbstract)argument.getArg2();
             Landlord landlord = (Landlord)this.person;
 
             lands.remove(land);
@@ -587,8 +573,8 @@ public class PlayerActions extends ActionsManager{
             // add money to the balance
             landlord.setBalance(Constants.LAND_SELL_PRICE);
             
-        } else if (items.get(1) instanceof Item && market.getBarn().getBarnInventory().getInventory().contains(items.get(1))){
-            Item item = (Item)items.get(1);
+        } else if (argument.getArg2() instanceof Item && market.getBarn().getBarnInventory().getInventory().contains(argument.getArg2())){
+            Item item = (Item)argument.getArg2();
             Landlord landlord = (Landlord)this.person;
 
             // remove item from the barn
@@ -596,7 +582,7 @@ public class PlayerActions extends ActionsManager{
             // add money to the balance
             landlord.setBalance(item.getPrice());
         } else {
-            throw new CannotSellItemException(items.get(1));
+            throw new CannotSellItemException(argument.getArg2());
         }
     }
 }

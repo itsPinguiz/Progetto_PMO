@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import model.actors.actions.ActionArguments;
+import model.actors.actions.ActionsManager.Action;
 import model.actors.person.Farmer;
 import model.actors.person.Landlord;
 import model.actors.person.Person;
@@ -21,27 +23,11 @@ import model.item.ItemType.productsType;
 import model.item.animal.AnimalFactory;
 import model.item.plants.products.Products;
 import model.item.plants.species.Plant;
+import model.place.GameMap;
 import model.place.Place;
-import model.place.Places;
 import model.place.barn.Barn;
-import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
-import model.place.land.PlantLand;
 import model.progress.GameBackup;
-
-/*
-The project consists in the implementation of a farm simulator.
-
-Main functions:
-
-The user will be able to take on the role of owner and farmer.
-The owner will be able to buy and sell portions of land, as well as the necessary resources.
-The farmer will have to work the portion of land to allow the growth of plants or the breeding of animals.
-Each portion of land can host animals or plants.
-A repository for storing tools, resources, and animals.
-A shop from which to buy seeds, resources, animals or land.
-Variation of the seasons that influence the weather.
-*/
 
 public class Model implements Serializable{
     // attributes\
@@ -49,7 +35,7 @@ public class Model implements Serializable{
     private Landlord landlord;
     private Person selectedActor;
     private Calendar calendar;
-    private HashMap<Places,Object> map;
+    private GameMap map;
     private GameBackup backup;
     private Object selectedItem;
     private Inventory oldInventory;
@@ -66,42 +52,27 @@ public class Model implements Serializable{
         this.farmer = new Farmer();
         this.landlord = new Landlord();
         this.calendar = Calendar.getInstance();
+        this.map = new GameMap();
         this.oldInventory = null;
         this.selectedItem = null;
         this.oldPlace = null;
-        ArrayList<LandAbstract> lands = new ArrayList<>(){
-            {
-                add(new PlantLand());
-                add(new PlantLand());
-                add(new AnimalLand());
-                add(new AnimalLand());
-            }
-        };
-    
-        map = new HashMap<>(){{
-                put(Places.BARN, new Barn());
-                put(Places.PLANT_LAND, lands);
-                put(Places.ANIMAL_LAND, lands);
-        }};
-        
-        Barn b = (Barn)(this.map.get(Places.BARN));
-        b.getMarket().addBarn(b);
 
         this.selectedActor = this.farmer; // default selected actor
         
+        // add starting items to the farmer
         this.farmer.getInventory().addItem(new Plant(Plants.CARROT) {{
             setNumber(11);
         }});
         
         this.farmer.getInventory().addItem(new AnimalFactory().createChicken());
         
+        this.farmer.getInventory().addItem(new Products(productsType.MEAT) {{
+            setNumber(70);
+        }});
 
-        for(int i = 0; i < 70; i++){
-            b.getBarnInventory().addItem(new Products(productsType.MEAT){{setNumber(1);}});
-        }
-
-        b.getBarnInventory().addItem(new ItemCreator().getRandomItem());
-        b.getBarnInventory().addItem(new Plant(Plants.CARROT));
+        // add starting items to the barn
+        map.getBarn().getBarnInventory().addItem(new ItemCreator().getRandomItem());
+        map.getBarn().getBarnInventory().addItem(new Plant(Plants.CARROT));
     }
 
     public void initializeGameBackup(){
@@ -111,7 +82,6 @@ public class Model implements Serializable{
         this.backup = new GameBackup(this);
     }
 
-    @SuppressWarnings("unchecked")
     public void update() throws InventoryIsFullException,
                                 NoItemFoundException, 
                                 CloneNotSupportedException, 
@@ -121,7 +91,7 @@ public class Model implements Serializable{
          */
         this.calendar.inc();
 
-        ((ArrayList<LandAbstract>)(this.map.get(Places.PLANT_LAND))).forEach(place -> { LandAbstract land = (LandAbstract) place;
+        ((ArrayList<LandAbstract>)(this.map.getLands())).forEach(place -> { LandAbstract land = (LandAbstract) place;
                                                       land.update();});
 
         this.getBarn().updateBarn();
@@ -130,26 +100,32 @@ public class Model implements Serializable{
             this.selectedActor.getActions().enter(this.selectedActor.getPlace());
     }
 
+    public void sendAction(Action action) throws Exception{
+        ActionArguments<Place, Object, GameMap> arguments = new ActionArguments<>(getSelectedPerson().getPlace(), 
+                                                                                                 getSelectedItem(), 
+                                                                                                 getMap());
+        this.selectedActor.getActions().executeAction(action,arguments);
+    }
+
     public Barn getBarn(){
         /*
          * Method to get the barn
          */
-        return (Barn)this.map.get(Places.BARN);
+        return this.map.getBarn();
     }
 
-    public HashMap<Places,Object> getMap(){
+    public GameMap getMap(){
         /*
          * Method to get the map
          */
         return this.map;
     }
 
-    @SuppressWarnings("unchecked")
     public ArrayList<LandAbstract> getLands(){
         /*
          * Method to get the lands
          */
-        return (ArrayList<LandAbstract>)this.map.get(Places.PLANT_LAND);
+        return map.getLands();
     }
 
     public void setSelectedPerson(Person p){

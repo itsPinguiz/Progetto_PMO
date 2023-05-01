@@ -1,9 +1,16 @@
 package model.place.land.chunks;
 
 import model.actors.actions.PlaceActions;
+import model.place.Place;
 
-public interface Chunk {    
-    public void update();
-    public void resetActions();
-    public PlaceActions getActions();
+public abstract class Chunk extends Place{    
+    public void update(){
+        throw new UnsupportedOperationException();
+    }
+    public void resetActions(){
+        throw new UnsupportedOperationException();
+    };
+    public PlaceActions getActions(){
+        return this.actions;
+    };
 }
