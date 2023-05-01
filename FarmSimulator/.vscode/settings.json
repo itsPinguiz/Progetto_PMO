@@ -3,5 +3,25 @@
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
         "lib/**/*.jar"
-    ]
+    ],
+
+    // enable tab completion
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": false,
+        "strings": false
+    },
+    "editor.suggestOnTriggerCharacters": true,
+    "editor.parameterHints": true,
+
+    // enable bookmarks
+    "editor.lineNumbers": "relative",
+    "editor.folding": true,
+    "editor.renderLineHighlight": "gutter",
+    "editor.codeLens": true,
+    "editor.selectionHighlight": true,
+    "editor.wordWrap": "on",
+    "editor.multiCursorModifier": "alt",
+    "editor.colorDecorators": true
+
 }
