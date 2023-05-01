@@ -7,7 +7,7 @@ package model.place.barn;
 import java.util.Iterator;
 
 import model.Constants;
-import model.actors.actions.PlaceActions;
+import model.actors.actions.placeActions.PlaceActions;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.exceptions.CustomExceptions.NoItemFoundException;

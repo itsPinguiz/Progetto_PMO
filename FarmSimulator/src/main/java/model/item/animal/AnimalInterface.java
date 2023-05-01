@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *****************/
 public interface AnimalInterface extends Serializable {
     public int getHunger();
-    public ArrayList<model.item.plants.products.Products> getProducts(); //void momentaneo
+    public ArrayList<model.item.animal.products.Products> getProducts(); //void momentaneo
     public int getThirst();
     public boolean isAlive();
     public void update();

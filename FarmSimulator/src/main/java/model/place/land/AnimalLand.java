@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import model.actors.actions.PlaceActions;
 import model.actors.actions.ActionsManager.Action;
+import model.actors.actions.placeActions.PlaceActions;
 import model.place.Places;
 import model.place.land.chunks.AnimalChunk;
 

@@ -21,8 +21,8 @@ import model.item.ItemCreator;
 import model.item.ItemType.Plants;
 import model.item.ItemType.productsType;
 import model.item.animal.AnimalFactory;
-import model.item.plants.products.Products;
-import model.item.plants.species.Plant;
+import model.item.animal.products.Products;
+import model.item.plants.GamePlant;
 import model.place.GameMap;
 import model.place.Place;
 import model.place.barn.Barn;
@@ -60,19 +60,19 @@ public class Model implements Serializable{
         this.selectedActor = this.farmer; // default selected actor
         
         // add starting items to the farmer
-        this.farmer.getInventory().addItem(new Plant(Plants.CARROT) {{
+        this.farmer.getInventory().addItem(new GamePlant(Plants.CARROT) {{
             setNumber(11);
         }});
         
         this.farmer.getInventory().addItem(new AnimalFactory().createChicken());
         
         this.farmer.getInventory().addItem(new Products(productsType.MEAT) {{
-            setNumber(70);
+            setNumber(64);
         }});
 
         // add starting items to the barn
         map.getBarn().getBarnInventory().addItem(new ItemCreator().getRandomItem());
-        map.getBarn().getBarnInventory().addItem(new Plant(Plants.CARROT));
+        map.getBarn().getBarnInventory().addItem(new GamePlant(Plants.CARROT));
     }
 
     public void initializeGameBackup(){

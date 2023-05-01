@@ -10,7 +10,7 @@ import model.item.Item;
 import model.item.ItemType;
 import model.place.land.chunks.PlantChunk;
 
-public abstract class PlantAbstract extends Item implements PlantInteface{
+public abstract class Plant extends Item implements PlantInterface{
     // attributes
     private int daysToHarvest;
     protected PlantLife lifeStage;
@@ -49,7 +49,7 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
     }
 
     // constructor
-    protected PlantAbstract(PlantChunk c){
+    protected Plant(PlantChunk c){
         this.random = new Random();
         super.status = 0;
         super.price = 2;
@@ -117,18 +117,10 @@ public abstract class PlantAbstract extends Item implements PlantInteface{
          */
         double growthFactor = 0;
         switch (this.calendar.getWeather()) {
-            case CLOUDY:
-                growthFactor =  this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()* 2;
-                break;
-            case RAINY:
-                growthFactor = (this.chunk.getWaterLevel()*2 + this.chunk.getFertilizationLevel());
-                break;
-            case SNOWY:
-                growthFactor = (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()) / 2;
-                break;       
-            default:
-                 growthFactor =  this.chunk.getWaterLevel()/2 + this.chunk.getFertilizationLevel();
-                break;
+            case CLOUDY -> growthFactor =  this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()* 2;
+            case RAINY-> growthFactor = (this.chunk.getWaterLevel()*2 + this.chunk.getFertilizationLevel());
+            case SNOWY -> growthFactor = (this.chunk.getWaterLevel() + this.chunk.getFertilizationLevel()) / 2;     
+            default -> growthFactor =  this.chunk.getWaterLevel()/2 + this.chunk.getFertilizationLevel();
         }
 
          // growth update

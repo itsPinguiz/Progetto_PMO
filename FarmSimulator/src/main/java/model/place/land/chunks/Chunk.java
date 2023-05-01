@@ -1,6 +1,6 @@
 package model.place.land.chunks;
 
-import model.actors.actions.PlaceActions;
+import model.actors.actions.placeActions.PlaceActions;
 import model.place.Place;
 
 public abstract class Chunk extends Place{    

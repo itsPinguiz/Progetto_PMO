@@ -6,7 +6,7 @@ package model.actors.person;
 import java.util.HashSet;
 
 import model.Constants;
-import model.actors.actions.PlayerActions;
+import model.actors.actions.playerActions.FarmerActions;
 import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.exceptions.CustomExceptions.NoProductFoundException;
 import model.inventory.Inventory;
@@ -30,7 +30,7 @@ import model.place.Places;
       * Initializes the farmer's actions, place, inventory and item creator.
       */
      public Farmer() throws NoAnimalFoundException, NoProductFoundException{
-         super.personAction = new PlayerActions<Farmer>(this);
+         super.personAction = new FarmerActions(this);
          super.place = null;
          this.role = Role.FARMER;
         this.accessiblePlaces = new HashSet<>(){{

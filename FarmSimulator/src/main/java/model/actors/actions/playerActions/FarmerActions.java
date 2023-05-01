@@ -1,9 +1,6 @@
-package model.actors.actions;
+package model.actors.actions.playerActions;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,91 +9,24 @@ import java.util.stream.Stream;
 
 import model.Constants;
 import model.actors.person.Farmer;
-import model.actors.person.Landlord;
-import model.actors.person.Person;
 import model.exceptions.CustomExceptions.*;
 import model.item.Item;
 import model.item.ItemType;
 import model.item.animal.AnimalAbstract;
-import model.item.plants.PlantAbstract;
-import model.item.plants.PlantAbstract.PlantLife;
+import model.item.plants.Plant;
+import model.item.plants.Plant.PlantLife;
 import model.item.tools.AbstractTool;
-import model.place.GameMap;
-import model.place.Place;
-import model.place.Places;
 import model.place.barn.Barn;
-import model.place.barn.market.Market;
-import model.place.land.LandAbstract;
 import model.place.land.chunks.AnimalChunk;
 import model.place.land.chunks.PlantChunk;
 
-public class PlayerActions<T extends Person> extends ActionsManager{
-    // attributes
-    private T person;
-    private ActionArguments<Place,?,GameMap> argument;
+public class FarmerActions extends PlayerActions<Farmer> {
 
-    // constructor    
-    public PlayerActions(T person){
-        this.person = person;
+    // constructor
+    public FarmerActions(Farmer farmer) {
+        super(farmer);
     }
-
-    public <V> void executeAction(Action s,ActionArguments<Place,V,GameMap> argument) throws Exception{
-        /*
-        * Method to find a method to execute
-        */
-
-        // find the desired method
-        Method method = getMethodByName(s.name().toLowerCase());
-        this.argument = argument;
-
-        // execute the method if it exists and is available
-        if (method != null && this.availableActions.contains(s)) {
-            person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), false);
-            method.invoke(this);        
-            person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), true);
-        } else {
-            throw new ActionNotAvailableException(s, this.availableActions);
-        }
-        argument = null;
-    }
-
-    private  Method getMethodByName(String methodName) {
-        /*
-         * Method to get a method by its name
-         */
-        return Arrays.stream(this.getClass().getDeclaredMethods())
-                     .filter(m -> m.getName().equals(methodName.toLowerCase()))
-                     .findFirst()
-                     .orElse(null);
-    }
-
-    public void enter(Place p) throws PlaceNotAvailableException {
-        /*
-         * Method to change actions when
-         * an actors enters somewhere
-         */
-        if (this.person.getAccessiblePlaces().contains(p.getType())){
-            if (person.getPlace() != null)
-                leave();
-            this.person.setPlace(p);
-            // the landlord cannot move items
-            if (!(person instanceof Landlord && p.getType() == Places.BARN)){
-                this.person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), true);
-            }
-        } else throw new PlaceNotAvailableException(p, this.person.getAccessiblePlaces());
-    }
-
-    public void leave() {
-        /*
-         * Method to change actions when
-         * an actors leaves from somewhere
-         */
-        if (person.getPlace()!= null){
-            person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), false);
-        }
-        person.setPlace(null);
-    }
-
+    
     // METHODS FOR THE FARMER
     public void move_item() throws CloneNotSupportedException,
                                    InventoryIsFullException,
@@ -144,10 +74,10 @@ public class PlayerActions<T extends Person> extends ActionsManager{
         Item seed = (Item) argument.getArg2();
 
         // check if the farmer has a seed and the chunk is plowed
-        if (seed instanceof PlantAbstract) {
+        if (seed instanceof Plant) {
             if (c.isPlowed() && f.getInventory().searchItem(seed, false) != -1 && c.getPlant() == null) {
                 // add plant to the land
-                c.setPlant((PlantAbstract) (f.getInventory().getItem(1, seed)));
+                c.setPlant((Plant) (f.getInventory().getItem(1, seed)));
                 c.getPlant().planted(c);
 
                 // add new possible actions
@@ -181,7 +111,7 @@ public class PlayerActions<T extends Person> extends ActionsManager{
         Item tool = (Item)argument.getArg2();
 
         //check if the farmer has the watering can
-        if (tool.getType() == ItemType.Tools.WATERINGCAN && this.damageTool(tool)){
+        if (tool.getType() == ItemType.Tools.WATERINGCAN && super.damageTool(tool)){
             // increase water level
             c.increaseWaterLevel(Constants.WATERING_INDEX*(((AbstractTool)(tool)).getMaterial().getModifier()));
         } else throw new NoToolFoundException(tool.getType(),ItemType.Tools.WATERINGCAN);
@@ -335,30 +265,6 @@ public class PlayerActions<T extends Person> extends ActionsManager{
         this.doAll(Action.PLOW);
     }
 
-    private void doAll(Action action) throws IllegalAccessException,
-                                             IllegalArgumentException,
-                                             InvocationTargetException,
-                                             SecurityException,
-                                             ActionNotAvailableException{
-        /*
-        * Method to repeat the same action on all chunks in a land
-        */                                                                            
-        ((LandAbstract)argument.getArg1()).getElements().stream()
-            .filter(chunk -> chunk.getActions().getAvailableActions().contains(action))
-            .forEach(chunk -> {
-                try {
-                    this.argument.setArg1(chunk);
-                    this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this);
-                } catch (IllegalAccessException | 
-                            IllegalArgumentException | 
-                            InvocationTargetException | 
-                            SecurityException  e) {
-                    e.printStackTrace();
-                }
-        });
-    }
-
-
     public void add_animal() throws NoItemFoundException,
                                     NotEnoughItemsException{
         /*
@@ -494,95 +400,4 @@ public class PlayerActions<T extends Person> extends ActionsManager{
         doAll(Action.GET_RESOURCES);
     }
 
-
-    private boolean damageTool(Item tool) throws NoItemFoundException,
-                                                 NotEnoughItemsException{
-        /*
-         * Use an item and destroy it if it's worn out
-         */
-        Farmer f = (Farmer)this.person;
-
-        if (tool != null && tool.getStatus() > 0){
-            ((AbstractTool)tool).useTool();
-            if (tool.getStatus() == 0){
-                f.getInventory().removeItem(tool, 1);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    // METHODS FOR THE LANDLORD
-    public void buy_item() throws NoItemFoundException, 
-                                  InventoryIsFullException, 
-                                  CloneNotSupportedException,
-                                  NoEnoughMoneyException,
-                                  CannotBuyItemException {
-        /*
-         * Method to buy item
-         * from the market
-         */
-        Item item;
-        LandAbstract land;
-        Landlord landlord = (Landlord)this.person;
-        Market market = (Market)argument.getArg1();
-        ArrayList<LandAbstract> lands =(ArrayList<LandAbstract>)(argument.getArg3().getLands());
-        
-
-        // check if the item is a land or not
-        if (argument.getArg2() instanceof LandAbstract && !lands.contains(argument.getArg2())){
-            land = (LandAbstract)argument.getArg2();
-
-            if (lands.size()<10 && land.getPrice() <= landlord.getBalance()){
-                lands.add(land);
-                landlord.setBalance(- Constants.BASE_LAND_PRICE);
-            }
-            
-        } else if (argument.getArg2() instanceof Item && market.getItemShop().getInventory().contains(argument.getArg2())){
-            item = (Item)argument.getArg2();
-
-            // add it to the barn
-            market.getBarn().getBarnInventory().addItem(market.buyItem(item, landlord.getBalance()));
-            // buy from maketz 
-            // remove the money from the balance
-            landlord.setBalance(- item.getPrice());
-        } else {
-            throw new CannotBuyItemException(argument.getArg2());
-        }
-    }
-
-    public void sell_item() throws NoItemFoundException, 
-                                   CloneNotSupportedException,
-                                   NoSellableLandException,
-                                   CannotSellItemException,
-                                   NotEnoughItemsException{
-        /*
-         * Method to sell item
-         * to the market
-         */
-        Market market = (Market)argument.getArg1();
-        ArrayList<LandAbstract> lands =(ArrayList<LandAbstract>)(argument.getArg3().getLands());
-
-        // check if the item is a land or not
-         if (argument.getArg2() instanceof LandAbstract && lands.contains(argument.getArg2())){
-            LandAbstract land = (LandAbstract)argument.getArg2();
-            Landlord landlord = (Landlord)this.person;
-
-            lands.remove(land);
-
-            // add money to the balance
-            landlord.setBalance(Constants.LAND_SELL_PRICE);
-            
-        } else if (argument.getArg2() instanceof Item && market.getBarn().getBarnInventory().getInventory().contains(argument.getArg2())){
-            Item item = (Item)argument.getArg2();
-            Landlord landlord = (Landlord)this.person;
-
-            // remove item from the barn
-            market.getBarn().getBarnInventory().removeItem(item,1);
-            // add money to the balance
-            landlord.setBalance(item.getPrice());
-        } else {
-            throw new CannotSellItemException(argument.getArg2());
-        }
-    }
 }

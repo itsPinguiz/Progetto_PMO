@@ -7,7 +7,7 @@ import model.exceptions.CustomExceptions.NoAnimalFoundException;
 import model.exceptions.CustomExceptions.NoProductFoundException;
 import model.item.ItemType;
 import model.item.ItemType.Animals;
-import model.item.plants.products.Products;
+import model.item.animal.products.Products;
 
 public class ConcreteAnimal extends AnimalAbstract {
     

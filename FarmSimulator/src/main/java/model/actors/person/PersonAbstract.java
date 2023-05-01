@@ -6,7 +6,7 @@ package model.actors.person;
 
 import java.util.HashSet;
 
-import model.actors.actions.PlayerActions;
+import model.actors.actions.playerActions.PlayerActions;
 import model.place.Place;
 import model.place.Places;
 

@@ -13,8 +13,8 @@ import model.exceptions.CustomExceptions.MinimumHungerException;
 import model.exceptions.CustomExceptions.NoFoodFoundException;
 import model.item.Item;
 import model.item.ItemType;
-import model.item.plants.products.Products;
-import model.item.plants.species.Plant;
+import model.item.animal.products.Products;
+import model.item.plants.GamePlant;
 
 /*****************
  * ANIMAL ABSTRACT
@@ -151,7 +151,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     //method for feeding the animal
     public void feed(Item item) throws NoFoodFoundException, MinimumHungerException{
         try {
-            if(item instanceof Plant){
+            if(item instanceof GamePlant){
                 if(this.hunger >= Constants.FEED_MAX){
                     this.hunger -= Constants.FEED_INDEX;
                 }

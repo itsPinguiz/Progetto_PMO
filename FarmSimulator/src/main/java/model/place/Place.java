@@ -2,7 +2,7 @@ package model.place;
 
 import java.io.Serializable;
 
-import model.actors.actions.PlaceActions;
+import model.actors.actions.placeActions.PlaceActions;
 
 public abstract class Place implements Serializable{
     // General class of places

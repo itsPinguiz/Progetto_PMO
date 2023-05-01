@@ -4,10 +4,10 @@ import java.util.HashSet;
 import java.util.Random;
 
 import model.Constants;
-import model.actors.actions.PlaceActions;
 import model.actors.actions.ActionsManager.Action;
-import model.item.plants.PlantAbstract;
-import model.item.plants.PlantAbstract.PlantLife;
+import model.actors.actions.placeActions.PlaceActions;
+import model.item.plants.Plant;
+import model.item.plants.Plant.PlantLife;
 import model.place.Places;
 import model.place.land.PlantLand;
 
@@ -16,7 +16,7 @@ public class PlantChunk extends Chunk{
     /* Small part of a land that contains one plant */
     
     // attributes
-    private PlantAbstract plant;
+    private Plant plant;
     private PlantLand land;
     private float waterLevel;
     private float fertilizationLevel;
@@ -24,7 +24,7 @@ public class PlantChunk extends Chunk{
     private Random random = new Random();
 
     // constructor
-    public PlantChunk(PlantAbstract plant, PlantLand land){
+    public PlantChunk(Plant plant, PlantLand land){
         super();
         super.type = Places.PLANT_CHUNK;
         this.plant = plant;
@@ -75,7 +75,7 @@ public class PlantChunk extends Chunk{
         return this.land;
     }
 
-    public void setPlant(PlantAbstract plant){
+    public void setPlant(Plant plant){
         /*
          * sets the plant
          */
@@ -136,7 +136,7 @@ public class PlantChunk extends Chunk{
         return this.isPlowed;
     }
 
-    public PlantAbstract getPlant(){
+    public Plant getPlant(){
         /*
          * Returns the planted plant
          */

@@ -6,7 +6,7 @@ import controller.Controller;
 import model.exceptions.CustomExceptions.ActionNotAvailableException;
 import model.exceptions.CustomExceptions.PlaceNotAvailableException;
 import model.item.animal.AnimalAbstract;
-import model.item.plants.PlantAbstract;
+import model.item.plants.Plant;
 import model.place.Places;
 import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
@@ -69,7 +69,7 @@ public class LandView {
             * This method creates the panel that will be displayed when the player enters a chunk
             */
             // get the plant inside the chunk
-            PlantAbstract plant = chunk.getPlant();
+            Plant plant = chunk.getPlant();
             
             // create the panel that will contain the elements
             JPanel chunkPanel = new JPanel(new GridBagLayout());

@@ -7,7 +7,7 @@ package model.actors.person;
 import java.io.Serializable;
 import java.util.HashSet;
 
-import model.actors.actions.PlayerActions;
+import model.actors.actions.playerActions.PlayerActions;
 import model.actors.person.PersonAbstract.Role;
 import model.place.Place;
 import model.place.Places;

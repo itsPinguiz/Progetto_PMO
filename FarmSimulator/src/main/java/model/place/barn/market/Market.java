@@ -7,7 +7,7 @@ package model.place.barn.market;
 import java.util.ArrayList;
 
 import model.Constants;
-import model.actors.actions.PlaceActions;
+import model.actors.actions.placeActions.PlaceActions;
 import model.calendar.Calendar;
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoAnimalFoundException;
