@@ -1,5 +1,5 @@
-# PMO Project - Winter Session 2022-23
-Repository of the PMO project for the Winter Session 2022/23
+# PMO Project - Summer Session 2022-23
+Repository of the PMO project for the Summer Session 2022/23
 <br>
 # *Students*
 | ID | NAME    | SURNAME   | GitHub NickName |
