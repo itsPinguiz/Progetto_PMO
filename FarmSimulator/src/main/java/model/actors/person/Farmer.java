@@ -33,7 +33,7 @@ import model.place.Places;
          super.personAction = new FarmerActions(this);
          super.place = null;
          this.role = Role.FARMER;
-        this.accessiblePlaces = new HashSet<>(){{
+         this.accessiblePlaces = new HashSet<>(){{
             add(Places.BARN);
             add(Places.ANIMAL_LAND);
             add(Places.PLANT_LAND);
