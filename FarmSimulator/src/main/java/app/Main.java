@@ -10,7 +10,7 @@ import model.exceptions.CustomExceptions.NoItemFoundException;
 import model.exceptions.CustomExceptions.NoProductFoundException;
 import view.View;
 
-/*
+/**
     The project consists in the implementation of a farm simulator.
 
     Main functions:
@@ -25,7 +25,11 @@ import view.View;
 */
 
 public class Main {
-    // Design pattern: MVC and Observer
+    /**
+     * Main class
+     * Creates MVC pattern
+     * @param args
+     */
     @SuppressWarnings("null")
     public static void main(String[] args) {
         Model model;

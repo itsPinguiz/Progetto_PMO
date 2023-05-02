@@ -27,21 +27,35 @@ import model.place.GameMap;
 import model.place.Place;
 import model.place.barn.Barn;
 import model.place.land.LandAbstract;
-import model.progress.GameBackup;
+import model.progress.GameBackupManager;
 
+/**
+ * Model class of the MVC pattern, contains all the data of the game
+ */
 public class Model implements Serializable{
-    // attributes\
+    /**
+     * Attributes
+     */
     private Farmer farmer;
     private Landlord landlord;
     private Person selectedActor;
     private Calendar calendar;
     private GameMap map;
-    private GameBackup backup;
+    private GameBackupManager backup;
+
     private Object selectedItem;
     private Inventory oldInventory;
     private Place oldPlace;
 
-    // constructor
+    /**
+     * Constructor
+     * Initializes the farmer, the landlord, the calendar, the map and the selected actor
+     * @throws NoItemFoundException
+     * @throws InventoryIsFullException
+     * @throws NoAnimalFoundException
+     * @throws NoProductFoundException
+     * @throws CloneNotSupportedException
+     */
     public Model() throws NoItemFoundException, 
                           InventoryIsFullException,
                           NoAnimalFoundException,
@@ -75,20 +89,25 @@ public class Model implements Serializable{
         map.getBarn().getBarnInventory().addItem(new GamePlant(Plants.CARROT));
     }
 
+    /**
+     * Initliazes the game backup
+     */
     public void initializeGameBackup(){
-        /*
-         * Method to initialize the game backup
-         */
-        this.backup = new GameBackup(this);
+        this.backup = new GameBackupManager(this);
     }
 
+    
+    /** 
+     * Updates the world entities
+     * @throws InventoryIsFullException
+     * @throws NoItemFoundException
+     * @throws CloneNotSupportedException
+     * @throws PlaceNotAvailableException
+     */
     public void update() throws InventoryIsFullException,
                                 NoItemFoundException, 
                                 CloneNotSupportedException, 
                                 PlaceNotAvailableException {
-        /*
-         * Method to update the world entities
-         */
         this.calendar.inc();
 
         ((ArrayList<LandAbstract>)(this.map.getLands())).forEach(place -> { LandAbstract land = (LandAbstract) place;
@@ -100,6 +119,11 @@ public class Model implements Serializable{
             this.selectedActor.getActions().enter(this.selectedActor.getPlace());
     }
 
+    /**
+     * Method to make the actionManager execute an action
+     * @param action the action to execute
+     * @throws Exception if the action is not executable
+     */
     public void sendAction(Action action) throws Exception{
         ActionArguments<Place, Object, GameMap> arguments = new ActionArguments<>(getSelectedPerson().getPlace(), 
                                                                                                  getSelectedItem(), 
@@ -107,111 +131,118 @@ public class Model implements Serializable{
         this.selectedActor.getActions().executeAction(action,arguments);
     }
 
+    /**
+     * Method to get the Barn
+     * @return Barn
+     */
     public Barn getBarn(){
-        /*
-         * Method to get the barn
-         */
         return this.map.getBarn();
     }
 
+    /**
+     * Method to get the map
+     * @return GameMap
+     */
     public GameMap getMap(){
-        /*
-         * Method to get the map
-         */
         return this.map;
     }
 
+    /**
+     * Method to get the lands
+     * @return ArrayList<LandAbstract> the lands
+     */
     public ArrayList<LandAbstract> getLands(){
-        /*
-         * Method to get the lands
-         */
         return map.getLands();
     }
 
-    public void setSelectedPerson(Person p){
-        /*
-         * Method to set the selected person 
-         */
-        this.selectedActor = p;
+    /**
+     * Method to set the selected actor
+     * @param person the person to set
+     */
+    public void setSelectedPerson(Person person){
+        this.selectedActor = person;
     }
 
+    /**
+     * Method to get the selected actor's place
+     * @return Place the place of the selected actor
+     */
     public Place getPersonPlace(){
-        /*
-         * Method to get the place of the selected person 
-         */
         return this.selectedActor.getPlace();
     }
 
+    /**
+     * Method to get the selected actor
+     * @return Person the selected actor
+     */
     public Person getSelectedPerson(){
-        /*
-         * Method to get the selected person 
-         */
         return this.selectedActor;
     }
 
-    public HashMap<Role,Person> getPlayer(){
-        /*
-         * Method to get the persons
-         */
+    /**
+     * Method to get both the possible roles
+     * @return
+     */
+    public HashMap<Role,Person> getRoles(){
         return new HashMap<>(){{
             put(Role.FARMER, farmer);
             put(Role.LANDLORD, landlord);
         }};
     }
 
-    public Calendar getCalendar(){
-        /*
-         * Method to get the calendar
-         */
-        return this.calendar;
+    /**
+     * Method to set a new selected item
+     * @param newItem the new selected item
+     */
+    public void setSelectedItem(Object newItem){
+        this.selectedItem = newItem;
     }
 
-    public void setSelectedItem(Object o){
-        /*
-         * Method to set the selected item
-         */
-        this.selectedItem = o;
-    }
-
+    /**
+     * Method to get the selected item
+     * @return Object the selected item
+     */
     public Object getSelectedItem(){
-        /*
-         * Method to get the selected item
-         */
         return this.selectedItem;
     }
 
-    public void setOldInventory(Inventory i){
-        /*
-         * Method to set the old inventory
-         */
-        this.oldInventory = i;
+    /**
+     * Method to set the old inventory
+     * @param oldInventory
+     */
+    public void setOldInventory(Inventory oldInventory){
+        this.oldInventory = oldInventory;
     }
 
+    /**
+     * Method to get the old inventory
+     * @return Inventory the old inventory
+     */
     public Inventory getOldInventory(){
-        /*
-         * Method to get the old inventory
-         */
         return this.oldInventory;
     }
 
-    public void setOldPlace(Place p){
-        /*
-         * Method to set the old place
-         */
-        this.oldPlace = p;
+    /**
+     * Method to set the old place
+     * @param oldPlace
+     */
+    public void setOldPlace(Place oldPlace){
+        this.oldPlace = oldPlace;
     }
 
+    /**
+     * Method to get the old place
+     * @return Place the old place
+     */
     public Place getOldPlace(){
-        /*
-         * Method to get the old place
-         */
         return this.oldPlace;
     }
 
-    public GameBackup getBackup(){
-        /*
-         * Method to get the backup
-         */
+    /**
+     * Method to get the backupManager
+     * @return GameBackupManager the backupManager
+     */
+    public GameBackupManager getBackup(){
         return this.backup;
     }
 }

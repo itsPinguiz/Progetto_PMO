@@ -12,7 +12,7 @@ import model.item.Item;
 import model.place.land.LandAbstract;
 import model.place.land.chunks.AnimalChunk;
 import model.place.land.chunks.PlantChunk;
-import model.progress.GameBackup;
+import model.progress.GameBackupManager;
 import view.View;
 
 import java.awt.*;
@@ -277,7 +277,7 @@ import java.util.Set;
         /*
         * Backup menu creation
         */
-        GameBackup backup = controller.getBackup();
+        GameBackupManager backup = controller.getBackup();
         // panel creation
         backupMenu = new JMenu("Backup");
         JMenuItem saveGame = new JMenuItem("Save");

@@ -20,9 +20,9 @@ import model.item.ItemCreator;
 import model.place.Place;
 import model.place.Places;
 import model.place.barn.Barn;
-import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
-import model.place.land.PlantLand;
+import model.place.land.landTypes.AnimalLand;
+import model.place.land.landTypes.PlantLand;
 
 /**************
  * MARKET CLASS

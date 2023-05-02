@@ -9,21 +9,27 @@ import model.actors.actions.placeActions.PlaceActions;
 import model.item.plants.Plant;
 import model.item.plants.Plant.PlantLife;
 import model.place.Places;
-import model.place.land.PlantLand;
+import model.place.land.landTypes.PlantLand;
 
-
-public class PlantChunk extends Chunk{
-    /* Small part of a land that contains one plant */
-    
-    // attributes
+/**
+ * Piece of land that contains a plant
+ */
+public class PlantChunk extends Chunk{    
+    /**
+     * Attributes
+     */
     private Plant plant;
     private PlantLand land;
     private float waterLevel;
     private float fertilizationLevel;
     private boolean isPlowed;
-    private Random random = new Random();
+    private Random random = new Random(); //random number generator
 
-    // constructor
+    /**
+     * Constructor
+     * @param plant
+     * @param land
+     */
     public PlantChunk(Plant plant, PlantLand land){
         super();
         super.type = Places.PLANT_CHUNK;
@@ -34,12 +40,12 @@ public class PlantChunk extends Chunk{
         this.fertilizationLevel = random.nextInt(10) + 1;
     }
 
-    //methods
+    /**
+     *  Grows the plant and updates the chunk's status
+     * 
+     */
     @Override
     public void update(){
-        /*
-         *  Grows the plant and updates the chunk's status
-         */
         if (this.plant != null){
             this.plant.grow();
             this.increaseWaterLevel(Constants.PLANT_WATER_DEACRESE);
@@ -68,24 +74,29 @@ public class PlantChunk extends Chunk{
         this.increaseFertilizationLevel(Constants.CHUNK_FERTILIZATION_DEACRESE);
     }
 
+    /** 
+     * Returns the land where the chunk is
+     * @return PlantLand
+     */
     public PlantLand getLand(){
-        /*
-         * Returns the land where the chunk is
-         */
         return this.land;
     }
 
+    /**
+     * Sets the plant
+     * @param plant
+     * 
+     */
     public void setPlant(Plant plant){
-        /*
-         * sets the plant
-         */
         this.plant = plant;
     }
 
+    /**
+     * Increases water value
+     * @param value
+     * 
+     */
     public void increaseWaterLevel(int value){
-        /*
-         * Increases water value
-         */
         if ((this.waterLevel + value) <= 0)
             this.waterLevel = 0;
         else if ((this.waterLevel + value) < Constants.WATERING_MAX){
@@ -95,11 +106,12 @@ public class PlantChunk extends Chunk{
         }
     }
 
+    /**
+     * Increases fertilization value
+     * @param value
+     * 
+     */
     public void increaseFertilizationLevel(int value){
-        /*
-         * Increases fertilization value
-         */
-
         if ((this.fertilizationLevel + value) < 0)
             this.fertilizationLevel = 0;
         else if ((this.fertilizationLevel + value) < Constants.FERTILIZATION_MAX)
@@ -108,46 +120,61 @@ public class PlantChunk extends Chunk{
             this.fertilizationLevel = Constants.FERTILIZATION_MAX;
     }
 
-    public void setDirtStatus(boolean b){
-        /*
-         * Returns if chunk is plowed or not
-         */
-        this.isPlowed = b;
+    /**
+     * Sets the status to plowed or not
+     * @param newStatus
+     * 
+     */
+    public void setDirtStatus(boolean newStatus){
+        this.isPlowed = newStatus;
     }
 
-    public float getWaterLevel(){
-        /*
-         * Returns the chunk's water level
-         */
-        return this.waterLevel;
-    }
-
-    public float getFertilizationLevel(){
-        /*
-         * Returns the chunk's fertilization level
-         */
-        return this.fertilizationLevel;
-    }
-
-    public boolean isPlowed(){
-        /*
-         * Returns if chunk is plowed or not
-         */
+    /**
+     * Returns in the chunk is plowed or not
+     * @return boolean
+     */
+    public boolean getDirtStatus(){
         return this.isPlowed;
     }
 
+    /**
+     * Returns the chunk's water level
+     * @return float
+     */
+    public float getWaterLevel(){
+        return this.waterLevel;
+    }
+
+    /**
+     * Returns the chunk's fertilization level
+     * @return float
+     */
+    public float getFertilizationLevel(){
+        return this.fertilizationLevel;
+    }
+
+    /**
+     * Returns if chunk is plowed or not
+     * @return boolean
+     */
+    public boolean isPlowed(){
+        return this.isPlowed;
+    }
+
+    /**
+     * Returns the planted plant
+     * @return Plant
+     */
     public Plant getPlant(){
-        /*
-         * Returns the planted plant
-         */
         return this.plant;
     }
 
+    /**
+     * Resets plantChunk's actions
+     * 
+     */
     @Override
     public void resetActions(){
-        /*
-         * Resets plantChunk's actions
-         */
         this.getActions().resetActions();
         this.getActions().updateActions( new HashSet<>(){{
                                             add(isPlowed()?Action.PLANT:Action.PLOW);

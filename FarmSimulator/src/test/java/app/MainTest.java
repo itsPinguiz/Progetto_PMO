@@ -16,11 +16,11 @@ import model.item.Item;
 import model.item.ItemType;
 import model.item.animal.products.Products;
 import model.item.plants.Plant.PlantLife;
-import model.place.land.PlantLand;
-import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
 import model.place.land.chunks.AnimalChunk;
 import model.place.land.chunks.PlantChunk;
+import model.place.land.landTypes.AnimalLand;
+import model.place.land.landTypes.PlantLand;
 import model.place.Places;
 
 public class MainTest {
@@ -32,7 +32,7 @@ public class MainTest {
         Model model = new Model();
 
 
-        model.setSelectedPerson(model.getPlayer().get(Role.FARMER)); // select farmer
+        model.setSelectedPerson(model.getRoles().get(Role.FARMER)); // select farmer
         assertEquals(Role.FARMER, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Farmer
         model.getSelectedPerson().getActions().enter(model.getLands().get(0)); // enter plant land
         assertEquals(model.getLands().get(0), model.getSelectedPerson().getPlace()); // ASSERT that the farmer is in land
@@ -99,7 +99,7 @@ public class MainTest {
         Model model = null;
         model = new Model();
 
-        model.setSelectedPerson(model.getPlayer().get(Role.FARMER)); // select farmer
+        model.setSelectedPerson(model.getRoles().get(Role.FARMER)); // select farmer
         assertEquals(Role.FARMER, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Farmer
         model.getSelectedPerson().getActions().enter(((AnimalLand)(model.getLands().get(2))).getElements().get(0)); // enter animal land
         assertEquals(((AnimalLand)(model.getLands().get(2))).getElements().get(0), model.getSelectedPerson().getPlace()); // ASSERT that the farmer is in land
@@ -173,12 +173,12 @@ public class MainTest {
         
         // add eggs to the inventory
         for(int i = 0; i < randomNumber; i++){
-            ((Farmer)(model.getPlayer().get(Role.FARMER))).getInventory().addItem(new Products(ItemType.productsType.EGGS){{setNumber(1);}});
+            ((Farmer)(model.getRoles().get(Role.FARMER))).getInventory().addItem(new Products(ItemType.productsType.EGGS){{setNumber(1);}});
         }
 
         // count the number of stacks
-        for(int i = 0; i < ((Farmer)(model.getPlayer().get(Role.FARMER))).getInventory().getInventory().size(); i++){
-            if(((Farmer)(model.getPlayer().get(Role.FARMER))).getInventory().getInventory().get(i).getType() == ItemType.productsType.EGGS){
+        for(int i = 0; i < ((Farmer)(model.getRoles().get(Role.FARMER))).getInventory().getInventory().size(); i++){
+            if(((Farmer)(model.getRoles().get(Role.FARMER))).getInventory().getInventory().get(i).getType() == ItemType.productsType.EGGS){
                 eggStack ++;
             }
         }
@@ -191,7 +191,7 @@ public class MainTest {
         Model model = null;
         model = new Model();
 
-        model.setSelectedPerson(model.getPlayer().get(Role.LANDLORD)); // select landlord
+        model.setSelectedPerson(model.getRoles().get(Role.LANDLORD)); // select landlord
         assertEquals(Role.LANDLORD, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Landlord
 
         model.getSelectedPerson().getActions().enter(model.getBarn()); // enter barn
@@ -229,7 +229,7 @@ public class MainTest {
         Model model = null;
         model = new Model();
 
-        model.setSelectedPerson(model.getPlayer().get(Role.LANDLORD)); // select landlord
+        model.setSelectedPerson(model.getRoles().get(Role.LANDLORD)); // select landlord
         assertEquals(Role.LANDLORD, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Landlord
 
         model.getSelectedPerson().getActions().enter(model.getBarn()); // enter barn
@@ -255,7 +255,7 @@ public class MainTest {
         Model model = null;
         model = new Model();
 
-        model.setSelectedPerson(model.getPlayer().get(Role.LANDLORD)); // select landlord
+        model.setSelectedPerson(model.getRoles().get(Role.LANDLORD)); // select landlord
         assertEquals(Role.LANDLORD, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Landlord
 
         model.getSelectedPerson().getActions().enter(model.getBarn()); // enter barn

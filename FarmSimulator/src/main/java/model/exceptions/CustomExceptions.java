@@ -12,7 +12,15 @@ import model.place.Place;
 import model.place.Places;
 import model.place.land.LandAbstract;
 
+/**
+ * Class that contains all the custom exceptions used in the game
+ */
 public class CustomExceptions {
+    /**
+     * Exception thrown when the action is not available
+     * @param action the action that was not available
+     * @param availableActions the available actions
+     */
     public static class ActionNotAvailableException extends Exception {
         public ActionNotAvailableException(Action action,Set<Action> availableActions){
             super("The action you tried to execute was not possible. \n Action: " +
@@ -20,12 +28,18 @@ public class CustomExceptions {
         }   
     }
 
+    /**
+     * Exception thrown when the action is not available
+     */
     public static class LandIsNotPlowedException extends Exception {
         public LandIsNotPlowedException(){
             super("Cannot perform action since the land is not plowed.");
         }   
     }
 
+    /**
+     * Exception thrown when the land is already plowed
+     */
     public static class LandIsAlreadyPlowedException extends Exception {
         public LandIsAlreadyPlowedException(){
             super("Cannot perform action since the land is already plowed.");
@@ -45,6 +59,11 @@ public class CustomExceptions {
         }   
     }
 
+    /**
+     * Exception thrown when the place the action is trying to enter is not available for him
+     * @param enteringPlace the place the action is trying to enter
+     * @param availablePlaces the available places
+     */
     public static class PlaceNotAvailableException extends Exception {
         public PlaceNotAvailableException(Place enteringPlace,HashSet<Places> availablePlaces){
             super("Cannot perform action since the role you are using cannot enter " + enteringPlace.toString() +
@@ -128,6 +147,10 @@ public class CustomExceptions {
         }
     }
 
+    /**
+     * Exception thrown when the save the player is trying to load is corrupted
+     * @param saveName the name of the save the player is trying to load
+     */
     public static class SaveIsCorruptedException extends Exception {
         public SaveIsCorruptedException(String saveName){
             super("Cannot load save " + saveName + " since it is corrupted.");

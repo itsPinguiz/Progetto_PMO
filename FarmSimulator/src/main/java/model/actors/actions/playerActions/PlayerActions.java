@@ -19,13 +19,21 @@ import model.place.Place;
 import model.place.Places;
 import model.place.land.LandAbstract;
 
+/**
+ * Class that contains all the actions that a player can perform
+ */
 public abstract class PlayerActions<T extends Person> extends ActionsManager{
-    // attributes
+    /**
+     * Attributes
+     */
     protected T person;
     protected ActionArguments<Place,?,GameMap> argument;
     private HashMap<Role,Class<? extends Person>> roleClass;
 
-    // constructor    
+    /**
+     * Constructor
+     * @param person Person
+     */  
     public PlayerActions(T person){
         this.person = person;
         roleClass = new HashMap<>(){
@@ -36,30 +44,35 @@ public abstract class PlayerActions<T extends Person> extends ActionsManager{
         };
     }
 
-    public <V> void executeAction(Action s,ActionArguments<Place,V,GameMap> argument) throws Exception{
-        /*
-        * Method to find a method to execute
-        */
-
+    /**
+     * Executes an action if it is available
+     * @param <V> Item or LandAbstract
+     * @param action Action to execute
+     * @param argument Argument for the action
+     * @throws Exception
+     */
+    public <V> void executeAction(Action action,ActionArguments<Place,V,GameMap> argument) throws Exception{
         // find the desired method
-        Method method = getMethodByName(s.name().toLowerCase());
+        Method method = getMethodByName(action.name().toLowerCase());
         this.argument = argument;
 
         // execute the method if it exists and is available
-        if (method != null && this.availableActions.contains(s)) {
+        if (method != null && this.availableActions.contains(action)) {
             person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), false);
             method.invoke(person.getActions());        
             person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), true);
         } else {
-            throw new ActionNotAvailableException(s, this.availableActions);
+            throw new ActionNotAvailableException(action, this.availableActions);
         }
         argument = null;
     }
 
+    /**
+     * Method to get a method by its name
+     * @param methodName Name of the method
+     * @return Method
+     */
     private  Method getMethodByName(String methodName) {
-        /*
-         * Method to get a method by its name
-         */
         // search the method in the current class
         Method method = Arrays.stream(getClass().getDeclaredMethods())
                               .filter(m -> m.getName().equals(methodName.toLowerCase()))
@@ -76,22 +89,31 @@ public abstract class PlayerActions<T extends Person> extends ActionsManager{
         return method;
     }
 
-    public void enter(Place p) throws PlaceNotAvailableException {
+    /**
+     * Method to change actions when an actor enters a new place
+     * @param newPlace Place to enter
+     * @throws PlaceNotAvailableException Exception thrown when the actor cannot enter the place
+     */
+    public void enter(Place newPlace) throws PlaceNotAvailableException {
         /*
          * Method to change actions when
          * an actors enters somewhere
          */
-        if (this.person.getAccessiblePlaces().contains(p.getType())){
+        if (this.person.getAccessiblePlaces().contains(newPlace.getType())){
             if (person.getPlace() != null)
                 leave();
-            this.person.setPlace(p);
+            this.person.setPlace(newPlace);
             // the landlord cannot move items
-            if (!(person instanceof Landlord && p.getType() == Places.BARN)){
+            if (!(person instanceof Landlord && newPlace.getType() == Places.BARN)){
                 this.person.getActions().updateActions(person.getPlace().getActions().getAvailableActions(), true);
             }
-        } else throw new PlaceNotAvailableException(p, this.person.getAccessiblePlaces());
+        } else throw new PlaceNotAvailableException(newPlace, this.person.getAccessiblePlaces());
     }
 
+    /**
+     * Method to remove actions when an actor leaves a place
+     * 
+     */
     public void leave() {
         /*
          * Method to change actions when
@@ -103,11 +125,20 @@ public abstract class PlayerActions<T extends Person> extends ActionsManager{
         person.setPlace(null);
     }
 
+    /**
+     * Method to repeat an action on all chunks of the land
+     * @param action Action to repeat
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws SecurityException
+     * @throws ActionNotAvailableException
+     */
     protected void doAll(Action action) throws IllegalAccessException,
-                                             IllegalArgumentException,
-                                             InvocationTargetException,
-                                             SecurityException,
-                                             ActionNotAvailableException{
+                                               IllegalArgumentException,
+                                               InvocationTargetException,
+                                               SecurityException,
+                                               ActionNotAvailableException{
         /*
         * Method to repeat the same action on all chunks in a land
         */                                                                            
@@ -126,12 +157,15 @@ public abstract class PlayerActions<T extends Person> extends ActionsManager{
         });
     }
 
-
-    
-
-
+    /**
+     * Method to damage a tool and remove it if it's worn out
+     * @param tool Tool to damage
+     * @return boolean
+     * @throws NoItemFoundException
+     * @throws NotEnoughItemsException
+     */
     protected boolean damageTool(Item tool) throws NoItemFoundException,
-                                                 NotEnoughItemsException{
+                                                   NotEnoughItemsException{
         /*
          * Use an item and destroy it if it's worn out
          */
@@ -146,6 +180,4 @@ public abstract class PlayerActions<T extends Person> extends ActionsManager{
         }
         return false;
     }
-
-
 }

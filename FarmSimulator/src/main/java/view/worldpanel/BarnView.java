@@ -12,9 +12,9 @@ import model.item.tools.AbstractTool;
 import model.place.Place;
 import model.place.barn.Barn;
 import model.place.barn.market.Market;
-import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
-import model.place.land.PlantLand;
+import model.place.land.landTypes.AnimalLand;
+import model.place.land.landTypes.PlantLand;
 import view.View;
 import view.custom.DeselectableButtonGroup;
 

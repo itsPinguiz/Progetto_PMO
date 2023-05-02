@@ -4,23 +4,31 @@ import java.io.Serializable;
 
 import model.actors.actions.placeActions.PlaceActions;
 
+/**
+ * General class of places
+ */
 public abstract class Place implements Serializable{
-    // General class of places
+    /**
+     * Attributes
+     */
     protected PlaceActions actions;
     protected Places type; // the type of the place
 
+    /**
+     * Returns the actions of the land
+     * @return PlaceActions
+     */
     public PlaceActions getActions(){
-        /*
-         *  Returns the actions of the land
-         */
+        
         return this.actions;
     }
 
+    /*
+     * Returns the type of the
+     * land  
+     * @return Places 
+     */
     public Places getType() {
-        /*
-         * Returns the type of the
-         * land  
-         */
         return this.type;
     }
 }

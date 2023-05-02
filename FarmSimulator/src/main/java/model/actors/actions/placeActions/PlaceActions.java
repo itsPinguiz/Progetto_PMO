@@ -5,11 +5,20 @@ import java.util.HashSet;
 import model.actors.actions.ActionsManager;
 import model.place.Place;
 
+/**
+ * Class that represents the actions of a place
+ */
 public class PlaceActions extends ActionsManager{
-    // attributes
-    protected Place place; // place where the action take place
+    /**
+     * Attributes
+     */
+    protected Place place; 
 
-    // constructor
+    /**
+     * Constructor
+     * Sets the default available actions for the place
+     * @param place place to set the actions
+     */
     public PlaceActions(Place place){
         super();
         this.place = place;

@@ -1,4 +1,4 @@
-package model.place.land;
+package model.place.land.landTypes;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
 import model.actors.actions.ActionsManager.Action;
 import model.actors.actions.placeActions.PlaceActions;
 import model.place.Places;
+import model.place.land.LandAbstract;
 import model.place.land.chunks.AnimalChunk;
 
 public class AnimalLand extends LandAbstract {
@@ -17,6 +18,7 @@ public class AnimalLand extends LandAbstract {
     
     //constuctor
     public AnimalLand(){
+        super();
         this.type = Places.ANIMAL_LAND;
         this.animalChunks = new ArrayList<>(
             IntStream.range(0, 10).

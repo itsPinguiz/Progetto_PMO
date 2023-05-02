@@ -1,12 +1,19 @@
 package model;
 
+/**
+ * Class that contains all the constants of the game
+ */
 public class Constants {
-    // INVENTORY
+    /**
+     * Inventory constants
+     */
     public final static int INVENTORY_MAX = 10;
     public final static int BARN_INVENTORY_MAX = 40;
     public final static int MARKET_SHOP_MAX = 10;
 
-    // PLANT 
+    /**
+     * Plant constants
+     */
     public final static int MAX_GROWTH = 100;
     public final static int GROWTH_RATE = 1;
 
@@ -31,7 +38,9 @@ public class Constants {
     public final static int FERTILIZATION_MAX = 100;
     public final static int WATERING_MAX = 100;
 
-    // ANIMAL 
+    /**
+     * Animal constants
+     */
     public final static int COW_PRICE = 200;
     public final static int PIG_PRICE = 60;
     public final static int GOAT_PRICE = 100;
@@ -51,37 +60,55 @@ public class Constants {
     public final static int MEDIUM_PRODUCTIVITY = 1;
     public final static int HIGH_PRODUCTIVITY = 2;
 
-    // TOOL 
+    /**
+     * Tool constants
+     */ 
     public final static int IRON_MODIFIER = 7;
     public final static int WOOD_MODIFIER = 5;
-    // TOOL PRICE
-    // iron tool
+
+    /**
+     * Tool prices
+     */
+
+    /**
+     * Iron Tool prices
+     */
     public final static int IRON_HOE_PRICE = 24;
     public final static int IRON_SCISSORS_PRICE = 20;
     public final static int IRON_SICKLE_PRICE = 30;
     public final static int IRON_WATERINGCAN_PRICE = 10;
     public final static int IRON_FERTILIZER_PRICE = 8;
 
-    // wood tool
+    /**
+     * Wood Tool prices
+     */
     public final static int WOOD_HOE_PRICE = 12;
     public final static int WOOD_SCISSORS_PRICE = 10;
     public final static int WOOD_SICKLE_PRICE = 15;
     public final static int WOOD_WATERINGCAN_PRICE = 5;
     public final static int WOOD_FERTILIZER_PRICE = 4;
 
-    // fertilizer
+    /**
+     * Fertilizer price
+     */
     public final static int FERTILIZER_PRICE = 10;
     
-    // product price
+    /**
+     * Products prices
+     */
     public final static int MEAT_PRICE = 20;
     public final static int MILK_PRICE = 4;
     public final static int EGGS_PRICE = 2;
     public final static int WOOL_PRICE = 15;
 
-    // land price
+    /**
+     * Land prices
+     */
     public final static int BASE_LAND_PRICE = 50;
     public final static int LAND_SELL_PRICE = 25;
 
-    // stack
+    /**
+     * Max Item Stack
+     */
     public final static int STACK_MAX = 64;
 }

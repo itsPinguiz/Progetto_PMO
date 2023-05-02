@@ -22,12 +22,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * View class of the MVC pattern, contains all the GUI elements
+ */
 public class View extends JFrame{
-  // constants
+  /**
+   * Constants
+   */
   final int MAX_HEIGHT = 600;
   final int MAX_WIDTH = 800;
 
-  // attributes  
+  /**
+   * Attributes
+   */
   private Controller controller;
 
   private RolePanelView rolePanelView;
@@ -35,7 +42,10 @@ public class View extends JFrame{
   private LandView landView;
   private BarnView barnView;
 
-  // constructor
+  /**
+   * Constructor
+   * @param controller
+   */
   public View(Controller controller){
     // setup main frame
     setTitle("Farming Simulator");
@@ -46,7 +56,9 @@ public class View extends JFrame{
     this.controller = controller;
   }
 
-  // update MVC
+  /**
+   * Creates all instances of the sub-panels and adds them to the main panel
+   */
   public void updateMVC(Controller c, Model m){
     this.controller = c;
     try {
@@ -74,26 +86,45 @@ public class View extends JFrame{
     }
   }
 
+  /**
+   * Returns the role panel view
+   * @return RolePanelView
+   */
   public RolePanelView getRolePanelView() {
     return rolePanelView;
   }
 
+  /**
+   * Returns the world panel view
+   * @return WorldPanelView
+   */
   public WorldPanelView getWorldPanelView() {
     return worldPanelView;
   }
 
+  /**
+   * Returns the land view
+   * @return LandView
+   */
   public LandView getLandView() {
     return landView;
   }
 
+  /**
+   * Returns the barn view
+   * @return BarnView
+   */
   public BarnView getBarnView() {
     return barnView;
   }
 
+  /**
+   * Update the main panel with the new panel
+   * @param mainPanel 
+   * @param newPanel
+   * @throws ActionNotAvailableException 
+   */
   public void updateActualPanel(JPanel mainPanel, JPanel newPanel) throws ActionNotAvailableException{
-    /*
-     * Update the main panel with the new panel
-     */
     // remove the old panel and add the new one
     mainPanel.removeAll();
     mainPanel.add(newPanel);
@@ -138,10 +169,14 @@ public class View extends JFrame{
     repaint();
   }
 
+  /**
+   * Method to create an action listener for the toggle buttons
+   * @param buttonGroup
+   * @param item
+   * @param toggleButton
+   * @return
+   */
   public ActionListener toggleButtonListener(DeselectableButtonGroup buttonGroup ,Object item, JToggleButton toggleButton){
-    /*
-     * Method to create an action listener for the toggle buttons
-     */
     return new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -151,10 +186,11 @@ public class View extends JFrame{
       }};
   }
 
+  /**
+   * Method to show a popup with the error message
+   * @param message
+   */
   public void exceptionPopup(String message) {
-    /*
-    * Method to show a popup with the error message
-    */
     Place place = this.controller.getSelectedPerson().getPlace();
     JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     try {

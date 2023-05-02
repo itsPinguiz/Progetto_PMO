@@ -9,23 +9,31 @@ import model.item.Item;
 import model.place.barn.market.Market;
 import model.place.land.LandAbstract;
 
-
+/**
+ * Class that represents the actions that the landlord can perform
+ */
 public class LandlordActions extends PlayerActions<Landlord>{
-    
+    /**
+     * Constructor
+     * @param landlord Landlord
+     */
     public LandlordActions(Landlord landlord){
         super(landlord);
     }
 
-    // METHODS FOR THE LANDLORD
+    /**
+     * Buys an item from the market
+     * @throws NoItemFoundException
+     * @throws InventoryIsFullException
+     * @throws CloneNotSupportedException
+     * @throws NoEnoughMoneyException
+     * @throws CannotBuyItemException
+     */
     public void buy_item() throws NoItemFoundException, 
                                   InventoryIsFullException, 
                                   CloneNotSupportedException,
                                   NoEnoughMoneyException,
                                   CannotBuyItemException {
-        /*
-         * Method to buy item
-         * from the market
-         */
         Item item;
         LandAbstract land;
         Landlord landlord = (Landlord)this.person;
@@ -55,6 +63,14 @@ public class LandlordActions extends PlayerActions<Landlord>{
         }
     }
 
+    /**
+     * Sells an item to the market
+     * @throws NoItemFoundException
+     * @throws CloneNotSupportedException
+     * @throws NoSellableLandException
+     * @throws CannotSellItemException
+     * @throws NotEnoughItemsException
+     */
     public void sell_item() throws NoItemFoundException, 
                                    CloneNotSupportedException,
                                    NoSellableLandException,

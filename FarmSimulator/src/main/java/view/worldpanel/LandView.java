@@ -8,11 +8,11 @@ import model.exceptions.CustomExceptions.PlaceNotAvailableException;
 import model.item.animal.AnimalAbstract;
 import model.item.plants.Plant;
 import model.place.Places;
-import model.place.land.AnimalLand;
 import model.place.land.LandAbstract;
-import model.place.land.PlantLand;
 import model.place.land.chunks.AnimalChunk;
 import model.place.land.chunks.PlantChunk;
+import model.place.land.landTypes.AnimalLand;
+import model.place.land.landTypes.PlantLand;
 import view.View;
 
 import java.awt.*;

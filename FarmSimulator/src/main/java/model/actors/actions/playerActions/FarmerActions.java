@@ -20,22 +20,31 @@ import model.place.barn.Barn;
 import model.place.land.chunks.AnimalChunk;
 import model.place.land.chunks.PlantChunk;
 
+/**
+ * Class that contains all the actions for the farmer
+ */
 public class FarmerActions extends PlayerActions<Farmer> {
 
-    // constructor
+    /**
+     * Constructor
+     * @param farmer
+     */
     public FarmerActions(Farmer farmer) {
         super(farmer);
     }
     
-    // METHODS FOR THE FARMER
+    /** 
+     * Method to move the item
+     * to the barn from the farmer's inventory
+     * @throws CloneNotSupportedException
+     * @throws InventoryIsFullException
+     * @throws NoItemFoundException
+     * @throws NotEnoughItemsException
+     */
     public void move_item() throws CloneNotSupportedException,
                                    InventoryIsFullException,
                                    NoItemFoundException,
                                    NotEnoughItemsException{
-        /*
-         * Method to move the item
-         * to the barn from the farmer's inventory
-         */
         Item itemToMove = (Item)argument.getArg2();
         Farmer farmer = (Farmer)this.person;
         Barn barn = (Barn)farmer.getPlace();
@@ -64,7 +73,14 @@ public class FarmerActions extends PlayerActions<Farmer> {
             }
         }
     }
-    
+
+    /**
+     * Method to plant a seed in a chunk
+     * @throws NoSeedFoundException
+     * @throws CloneNotSupportedException
+     * @throws LandIsNotPlowedException
+     * @throws NoItemFoundException
+     */    
     public void plant() throws NoSeedFoundException,
                                CloneNotSupportedException,
                                LandIsNotPlowedException,
@@ -100,13 +116,15 @@ public class FarmerActions extends PlayerActions<Farmer> {
         }
     }
 
-
+    /**
+     * Method to water a plant using a watering can
+     * @throws NoToolFoundException
+     * @throws NoItemFoundException
+     * @throws NotEnoughItemsException
+     */
     public void water() throws NoToolFoundException, 
                                NoItemFoundException,
                                NotEnoughItemsException{
-        /*
-         * Method to water a plant
-         */
         PlantChunk c = (PlantChunk)argument.getArg1();
         Item tool = (Item)argument.getArg2();
 
@@ -117,13 +135,18 @@ public class FarmerActions extends PlayerActions<Farmer> {
         } else throw new NoToolFoundException(tool.getType(),ItemType.Tools.WATERINGCAN);
     }
 
+
+    /**
+     * Method to plow a chunk using a hoe
+     * @throws NoToolFoundException
+     * @throws LandIsAlreadyPlowedException
+     * @throws NoItemFoundException
+     * @throws NotEnoughItemsException
+     */
     public void plow() throws NoToolFoundException, 
                               LandIsAlreadyPlowedException, 
                               NoItemFoundException,
                               NotEnoughItemsException{
-        /*
-         * Method to plow dirt
-         */
         PlantChunk c = (PlantChunk)argument.getArg1();
         Item tool = (Item)argument.getArg2();
         
@@ -143,6 +166,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
 
                 // if all the chunks are plowed, remove the plow all action
                 if (c.getLand().getElements().stream().filter(chunk -> chunk.isPlowed() == false).count() == 0){
+
                     Set<Action> landActions = Stream.of(Action.PLOW_ALL)
                                                     .collect(Collectors.toCollection(HashSet::new));
                     c.getLand().getActions().updateActions(landActions, false);
@@ -151,6 +175,12 @@ public class FarmerActions extends PlayerActions<Farmer> {
         }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.HOE);
     }
 
+    /**
+     * Method to fertilize a plant using a fertilizer
+     * @throws NoToolFoundException
+     * @throws NoItemFoundException
+     * @throws NotEnoughItemsException
+     */
     public void fertilize() throws NoToolFoundException, 
                                    NoItemFoundException,
                                    NotEnoughItemsException{
@@ -167,6 +197,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
         }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.FERTILIZER);
     }
 
+    /**
+     * Method to harvest a plant using a sickle or bare hands
+     * @throws InventoryIsFullException
+     * @throws NoItemFoundException
+     * @throws NotEnoughItemsException
+     * @throws CloneNotSupportedException
+     */
     public void harvest() throws InventoryIsFullException, 
                                  NoItemFoundException,
                                  NotEnoughItemsException,
@@ -215,6 +252,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
         }
     }
 
+    /**
+     * Method to plant seeds in all plantable chunks in the plant land
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws ActionNotAvailableException
+     */
     public void plant_all() throws NoSuchMethodException,
                                    IllegalAccessException,
                                    InvocationTargetException,
@@ -225,6 +269,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
         this.doAll(Action.PLANT);
     }
 
+    /**
+     * Method to water all plants in the plant land
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws ActionNotAvailableException
+     */
     public void water_all() throws NoSuchMethodException,
                                    IllegalAccessException,
                                    InvocationTargetException,
@@ -235,6 +286,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
         this.doAll(Action.WATER);
     }
 
+    /**
+     * Method to fertilize all plants in the plant land
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws ActionNotAvailableException
+     */
     public void fertilize_all()throws NoSuchMethodException,
                                       IllegalAccessException,
                                       InvocationTargetException,
@@ -245,6 +303,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
         this.doAll(Action.FERTILIZE);
     }
 
+    /**
+     * Method to harvest all plants in the plant land
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws ActionNotAvailableException
+     */
     public void harvest_all() throws NoSuchMethodException,
                                      IllegalAccessException,
                                      InvocationTargetException,
@@ -255,6 +320,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
         this.doAll(Action.HARVEST);
     }
 
+    /**
+     * Method to plow all chunks in the plant land
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws ActionNotAvailableException
+     */
     public void plow_all() throws NoSuchMethodException,
                                   IllegalAccessException,
                                   InvocationTargetException,
@@ -265,6 +337,11 @@ public class FarmerActions extends PlayerActions<Farmer> {
         this.doAll(Action.PLOW);
     }
 
+    /**
+     * Method to add an animal from the inventory to the animal chunk
+     * @throws NoItemFoundException
+     * @throws NotEnoughItemsException
+     */
     public void add_animal() throws NoItemFoundException,
                                     NotEnoughItemsException{
         /*
@@ -285,6 +362,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
                                                                                add(Action.GIVE_WATER_ALL);}}, true);                                                              
     }
 
+    /**
+     * Method to remove an animal from the animal chunk and add it to the inventory
+     * @throws NoItemFoundException
+     * @throws InventoryIsFullException
+     * @throws NotEnoughItemsException
+     * @throws CloneNotSupportedException
+     */
     public void remove_animal() throws NoItemFoundException, 
                                        InventoryIsFullException,
                                        NotEnoughItemsException,
@@ -307,6 +391,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
         } 
     }
 
+    /**
+     * Method to get resources from the animal in the animal chunk
+     * @throws InventoryIsFullException
+     * @throws NoItemFoundException
+     * @throws NotEnoughItemsException
+     * @throws CloneNotSupportedException
+     */
     public void get_resources() throws InventoryIsFullException, 
                                        NoItemFoundException,
                                        NotEnoughItemsException,
@@ -344,6 +435,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
         }
     }
 
+    /**
+     * Method to feed an animal
+     * @throws NoFoodFoundException
+     * @throws MinimumHungerException
+     * @throws NoItemFoundException
+     * @throws NotEnoughItemsException
+     */
     public void feed_animal() throws NoFoodFoundException, 
                                      MinimumHungerException, 
                                      NoItemFoundException, 
@@ -359,6 +457,11 @@ public class FarmerActions extends PlayerActions<Farmer> {
         farmer.getInventory().removeItem(food, 1);
     }
 
+    /**
+     * Method to give water to an animal
+     * @throws MaxWaterLevelReachedException
+     * @throws IllegalAccessException
+     */
     public void give_water() throws MaxWaterLevelReachedException, 
                                     IllegalAccessException{
         /*
@@ -369,6 +472,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
         chunk.getAnimal().waterAnimal();
     }
 
+    /**
+     * Method to feed all animals
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws ActionNotAvailableException
+     */
     public void feed_all_animals() throws NoSuchMethodException, 
                                           IllegalAccessException, 
                                           InvocationTargetException, 
@@ -379,6 +489,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
         this.doAll(Action.FEED_ANIMAL);
     }
 
+    /**
+     * Method to give water to all animals
+     * @throws NoSuchMethodException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws ActionNotAvailableException
+     */
     public void give_water_all() throws NoSuchMethodException, 
                                         IllegalAccessException, 
                                         InvocationTargetException, 
@@ -388,7 +505,15 @@ public class FarmerActions extends PlayerActions<Farmer> {
          */
         this.doAll(Action.GIVE_WATER);
     }
-
+    
+    /**
+     * Method to get all resources from all animals
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws SecurityException
+     * @throws ActionNotAvailableException
+     */
     public void get_all_resources() throws IllegalAccessException, 
                                            IllegalArgumentException, 
                                            InvocationTargetException, 
@@ -399,5 +524,4 @@ public class FarmerActions extends PlayerActions<Farmer> {
          */
         doAll(Action.GET_RESOURCES);
     }
-
 }
