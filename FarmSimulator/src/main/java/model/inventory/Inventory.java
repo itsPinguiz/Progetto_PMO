@@ -2,6 +2,7 @@ package model.inventory;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Optional;
 
 import model.exceptions.CustomExceptions.InventoryIsFullException;
 import model.exceptions.CustomExceptions.NoItemFoundException;
@@ -109,18 +110,15 @@ public class Inventory implements InventoryInterface {
     	
     	int found = -1;
     	
-    	for (Item item : inventory) {
-                if(item.getType() == itemtofind.getType()){
-                if(accLessMax) {
-                    if(item.getNumber() < item.getMaxNumber()) {
-                        found = inventory.indexOf(item);
-                    }
-                }
-                else {
-                    found = inventory.indexOf(item);
-                }
-            }
-		}
+        Optional<Integer> optionalFoundIndex = inventory.stream()
+                                                        .filter(item -> item.getType() == itemtofind.getType())
+                                                        .filter(item -> accLessMax ? item.getNumber() < item.getMaxNumber() : true)
+                                                        .map(inventory::indexOf)
+                                                        .findFirst();
+
+        if (optionalFoundIndex.isPresent()) {
+            found = optionalFoundIndex.get();
+        }
         
     	return found;
     }

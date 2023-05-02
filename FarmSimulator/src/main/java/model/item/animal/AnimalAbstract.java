@@ -131,8 +131,7 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     }else{
         this.typeProduct.get(this.typeProduct.size() - 1).setNumber(30);
     }
-
-    }
+}
 
     //method for updating the animal
     public void update() {

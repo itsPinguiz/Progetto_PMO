@@ -5,6 +5,7 @@
 package model.place.barn.market;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 import model.Constants;
 import model.actors.actions.placeActions.PlaceActions;
@@ -43,13 +44,7 @@ public class Market extends Place implements MarketInt{
         super.actions = new PlaceActions(this);
         this.itemShop = new Inventory(Constants.MARKET_SHOP_MAX);
         this.itemCreator = new ItemCreator();
-        for (int i = 0; i < Constants.MARKET_SHOP_MAX; i++) {
-            Item item = this.itemCreator.getRandomItem();
-            while(this.itemShop.getInventory().contains(item)){
-                 item = this.itemCreator.getRandomItem();
-            }
-            this.itemShop.addItem(item);    
-        }
+        replaceItem();
         this.c = Calendar.getInstance();
 
         //initialize the land shop
@@ -76,15 +71,24 @@ public class Market extends Place implements MarketInt{
     //replace the items in the shop
     private void replaceItem() throws NoItemFoundException, InventoryIsFullException, CloneNotSupportedException{
         this.itemShop.getInventory().clear();
-        for (int i = 0; i < Constants.MARKET_SHOP_MAX; i++) {
-            Item item = this.itemCreator.getRandomItem();
-            
-            while(this.itemShop.getInventory().contains(item)){
-                 item = this.itemCreator.getRandomItem();
-            }
 
-            this.itemShop.addItem(item);       
-        }
+        IntStream.range(0, Constants.MARKET_SHOP_MAX)
+                 .mapToObj(i -> this.itemCreator.getRandomItem())
+                 .filter(item -> !this.itemShop.getInventory().contains(item))
+                 .forEach(item -> {
+                                    try {
+                                        this.itemShop.addItem(item);
+                                    } catch (NoItemFoundException e) {
+                                        
+                                        e.printStackTrace();
+                                    } catch (InventoryIsFullException e) {
+                                        
+                                        e.printStackTrace();
+                                    } catch (CloneNotSupportedException e) {
+                                        
+                                        e.printStackTrace();
+                                    }
+                });
     }
     
     //buy an item from the shop

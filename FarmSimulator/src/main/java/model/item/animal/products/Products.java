@@ -21,6 +21,7 @@ public class Products extends Item{
 		super.type = currentType;
 	
 		switch (currentType) {
+
 			case MEAT:
 				super.price = Constants.MEAT_PRICE;
 				break;
@@ -39,6 +40,6 @@ public class Products extends Item{
 				
 			default:
 				throw new NoProductFoundException();	
-			}
 		}
+	}
 }

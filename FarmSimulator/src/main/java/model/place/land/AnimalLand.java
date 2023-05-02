@@ -19,9 +19,9 @@ public class AnimalLand extends LandAbstract {
     public AnimalLand(){
         this.type = Places.ANIMAL_LAND;
         this.animalChunks = new ArrayList<>(
-            IntStream.range(0, 10).
-                      mapToObj(i -> new AnimalChunk(null, this)).
-                      collect(Collectors.toList())
+            IntStream.range(0, 10)
+                      .mapToObj(i -> new AnimalChunk(null, this))
+                      .collect(Collectors.toList())
         );
         this.actions = new PlaceActions(this);
     }
@@ -38,36 +38,29 @@ public class AnimalLand extends LandAbstract {
          * Returns the number of land present
          * in the land
          */
-        int elements = 0;
+        int elements = (int)this.animalChunks.stream()
+                                         .filter(i -> i.getAnimal() != null)
+                                         .count();
 
-        for (AnimalChunk p: this.animalChunks){
-            if (p.getAnimal() != null){
-                elements += 1;
-            }
-        }
         return elements;
     }
 
     //update the animals in the land
     @Override
     public void update() {
-        int count = 0;
-        for (AnimalChunk chunk: this.animalChunks){
-            if (chunk.getAnimal() != null){
-                chunk.update();
-                
-                if (chunk.getAnimal().areProductsAvailable()){
-                    count++;
-                }
-            }
-        }
+        int count = (int) this.animalChunks.stream()
+                                           .filter(chunk -> chunk.getAnimal() != null)
+                                           .peek(AnimalChunk::update)
+                                           .filter(chunk -> chunk.getAnimal().areProductsAvailable())
+                                           .count();
+
         if (count == 0 || this.getNumElements() == 0){
             this.getActions().updateActions(new HashSet<>(){{
-                add(Action.GET_ALL_RESOURCES);
+                    add(Action.GET_ALL_RESOURCES);
                 }}, false);
             } else {
             this.getActions().updateActions(new HashSet<>(){{
-                add(Action.GET_ALL_RESOURCES);
+                    add(Action.GET_ALL_RESOURCES);
                 }}, true);
             }
     }
