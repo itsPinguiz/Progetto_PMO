@@ -78,16 +78,12 @@ public class Market extends Place implements MarketInt{
                  .forEach(item -> {
                                     try {
                                         this.itemShop.addItem(item);
-                                    } catch (NoItemFoundException e) {
-                                        
-                                        e.printStackTrace();
-                                    } catch (InventoryIsFullException e) {
-                                        
-                                        e.printStackTrace();
-                                    } catch (CloneNotSupportedException e) {
-                                        
-                                        e.printStackTrace();
+                                    } catch (NoItemFoundException | 
+                                             InventoryIsFullException |
+                                             CloneNotSupportedException e) {
+                                        //e.printStackTrace(); TODO: fai in modo che l'eccezione venga mandata con il throws(per popup)
                                     }
+
                 });
     }
     

@@ -25,7 +25,7 @@ public abstract class Chunk extends Place{
 
     /**
      * Returns the actions of the chunk
-     * @return PlaceActions
+     * @return 
      */
     public PlaceActions getActions(){
         return this.actions;

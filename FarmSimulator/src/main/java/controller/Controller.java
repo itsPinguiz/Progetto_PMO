@@ -70,12 +70,13 @@ public class Controller {
      *  Method that calls the view to create a popup with the exception message
      */
     public void exceptionPopup(Exception exception){
-        if (exception.getCause() == null && exception.getMessage() != null)
-            view.exceptionPopup(exception.getMessage());
-        else if (exception.getCause() == null && exception.getMessage() == null)
-            exception.printStackTrace();
+        String message = exception.getCause() == null ? 
+                         exception.getMessage() == null ? null : exception.getMessage() : 
+                         exception.getCause().getMessage();
+        if (message != null)
+            view.exceptionPopup(message,exception.toString());
         else
-            view.exceptionPopup(exception.getCause().getMessage());
+            exception.getMessage();
     }
 
     // BACKUP PANEL
@@ -102,7 +103,7 @@ public class Controller {
 
     /**
      * Saves the current game and returns the name of the save
-     * @return String name of the save
+     * @return  name of the save
      */
     public String saveGame(){
         String saveName = null;
@@ -158,7 +159,7 @@ public class Controller {
     /**
      * Changes the place of the selected person to the given one
      * @param newPlace place to change to
-     * @return Place old place
+     * @return  old place
      */
     public Place enterNewPlace(Place newPlace){
         Place oldPlace = model.getSelectedPerson().getPlace();
@@ -172,7 +173,7 @@ public class Controller {
 
     /**
      * Leaves the current place of the selected person
-     * @return Place old place
+     * @return  old place
      */
     public Place leaveOldPlace(){
         Place oldPlace = model.getSelectedPerson().getPlace();
@@ -182,7 +183,7 @@ public class Controller {
 
     /**
      * Returns the old place
-     * @return Place old place
+     * @return  old place
      */
     public Place getOldPlace(){
         return model.getOldPlace();
@@ -190,7 +191,7 @@ public class Controller {
 
     /**
      * Returns the old inventory
-     * @return Inventory old inventory
+     * @return  old inventory
      */ 
     public Inventory getOldInventory(){
         return model.getOldInventory();
@@ -198,7 +199,7 @@ public class Controller {
 
     /**
      * Returns the selected item
-     * @return Object selected item
+     * @return selected item
      */
     public Object getSelectedItem(){
         return model.getSelectedItem();
@@ -230,7 +231,7 @@ public class Controller {
 
     /**
      * Returns the selected person
-     * @return Person selected person
+     * @return  selected person
      */
     public Person getSelectedPerson(){
         return model.getSelectedPerson();
@@ -239,7 +240,7 @@ public class Controller {
     /**
      * Returns the player with the given role
      * @param role
-     * @return Person player
+     * @return  player
      */
     public Person getPlayer(Role role){
         return model.getRoles().get(role);
@@ -263,7 +264,7 @@ public class Controller {
 
     /**
      * Returns the lands
-     * @return ArrayList<LandAbstract> lands
+     * @return lands
      */
     public ArrayList<LandAbstract> getLands(){
         return model.getLands();

@@ -70,7 +70,7 @@ public class View extends JFrame{
       revalidate();
       repaint();
     } catch (ActionNotAvailableException e) {
-      exceptionPopup(e.getCause().getMessage());
+      exceptionPopup(e.getCause().getMessage(),e.toString());
     }
 
     // setup main layout
@@ -82,7 +82,7 @@ public class View extends JFrame{
       contentPane.add(rolePanelView.createRolePanel());
       contentPane.add(worldPanelView.createWorldPanel());
     } catch (ActionNotAvailableException e) {
-      exceptionPopup(e.getCause().getMessage());
+      exceptionPopup(e.getCause().getMessage(),e.toString());
     }
   }
 
@@ -190,15 +190,15 @@ public class View extends JFrame{
    * Method to show a popup with the error message
    * @param message
    */
-  public void exceptionPopup(String message) {
+  public void exceptionPopup(String message,String name) {
     Place place = this.controller.getSelectedPerson().getPlace();
-    JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(null, message, "Error: "+ name, JOptionPane.ERROR_MESSAGE);
     try {
       // enter back in the place that might have been curropted to the exception
       if (place != null)
         this.controller.getSelectedPerson().getActions().enter(place);
     } catch (PlaceNotAvailableException e) {
-      this.exceptionPopup(e.toString());
+      this.exceptionPopup(e.getMessage(),e.toString());
     }
   }
 }

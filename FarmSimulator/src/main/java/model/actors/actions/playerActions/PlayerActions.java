@@ -1,6 +1,5 @@
 package model.actors.actions.playerActions;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,6 +17,7 @@ import model.place.GameMap;
 import model.place.Place;
 import model.place.Places;
 import model.place.land.LandAbstract;
+import model.place.land.chunks.Chunk;
 
 /**
  * Class that contains all the actions that a player can perform
@@ -70,7 +70,7 @@ public abstract class PlayerActions<T extends Person> extends ActionsManager{
     /**
      * Method to get a method by its name
      * @param methodName Name of the method
-     * @return Method
+     * @return 
      */
     private  Method getMethodByName(String methodName) {
         // search the method in the current class
@@ -128,39 +128,30 @@ public abstract class PlayerActions<T extends Person> extends ActionsManager{
     /**
      * Method to repeat an action on all chunks of the land
      * @param action Action to repeat
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws SecurityException
-     * @throws ActionNotAvailableException
+     * @throws Exception 
      */
-    protected void doAll(Action action) throws IllegalAccessException,
-                                               IllegalArgumentException,
-                                               InvocationTargetException,
-                                               SecurityException,
-                                               ActionNotAvailableException{
-        /*
-        * Method to repeat the same action on all chunks in a land
-        */                                                                            
-        ((LandAbstract)argument.getArg1()).getElements().stream()
-            .filter(chunk -> chunk.getActions().getAvailableActions().contains(action))
-            .forEach(chunk -> {
+    protected void doAll(Action action) throws Exception {
+        LandAbstract land = (LandAbstract) argument.getArg1();
+        try {
+            for (Chunk chunk : land.getElements()) {
                 try {
+                    this.enter(chunk);
                     this.argument.setArg1(chunk);
-                    this.getMethodByName((action.toString().toLowerCase()).replace(' ', '_')).invoke(this);
-                } catch (IllegalAccessException | 
-                            IllegalArgumentException | 
-                            InvocationTargetException | 
-                            SecurityException  e) {
-                    e.printStackTrace();
+                    this.executeAction(action, this.argument);
+                } catch (Exception e) {
+                    throw new Exception(e.getCause());
                 }
-        });
+            }
+        } finally {
+            this.enter(land);
+        }
     }
+    
 
     /**
      * Method to damage a tool and remove it if it's worn out
      * @param tool Tool to damage
-     * @return boolean
+     * @return 
      * @throws NoItemFoundException
      * @throws NotEnoughItemsException
      */

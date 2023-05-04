@@ -1,7 +1,7 @@
 package model.place;
 
 /**
- * Enum that represents the places an actor can be in
+ * Enum that contains the places an actor can be in
  */
 public enum Places {
     /**
@@ -29,7 +29,7 @@ public enum Places {
 
     /**
      * Returns the name of the place
-     * @return String Name of the place
+     * @return  Name of the place
      */
     public String getName() {
         return name;
@@ -37,7 +37,7 @@ public enum Places {
 
     /**
      * Returns the name of the place
-     * @return String Name of the place
+     * @return  Name of the place
      */
     @Override
     public String toString() {

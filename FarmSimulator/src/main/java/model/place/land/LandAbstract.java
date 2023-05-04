@@ -25,7 +25,7 @@ public abstract class LandAbstract extends Place implements LandInteface {
 
     /** 
      * Returns the price of the land to sell
-     * @return int
+     * @return 
      */
     public int getPrice() {
         return Constants.LAND_SELL_PRICE;
@@ -42,7 +42,7 @@ public abstract class LandAbstract extends Place implements LandInteface {
 
     /**
      * Returns the elements present in the land
-     * @return ArrayList<? extends Chunk>
+     * @return 
      * @throws UnsupportedOperationException The method is not implemented
      */
     public ArrayList<? extends Chunk> getElements(){
@@ -52,7 +52,7 @@ public abstract class LandAbstract extends Place implements LandInteface {
 
     /**
      * Returns the number of elements present in the land
-     * @return int
+     * @return 
      * @throws UnsupportedOperationException The method is not implemented
      */
     public int getNumElements(){

@@ -40,7 +40,7 @@ public class PlantLand extends LandAbstract implements Iterable<PlantChunk>{
     /** 
      * Returns the number of land present
      * in the land
-     * @return int
+     * @return 
      */
     @Override
     public int getNumElements() {
@@ -81,7 +81,7 @@ public class PlantLand extends LandAbstract implements Iterable<PlantChunk>{
 
     /**
      * Prints the elements present in the land
-     * @return ArrayList<PlantChunk> The elements present in the land
+     * @return The elements present in the land
      */
     public ArrayList<PlantChunk> getElements(){
         return this.chunks;        
@@ -89,7 +89,7 @@ public class PlantLand extends LandAbstract implements Iterable<PlantChunk>{
 
     /**
      * Returns the iterator of the land
-     * @return Iterator<PlantChunk>
+     * @return 
      */
     @Override
     public Iterator<PlantChunk> iterator() {

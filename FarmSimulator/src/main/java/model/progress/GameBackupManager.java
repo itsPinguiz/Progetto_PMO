@@ -41,7 +41,7 @@ public class GameBackupManager implements Backup{
     /** 
      * Saves current game session in a file
      * with the name of the current date
-     * @return String
+     * @return 
      * @throws IOException
      */
     public String saveCurrent() throws IOException{
@@ -71,7 +71,7 @@ public class GameBackupManager implements Backup{
     /**
      * Returns all the saved files
      * of the game session
-     * @return List<String>
+     * @return 
      */
     public List<String> getSavesList(){
         this.updateSavesList();

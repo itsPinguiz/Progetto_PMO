@@ -46,7 +46,7 @@ public class GameMap {
     
     /**
      * Returns the lands
-     * @return ArrayList<LandAbstract> Lands
+     * @return  Lands
      */
     public ArrayList<LandAbstract> getLands(){
         return this.lands;
@@ -54,7 +54,7 @@ public class GameMap {
 
     /**
      * Returns the barn
-     * @return Barn Barn
+     * @return  Barn
      */
     public Barn getBarn(){
         return this.barn;

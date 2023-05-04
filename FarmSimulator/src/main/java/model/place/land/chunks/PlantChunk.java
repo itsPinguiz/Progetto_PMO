@@ -76,7 +76,7 @@ public class PlantChunk extends Chunk{
 
     /** 
      * Returns the land where the chunk is
-     * @return PlantLand
+     * @return 
      */
     public PlantLand getLand(){
         return this.land;
@@ -131,7 +131,7 @@ public class PlantChunk extends Chunk{
 
     /**
      * Returns in the chunk is plowed or not
-     * @return boolean
+     * @return 
      */
     public boolean getDirtStatus(){
         return this.isPlowed;
@@ -139,7 +139,7 @@ public class PlantChunk extends Chunk{
 
     /**
      * Returns the chunk's water level
-     * @return float
+     * @return 
      */
     public float getWaterLevel(){
         return this.waterLevel;
@@ -147,7 +147,7 @@ public class PlantChunk extends Chunk{
 
     /**
      * Returns the chunk's fertilization level
-     * @return float
+     * @return 
      */
     public float getFertilizationLevel(){
         return this.fertilizationLevel;
@@ -155,7 +155,7 @@ public class PlantChunk extends Chunk{
 
     /**
      * Returns if chunk is plowed or not
-     * @return boolean
+     * @return 
      */
     public boolean isPlowed(){
         return this.isPlowed;
@@ -163,7 +163,7 @@ public class PlantChunk extends Chunk{
 
     /**
      * Returns the planted plant
-     * @return Plant
+     * @return 
      */
     public Plant getPlant(){
         return this.plant;

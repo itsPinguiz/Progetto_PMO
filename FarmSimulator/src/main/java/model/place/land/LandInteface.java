@@ -8,19 +8,19 @@ import java.util.ArrayList;
 public interface LandInteface {
     /**
      * Returns the number of elements present in the land
-     * @return int Number of elements
+     * @return  Number of elements
      */
     public int getNumElements();
 
     /**
      * Returns the price of the land to sell
-     * @return int Price
+     * @return Price
      */
     public int getPrice();
 
     /**
      * Returns the elements present in the land
-     * @return ArrayList<? extends Object> Elements
+     * @return Elements
      */
     public ArrayList<? extends Object> getElements();
 

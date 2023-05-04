@@ -16,7 +16,7 @@ public abstract class Place implements Serializable{
 
     /**
      * Returns the actions of the land
-     * @return PlaceActions
+     * @return 
      */
     public PlaceActions getActions(){
         
@@ -26,7 +26,7 @@ public abstract class Place implements Serializable{
     /*
      * Returns the type of the
      * land  
-     * @return Places 
+     * @return  
      */
     public Places getType() {
         return this.type;

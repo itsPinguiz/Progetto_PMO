@@ -101,7 +101,6 @@ public class FarmerActions extends PlayerActions<Farmer> {
                                                  .collect(Collectors.toCollection(HashSet::new));
                 c.getActions().resetActions();
                 c.getActions().updateActions(chunkActions, true);
-
                 Set<Action> landActions = Stream.of(Action.FERTILIZE_ALL, Action.WATER_ALL)
                                                 .collect(Collectors.toCollection(HashSet::new));
                 c.getLand().getActions().updateActions(landActions, true);
@@ -112,7 +111,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
                 }
             }
         } else {
-            throw new NoSeedFoundException();
+            throw new NoSeedFoundException(f.getInventory());
         }
     }
 
@@ -121,18 +120,23 @@ public class FarmerActions extends PlayerActions<Farmer> {
      * @throws NoToolFoundException
      * @throws NoItemFoundException
      * @throws NotEnoughItemsException
+     * @throws MaxWaterLevelReachedException
      */
     public void water() throws NoToolFoundException, 
                                NoItemFoundException,
-                               NotEnoughItemsException{
+                               NotEnoughItemsException,
+                               MaxWaterLevelReachedException{
         PlantChunk c = (PlantChunk)argument.getArg1();
         Item tool = (Item)argument.getArg2();
 
-        //check if the farmer has the watering can
-        if (tool.getType() == ItemType.Tools.WATERINGCAN && super.damageTool(tool)){
-            // increase water level
-            c.increaseWaterLevel(Constants.WATERING_INDEX*(((AbstractTool)(tool)).getMaterial().getModifier()));
-        } else throw new NoToolFoundException(tool.getType(),ItemType.Tools.WATERINGCAN);
+        // check if chunk is already at max water level
+        if (c.getWaterLevel() != Constants.WATERING_MAX){
+            //check if the farmer has the watering can
+            if (tool.getType() == ItemType.Tools.WATERINGCAN && super.damageTool(tool)){
+                // increase water level
+                c.increaseWaterLevel(Constants.WATERING_INDEX*(((AbstractTool)(tool)).getMaterial().getModifier()));
+            } else throw new NoToolFoundException(tool.getType(),ItemType.Tools.WATERINGCAN);
+        } else throw new MaxWaterLevelReachedException();
     }
 
 
@@ -150,9 +154,10 @@ public class FarmerActions extends PlayerActions<Farmer> {
         PlantChunk c = (PlantChunk)argument.getArg1();
         Item tool = (Item)argument.getArg2();
         
-        //check if the farmer has the hoe
-        if (tool.getType() == ItemType.Tools.HOE && this.damageTool(tool)){
-            if (!c.isPlowed()){
+        // check if land is already plowed
+        if (!c.isPlowed()){
+            //check if the farmer has the hoe
+            if (tool.getType() == ItemType.Tools.HOE && this.damageTool(tool)){
                 // change land status
                 c.setDirtStatus(true);
                 // add new possible actions
@@ -166,13 +171,12 @@ public class FarmerActions extends PlayerActions<Farmer> {
 
                 // if all the chunks are plowed, remove the plow all action
                 if (c.getLand().getElements().stream().filter(chunk -> chunk.isPlowed() == false).count() == 0){
-
                     Set<Action> landActions = Stream.of(Action.PLOW_ALL)
                                                     .collect(Collectors.toCollection(HashSet::new));
                     c.getLand().getActions().updateActions(landActions, false);
                 }
-            } else throw new LandIsAlreadyPlowedException();
-        }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.HOE);
+            } else throw new NoToolFoundException(tool.getType(),ItemType.Tools.HOE);
+        } else throw new LandIsAlreadyPlowedException();
     }
 
     /**
@@ -180,21 +184,25 @@ public class FarmerActions extends PlayerActions<Farmer> {
      * @throws NoToolFoundException
      * @throws NoItemFoundException
      * @throws NotEnoughItemsException
+     * @throws MaxFertilizationLevelReachedException
      */
     public void fertilize() throws NoToolFoundException, 
                                    NoItemFoundException,
-                                   NotEnoughItemsException{
+                                   NotEnoughItemsException,
+                                   MaxFertilizationLevelReachedException{
         /*
          * Method to fertilize a plant
          */
         PlantChunk c = (PlantChunk)argument.getArg1();
         Item tool = (Item)argument.getArg2();
 
-        //check if the farmer has the fertilizer
-        if (tool.getType() == ItemType.Tools.FERTILIZER && this.damageTool(tool)){ 
-            // increase water level
-            c.increaseFertilizationLevel(Constants.FERTILIZATION_INDEX*(((AbstractTool)(tool)).getMaterial().getModifier()));
-        }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.FERTILIZER);
+        if (c.getFertilizationLevel() != Constants.FERTILIZATION_MAX){
+            //check if the farmer has the fertilizer
+            if (tool.getType() == ItemType.Tools.FERTILIZER && this.damageTool(tool)){ 
+                // increase water level
+                c.increaseFertilizationLevel(Constants.FERTILIZATION_INDEX*(((AbstractTool)(tool)).getMaterial().getModifier()));
+            }else throw new NoToolFoundException(tool.getType(),ItemType.Tools.FERTILIZER);
+        } else throw new MaxFertilizationLevelReachedException();
     }
 
     /**
@@ -203,11 +211,13 @@ public class FarmerActions extends PlayerActions<Farmer> {
      * @throws NoItemFoundException
      * @throws NotEnoughItemsException
      * @throws CloneNotSupportedException
+     * @throws PlantIsNotHarvestableException
      */
     public void harvest() throws InventoryIsFullException, 
                                  NoItemFoundException,
                                  NotEnoughItemsException,
-                                 CloneNotSupportedException{
+                                 CloneNotSupportedException,
+                                 PlantIsNotHarvestableException{
         /*
          * Method to harvest a plant
          */
@@ -216,40 +226,39 @@ public class FarmerActions extends PlayerActions<Farmer> {
         Farmer f = (Farmer)this.person;
         Item product;
 
-        // check if the plant is harvestable 
-        if (c.getPlant() == null || c.getPlant().getLifeStage() != PlantLife.HARVESTABLE) return;
+        // check if plant is harvestable
+        if (c.getPlant().getLifeStage() == PlantLife.HARVESTABLE){
+            // get the product
+            product = c.getPlant().getProduct();
+            
+            // if sickle is equipped double the harvested resources
+            if (tool != null && tool.getType() == ItemType.Tools.SICKLE && this.damageTool(tool)){
+                product.setNumber(product.getNumber()*(((AbstractTool)(tool)).getMaterial().getModifier()));
+            } else{
+                product.setNumber(product.getNumber()*Constants.HARVEST_MULTIPLIER);
+            }
+            // add resources to the inventory
+            f.getInventory().addItem(product);
+    
+            // remove plant
+            c.setPlant(null);
+            c.resetActions();
 
-        // get the product
-        product = c.getPlant().getProduct();
-        
-        // if sickle is equipped double the harvested resources
-        if (tool != null && tool.getType() == ItemType.Tools.SICKLE && this.damageTool(tool)){
-            product.setNumber(product.getNumber()*(((AbstractTool)(tool)).getMaterial().getModifier()));
-        } else{
-            product.setNumber(product.getNumber()*Constants.HARVEST_MULTIPLIER);
-        }
+            // if all the chunks do not have plants, remove the doAll action
+            if (c.getLand().getNumElements() == 0){
+                Set<Action> landActions = Stream.of(Action.FERTILIZE_ALL, Action.WATER_ALL,Action.HARVEST_ALL)
+                                                .collect(Collectors.toCollection(HashSet::new));
+                c.getLand().getActions().updateActions(landActions, false);
+            }
 
-        // add resources to the inventory
-        
-        f.getInventory().addItem(product);
-  
-        // remove plant
-        c.setPlant(null);
-        c.resetActions();
-
-        // if all the chunks do not have plants, remove the doAllall action
-        if (c.getLand().getNumElements() == 0){
-            Set<Action> landActions = Stream.of(Action.FERTILIZE_ALL, Action.WATER_ALL,Action.HARVEST_ALL)
-                                            .collect(Collectors.toCollection(HashSet::new));
-            c.getLand().getActions().updateActions(landActions, false);
-        }
-
-        if(c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() != null &&
-           chunk.getPlant().getLifeStage() == PlantLife.HARVESTABLE).count() == 0){
-            Set<Action> landActions = Stream.of(Action.HARVEST_ALL)
-                                            .collect(Collectors.toCollection(HashSet::new));
-            c.getLand().getActions().updateActions(landActions, false);
-        }
+            // if none of the plants is harvestable remove the HarvestAll action
+            if(c.getLand().getElements().stream().filter(chunk -> chunk.getPlant() != null &&
+                                                                  chunk.getPlant().getLifeStage() == PlantLife.HARVESTABLE).count() == 0){
+                Set<Action> landActions = Stream.of(Action.HARVEST_ALL)
+                                                .collect(Collectors.toCollection(HashSet::new));
+                c.getLand().getActions().updateActions(landActions, false);
+            }
+        } else throw new PlantIsNotHarvestableException(c.getPlant());
     }
 
     /**
@@ -259,10 +268,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
      * @throws InvocationTargetException
      * @throws ActionNotAvailableException
      */
-    public void plant_all() throws NoSuchMethodException,
-                                   IllegalAccessException,
-                                   InvocationTargetException,
-                                   ActionNotAvailableException{
+    public void plant_all() throws Exception{
         /*
          * Method to plant all plants
          */
@@ -276,10 +282,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
      * @throws InvocationTargetException
      * @throws ActionNotAvailableException
      */
-    public void water_all() throws NoSuchMethodException,
-                                   IllegalAccessException,
-                                   InvocationTargetException,
-                                   ActionNotAvailableException{
+    public void water_all() throws Exception{
         /*
          * Method to water all plants
          */
@@ -293,10 +296,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
      * @throws InvocationTargetException
      * @throws ActionNotAvailableException
      */
-    public void fertilize_all()throws NoSuchMethodException,
-                                      IllegalAccessException,
-                                      InvocationTargetException,
-                                      ActionNotAvailableException{
+    public void fertilize_all()throws Exception{
         /*
          * Method to fertilize all plants
          */
@@ -310,10 +310,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
      * @throws InvocationTargetException
      * @throws ActionNotAvailableException
      */
-    public void harvest_all() throws NoSuchMethodException,
-                                     IllegalAccessException,
-                                     InvocationTargetException,
-                                     ActionNotAvailableException{
+    public void harvest_all() throws Exception{
         /*
          * Method to harvest all plants
          */
@@ -327,10 +324,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
      * @throws InvocationTargetException
      * @throws ActionNotAvailableException
      */
-    public void plow_all() throws NoSuchMethodException,
-                                  IllegalAccessException,
-                                  InvocationTargetException,
-                                  ActionNotAvailableException{
+    public void plow_all() throws Exception{
         /*
          * Method to plow dirt
          */
@@ -479,10 +473,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
      * @throws InvocationTargetException
      * @throws ActionNotAvailableException
      */
-    public void feed_all_animals() throws NoSuchMethodException, 
-                                          IllegalAccessException, 
-                                          InvocationTargetException, 
-                                          ActionNotAvailableException{
+    public void feed_all_animals() throws Exception{
         /*
          * Method to feed all animals
          */
@@ -496,10 +487,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
      * @throws InvocationTargetException
      * @throws ActionNotAvailableException
      */
-    public void give_water_all() throws NoSuchMethodException, 
-                                        IllegalAccessException, 
-                                        InvocationTargetException, 
-                                        ActionNotAvailableException{
+    public void give_water_all() throws Exception{
         /*
          * Method to give water to all animals
          */
@@ -514,11 +502,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
      * @throws SecurityException
      * @throws ActionNotAvailableException
      */
-    public void get_all_resources() throws IllegalAccessException, 
-                                           IllegalArgumentException, 
-                                           InvocationTargetException, 
-                                           SecurityException, 
-                                           ActionNotAvailableException{
+    public void get_all_resources() throws Exception{
         /*
          * Method to get all resources from the farm
          */

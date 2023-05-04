@@ -68,24 +68,19 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     }
 
     //method for getting the products
-    public ArrayList<Products> getProducts() {
+    public ArrayList<Products> getProducts() throws CloneNotSupportedException {
 
         ArrayList<Products> tmp = new ArrayList<>();
 
         for (Item item : typeProduct) {
-            try {
-                if(this.isAlive && !(item.getType() == ItemType.productsType.MEAT) ){
-                    tmp.add((Products)item.clone());
-                    item.setNumber(0);
-                }
-                else if(!this.isAlive){
-                    tmp.add((Products)item.clone());
-                    item.setNumber(0);
-                }  
-            } catch (CloneNotSupportedException e) {
-                // gestione dell'eccezione
-                e.printStackTrace();
+            if(this.isAlive && !(item.getType() == ItemType.productsType.MEAT) ){
+                tmp.add((Products)item.clone());
+                item.setNumber(0);
             }
+            else if(!this.isAlive){
+                tmp.add((Products)item.clone());
+                item.setNumber(0);
+            }  
         }
         return tmp;
     }

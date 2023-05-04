@@ -10,8 +10,13 @@ import model.item.Item;
 import model.item.ItemType;
 import model.place.land.chunks.PlantChunk;
 
+/**
+ * Class that represents a basic plant
+ */
 public abstract class Plant extends Item implements PlantInterface{
-    // attributes
+    /**
+     * Attributes
+     */
     private int daysToHarvest;
     protected PlantLife lifeStage;
     private int daysToHarvestInitial; 
@@ -22,8 +27,10 @@ public abstract class Plant extends Item implements PlantInterface{
     protected Calendar calendar;
     private Random random;
 
+    /**
+     * Enum that contains the life stage of the plant
+     */
     public enum PlantLife {
-        // plant life cycle state
         DEAD("Dead"),
         SEED("Seed"),
         SPROUT("Sprout"),
@@ -32,16 +39,31 @@ public abstract class Plant extends Item implements PlantInterface{
         HARVESTABLE("Harvestable"),
         PRODUCT("Product");
 
+        /**
+         * Attributes
+         */
         private String name;
 
+        /**
+         * Constructor
+         * @param name
+         */
         PlantLife(String name) {
             this.name = name;
         }
 
+        /**
+         * Returns the name of the lifestage
+         * @return
+         */
         public String getName() {
             return name;
         }
 
+        /**
+         * Returns the name of the lifestage
+         * @return
+         */
         @Override
         public String toString() {
             return getName();

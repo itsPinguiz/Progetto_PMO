@@ -41,11 +41,15 @@ public class Main {
             final Controller tmpController = controller;
             SwingUtilities.invokeLater(() -> {
                 View view = new View(tmpController);
-                tmpController.setView(view); // Aggiungi questa linea
+                tmpController.setView(view); 
                 view.updateMVC(tmpController, model);
                 view.setVisible(true);
-        });
-        } catch (NoItemFoundException | InventoryIsFullException | NoProductFoundException | NoAnimalFoundException | CloneNotSupportedException e) {
+            });
+        } catch (NoItemFoundException | 
+                 InventoryIsFullException | 
+                 NoProductFoundException | 
+                 NoAnimalFoundException | 
+                 CloneNotSupportedException e) {
             controller.exceptionPopup(e);
         } 
     }

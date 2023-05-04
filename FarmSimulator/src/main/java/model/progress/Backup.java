@@ -14,14 +14,14 @@ interface Backup extends Serializable{
     /**
      * Saves current game session in a file
      * with the name of the current date
-     * @return String Name of the save
+     * @return  Name of the save
      * @throws IOException
      */
     String saveCurrent() throws IOException;
 
     /**
      * Writes the current game session in a file
-     * @return List<String> Saves name list
+     * @return  Saves name list
      */
     List<String> getSavesList();
 

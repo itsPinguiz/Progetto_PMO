@@ -123,7 +123,7 @@ import java.util.Set;
               controller.setOldPlace(controller.getSelectedPerson().getPlace());
               createActionsButtonPanel(controller.getSelectedPerson().getRole());
             } catch (ActionNotAvailableException e1) {
-                view.exceptionPopup(e1.getCause().getMessage());
+                view.exceptionPopup(e1.getCause().getMessage(),e.toString());
             }
             rolePanel.revalidate();
             rolePanel.repaint();
@@ -136,7 +136,7 @@ import java.util.Set;
             try {
                 view.getWorldPanelView().createWorldPanel();
             } catch (ActionNotAvailableException e1) {
-                view.exceptionPopup(e1.getCause().getMessage());
+                view.exceptionPopup(e1.getCause().getMessage(),e.toString());
             }
             parent.add(view.getWorldPanelView().getWorldPanel());
     
@@ -218,14 +218,14 @@ import java.util.Set;
                                 view.updateActualPanel(view.getWorldPanelView().getWorldPanel(), view.getBarnView().createBarnPlace(controller.getSelectedPerson().getPlace())); 
                                 break;
                             default:
-                                view.exceptionPopup("Place not found");
+                                view.exceptionPopup("Place not found","Place not found");
                                 break;
                         }
                     } catch (  IllegalArgumentException 
                              | SecurityException 
                              | PlaceNotAvailableException
                              | ActionNotAvailableException e1) {
-                        view.exceptionPopup(e1.getCause().getMessage());
+                        view.exceptionPopup(e1.getCause().getMessage(),e.toString());
                     }
                 }
             });
@@ -295,7 +295,7 @@ import java.util.Set;
                     try {
                         controller.deleteSave(save);
                     } catch (SecurityException e1) {
-                        view.exceptionPopup(e1.getCause().getMessage());
+                        view.exceptionPopup(e1.getCause().getMessage(),e.toString());
                     }
                     deleteGame.remove(savedBackupToDelete); // delete from delete menu
                     // remove from load save menu
@@ -331,7 +331,7 @@ import java.util.Set;
                     try {
                         controller.deleteSave(saveName[0]);
                     } catch ( SecurityException e1) {
-                        view.exceptionPopup(e1.getCause().getMessage());
+                        view.exceptionPopup(e1.getCause().getMessage(),e.toString());
                     }
                     deleteGame.remove(savedBackupToDelete); // delete from delete menu
                     loadGame.remove(savedGameItems.get(saveName[0])); // remove from load save menu

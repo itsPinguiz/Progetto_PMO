@@ -126,8 +126,8 @@ public class Model implements Serializable{
      */
     public void sendAction(Action action) throws Exception{
         ActionArguments<Place, Object, GameMap> arguments = new ActionArguments<>(getSelectedPerson().getPlace(), 
-                                                                                                 getSelectedItem(), 
-                                                                                                 getMap());
+                                                                                                      getSelectedItem(), 
+                                                                                                      getMap());
         this.selectedActor.getActions().executeAction(action,arguments);
     }
 
@@ -149,7 +149,7 @@ public class Model implements Serializable{
 
     /**
      * Method to get the lands
-     * @return ArrayList<LandAbstract> the lands
+     * @return  the lands
      */
     public ArrayList<LandAbstract> getLands(){
         return map.getLands();
@@ -165,7 +165,7 @@ public class Model implements Serializable{
 
     /**
      * Method to get the selected actor's place
-     * @return Place the place of the selected actor
+     * @return  the place of the selected actor
      */
     public Place getPersonPlace(){
         return this.selectedActor.getPlace();
@@ -173,7 +173,7 @@ public class Model implements Serializable{
 
     /**
      * Method to get the selected actor
-     * @return Person the selected actor
+     * @return  the selected actor
      */
     public Person getSelectedPerson(){
         return this.selectedActor;
@@ -200,7 +200,7 @@ public class Model implements Serializable{
 
     /**
      * Method to get the selected item
-     * @return Object the selected item
+     * @return  the selected item
      */
     public Object getSelectedItem(){
         return this.selectedItem;
@@ -216,7 +216,7 @@ public class Model implements Serializable{
 
     /**
      * Method to get the old inventory
-     * @return Inventory the old inventory
+     * @return  the old inventory
      */
     public Inventory getOldInventory(){
         return this.oldInventory;
@@ -232,7 +232,7 @@ public class Model implements Serializable{
 
     /**
      * Method to get the old place
-     * @return Place the old place
+     * @return  the old place
      */
     public Place getOldPlace(){
         return this.oldPlace;
@@ -240,7 +240,7 @@ public class Model implements Serializable{
 
     /**
      * Method to get the backupManager
-     * @return GameBackupManager the backupManager
+     * @return  the backupManager
      */
     public GameBackupManager getBackup(){
         return this.backup;
