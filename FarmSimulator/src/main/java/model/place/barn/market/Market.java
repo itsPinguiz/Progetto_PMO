@@ -81,7 +81,7 @@ public class Market extends Place implements MarketInt{
                                     } catch (NoItemFoundException | 
                                              InventoryIsFullException |
                                              CloneNotSupportedException e) {
-                                        //e.printStackTrace(); TODO: fai in modo che l'eccezione venga mandata con il throws(per popup)
+                                        //e.printStackTrace();
                                     }
 
                 });

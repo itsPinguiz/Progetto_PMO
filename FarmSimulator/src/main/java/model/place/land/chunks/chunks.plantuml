@@ -13,6 +13,7 @@ title __CHUNKS's Class Diagram__\n
               + getAnimal()
               + getLand()
               + removeAnimal()
+              + resetActions()
               + setAnimal()
               + update()
           }
@@ -26,18 +27,10 @@ title __CHUNKS's Class Diagram__\n
     namespace place {
       namespace land {
         namespace chunks {
-          interface model.place.land.chunks.Chunk {
-              {abstract} + getDirtStatus()
-              {abstract} + getFertilizationLevel()
-              {abstract} + getLand()
-              {abstract} + getPlant()
-              {abstract} + getWaterLevel()
-              {abstract} + resetActions()
-              {abstract} + setDirtStatus()
-              {abstract} + setFertilizationLevel()
-              {abstract} + setPlant()
-              {abstract} + setWaterLevel()
-              {abstract} + update()
+          abstract class model.place.land.chunks.Chunk {
+              + getActions()
+              + resetActions()
+              + update()
           }
         }
       }
@@ -53,7 +46,7 @@ title __CHUNKS's Class Diagram__\n
               - fertilizationLevel : float
               - isPlowed : boolean
               - land : PlantLand
-              - plant : PlantAbstract
+              - plant : Plant
               - random : Random
               - waterLevel : float
               + PlantChunk()
@@ -62,11 +55,12 @@ title __CHUNKS's Class Diagram__\n
               + getLand()
               + getPlant()
               + getWaterLevel()
+              + increaseFertilizationLevel()
+              + increaseWaterLevel()
+              + isPlowed()
               + resetActions()
               + setDirtStatus()
-              + setFertilizationLevel()
               + setPlant()
-              + setWaterLevel()
               + update()
           }
         }
@@ -75,7 +69,6 @@ title __CHUNKS's Class Diagram__\n
   }
   
 
-  model.place.land.chunks.PlantChunk .up.|> Chunk
 
 
 right footer

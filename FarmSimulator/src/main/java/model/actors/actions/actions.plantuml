@@ -4,8 +4,24 @@ title __ACTIONS's Class Diagram__\n
 
   namespace model {
     namespace actors.actions {
+      class model.actors.actions.ActionArguments {
+          + ActionArguments()
+          + getArg1()
+          + getArg2()
+          + getArg3()
+          + setArg1()
+          + setArg2()
+          + setArg3()
+      }
+    }
+  }
+  
+
+  namespace model {
+    namespace actors.actions {
       interface model.actors.actions.Actions {
-          {abstract} + getActions()
+          {abstract} + getAvailableActions()
+          {abstract} + resetActions()
           {abstract} + updateActions()
       }
     }
@@ -16,7 +32,7 @@ title __ACTIONS's Class Diagram__\n
     namespace actors.actions {
       abstract class model.actors.actions.ActionsManager {
           # availableActions : Set<Action>
-          + getActions()
+          + getAvailableActions()
           + resetActions()
           + updateActions()
           # ActionsManager()
@@ -50,6 +66,7 @@ title __ACTIONS's Class Diagram__\n
         WATER
         WATER_ALL
         itemValidator
+        landValidator
         name
         optional
       }
@@ -83,61 +100,16 @@ title __ACTIONS's Class Diagram__\n
   }
   
 
-  namespace model {
-    namespace actors.actions {
-      class model.actors.actions.PlaceActions {
-          # place : Place
-          + PlaceActions()
-      }
-    }
-  }
-  
-
-  namespace model {
-    namespace actors.actions {
-      class model.actors.actions.PlayerActions {
-          - accessiblePlaces : HashSet<Places>
-          - person : Person
-          + PlayerActions()
-          + PlayerActions()
-          + add_animal()
-          + buy_item()
-          + enter()
-          + executeAction()
-          + feed_all_animals()
-          + feed_animal()
-          + fertilize()
-          + fertilize_all()
-          + get_all_resources()
-          + get_resources()
-          + give_water()
-          + give_water_all()
-          + harvest()
-          + harvest_all()
-          + leave()
-          + move_item()
-          + plant()
-          + plant_all()
-          + plow()
-          + plow_all()
-          + remove_animal()
-          + sell_item()
-          + water()
-          + water_all()
-          - damageTool()
-          - doAll()
-          - getMethodByName()
-      }
-    }
-  }
-  
-
+  model.actors.actions.ActionArguments o-- T1 : arg1
+  model.actors.actions.ActionArguments o-- T2 : arg2
+  model.actors.actions.ActionArguments o-- T3 : arg3
   model.actors.actions.ActionsManager .up.|> Actions
   model.actors.actions.ActionsManager +-down- model.actors.actions.ActionsManager.Action
   model.actors.actions.ActionsManager +-down- model.actors.actions.ActionsManager.DualItemValidator
   model.actors.actions.ActionsManager +-down- model.actors.actions.ActionsManager.ItemTypeValidator
   model.actors.actions.ActionsManager +-down- model.actors.actions.ActionsManager.LandAbstractValidator
-  model.actors.actions.ActionsManager.Action o-- model.actors.actions.ActionsManager.DualItemValidator : itemValidator
+  model.actors.actions.ActionsManager.Action o-- model.actors.actions.ActionsManager.ItemTypeValidator : itemValidator
+  model.actors.actions.ActionsManager.Action o-- model.actors.actions.ActionsManager.LandAbstractValidator : landValidator
 
 
 right footer

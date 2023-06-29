@@ -3,13 +3,8 @@
 title __APP's Class Diagram__\n
 
   namespace app {
-    class app.MainTest {
-        + addedAnimalToTheChunk()
-        + balanceShouldBeGreaterAfterSell()
-        + boughtItemShouldBeAddedToTheBarn()
-        + landShouldBeAddedAfterBoughtIt()
-        + plantedToHarvestCarrot()
-        + theProductsShouldBeStacked()
+    class app.Main {
+        {static} + main()
     }
   }
   

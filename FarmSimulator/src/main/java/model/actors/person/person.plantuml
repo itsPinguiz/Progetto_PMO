@@ -30,19 +30,11 @@ title __PERSON's Class Diagram__\n
 
   namespace model {
     namespace actors.person {
-      class model.actors.person.NoAnimalFoundException {
-      }
-    }
-  }
-  
-
-  namespace model {
-    namespace actors.person {
       interface model.actors.person.Person {
+          {abstract} + getAccessiblePlaces()
           {abstract} + getActions()
           {abstract} + getPlace()
           {abstract} + getRole()
-          {abstract} + setActions()
           {abstract} + setPlace()
       }
     }
@@ -52,12 +44,13 @@ title __PERSON's Class Diagram__\n
   namespace model {
     namespace actors.person {
       abstract class model.actors.person.PersonAbstract {
-          # personAction : PlayerActions
+          # accessiblePlaces : HashSet<Places>
+          # personAction : PlayerActions<? extends Person>
           # place : Place
+          + getAccessiblePlaces()
           + getActions()
           + getPlace()
           + getRole()
-          + setActions()
           + setPlace()
       }
     }

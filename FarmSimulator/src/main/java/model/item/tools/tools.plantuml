@@ -37,6 +37,8 @@ title __TOOLS's Class Diagram__\n
     namespace item {
       namespace tools {
         interface model.item.tools.ToolInterface {
+            {abstract} + getMaterial()
+            {abstract} + getToolStatus()
             {abstract} + useTool()
         }
       }

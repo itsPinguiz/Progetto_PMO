@@ -5,27 +5,13 @@ title __LAND's Class Diagram__\n
   namespace model {
     namespace place {
       namespace land {
-        class model.place.land.AnimalLand {
-            - animalChunks : ArrayList<AnimalChunk>
-            + AnimalLand()
-            + getElements()
-            + getNumElements()
-            + update()
-        }
-      }
-    }
-  }
-  
-
-  namespace model {
-    namespace place {
-      namespace land {
         abstract class model.place.land.LandAbstract {
             # calendar : Calendar
             + getElements()
             + getNumElements()
             + getPrice()
             + update()
+            # LandAbstract()
         }
       }
     }
@@ -46,24 +32,7 @@ title __LAND's Class Diagram__\n
   }
   
 
-  namespace model {
-    namespace place {
-      namespace land {
-        class model.place.land.PlantLand {
-            ~ chunks : ArrayList<PlantChunk>
-            + PlantLand()
-            + getElements()
-            + getNumElements()
-            + iterator()
-            + update()
-        }
-      }
-    }
-  }
-  
-
   model.place.land.LandAbstract .up.|> LandInteface
-  model.place.land.PlantLand .up.|> Iterable
 
 
 right footer
