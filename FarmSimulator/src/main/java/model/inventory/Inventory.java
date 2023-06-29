@@ -22,20 +22,19 @@ public class Inventory implements InventoryInterface {
         this.inventory = new ArrayList<Item>(length);
     }
 
-    public ArrayList<Item> getInventory(){
+    public ArrayList<Item> getItemInventory(){
         Collections.sort(this.inventory);
         return this.inventory;
     }
 
     public int addItem(Item item) throws NoItemFoundException, InventoryIsFullException, CloneNotSupportedException{
     	
-    	int check = this.searchItem(item, true); 
-    	
-        // If the item is already in the inventory, add the number of the new item to the existing item
-    	if(check != -1) {
-            // If the new item has more quantity than the max number of the existing item, set the new item quantity to the max number of the existing item
-    		if((this.inventory.get(check).getNumber() + item.getNumber()) > this.inventory.get(check).getMaxNumber()) {
-    			int remaining = item.getNumber();
+    	Optional<Integer> checkOpt = this.searchItem(item, true);
+
+        if (checkOpt.isPresent()) {
+            int check = checkOpt.get();
+            if((this.inventory.get(check).getNumber() + item.getNumber()) > this.inventory.get(check).getMaxNumber()) {
+                int remaining = item.getNumber();
                 while (remaining > 0) {
                     if (this.inventory.get(check).getNumber() < this.inventory.get(check).getMaxNumber()){
                         int difference = this.inventory.get(check).getMaxNumber() - this.inventory.get(check).getNumber();
@@ -49,39 +48,32 @@ public class Inventory implements InventoryInterface {
                         remaining -= numToAdd;
                     }
                 }
-    		}
-            // Else, add the new item quantity to the existing item quantity
-			else {
-				this.inventory.get(check).setNumber(this.inventory.get(check).getNumber() + item.getNumber());	
-			}	
-    	}
-        // If the item is not in the inventory, add it to the inventory
-    	else if(this.inventory.size() < maxSize){
-                if (item.getNumber() > item.getMaxNumber()){
-                    int remaining = item.getNumber();
-                    while (remaining > 0) {
-                        if (remaining > item.getMaxNumber()){
-                            Item newStack = (Item)item.clone();
-                            newStack.setNumber(item.getMaxNumber());
-                            this.inventory.add(newStack);
-                            remaining -= item.getMaxNumber();
-                        } else{
-                            Item newStack = (Item)item.clone();
-                            newStack.setNumber(remaining);
-                            this.inventory.add(newStack);
-                            remaining = 0;
-                        }
+            } else {
+                this.inventory.get(check).setNumber(this.inventory.get(check).getNumber() + item.getNumber());
+            }
+        } else if(this.inventory.size() < maxSize) {
+            if (item.getNumber() > item.getMaxNumber()){
+                int remaining = item.getNumber();
+                while (remaining > 0) {
+                    if (remaining > item.getMaxNumber()){
+                        Item newStack = (Item)item.clone();
+                        newStack.setNumber(item.getMaxNumber());
+                        this.inventory.add(newStack);
+                        remaining -= item.getMaxNumber();
+                    } else{
+                        Item newStack = (Item)item.clone();
+                        newStack.setNumber(remaining);
+                        this.inventory.add(newStack);
+                        remaining = 0;
                     }
                 }
-                else{
-                    this.inventory.add(item);
-                }
+            } else {
+                this.inventory.add(item);
             }
-        else{
-                throw new InventoryIsFullException();
-            }
-
-        return check;
+        } else {
+            throw new InventoryIsFullException();
+        }
+        return checkOpt.orElse(-1);
     }
 
     public void removeItem(Item itemToRemove, int numItemReq) throws NoItemFoundException, NotEnoughItemsException{
@@ -106,21 +98,13 @@ public class Inventory implements InventoryInterface {
     }
 
     
-    public int searchItem(Item itemtofind, boolean accLessMax) throws NoItemFoundException{
+    public Optional<Integer> searchItem(Item itemtofind, boolean accLessMax) throws NoItemFoundException{
     	
-    	int found = -1;
-    	
-        Optional<Integer> optionalFoundIndex = inventory.stream()
-                                                        .filter(item -> item.getType() == itemtofind.getType())
-                                                        .filter(item -> accLessMax ? item.getNumber() < item.getMaxNumber() : true)
-                                                        .map(inventory::indexOf)
-                                                        .findFirst();
-
-        if (optionalFoundIndex.isPresent()) {
-            found = optionalFoundIndex.get();
-        }
-        
-    	return found;
+    	return inventory.stream()
+        .filter(item -> item.getType() == itemtofind.getType())
+        .filter(item -> accLessMax ? item.getNumber() < item.getMaxNumber() : true)
+        .map(inventory::indexOf)
+        .findFirst();
     }
 
     public Item getItem(int numItemReq, Item itemRequest) throws CloneNotSupportedException, NoItemFoundException{

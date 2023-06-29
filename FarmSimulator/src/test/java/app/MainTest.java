@@ -2,8 +2,12 @@ package app;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Random;
 
 import model.Constants;
@@ -12,6 +16,7 @@ import model.actors.actions.ActionsManager.Action;
 import model.actors.person.Farmer;
 import model.actors.person.Landlord;
 import model.actors.person.PersonAbstract.Role;
+import model.exceptions.CustomExceptions;
 import model.item.Item;
 import model.item.ItemType;
 import model.item.animal.products.Products;
@@ -38,7 +43,7 @@ public class MainTest {
         assertEquals(model.getLands().get(0), model.getSelectedPerson().getPlace()); // ASSERT that the farmer is in land
 
         Farmer f = (Farmer)model.getSelectedPerson();
-        model.setSelectedItem(f.getInventory().getInventory().get(2)); // get the hoe
+        model.setSelectedItem(f.getInventory().getItemInventory().get(2)); // get the hoe
         model.sendAction(Action.PLOW_ALL);
 
         PlantLand land = (PlantLand) model.getLands().get(0);
@@ -53,7 +58,7 @@ public class MainTest {
         }
 
         f = (Farmer)model.getSelectedPerson();
-        model.setSelectedItem(f.getInventory().getInventory().get(0)); // get the carrot
+        model.setSelectedItem(f.getInventory().getItemInventory().get(0)); // get the carrot
         model.sendAction(Action.PLANT);
 
         assertEquals(ItemType.Plants.CARROT,((PlantChunk)(f.getPlace())).getPlant().getType()); // ASSERT that the carrot is planted
@@ -63,13 +68,16 @@ public class MainTest {
         boolean checkAdultPlant = false;
 
         for(int i = 0; i < 3; i++){
-            assertTrue("Water and fertilize aren't min", ((PlantChunk)(f.getPlace())).getFertilizationLevel() < 20 && ((PlantChunk)(f.getPlace())).getWaterLevel() < 20); 
-            model.setSelectedItem(f.getInventory().getInventory().get(5)); // get the wateringcan
+            assertTrue("Water and fertilize aren't min", ((PlantChunk)(f.getPlace())).getFertilizationLevel() < 20 && ((PlantChunk)(f.getPlace())).getWaterLevel() < 20);
+
+            model.setSelectedItem(f.getInventory().getItemInventory().get(4)); // get the wateringcan
             model.sendAction(Action.WATER);
-            model.setSelectedItem(f.getInventory().getInventory().get(6)); // get the fertilizer
+            model.setSelectedItem(f.getInventory().getItemInventory().get(5)); // get the fertilizer
+
             for(int j = 0; j < 2; j++){
                 model.sendAction(Action.FERTILIZE);
             }
+
             assertTrue("Water and fertilize aren't max", ((PlantChunk)(f.getPlace())).getFertilizationLevel() == Constants.FERTILIZATION_MAX && ((PlantChunk)(f.getPlace())).getWaterLevel() == Constants.WATERING_MAX);
             for(int z = 0; z < 15; z++){
                 model.update();
@@ -88,16 +96,16 @@ public class MainTest {
 
         
 
-        int tmpCarrot = f.getInventory().getInventory().get(0).getNumber(); // temporary carrot to save actual number of carrots
+        int tmpCarrot = f.getInventory().getItemInventory().get(0).getNumber(); // temporary carrot to save actual number of carrots
 
         model.sendAction(Action.HARVEST);
-        assertEquals(tmpCarrot + Constants.HARVEST_MULTIPLIER, f.getInventory().getInventory().get(0).getNumber()); // ASSERT that there are 2 more carrots in inventory after harvesting
+        assertEquals(tmpCarrot + Constants.HARVEST_MULTIPLIER, f.getInventory().getItemInventory().get(0).getNumber()); // ASSERT that there are 2 more carrots in inventory after harvesting
     }
 
     @Test
     public void addedAnimalToTheChunk() throws Exception{
-        Model model = null;
-        model = new Model();
+     
+        Model model = new Model();
 
         model.setSelectedPerson(model.getRoles().get(Role.FARMER)); // select farmer
         assertEquals(Role.FARMER, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Farmer
@@ -106,7 +114,7 @@ public class MainTest {
 
         Farmer f = (Farmer)model.getSelectedPerson();
 
-        model.setSelectedItem(f.getInventory().getInventory().get(1)); // get the chicken
+        model.setSelectedItem(f.getInventory().getItemInventory().get(1)); // get the chicken
         model.sendAction(Action.ADD_ANIMAL);
         assertEquals(ItemType.Animals.CHICKEN, ((AnimalChunk)(f.getPlace())).getAnimal().getType()); // ASSERT that the animal has been added in the chunk
         
@@ -118,7 +126,7 @@ public class MainTest {
         assertTrue("Hunger and thirst aren't increased", ((AnimalChunk)(f.getPlace())).getAnimal().getHunger() > 0 && ((AnimalChunk)(f.getPlace())).getAnimal().getThirst() > 0);
         
         // ASSERT that eggs are not present to the inventory
-        assertEquals(-1, f.getInventory().searchItem(new Products(ItemType.productsType.EGGS) , false));
+        assertEquals(Optional.empty(), f.getInventory().searchItem(new Products(ItemType.productsType.EGGS) , false));
 
         // get resources after 33 days
         model.sendAction(Action.GET_RESOURCES);
@@ -132,7 +140,7 @@ public class MainTest {
         // give water to the animal
         model.sendAction(Action.GIVE_WATER);
         // select carrot                                 
-        model.setSelectedItem(f.getInventory().getInventory().get(0));
+        model.setSelectedItem(f.getInventory().getItemInventory().get(0));
         
         // feed the animal
         model.sendAction(Action.FEED_ANIMAL);
@@ -158,8 +166,7 @@ public class MainTest {
 
     @Test
     public void theProductsShouldBeStacked() throws Exception{
-        Model model = null;
-        model = new Model();
+        Model model = new Model();
 
         Random rand = new Random();
         int randomNumber = (rand.nextInt(3) + 1) * 63;
@@ -177,8 +184,8 @@ public class MainTest {
         }
 
         // count the number of stacks
-        for(int i = 0; i < ((Farmer)(model.getRoles().get(Role.FARMER))).getInventory().getInventory().size(); i++){
-            if(((Farmer)(model.getRoles().get(Role.FARMER))).getInventory().getInventory().get(i).getType() == ItemType.productsType.EGGS){
+        for(int i = 0; i < ((Farmer)(model.getRoles().get(Role.FARMER))).getInventory().getItemInventory().size(); i++){
+            if(((Farmer)(model.getRoles().get(Role.FARMER))).getInventory().getItemInventory().get(i).getType() == ItemType.productsType.EGGS){
                 eggStack ++;
             }
         }
@@ -188,8 +195,7 @@ public class MainTest {
 
     @Test
     public void boughtItemShouldBeAddedToTheBarn() throws Exception{
-        Model model = null;
-        model = new Model();
+        Model model = new Model();
 
         model.setSelectedPerson(model.getRoles().get(Role.LANDLORD)); // select landlord
         assertEquals(Role.LANDLORD, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Landlord
@@ -200,25 +206,25 @@ public class MainTest {
         model.getSelectedPerson().getActions().enter(model.getBarn().getMarket()); // enter market
         assertEquals(Places.MARKET, model.getSelectedPerson().getPlace().getType()); // ASSERT that the landlord is in market
 
-        model.setSelectedItem(model.getBarn().getMarket().getItemShop().getInventory().get(0)); // select the first item in the market
+        model.setSelectedItem(model.getBarn().getMarket().getItemShop().getItemInventory().get(0)); // select the first item in the market
 
         Item item = (Item)model.getSelectedItem(); // get the item
 
         HashMap<Integer, Integer> barnBeforeBuy = new HashMap<>();
         HashMap<Integer, Integer> barnAfterBuy = new HashMap<>();
 
-        for(int i = 0; i < (model.getBarn().getBarnInventory().getInventory().size()); i++){
-            if(model.getBarn().getBarnInventory().getInventory().get(i).getType() == item.getType()){
-                barnBeforeBuy.put(i, model.getBarn().getBarnInventory().getInventory().get(i).getNumber());
+        for(int i = 0; i < (model.getBarn().getBarnInventory().getItemInventory().size()); i++){
+            if(model.getBarn().getBarnInventory().getItemInventory().get(i).getType() == item.getType()){
+                barnBeforeBuy.put(i, model.getBarn().getBarnInventory().getItemInventory().get(i).getNumber());
             }
         }
 
         model.sendAction(Action.BUY_ITEM); // buy the item
 
         // ASSERT that the item is added to the barn
-        for(int i = 0; i < model.getBarn().getBarnInventory().getInventory().size(); i++){
-            if(model.getBarn().getBarnInventory().getInventory().get(i).getType() == item.getType()){
-                barnAfterBuy.put(i, model.getBarn().getBarnInventory().getInventory().get(i).getNumber());
+        for(int i = 0; i < model.getBarn().getBarnInventory().getItemInventory().size(); i++){
+            if(model.getBarn().getBarnInventory().getItemInventory().get(i).getType() == item.getType()){
+                barnAfterBuy.put(i, model.getBarn().getBarnInventory().getItemInventory().get(i).getNumber());
             }
         }
         assertFalse("The item was not added to the barn", barnBeforeBuy.equals(barnAfterBuy));
@@ -226,8 +232,7 @@ public class MainTest {
 
     @Test
     public void balanceShouldBeGreaterAfterSell() throws Exception{
-        Model model = null;
-        model = new Model();
+        Model model = new Model();
 
         model.setSelectedPerson(model.getRoles().get(Role.LANDLORD)); // select landlord
         assertEquals(Role.LANDLORD, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Landlord
@@ -238,7 +243,7 @@ public class MainTest {
         model.getSelectedPerson().getActions().enter(model.getBarn().getMarket()); // enter market
         assertEquals(Places.MARKET, model.getSelectedPerson().getPlace().getType()); // ASSERT that the landlord is in market
 
-        model.setSelectedItem(model.getBarn().getBarnInventory().getInventory().get(0));
+        model.setSelectedItem(model.getBarn().getBarnInventory().getItemInventory().get(0));
         
         int balanceBeforeSell = ((Landlord)(model.getSelectedPerson())).getBalance();
 
@@ -251,9 +256,7 @@ public class MainTest {
 
     @Test
     public void landShouldBeAddedAfterBoughtIt() throws Exception{
-        
-        Model model = null;
-        model = new Model();
+        Model model = new Model();
 
         model.setSelectedPerson(model.getRoles().get(Role.LANDLORD)); // select landlord
         assertEquals(Role.LANDLORD, model.getSelectedPerson().getRole()); // ASSERT that the selected person is Landlord
@@ -274,6 +277,69 @@ public class MainTest {
         int numberOfLandsAfterBuy = model.getLands().size();
         
         assertTrue("The land bought as not been added to the lands", numberOfLandsAfterBuy > numberOfLandsBeforeBuy);
+    }
+
+    @Test
+    public void testGameBackupException() throws Exception{
+        Model model = new Model();
+        model.initializeGameBackup();
+
+        model.setSelectedPerson(model.getRoles().get(Role.FARMER)); // select farmer
+        model.getSelectedPerson().getActions().enter(model.getLands().get(0)); // enter plant land
+
+        Farmer f = (Farmer)model.getSelectedPerson();
+        model.setSelectedItem(f.getInventory().getItemInventory().get(2)); // get the hoe
+        model.sendAction(Action.PLOW_ALL);
+
+        PlantLand land = (PlantLand) model.getLands().get(0);
+        Iterator<PlantChunk> iterator = land.iterator();
+
+        while (iterator.hasNext()) {
+            PlantChunk p = iterator.next();
+            model.getSelectedPerson().getActions().enter(p);
+        }
+
+        f = (Farmer)model.getSelectedPerson();
+        model.setSelectedItem(f.getInventory().getItemInventory().get(0)); // get the carrot
+        model.sendAction(Action.PLANT);
+
+        // to let 3 days pass
+        for(int i = 0; i < 3; i++)
+            model.update();
+
+        String currentSave = model.getBackup().saveCurrent();
+
+        Model oldModel = model;
+
+        oldModel.setSelectedPerson(oldModel.getRoles().get(Role.FARMER)); // select farmer
+        oldModel.getSelectedPerson().getActions().enter(oldModel.getLands().get(0).getElements().get(0)); // enter plant land
+
+        Farmer oldF = (Farmer)oldModel.getSelectedPerson();
+
+        model = oldModel.getBackup().loadSave(currentSave + ".txt");
+
+        model.setSelectedPerson(model.getRoles().get(Role.FARMER)); // select farmer
+        model.getSelectedPerson().getActions().enter(model.getLands().get(0).getElements().get(0)); // enter plant land
+
+        f = (Farmer)model.getSelectedPerson();
+
+        assertEquals(((PlantChunk)f.getPlace()).getWaterLevel(),((PlantChunk)oldF.getPlace()).getWaterLevel(),0.001);
+
+        final Model finalModel = model;
+
+        String corruptedSave = finalModel.getBackup().saveCurrent();
+
+        try {
+            FileWriter writer = new FileWriter("saves\\" + corruptedSave + ".txt");
+            writer.write("CorruptedFile!");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        assertThrows(CustomExceptions.SaveIsCorruptedException.class, () -> {
+            finalModel.getBackup().loadSave(corruptedSave + ".txt");
+        });
     }
     
 }

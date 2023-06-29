@@ -55,7 +55,7 @@ public class Barn extends Place{
         //update market
         this.market.updateItemShop();
         //update animals
-        Iterator<Item> iterator = this.barnInventory.getInventory().iterator();
+        Iterator<Item> iterator = this.barnInventory.getItemInventory().iterator();
         while (iterator.hasNext()) {
             Item item = iterator.next();
             if(item instanceof AnimalAbstract){

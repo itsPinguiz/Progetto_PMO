@@ -50,7 +50,7 @@ public class LandlordActions extends PlayerActions<Landlord>{
                 landlord.setBalance(- Constants.BASE_LAND_PRICE);
             }
             
-        } else if (argument.getArg2() instanceof Item && market.getItemShop().getInventory().contains(argument.getArg2())){
+        } else if (argument.getArg2() instanceof Item && market.getItemShop().getItemInventory().contains(argument.getArg2())){
             item = (Item)argument.getArg2();
 
             // add it to the barn
@@ -93,7 +93,7 @@ public class LandlordActions extends PlayerActions<Landlord>{
             // add money to the balance
             landlord.setBalance(Constants.LAND_SELL_PRICE);
             
-        } else if (argument.getArg2() instanceof Item && market.getBarn().getBarnInventory().getInventory().contains(argument.getArg2())){
+        } else if (argument.getArg2() instanceof Item && market.getBarn().getBarnInventory().getItemInventory().contains(argument.getArg2())){
             Item item = (Item)argument.getArg2();
             Landlord landlord = (Landlord)this.person;
 

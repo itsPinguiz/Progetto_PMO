@@ -142,13 +142,13 @@ public class View extends JFrame{
           controller.getSelectedItem() instanceof Item &&
           ((Item)controller.getSelectedItem()).getNumber() == 1){
         if (controller.getOldInventory()!= null && 
-            !controller.getOldInventory().getInventory().contains(controller.getSelectedItem())){
+            !controller.getOldInventory().getItemInventory().contains(controller.getSelectedItem())){
             controller.setSelectedItem(null);
             controller.setOldInventory(null);
           }
         if (controller.getSelectedPerson().getPlace() != null && 
             controller.getSelectedPerson() instanceof Farmer &&
-            ((Farmer)(controller.getSelectedPerson())).getInventory().getInventory().contains(controller.getSelectedItem())){
+            ((Farmer)(controller.getSelectedPerson())).getInventory().getItemInventory().contains(controller.getSelectedItem())){
           controller.setOldInventory(((Farmer)(this.controller.getSelectedPerson())).getInventory());
         } else if (this.controller.getSelectedPerson().getPlace() != null &&
                    this.controller.getSelectedPerson().getPlace().getType() == Places.BARN){

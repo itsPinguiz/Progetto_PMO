@@ -1,9 +1,11 @@
 package model.actors.actions;
 
+import java.io.Serializable;
+
 /**
  * Class that is used to pass arguments to the actions
  */
-public class ActionArguments<T1, T2, T3> {
+public class ActionArguments<T1, T2, T3> implements Serializable{
     /**
      * Attributes
      */

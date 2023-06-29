@@ -62,7 +62,6 @@ public class ItemCreator implements Serializable {
     private void createStandardInventory(ToolFactory factory){
         this.inventory.add(factory.createHoe());
         this.inventory.add(factory.createSickle());
-        this.inventory.add(factory.createScissors());
         this.inventory.add(factory.createWateringCan());
         this.inventory.add(factory.createFertilizer());
     }

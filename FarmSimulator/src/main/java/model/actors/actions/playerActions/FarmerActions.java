@@ -49,7 +49,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
         Farmer farmer = (Farmer)this.person;
         Barn barn = (Barn)farmer.getPlace();
 
-        if (barn.getBarnInventory().getInventory().contains(itemToMove)){
+        if (barn.getBarnInventory().getItemInventory().contains(itemToMove)){
             // if the item is in the barn, remove it and add it to the farmer's inventory
             try {
                 farmer.getInventory().addItem(barn.getBarnInventory().getItem(1,itemToMove));
@@ -60,7 +60,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
                 barn.getBarnInventory().addItem(oneItemToMove);
                 throw new InventoryIsFullException();
             }
-        } else if (farmer.getInventory().getInventory().contains(itemToMove)){
+        } else if (farmer.getInventory().getItemInventory().contains(itemToMove)){
             // if the item is in the inventory, remove it and add it to the barn
             try {
                 barn.getBarnInventory().addItem(farmer.getInventory().getItem(1,itemToMove));
@@ -91,7 +91,7 @@ public class FarmerActions extends PlayerActions<Farmer> {
 
         // check if the farmer has a seed and the chunk is plowed
         if (seed instanceof Plant) {
-            if (c.isPlowed() && f.getInventory().searchItem(seed, false) != -1 && c.getPlant() == null) {
+            if (c.isPlowed() && f.getInventory().searchItem(seed, false).isPresent() && c.getPlant() == null) {
                 // add plant to the land
                 c.setPlant((Plant) (f.getInventory().getItem(1, seed)));
                 c.getPlant().planted(c);

@@ -70,11 +70,11 @@ public class Market extends Place implements MarketInt{
 
     //replace the items in the shop
     private void replaceItem() throws NoItemFoundException, InventoryIsFullException, CloneNotSupportedException{
-        this.itemShop.getInventory().clear();
+        this.itemShop.getItemInventory().clear();
 
         IntStream.range(0, Constants.MARKET_SHOP_MAX)
                  .mapToObj(i -> this.itemCreator.getRandomItem())
-                 .filter(item -> !this.itemShop.getInventory().contains(item))
+                 .filter(item -> !this.itemShop.getItemInventory().contains(item))
                  .forEach(item -> {
                                     try {
                                         this.itemShop.addItem(item);

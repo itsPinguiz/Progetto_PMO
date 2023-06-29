@@ -39,7 +39,7 @@ public class InventoryPanelView {
         // Create a deselectable button group for the toggle buttons
         DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
 
-        for (Item item : inventory.getInventory()) {
+        for (Item item : inventory.getItemInventory()) {
             // Create a JToggleButton instead of a JButton
             JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() +
                                                                                                        "<br>" + ((AbstractTool)(item)).getMaterial().toString() +

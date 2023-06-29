@@ -107,7 +107,7 @@ public class CustomExceptions {
          */
         public NoSeedFoundException(Inventory inventory){
             super("\nCannot perform action since you have no seed selected in your inventory.\n" +
-                  "Your inventory" + inventory.getInventory().toString());
+                  "Your inventory" + inventory.getItemInventory().toString());
         }   
 
         @Override

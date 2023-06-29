@@ -86,7 +86,7 @@ public class BarnView {
 
             // create buttons for shop items
             if (marketPlace.getItemShop() != null){
-                for(Item item : marketPlace.getItemShop().getInventory()){
+                for(Item item : marketPlace.getItemShop().getItemInventory()){
                     JToggleButton toggleButton = new JToggleButton((item instanceof AbstractTool)?
                                                                    "<html>" + item.getType().toString() +
                                                                    "<br> " + ((AbstractTool)item).getMaterial().toString()+ 
@@ -133,7 +133,7 @@ public class BarnView {
 
         // display the items in the barn inventory
         if (actualPlace.getBarnInventory() != null){
-            for(Item item : actualPlace.getBarnInventory().getInventory()){
+            for(Item item : actualPlace.getBarnInventory().getItemInventory()){
                 JToggleButton toggleButton = new JToggleButton((item.getType() instanceof ItemType.Tools)? "<html>" + item.getType().toString() +
                                                                                                         "<br> " + ((AbstractTool)item).getMaterial().toString()+
                                                                                                         "<br>" + item.getStatus() +

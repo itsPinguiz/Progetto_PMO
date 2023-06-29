@@ -1,5 +1,6 @@
 package model.place;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import model.exceptions.CustomExceptions.*;
@@ -11,7 +12,7 @@ import model.place.land.landTypes.PlantLand;
 /**
  * Class that represents the game map
  */
-public class GameMap {
+public class GameMap implements Serializable{
     /**
      * Attributes
      */
