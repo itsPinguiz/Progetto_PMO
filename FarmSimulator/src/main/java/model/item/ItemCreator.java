@@ -66,11 +66,21 @@ public class ItemCreator implements Serializable {
         this.inventory.add(factory.createFertilizer());
     }
 
+    /**
+     * Returns the wood set inventory.
+     *
+     * @return the wood set inventory
+     */
     public ArrayList<Item> getWoodSet(){
         createStandardInventory(woodFactory);
         return this.inventory;
     }
     
+    /**
+     * Returns a random item from the available items.
+     *
+     * @return a random item
+     */
     public Item getRandomItem(){
         return this.randomMethods[random.nextInt(randomMethods.length)];
     }

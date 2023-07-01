@@ -9,8 +9,21 @@ import model.item.ItemType;
 import model.item.ItemType.Animals;
 import model.item.animal.products.Products;
 
+/**
+ * This class represents a concrete implementation of an Animal in the system.
+ * It extends the AnimalAbstract class, inheriting its fields and methods.
+ * Each concrete animal can be of a specific type (e.g., Cow, Pig, Goat, Chicken), 
+ * and has associated attributes like price, status, number, maxNumber, and typeProduct.
+ */
 public class ConcreteAnimal extends AnimalAbstract {
     
+    /**
+     * Constructs a new instance of a specific type of Animal.
+     *
+     * @param type The type of the Animal to be created (e.g., Cow, Pig, Goat, Chicken).
+     * @throws NoAnimalFoundException if the provided type does not match any known Animal types.
+     * @throws NoProductFoundException if the product associated with the Animal type cannot be found.
+     */
     public ConcreteAnimal(Animals type) throws NoAnimalFoundException, NoProductFoundException{
         super();
         switch(type){

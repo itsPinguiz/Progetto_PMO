@@ -28,18 +28,22 @@ public class AnimalLand extends LandAbstract {
         this.actions = new PlaceActions(this);
     }
 
-    //returns the animals in the land
+    /**
+     * Returns the animal chunks in the land.
+     *
+     * @return the animal chunks in the land
+     */
     public ArrayList<AnimalChunk> getElements(){
         return this.animalChunks;
     }
 
-    //returns the number of animals in the land
+    /**
+     * returns the number of animals in the land
+     * @return the number of animals in the land
+     */
     @Override
     public int getNumElements() {
-        /*
-         * Returns the number of land present
-         * in the land
-         */
+        
         int elements = (int)this.animalChunks.stream()
                                          .filter(i -> i.getAnimal() != null)
                                          .count();

@@ -10,8 +10,15 @@ import java.util.ArrayList;
 /****************
  * CALENDAR CLASS
  ***************/
+/**
+ * Represents a Calendar with seasons and weather conditions.
+ * This class is a singleton, which means it can have only one instance. It provides methods to increment the day, get current day, 
+ * weather and season, and also set the weather and season. It also generates random weather based on the current season.
+ */
 public class Calendar implements CalendarInt {
-
+    /**
+     * Enum representing the seasons of the year.
+     */
     public enum Seasons{
         WINTER("Winter"),
         SPRING("Spring"),
@@ -33,6 +40,10 @@ public class Calendar implements CalendarInt {
             return getName();
         }
     }
+
+    /**
+     * Enum representing the weather conditions.
+     */
     public enum Weather{
         SUNNY("Sunny"),
         CLOUDY("Cloudy"),
@@ -54,8 +65,15 @@ public class Calendar implements CalendarInt {
             return getName();
         }
     }
-    
+
+    /**
+     * Singleton instance of the Calendar class.
+     */
     public static Calendar instance;
+
+    /**
+     * Fields representing the current season, weather, day, and some auxiliary fields.
+     */
     private Seasons seasons;
     private Weather weather;
     private int     actualDay,
@@ -65,6 +83,9 @@ public class Calendar implements CalendarInt {
     private ArrayList<Seasons> seasonList;
     private ArrayList<Weather> weatherList;
 
+    /**
+     * Private constructor for the singleton Calendar class.
+     */
     private Calendar(){
         this.actualDay = 1;
 
@@ -83,6 +104,11 @@ public class Calendar implements CalendarInt {
         randomWeather();
     }
 
+    /**
+     * Gets the instance of the Calendar class.
+     *
+     * @return the instance of the Calendar class.
+     */
     public static Calendar getInstance() {
         if (instance == null) {
             instance = new Calendar();
@@ -90,6 +116,9 @@ public class Calendar implements CalendarInt {
         return instance;
     }
 
+    /**
+     * Increments the current day and updates the season and weather.
+     */
     public void inc(){
         if(this.actualDay % 120 == 0)
             this.actualDay = 1 ;
@@ -100,23 +129,54 @@ public class Calendar implements CalendarInt {
         randomWeather();
     }
 
+    /**
+     * Gets the current day.
+     *
+     * @return the current day.
+     */
     public int getDay(){
         return this.actualDay;
     }
-    
+
+    /**
+     * Gets the current weather.
+     *
+     * @return the current weather.
+     */
     public Weather getWeather(){
         return this.weather;
     }
+
+    /**
+     * Gets the current season.
+     *
+     * @return the current season.
+     */
     public Seasons getSeason(){
         return this.seasons;
     }
+
+    /**
+     * Sets the current weather.
+     *
+     * @param weather the new weather.
+     */
     public void setWeather(Weather weather){
        this.weather = weather; 
     }
+
+    /**
+     * Sets the current season.
+     *
+     * @param season the new season.
+     */
     public void setSeason(Seasons season){
         this.seasons = season;
     }
-
+    
+    /**
+     * Updates the season based on the current day.
+     */
     private void verifySeason(){
         if(this.actualDay % 30 == 0){
             if(this.cont == 3)
@@ -127,6 +187,9 @@ public class Calendar implements CalendarInt {
         }
     }
 
+    /**
+     * Generates a random weather based on the current season.
+     */
     private void randomWeather(){
 
         this.random = (int)((Math.random() * 10) + 1);

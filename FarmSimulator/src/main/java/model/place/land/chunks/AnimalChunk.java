@@ -15,7 +15,12 @@ public class AnimalChunk extends Chunk {
     private AnimalAbstract animal;
     private AnimalLand land;
     
-    // constructor
+    /**
+     * Constructs a new AnimalChunk object with the specified animal and land.
+     *
+     * @param animal the animal in the chunk
+     * @param land   the land associated with the chunk
+     */
     public AnimalChunk(AnimalAbstract animal, AnimalLand land){
         super();
         super.type = Places.ANIMAL_CHUNK;
@@ -24,17 +29,29 @@ public class AnimalChunk extends Chunk {
         this.actions = new PlaceActions(this);
     }
 
-    // method that returns the land
+    /**
+     * Returns the land associated with the chunk.
+     *
+     * @return the land associated with the chunk
+     */
     public AnimalLand getLand(){
         return this.land;
     }
 
-    // method that set the animal
+    /**
+     * Sets the animal in the chunk.
+     *
+     * @param animal the animal to set
+     */
     public void setAnimal(AnimalAbstract animal){
         this.animal = animal;
     }
 
-    // method that returns an animal
+    /**
+     * Returns the animal in the chunk.
+     *
+     * @return the animal in the chunk
+     */
     public AnimalAbstract getAnimal(){
         return this.animal;
     }

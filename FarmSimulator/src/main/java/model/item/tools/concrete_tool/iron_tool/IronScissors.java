@@ -12,8 +12,16 @@ import model.item.tools.AbstractTool;
 /********************
  * IRONSCISSORS CLASS
  *******************/
+/**
+ * This class represents the IronScissors tool, which is a specific type of Tool within the system.
+ * It extends the AbstractTool class, inheriting its fields and methods.
+ * The IronScissors tool has specific attributes such as type, material, status, price, and number.
+ */
 public class IronScissors extends AbstractTool {
-    
+    /**
+     * Constructs a new instance of an IronScissors tool.
+     * The attributes of the tool are set upon creation.
+     */
     public IronScissors(){
         
         super.type = ItemType.Tools.SCISSORS;

@@ -12,8 +12,18 @@ import model.item.ItemType;
 /****************
  * PRODUCTS CLASS
  ***************/
+/**
+ * This class extends the Item class and represents different types of products.
+ * The type of product, its maximum number, and its price are defined based on the given product type.
+ */
 public class Products extends Item{
 
+	/**
+     * Constructs a new Product with the given product type.
+     *
+     * @param currentType The type of the product.
+     * @throws NoProductFoundException If the given product type is not recognized.
+     */
 	public Products(ItemType.productsType currentType) throws NoProductFoundException {
 		super.status = 0;
 		super.number = 0;

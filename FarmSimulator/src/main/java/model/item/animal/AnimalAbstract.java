@@ -19,6 +19,10 @@ import model.item.plants.GamePlant;
 /*****************
  * ANIMAL ABSTRACT
  ****************/
+/**
+ * This abstract class represents an Animal in the game. It extends from the Item class and implements the AnimalInterface.
+ * It includes attributes such as hunger, thirst, and the type of products an animal can produce. 
+ */
 public abstract class AnimalAbstract extends Item implements AnimalInterface {
 
     //fields
@@ -27,14 +31,18 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
     protected ArrayList<Products> typeProduct;
     protected boolean isAlive;
 
-    //constructor
+    /**
+     * Constructs an AnimalAbstract instance, initializing the animal as alive and setting hunger and thirst to zero.
+     */
     public AnimalAbstract() {
         this.isAlive = true;
         this.hunger = 0;
         this.thirst = 0;
 	}
     
-    //method for changing hunger
+    /**
+     * Updates the hunger value of the animal.
+     */
     private void updateHunger(){
         this.hunger += Constants.HUNGER_INCREASE;
         if(this.hunger >= 100){
@@ -43,7 +51,9 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         }
     }
 
-    //method for changing thirst
+    /**
+      * Updates the thirst value of the animal.
+      */
     private void updateThirst(){
         this.thirst += Constants.THIRST_INCREASE;
         if(this.thirst >= 100){
@@ -52,22 +62,39 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         }
     }
 
-    //method isAlive
+    /**
+     * Checks if the animal is alive.
+     * 
+     * @return true if the animal is alive, false otherwise.
+     */
     public boolean isAlive(){
         return this.isAlive;
     }
 
-    //method for getting thirst
+    /**
+     * Gets the thirst value of the animal.
+     * 
+     * @return The current thirst level.
+     */
     public int getThirst() {
         return this.thirst;
     }
 
-    //method for getting hunger
+     /**
+     * Gets the hunger value of the animal.
+     * 
+     * @return The current hunger level.
+     */
     public int getHunger() {
         return this.hunger;
     }
 
-    //method for getting the products
+    /**
+     * Gets a list of products produced by the animal.
+     *
+     * @return A list of Products.
+     * @throws CloneNotSupportedException if the cloning operation is not supported.
+     */
     public ArrayList<Products> getProducts() throws CloneNotSupportedException {
 
         ArrayList<Products> tmp = new ArrayList<>();
@@ -85,7 +112,11 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         return tmp;
     }
 
-    //method for getting the products
+    /**
+     * Checks if there are any products available from the animal.
+     *
+     * @return true if products are available, false otherwise.
+     */
     public boolean areProductsAvailable(){
         for (int i = 0; i < this.typeProduct.size(); i++){
             if (this.typeProduct.get(i).getNumber() > 0){
@@ -95,40 +126,44 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         return false;
     }
 
-    //method for updating the products
+    /**
+     * Updates the products produced by the animal based on its current hunger and thirst.
+     */
     private void updateProducts(){
         if(this.isAlive){
-        //if the hunger is low
-        if(this.hunger >= 0 && this.thirst >= 0){
-            for(int i = 0; i < this.typeProduct.size()- 1; i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + Constants.HIGH_PRODUCTIVITY);
+            //if the hunger is low
+            if(this.hunger >= 0 && this.thirst >= 0){
+                for(int i = 0; i < this.typeProduct.size()- 1; i++){
+                    this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + Constants.HIGH_PRODUCTIVITY);
+                }
             }
-        }
 
-        //if the hunger is less than 30, the animal will produce more products
-        if (this.hunger > 30 && this.thirst > 30){
-            for (int i = 0; i < this.typeProduct.size()- 1; i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + Constants.MEDIUM_PRODUCTIVITY);
+            //if the hunger is less than 30, the animal will produce more products
+            if (this.hunger > 30 && this.thirst > 30){
+                for (int i = 0; i < this.typeProduct.size()- 1; i++){
+                    this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + Constants.MEDIUM_PRODUCTIVITY);
+                }
             }
-        }
-        //if the hunger is less than 60, the animal will produce less products
-        else if (this.hunger > 60 && this.thirst > 60){
-            for (int i = 0; i < this.typeProduct.size() - 1; i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + Constants.LOW_PRODUCTIVITY);
+            //if the hunger is less than 60, the animal will produce less products
+            else if (this.hunger > 60 && this.thirst > 60){
+                for (int i = 0; i < this.typeProduct.size() - 1; i++){
+                    this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() + Constants.LOW_PRODUCTIVITY);
+                }
             }
-        }
-        //if the hunger is less than 90, the animal will lose some products
-        else if (this.hunger > 90 && this.thirst > 90){
-            for (int i = 0; i < this.typeProduct.size()- 1; i++){
-                this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() - Constants.NEGATIVE_PRODUCTIVITY);
+            //if the hunger is less than 90, the animal will lose some products
+            else if (this.hunger > 90 && this.thirst > 90){
+                for (int i = 0; i < this.typeProduct.size()- 1; i++){
+                    this.typeProduct.get(i).setNumber(this.typeProduct.get(i).getNumber() - Constants.NEGATIVE_PRODUCTIVITY);
+                }
             }
+        }else{
+            this.typeProduct.get(this.typeProduct.size() - 1).setNumber(30);
         }
-    }else{
-        this.typeProduct.get(this.typeProduct.size() - 1).setNumber(30);
     }
-}
 
-    //method for updating the animal
+    /**
+     * Updates the state of the animal including its hunger, thirst, and products.
+     */
     public void update() {
 
         if(!this.isAlive){
@@ -142,7 +177,13 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         this.updateProducts();
     }
 
-    //method for feeding the animal
+    /**
+     * Feeds the animal to decrease its hunger level.
+     *
+     * @param item The food item to feed the animal.
+     * @throws NoFoodFoundException If the provided item is not food.
+     * @throws MinimumHungerException If the hunger level is already at minimum.
+     */
     public void feed(Item item) throws NoFoodFoundException, MinimumHungerException{
         try {
             if(item instanceof GamePlant){
@@ -161,7 +202,11 @@ public abstract class AnimalAbstract extends Item implements AnimalInterface {
         }
     }
 
-    //method for watering the animal
+    /**
+     * Gives water to the animal to decrease its thirst level.
+     *
+     * @throws MaxWaterLevelReachedException If the thirst level is already at minimum.
+     */
     public void waterAnimal() throws MaxWaterLevelReachedException{
 
         try {

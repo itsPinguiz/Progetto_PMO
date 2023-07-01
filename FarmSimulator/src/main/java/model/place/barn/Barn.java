@@ -28,7 +28,15 @@ public class Barn extends Place{
     private Inventory barnInventory;
     private Market market;
 
-    //constructor
+    /**
+     * Constructs a new Barn object.
+     *
+     * @throws NoItemFoundException         if no item is found
+     * @throws InventoryIsFullException     if the inventory is full
+     * @throws NoAnimalFoundException       if no animal is found
+     * @throws NoProductFoundException      if no product is found
+     * @throws CloneNotSupportedException if cloning is not supported
+     */
     public Barn() throws NoItemFoundException, InventoryIsFullException, NoAnimalFoundException, NoProductFoundException, CloneNotSupportedException{
         super.type = Places.BARN;
         super.actions = new PlaceActions(this);
@@ -36,21 +44,43 @@ public class Barn extends Place{
         this.market = new Market();
     }
     
-    //getters
+    /**
+     * Returns the barn inventory.
+     *
+     * @return the barn inventory
+     */
     public Inventory getBarnInventory() {
         return this.barnInventory;
     }
+
+    /**
+     * Returns the market associated with the barn.
+     *
+     * @return the market associated with the barn
+     */
     public Market getMarket() {
         return this.market;
     }
 
-    //setters
+    /**
+     * Adds an item to the barn inventory.
+     *
+     * @param item the item to add
+     * @throws NoItemFoundException         if no item is found
+     * @throws InventoryIsFullException     if the inventory is full
+     * @throws CloneNotSupportedException if cloning is not supported
+     */
     public void setItemBarnInventory(Item item) throws NoItemFoundException, InventoryIsFullException, CloneNotSupportedException {
         this.barnInventory.addItem(item);
     }
 
-    //update market and animals in the barn
-    
+    /**
+     * Updates the barn inventory and animals.
+     *
+     * @throws NoItemFoundException         if no item is found
+     * @throws InventoryIsFullException     if the inventory is full
+     * @throws CloneNotSupportedException if cloning is not supported
+     */    
     public void updateBarn() throws NoItemFoundException, InventoryIsFullException, CloneNotSupportedException{
         //update market
         this.market.updateItemShop();
