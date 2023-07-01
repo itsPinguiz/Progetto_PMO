@@ -35,7 +35,7 @@ public class InventoryPanelView {
         inventoryPanel.setBorder(BorderFactory.createTitledBorder("Inventory"));
 
         Inventory inventory = ((Farmer) (controller.getSelectedPerson())).getInventory();
-
+        
         // Create a deselectable button group for the toggle buttons
         DeselectableButtonGroup buttonGroup = new DeselectableButtonGroup();
 
